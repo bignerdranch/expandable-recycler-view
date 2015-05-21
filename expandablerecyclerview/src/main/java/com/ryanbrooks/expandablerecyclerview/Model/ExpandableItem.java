@@ -5,19 +5,32 @@ package com.ryanbrooks.expandablerecyclerview.Model;
  * Forces user to add one child object to the item they create
  *
  * User must override getChildObject() and setChildObject() to force setting.
- * User should set Object to be null if no child exists
+ * User should never set Object to be null if no child exists
 
  * TODO: Add multiple children?
  */
-public abstract class ExpandableItem {
+public abstract class ExpandableItem<T> {
 
-    protected Object childObject;
+    private boolean expanded;
+    private T childObject;
 
-    public abstract Object getChildObject();
+    public ExpandableItem() {
+        expanded = false;
+    }
 
-    public abstract void setChildObject(Object childObject);
+    public abstract T getChildObject();
+
+    public abstract void setChildObject(T childObject);
 
     public boolean hasChildObject() {
         return childObject != null;
+    }
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
     }
 }

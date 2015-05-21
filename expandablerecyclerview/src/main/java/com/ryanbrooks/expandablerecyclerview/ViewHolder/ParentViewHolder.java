@@ -2,40 +2,31 @@ package com.ryanbrooks.expandablerecyclerview.ViewHolder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 
 /**
- * Created by Ryan Brooks on 5/19/15.
- * Abstract class to force user to create and acknowledge a separate ViewHolder from a child ViewHolder
- *
+ * Created by Ryan Brooks on 5/21/15.
+ * Doesn't do anything other than allow user to differentiate between Parent and Child VH
  */
-public abstract class ParentViewHolder extends RecyclerView.ViewHolder {
+public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private View itemView;
-    private View expansionView;
+    private boolean expanded;
 
     public ParentViewHolder(View itemView) {
         super(itemView);
-        this.itemView = itemView;
+        expanded = false;
     }
 
-    public View getExpansionView() {
-        return expansionView;
+    @Override
+    public void onClick(View v) {
+        // Expand and collapse
+
     }
 
-    public void setExpansionView(View expansionView) {
-        this.expansionView = expansionView;
+    public boolean isExpanded() {
+        return expanded;
     }
 
-    // TODO: Add flag to indicate where view is to be added
-    // Currently hardcoded to be below
-    public void addExpandView() {
-        ViewGroup viewGroup = (ViewGroup) itemView;
-        viewGroup.addView(expansionView);
-    }
-
-    public void removeExpandView(View viewToRemove) {
-        ViewGroup viewGroup = (ViewGroup) itemView;
-        viewGroup.removeView(expansionView);
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
     }
 }

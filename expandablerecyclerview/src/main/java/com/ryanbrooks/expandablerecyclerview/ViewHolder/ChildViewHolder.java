@@ -4,13 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by Ryan Brooks on 5/19/15.
- * The child ViewHolder is an abstract class that will need to be extended to get proper functionality
- *  in a custom ViewHolder
- * While ChildViewHolder is extremely necessary for expanding/collapsing to work, this class is here
- *  just to force the user to create and acknowledge a ChildViewHolder that is separate from Parent's
+ * Created by Ryan Brooks on 5/21/15.
+ * Doesn't do anything other than allow user to differentiate between Parent and Child VH
  */
-public abstract class ChildViewHolder extends RecyclerView.ViewHolder {
+public class ChildViewHolder extends RecyclerView.ViewHolder {
 
     public ChildViewHolder(View itemView) {
         super(itemView);
