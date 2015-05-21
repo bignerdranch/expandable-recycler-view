@@ -2,13 +2,16 @@ package com.ryanbrooks.expandablerecyclerviewsample;
 
 import com.ryanbrooks.expandablerecyclerview.Model.ExpandableItem;
 
+import java.util.Objects;
+
 /**
  * Created by Ryan Brooks on 5/19/15.
  */
-public class TestDataModel extends ExpandableItem{
+public class TestDataModel extends ExpandableItem<ChildDataModel>{
 
     private String data;
     private int number;
+    private ChildDataModel childObject;
 
     public TestDataModel() {}
 
@@ -29,12 +32,12 @@ public class TestDataModel extends ExpandableItem{
     }
 
     @Override
-    public Object getChildObject() {
-        return null;
+    public ChildDataModel getChildObject() {
+        return childObject;
     }
 
     @Override
-    public void setChildObject(Object childObject) {
-
+    public void setChildObject(ChildDataModel childObject) {
+        this.childObject = childObject;
     }
 }

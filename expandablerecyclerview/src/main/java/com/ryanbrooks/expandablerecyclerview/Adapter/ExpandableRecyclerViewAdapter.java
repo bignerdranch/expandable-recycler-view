@@ -2,6 +2,7 @@ package com.ryanbrooks.expandablerecyclerview.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.ryanbrooks.expandablerecyclerview.ClickListener.ParentItemClickListener;
@@ -18,12 +19,14 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
     final static int TYPE_PARENT = 0;
     final static int TYPE_CHILD = 1;
 
-    private Context context;
-    private ArrayList<? extends ExpandableItem> itemList;
+    protected Context context;
+    protected ArrayList<? extends ExpandableItem> itemList;
+    protected LayoutInflater inflater;
 
     public ExpandableRecyclerViewAdapter(Context context, ArrayList<? extends ExpandableItem> itemList) {
         this.context = context;
         this.itemList = itemList;
+        this.inflater = inflater.from(context);
     }
 
     @Override
@@ -59,8 +62,9 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
 
     public abstract void onBindParentViewHolder(RecyclerView.ViewHolder holder, int position);
 
-    public abstract void onBindChildViewHolder(RecyclerView.ViewHolder holder, int positon);
+    public abstract void onBindChildViewHolder(RecyclerView.ViewHolder holder, int position);
 
+    // TODO: Figure this out
     @Override
     public void onParentItemClickListener(int position, int viewType) {
         ExpandableItem expandableItem = itemList.get(position);

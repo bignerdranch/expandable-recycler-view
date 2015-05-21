@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
+import com.ryanbrooks.expandablerecyclerview.ClickListener.RecyclerItemClickListener;
 
 import java.util.ArrayList;
 
