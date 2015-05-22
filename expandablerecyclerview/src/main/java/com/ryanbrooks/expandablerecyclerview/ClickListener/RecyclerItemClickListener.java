@@ -15,7 +15,8 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
 
     /**
      * Public constructor
-     * @param context for Gesture detector
+     *
+     * @param context       for Gesture detector
      * @param clickListener
      */
     public RecyclerItemClickListener(Context context, OnItemClickListener clickListener) {

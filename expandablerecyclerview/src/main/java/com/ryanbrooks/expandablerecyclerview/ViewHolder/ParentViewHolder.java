@@ -24,6 +24,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
 
     protected ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
         super(itemView);
+        itemView.setOnClickListener(this);
         this.expanded = false;
         this.parentItemClickListener = parentItemClickListener;
     }
@@ -36,13 +37,19 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         this.expanded = expanded;
     }
 
+    public ParentItemClickListener getParentItemClickListener() {
+        return parentItemClickListener;
+    }
+
+    public void setParentItemClickListener(ParentItemClickListener parentItemClickListener) {
+        this.parentItemClickListener = parentItemClickListener;
+    }
+
     @Override
     public void onClick(View v) {
         // Expand and collapse
-        Log.d(TAG, "Click Registered");
         if (parentItemClickListener != null) {
-            Log.d(TAG, "Got inside click listener check");
-            parentItemClickListener.onParentItemClickListener(getPosition(), TYPE_PARENT);
+            parentItemClickListener.onParentItemClickListener(getAdapterPosition(), TYPE_PARENT);
         }
     }
 }

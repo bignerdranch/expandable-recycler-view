@@ -2,6 +2,7 @@ package com.ryanbrooks.expandablerecyclerview.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -15,18 +16,23 @@ import java.util.ArrayList;
 /**
  * Created by ryanbrooks on 5/21/15.
  */
-public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener{
+public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
+    private final String TAG = this.getClass().getSimpleName();
     final static int TYPE_PARENT = 0;
     final static int TYPE_CHILD = 1;
 
     protected Context context;
     protected ArrayList<? extends ExpandableItem> itemList;
     protected LayoutInflater inflater;
+    private int listSize;
+    private ArrayList<RecyclerView.ViewHolder> viewHolders;
 
     public ExpandableRecyclerViewAdapter(Context context, ArrayList<? extends ExpandableItem> itemList) {
         this.context = context;
         this.itemList = itemList;
         this.inflater = inflater.from(context);
+        this.listSize = itemList.size();
+        this.viewHolders = new ArrayList<>();
     }
 
     @Override
@@ -43,9 +49,17 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ParentViewHolder) {
-            onBindParentViewHolder(holder, position);
+            // Set ParentClickListener to this
+            ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
+            viewHolders.add(holder);
+            Log.d(TAG, "Instance of ChildViewHolder");
+            ((ParentViewHolder) holder).setParentItemClickListener(this);
+            onBindParentViewHolder(parentViewHolder, position);
         } else if (holder instanceof ChildViewHolder) {
-            onBindChildViewHolder(holder, position);
+            Log.d(TAG, "Instance of ChildViewHolder");
+            ChildViewHolder childViewHolder = (ChildViewHolder) holder;
+            viewHolders.add(holder);
+            onBindChildViewHolder(childViewHolder, position);
         } else {
             return; // ERROR
         }
@@ -53,16 +67,25 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
 
     @Override
     public int getItemCount() {
-        return itemList.size();
+        return this.listSize;
     }
 
-    public abstract RecyclerView.ViewHolder onCreateParentViewHolder(ViewGroup parent, int viewType);
+    @Override
+    public int getItemViewType(int position) {
+        if (position > 0 && itemList.get(position - 1).isExpanded()) {
+            return TYPE_CHILD;
+        } else {
+            return TYPE_PARENT;
+        }
+    }
 
-    public abstract RecyclerView.ViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType);
+    public abstract ParentViewHolder onCreateParentViewHolder(ViewGroup parent, int viewType);
 
-    public abstract void onBindParentViewHolder(RecyclerView.ViewHolder holder, int position);
+    public abstract ChildViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType);
 
-    public abstract void onBindChildViewHolder(RecyclerView.ViewHolder holder, int position);
+    public abstract void onBindParentViewHolder(ParentViewHolder holder, int position);
+
+    public abstract void onBindChildViewHolder(ChildViewHolder holder, int position);
 
     // TODO: Figure this out
     @Override
@@ -70,10 +93,12 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
         ExpandableItem expandableItem = itemList.get(position);
         if (expandableItem.isExpanded()) {
             expandableItem.setExpanded(false);
-            notifyItemRangeRemoved(position + 1, 1);
+            listSize--;
+            notifyItemRemoved(position + 1);
         } else {
             expandableItem.setExpanded(true);
-            notifyItemRangeInserted(position + 1, 1);
+            listSize++;
+            notifyItemInserted(position + 1);
         }
         notifyItemChanged(position);
     }
