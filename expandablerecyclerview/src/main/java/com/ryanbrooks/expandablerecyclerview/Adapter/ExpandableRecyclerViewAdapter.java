@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.ryanbrooks.expandablerecyclerview.ClickListener.ChildItemClickListener;
 import com.ryanbrooks.expandablerecyclerview.ClickListener.ParentItemClickListener;
 import com.ryanbrooks.expandablerecyclerview.Model.ExpandableItem;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
@@ -18,15 +19,14 @@ import java.util.ArrayList;
  */
 public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
     private final String TAG = this.getClass().getSimpleName();
-    final static int TYPE_PARENT = 0;
-    final static int TYPE_CHILD = 1;
+    public final static int TYPE_PARENT = 0;
+    public final static int TYPE_CHILD = 1;
 
     protected Context context;
     protected ArrayList<? extends ExpandableItem> itemList;
     protected LayoutInflater inflater;
     private int listSize;
     private ArrayList<RecyclerView.ViewHolder> viewHolders;
-
     public ExpandableRecyclerViewAdapter(Context context, ArrayList<? extends ExpandableItem> itemList) {
         this.context = context;
         this.itemList = itemList;
@@ -49,17 +49,17 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ParentViewHolder) {
-            // Set ParentClickListener to this
             ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
-            viewHolders.add(holder);
-            Log.d(TAG, "Instance of ChildViewHolder");
-            ((ParentViewHolder) holder).setParentItemClickListener(this);
+            parentViewHolder.setParentItemClickListener(this);
             onBindParentViewHolder(parentViewHolder, position);
         } else if (holder instanceof ChildViewHolder) {
-            Log.d(TAG, "Instance of ChildViewHolder");
             ChildViewHolder childViewHolder = (ChildViewHolder) holder;
-            viewHolders.add(holder);
-            onBindChildViewHolder(childViewHolder, position);
+            if (position > 0) {
+                onBindChildViewHolder(childViewHolder, position - 1);
+            } else {
+                onBindChildViewHolder(childViewHolder, position);
+            }
+
         } else {
             return; // ERROR
         }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ryanbrooks.expandablerecyclerview.Adapter.ExpandableRecyclerViewAdapter;
+import com.ryanbrooks.expandablerecyclerview.ClickListener.ChildItemClickListener;
 import com.ryanbrooks.expandablerecyclerview.ClickListener.ParentItemClickListener;
 import com.ryanbrooks.expandablerecyclerview.Model.ExpandableItem;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
