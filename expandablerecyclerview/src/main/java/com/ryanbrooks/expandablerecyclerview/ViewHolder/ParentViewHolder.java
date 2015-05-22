@@ -15,6 +15,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     private static final int TYPE_PARENT = 0;
 
     private boolean expanded;
+    private int childPosition;
     private ParentItemClickListener parentItemClickListener;
 
     protected ParentViewHolder(View itemView) {

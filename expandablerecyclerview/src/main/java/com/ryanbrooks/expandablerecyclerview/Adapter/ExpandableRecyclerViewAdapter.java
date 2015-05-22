@@ -27,6 +27,7 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
     protected LayoutInflater inflater;
     private int listSize;
     private ArrayList<RecyclerView.ViewHolder> viewHolders;
+
     public ExpandableRecyclerViewAdapter(Context context, ArrayList<? extends ExpandableItem> itemList) {
         this.context = context;
         this.itemList = itemList;
@@ -70,13 +71,26 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
         return this.listSize;
     }
 
+    // TODO: Look into getAdapterPosition and getLayoutPosition and how I can use them to get correct view
     @Override
     public int getItemViewType(int position) {
-        if (position > 0 && itemList.get(position - 1).isExpanded()) {
-            return TYPE_CHILD;
-        } else {
-            return TYPE_PARENT;
+        Log.d("getItemViewType",  "Position: " + position);
+        int expandedItems = 0;
+        for (ExpandableItem expandableItem : itemList) {
+            if (expandedItems == position) {
+                return TYPE_PARENT;
+            }
+            // Increase Expanded items by 1
+            expandedItems++;
+            if (!expandableItem.isExpanded()) {
+                continue;
+            }
+            if (position == expandedItems) {
+                return TYPE_CHILD;
+            }
+            expandedItems++;
         }
+        return TYPE_CHILD;
     }
 
     public abstract ParentViewHolder onCreateParentViewHolder(ViewGroup parent, int viewType);
@@ -93,13 +107,16 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
         ExpandableItem expandableItem = itemList.get(position);
         if (expandableItem.isExpanded()) {
             expandableItem.setExpanded(false);
-            listSize--;
             notifyItemRemoved(position + 1);
+            listSize--;
         } else {
             expandableItem.setExpanded(true);
-            listSize++;
             notifyItemInserted(position + 1);
+            listSize++;
         }
+        Log.d(TAG, "GetAdapterPosition() from PVH " + position);
+        Log.d(TAG, "Item list size: " + itemList.size());
+        Log.d(TAG, "Calculated list size: " + listSize);
         notifyItemChanged(position);
     }
 }
