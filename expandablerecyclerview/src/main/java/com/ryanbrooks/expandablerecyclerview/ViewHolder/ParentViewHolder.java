@@ -16,7 +16,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     private boolean expanded;
     private int childPosition;
     private ParentItemClickListener parentItemClickListener;
-    private int originalPosition;
+    private int originalPosition = -1;
 
     protected ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
         super(itemView);
@@ -53,7 +53,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     public void onClick(View v) {
         // Expand and collapse
         if (parentItemClickListener != null) {
-            parentItemClickListener.onParentItemClickListener(getAdapterPosition(), TYPE_PARENT, originalPosition);
+            parentItemClickListener.onParentItemClickListener(getLayoutPosition(), TYPE_PARENT, originalPosition);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.ryanbrooks.expandablerecyclerviewsample;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,6 +19,7 @@ import java.util.ArrayList;
  * Created by Ryan Brooks on 5/21/15.
  */
 public class MyExpandableAdapter extends ExpandableRecyclerViewAdapter implements ParentItemClickListener {
+    private final String TAG = this.getClass().getSimpleName();
 
     public MyExpandableAdapter(Context context, ArrayList<? extends ExpandableItem> itemList) {
         super(context, itemList);

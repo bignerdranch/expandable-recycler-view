@@ -49,9 +49,11 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Log.d(TAG, "onBind position: " + position);
         if (holder instanceof ParentViewHolder) {
             ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
             parentViewHolder.setParentItemClickListener(this);
+            Log.d(TAG, "Original Position: " + parentViewHolder.getOriginalPosition());
             if (parentViewHolder.getOriginalPosition() == -1) {
                 parentViewHolder.setOriginalPosition(position);
             }
@@ -59,13 +61,9 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
         } else if (holder instanceof ChildViewHolder) {
             ChildViewHolder childViewHolder = (ChildViewHolder) holder;
             if (childViewHolder.getOriginalPosition() == -1) {
-                childViewHolder.setOriginalPosition(position - 1);
+                childViewHolder.setOriginalPosition(position);
             }
-            if (position > 0) {
-                onBindChildViewHolder(childViewHolder, position - 1, childViewHolder.getOriginalPosition());
-            } else {
-                onBindChildViewHolder(childViewHolder, position, childViewHolder.getOriginalPosition());
-            }
+            onBindChildViewHolder(childViewHolder, position, childViewHolder.getOriginalPosition());
         } else {
             return; // ERROR
         }
@@ -86,10 +84,9 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
         return count;
     }
 
-    // TODO: Look into getAdapterPosition and getLayoutPosition and how I can use them to get correct view
     @Override
     public int getItemViewType(int position) {
-        Log.d("getItemViewType", "Position: " + position);
+        // Log.d("getItemViewType", "Position: " + position);
 
         int expandedItems = 0;
         for (ExpandableItem expandableItem : itemList) {
@@ -143,6 +140,5 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
             expandableItem.setExpanded(true);
             notifyItemInserted(position + 1);
         }
-        notifyItemChanged(position + 1);
     }
 }

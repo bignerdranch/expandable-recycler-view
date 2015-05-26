@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
             TestDataModel dataModel = new TestDataModel();
             ChildDataModel childDataModel = new ChildDataModel();
             dataModel.setNumber(i);
-            dataModel.setData("Number " + i);
+            dataModel.setData("Parent " + i);
             childDataModel.setData("Child" + i);
             dataModel.setChildObject(childDataModel);
             data.add(dataModel);
