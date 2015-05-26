@@ -13,6 +13,8 @@ import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ryanbrooks on 5/21/15.
@@ -75,6 +77,8 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
     @Override
     public int getItemViewType(int position) {
         Log.d("getItemViewType",  "Position: " + position);
+
+        /**
         int expandedItems = 0;
         for (ExpandableItem expandableItem : itemList) {
             if (expandedItems == position) {
@@ -91,6 +95,31 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
             expandedItems++;
         }
         return TYPE_CHILD;
+         */
+        if (position == 0) {
+            return TYPE_PARENT;
+        } else {
+            // GIT TEST
+
+        }
+    }
+
+    private int getExpandedBeforePosition(int passedPosition) {
+        int expandedItems = 0;
+        if (passedPosition == 0) {
+            return 0;
+        } else {
+            for (int i = 0; i <= passedPosition; i++) {
+                if (itemList.get(passedPosition) != null) {
+                    if (itemList.get(passedPosition).isExpanded()) {
+                        expandedItems++;
+                    }
+                } else {
+                    return expandedItems;
+                }
+            }
+        }
+        return expandedItems;
     }
 
     public abstract ParentViewHolder onCreateParentViewHolder(ViewGroup parent, int viewType);
