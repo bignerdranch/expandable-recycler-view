@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         mRecyclerView = (RecyclerView) findViewById(R.id.main_recyclerview);
-        MyExpandableAdapter expandableAdapter = new MyExpandableAdapter(this, setUpTestData(10));
+        MyExpandableAdapter expandableAdapter = new MyExpandableAdapter(this, setUpTestData(10), mRecyclerView);
         mRecyclerView.setAdapter(expandableAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

@@ -27,15 +27,15 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
     protected Context context;
     protected ArrayList<? extends ExpandableItem> itemList;
     protected LayoutInflater inflater;
-    private int listSize;
     private ArrayList<RecyclerView.ViewHolder> viewHolders;
+    private RecyclerView recyclerView;
 
-    public ExpandableRecyclerViewAdapter(Context context, ArrayList<? extends ExpandableItem> itemList) {
+    public ExpandableRecyclerViewAdapter(Context context, ArrayList<? extends ExpandableItem> itemList, RecyclerView recyclerView) {
         this.context = context;
         this.itemList = itemList;
         this.inflater = inflater.from(context);
-        this.listSize = itemList.size();
         this.viewHolders = new ArrayList<>();
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -54,15 +54,20 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
         if (holder instanceof ParentViewHolder) {
             ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
             parentViewHolder.setParentItemClickListener(this);
-            onBindParentViewHolder(parentViewHolder, position);
+            if (parentViewHolder.getOriginalPosition() == -1) {
+                parentViewHolder.setOriginalPosition(position);
+            }
+            onBindParentViewHolder(parentViewHolder, position, parentViewHolder.getOriginalPosition());
         } else if (holder instanceof ChildViewHolder) {
             ChildViewHolder childViewHolder = (ChildViewHolder) holder;
-            if (position > 0) {
-                onBindChildViewHolder(childViewHolder, position - 1);
-            } else {
-                onBindChildViewHolder(childViewHolder, position);
+            if (childViewHolder.getOriginalPosition() == -1) {
+                childViewHolder.setOriginalPosition(position - 1);
             }
-
+            if (position > 0) {
+                onBindChildViewHolder(childViewHolder, position - 1, childViewHolder.getOriginalPosition());
+            } else {
+                onBindChildViewHolder(childViewHolder, position, childViewHolder.getOriginalPosition());
+            }
         } else {
             return; // ERROR
         }
@@ -70,15 +75,24 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
 
     @Override
     public int getItemCount() {
-        return this.listSize;
+        return getVisibleCount();
+    }
+
+    private int getVisibleCount() {
+        int count = itemList.size();
+        for (ExpandableItem expandableItem : itemList) {
+            if (expandableItem.isExpanded()) {
+                count++;
+            }
+        }
+        return count;
     }
 
     // TODO: Look into getAdapterPosition and getLayoutPosition and how I can use them to get correct view
     @Override
     public int getItemViewType(int position) {
-        Log.d("getItemViewType",  "Position: " + position);
+        Log.d("getItemViewType", "Position: " + position);
 
-        /**
         int expandedItems = 0;
         for (ExpandableItem expandableItem : itemList) {
             if (expandedItems == position) {
@@ -95,29 +109,19 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
             expandedItems++;
         }
         return TYPE_CHILD;
-         */
-        if (position == 0) {
-            return TYPE_PARENT;
-        } else {
-            // GIT TEST
-
-        }
     }
 
     private int getExpandedBeforePosition(int passedPosition) {
         int expandedItems = 0;
-        if (passedPosition == 0) {
-            return 0;
-        } else {
-            for (int i = 0; i <= passedPosition; i++) {
-                if (itemList.get(passedPosition) != null) {
-                    if (itemList.get(passedPosition).isExpanded()) {
-                        expandedItems++;
-                    }
-                } else {
-                    return expandedItems;
-                }
+        int index = 0;
+        for (ExpandableItem expandableItem : itemList) {
+            if (index == passedPosition) {
+                return expandedItems;
             }
+            if (expandableItem.isExpanded()) {
+                expandedItems++;
+            }
+            index++;
         }
         return expandedItems;
     }
@@ -126,26 +130,21 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
 
     public abstract ChildViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType);
 
-    public abstract void onBindParentViewHolder(ParentViewHolder holder, int position);
+    public abstract void onBindParentViewHolder(ParentViewHolder holder, int position, int originalPosition);
 
-    public abstract void onBindChildViewHolder(ChildViewHolder holder, int position);
+    public abstract void onBindChildViewHolder(ChildViewHolder holder, int position, int originalPosition);
 
     // TODO: Figure this out
     @Override
-    public void onParentItemClickListener(int position, int viewType) {
-        ExpandableItem expandableItem = itemList.get(position);
+    public void onParentItemClickListener(int position, int viewType, int originalPosition) {
+        ExpandableItem expandableItem = itemList.get(position - getExpandedBeforePosition(position));
         if (expandableItem.isExpanded()) {
             expandableItem.setExpanded(false);
             notifyItemRemoved(position + 1);
-            listSize--;
         } else {
             expandableItem.setExpanded(true);
             notifyItemInserted(position + 1);
-            listSize++;
         }
-        Log.d(TAG, "GetAdapterPosition() from PVH " + position);
-        Log.d(TAG, "Item list size: " + itemList.size());
-        Log.d(TAG, "Calculated list size: " + listSize);
-        notifyItemChanged(position);
+        notifyItemChanged(position + 1);
     }
 }

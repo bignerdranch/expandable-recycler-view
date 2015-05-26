@@ -8,7 +8,6 @@ import com.ryanbrooks.expandablerecyclerview.ClickListener.ParentItemClickListen
 
 /**
  * Created by Ryan Brooks on 5/21/15.
- * Doesn't do anything other than allow user to differentiate between Parent and Child VH
  */
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private final String TAG = this.getClass().getSimpleName();
@@ -17,11 +16,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     private boolean expanded;
     private int childPosition;
     private ParentItemClickListener parentItemClickListener;
-
-    protected ParentViewHolder(View itemView) {
-        super(itemView);
-        expanded = false;
-    }
+    private int originalPosition;
 
     protected ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
         super(itemView);
@@ -38,6 +33,14 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         this.expanded = expanded;
     }
 
+    public int getOriginalPosition() {
+        return originalPosition;
+    }
+
+    public void setOriginalPosition(int originalPosition) {
+        this.originalPosition = originalPosition;
+    }
+
     public ParentItemClickListener getParentItemClickListener() {
         return parentItemClickListener;
     }
@@ -50,7 +53,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     public void onClick(View v) {
         // Expand and collapse
         if (parentItemClickListener != null) {
-            parentItemClickListener.onParentItemClickListener(getAdapterPosition(), TYPE_PARENT);
+            parentItemClickListener.onParentItemClickListener(getAdapterPosition(), TYPE_PARENT, originalPosition);
         }
     }
 }

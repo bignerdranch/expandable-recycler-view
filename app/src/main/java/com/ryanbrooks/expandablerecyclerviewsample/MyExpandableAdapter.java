@@ -19,8 +19,8 @@ import java.util.ArrayList;
  */
 public class MyExpandableAdapter extends ExpandableRecyclerViewAdapter implements ParentItemClickListener {
 
-    public MyExpandableAdapter(Context context, ArrayList<? extends ExpandableItem> itemList) {
-        super(context, itemList);
+    public MyExpandableAdapter(Context context, ArrayList<? extends ExpandableItem> itemList, RecyclerView recyclerView) {
+        super(context, itemList, recyclerView);
     }
 
     @Override
@@ -38,17 +38,17 @@ public class MyExpandableAdapter extends ExpandableRecyclerViewAdapter implement
     }
 
     @Override
-    public void onBindParentViewHolder(ParentViewHolder holder, int position) {
+    public void onBindParentViewHolder(ParentViewHolder holder, int position, int originalPosition) {
         CustomParentViewHolder customParentViewHolder = (CustomParentViewHolder) holder;
-        TestDataModel testDataModel = (TestDataModel) itemList.get(position);
+        TestDataModel testDataModel = (TestDataModel) itemList.get(originalPosition);
         customParentViewHolder.numberText.setText(testDataModel.getNumber() + "");
         customParentViewHolder.dataText.setText(testDataModel.getData());
     }
 
     @Override
-    public void onBindChildViewHolder(ChildViewHolder holder, int position) {
+    public void onBindChildViewHolder(ChildViewHolder holder, int position, int originalPosition) {
         CustomChildViewHolder customChildViewHolder = (CustomChildViewHolder) holder;
-        TestDataModel testDataModel = (TestDataModel) itemList.get(position);
+        TestDataModel testDataModel = (TestDataModel) itemList.get(originalPosition);
         ChildDataModel childDataModel = testDataModel.getChildObject();
         customChildViewHolder.dataText.setText(childDataModel.getData());
     }

@@ -14,17 +14,19 @@ public class ChildViewHolder extends RecyclerView.ViewHolder implements View.OnC
     private final String TAG = this.getClass().getSimpleName();
 
     protected ChildItemClickListener childItemClickListener;
+    private int originalPosition = -1;
 
     public ChildViewHolder(View itemView) {
         super(itemView);
      }
 
-    /**
-    public ChildViewHolder(View itemView, ChildItemClickListener childItemClickListener) {
-        super(itemView);
-        this.childItemClickListener = childItemClickListener;
+    public int getOriginalPosition() {
+        return originalPosition;
     }
-     */
+
+    public void setOriginalPosition(int originalPosition) {
+        this.originalPosition = originalPosition;
+    }
 
     @Override
     public void onClick(View v) {
