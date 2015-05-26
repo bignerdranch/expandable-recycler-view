@@ -19,8 +19,8 @@ import java.util.ArrayList;
  */
 public class MyExpandableAdapter extends ExpandableRecyclerViewAdapter implements ParentItemClickListener {
 
-    public MyExpandableAdapter(Context context, ArrayList<? extends ExpandableItem> itemList, RecyclerView recyclerView) {
-        super(context, itemList, recyclerView);
+    public MyExpandableAdapter(Context context, ArrayList<? extends ExpandableItem> itemList) {
+        super(context, itemList);
     }
 
     @Override

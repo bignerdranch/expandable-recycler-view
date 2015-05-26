@@ -28,14 +28,12 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
     protected ArrayList<? extends ExpandableItem> itemList;
     protected LayoutInflater inflater;
     private ArrayList<RecyclerView.ViewHolder> viewHolders;
-    private RecyclerView recyclerView;
 
-    public ExpandableRecyclerViewAdapter(Context context, ArrayList<? extends ExpandableItem> itemList, RecyclerView recyclerView) {
+    public ExpandableRecyclerViewAdapter(Context context, ArrayList<? extends ExpandableItem> itemList) {
         this.context = context;
         this.itemList = itemList;
         this.inflater = inflater.from(context);
         this.viewHolders = new ArrayList<>();
-        this.recyclerView = recyclerView;
     }
 
     @Override
