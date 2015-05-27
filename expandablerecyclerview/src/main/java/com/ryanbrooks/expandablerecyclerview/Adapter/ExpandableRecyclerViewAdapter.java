@@ -37,6 +37,7 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
         this.itemList = itemList;
         this.inflater = inflater.from(context);
         this.viewHolders = new ArrayList<>();
+
     }
 
     @Override
@@ -52,16 +53,17 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Log.d(TAG, "OnBind position: " + position);
         if (holder instanceof ParentViewHolder) {
             ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
             parentViewHolder.setParentItemClickListener(this);
             if (parentViewHolder.getOriginalPosition() == -1) {
-                parentViewHolder.setOriginalPosition(position);
+                Log.d("**$*$*$*$*$*$", "Got inside originalPosition");
+                parentViewHolder.setOriginalPosition(position - getExpandedBeforePosition(position));
             }
             viewHolders.add(position, parentViewHolder);
             onBindParentViewHolder(parentViewHolder, position, parentViewHolder.getOriginalPosition());
         } else if (holder instanceof ChildViewHolder) {
-            Log.d(TAG, "OnBind position: " + position);
             Log.d(TAG, "OnBind - OnClick global position: " + childParentPosition);
             Log.d(TAG, "OnBind - OnClick global original position: " + childParentOriginalPosition);
 
@@ -111,22 +113,27 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
         return TYPE_CHILD;
     }
 
-    /**
-     * private int getExpandedBeforePosition(int passedPosition) {
-     * int expandedItems = 0;
-     * int index = 0;
-     * for (ExpandableItem expandableItem : itemList) {
-     * if (index == passedPosition) {
-     * return expandedItems;
-     * }
-     * if (expandableItem.isExpanded()) {
-     * expandedItems++;
-     * }
-     * index++;
-     * }
-     * return expandedItems;
-     * }
-     */
+    @Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        AbstractViewHolder viewHolder = (AbstractViewHolder) holder;
+        viewHolder.setOriginalPosition(-1);
+    }
+
+    private int getExpandedBeforePosition(int passedPosition) {
+        int expandedItems = 0;
+        int index = 0;
+        for (ExpandableItem expandableItem : itemList) {
+            if (index == passedPosition) {
+                return expandedItems;
+            }
+            if (expandableItem.isExpanded()) {
+                expandedItems++;
+            }
+            index++;
+        }
+        Log.d("EXPAND********", "Expanded items before " + passedPosition + ": " + expandedItems);
+        return expandedItems;
+    }
 
     public abstract ParentViewHolder onCreateParentViewHolder(ViewGroup parent, int viewType);
 

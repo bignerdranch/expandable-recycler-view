@@ -28,19 +28,19 @@ public class MyExpandableAdapter extends ExpandableRecyclerViewAdapter implement
     @Override
     public ParentViewHolder onCreateParentViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recycler_item_layout_parent, parent, false);
-        CustomParentViewHolder itemHolder = new CustomParentViewHolder(view, this);
-        return itemHolder;
+        return new CustomParentViewHolder(view, this);
     }
 
     @Override
     public ChildViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recycler_item_layout_child, parent, false);
-        CustomChildViewHolder itemHolder = new CustomChildViewHolder(view);
-        return itemHolder;
+        return new CustomChildViewHolder(view);
     }
 
     @Override
     public void onBindParentViewHolder(ParentViewHolder holder, int position, int originalPosition) {
+        Log.d(TAG, "OnBind PVH position: " + position);
+        Log.d(TAG, "OnBind PVH original position: " + originalPosition);
         CustomParentViewHolder customParentViewHolder = (CustomParentViewHolder) holder;
         TestDataModel testDataModel = (TestDataModel) itemList.get(originalPosition);
         customParentViewHolder.numberText.setText(testDataModel.getNumber() + "");
