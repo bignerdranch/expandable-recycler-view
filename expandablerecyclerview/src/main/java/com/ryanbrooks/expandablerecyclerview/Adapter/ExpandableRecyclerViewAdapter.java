@@ -35,7 +35,7 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
     public ExpandableRecyclerViewAdapter(Context context, ArrayList<? extends ExpandableItem> itemList) {
         this.context = context;
         this.itemList = itemList;
-        this.inflater = inflater.from(context);
+        this.inflater = LayoutInflater.from(context);
         this.viewHolders = new ArrayList<>();
 
     }

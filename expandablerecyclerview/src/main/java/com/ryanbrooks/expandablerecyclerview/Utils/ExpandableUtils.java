@@ -6,5 +6,5 @@ package com.ryanbrooks.expandablerecyclerview.Utils;
 public class ExpandableUtils {
     private final String TAG = this.getClass().getSimpleName();
     private static final int TYPE_PARENT = 0;
-    private static final int TYPE_CHILD = 0;
+    private static final int TYPE_CHILD = 1;
 }
