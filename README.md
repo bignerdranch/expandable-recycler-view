@@ -1,6 +1,6 @@
 # Expandable RecyclerView
 
-The Expandable RecyclerView is a library written to allow for an expanded view to be attached to each ViewHolder. To allow for full functionality in the expanded view as well as in the original view, the recyclerview has been modified to use two types of ViewHolders, a child and a parent.
+The Expandable RecyclerView is a library written to allow for an expanded view to be attached to each ViewHolder. To allow for full functionality in the expanded view as well as in the original view, the recyclerview has been modified to use two types of ViewHolders, a child and a parent with the ability to customize each separately.
 
 ##Project Setup
 To use this, clone the repository along with the sample project with
