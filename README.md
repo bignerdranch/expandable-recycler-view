@@ -8,9 +8,9 @@ To use this, clone the repository along with the sample project with
 git clone git@github.com:bignerdranch/expandable-recycler-view.git
 ```
 
-Then, navigate inside the directory, then clean, build from Android Studio with
+Then, navigate inside the directory, clean and build from Android Studio with
 ```
-./gradlew app:assemble
+./gradlew clean app:assemble
 ```
 
 Now run the sample app on any device or emulator/simulator to view the basic functionality of the list. Code for the sample is located under /app/src/main. All library code is located under /expandablerecyclerview/src/main
@@ -28,7 +28,7 @@ First, define both a parent object and a child object. The child object simply n
 All expanding of items is handled in the adapter. To use Expandable RecyclerView, you must create your own Custom adapter that extends ```ExpandableRecyclerAdapter```. The ExpandableRecyclerAdapter takes in the context from the Activity containing the RecyclerView and a List of parent items (that extends ExpandableItem) that the RecyclerView will display. Example:
 
 ```
-public class MyExpandingAdapter extends ExpandableRecyclerAdapter {
+public class MyCustomExpandingAdapter extends ExpandableRecyclerAdapter {
 
   public MyExpandableAdapter(Context context, List<? extends ExpandableItem> itemList) {
     super(context, itemList)
@@ -65,3 +65,19 @@ public class MyExpandingAdapter extends ExpandableRecyclerAdapter {
   }
 }
 ```
+ You must also create two separate ViewHolders, a Parent ViewHolder and a Child ViewHolder, either inside the Adapter or separate. For ParentViewHolder, make sure to imclude ```super(itemView, parentItemClickListener)```, then modify as you would a normal viewHolder. The same can be done for ChildViewHolder. Also, make sure to cast your passed ParentViewHolder and ChildViewHolder in ```onBindParentViewHolder``` and ```onBindChildViewHolder``` to whatever custom viewHolders you created for each.
+ 
+ After implementing these, in the activity or fragment that is holding your RecyclerView, simply set the adapter to your custom adapter, and set the layout manager to a new LinearLayoutManager. An example is here:
+ 
+ ```
+ MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, objectList);
+ mRecyclerView.setAdapter(myCustomExpandingAdapter);
+ mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+ ```
+ You should now be able to run the application and click on an item to expand it.
+ 
+ ##Features Coming
+  - Horizontal Expansion
+  - GridLayout Expansion
+  - Define a view to click that expands the layout
+  - Ability to click on child views
