@@ -74,9 +74,9 @@ public class MyCustomExpandingAdapter extends ExpandableRecyclerAdapter {
  mRecyclerView.setAdapter(myCustomExpandingAdapter);
  mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
  ```
- You should now be able to run the application and click on an item to expand it.
+You should now be able to run the application and click on an item to expand it.
  
- ##Features Coming
+##Features Coming
   - Horizontal Expansion
   - GridLayout Expansion
   - Define a view to click that expands the layout
