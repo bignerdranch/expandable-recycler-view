@@ -57,7 +57,8 @@ public class MyCustomExpandingAdapter extends ExpandableRecyclerAdapter {
   
   @Override
   public void onBindChildViewHolder(ChildViewHolder holder, int position, int originalPosition) {
-    // Use originalPosition and then get the child object from the parent object for getting Child data from list.       // position is its literal position in the RecyclerView. originalPosition is its position in list
+    // Use originalPosition and then get the child object from the parent object for getting Child data from list.
+    // position is its literal position in the RecyclerView. originalPosition is its position in list
     // Use originalPosition rather than position unless you need actual position
     
     // Bind all Child data to views here. 
