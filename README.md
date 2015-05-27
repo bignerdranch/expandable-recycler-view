@@ -16,7 +16,7 @@ Then, navigate inside the directory, clean and build from Android Studio or with
 Now run the sample app on any device or emulator/simulator to view the basic functionality of the list. Code for the sample is located under /app/src/main. All library code is located under /expandablerecyclerview/src/main
 
 ##Overview
-Expandable RecyclerView can be used with any default RecyclerView. (As of now it cannot work with other variants or libraries of RecyclerView) Create a RecyclerView in your xml view and instantiate/define it in your activity/fragment as you would usually do.
+Expandable RecyclerView can be used with any default RecyclerView (As of now it cannot work with other variants or libraries of RecyclerView). Create a RecyclerView in your xml view and instantiate/define it in your activity/fragment as you would usually do.
 
 The main difference between a regular RecyclerView and the Expandable RecyclerView is you will now use two different ViewHolders, a Parent ViewHolder (your main, non-expanding view) and a Child ViewHolder (the view that will drop down from the parent when the parent or defined view item is clicked). Inside each ViewHolder, you will customize and set the ViewHolders' views as you usually would respectively in ```onBindParentViewHolder``` and ```onBindChildViewHolder```. 
 
