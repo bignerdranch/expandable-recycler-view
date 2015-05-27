@@ -8,7 +8,7 @@ To use this library, clone the repository along with the sample project with
 git clone git@github.com:bignerdranch/expandable-recycler-view.git
 ```
 
-Then, navigate inside the directory, clean and build from Android Studio with
+Then, navigate inside the directory, clean and build from Android Studio or with
 ```
 ./gradlew clean app:assemble
 ```
