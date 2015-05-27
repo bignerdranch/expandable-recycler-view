@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.ryanbrooks.expandablerecyclerview.ClickListener.ChildItemClickListener;
 import com.ryanbrooks.expandablerecyclerview.ClickListener.ParentItemClickListener;
 import com.ryanbrooks.expandablerecyclerview.Model.ExpandableItem;
+import com.ryanbrooks.expandablerecyclerview.ViewHolder.AbstractViewHolder;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
@@ -28,6 +29,8 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
     protected ArrayList<? extends ExpandableItem> itemList;
     protected LayoutInflater inflater;
     private ArrayList<RecyclerView.ViewHolder> viewHolders;
+    private int childParentPosition;
+    private int childParentOriginalPosition;
 
     public ExpandableRecyclerViewAdapter(Context context, ArrayList<? extends ExpandableItem> itemList) {
         this.context = context;
@@ -58,15 +61,16 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
             viewHolders.add(position, parentViewHolder);
             onBindParentViewHolder(parentViewHolder, position, parentViewHolder.getOriginalPosition());
         } else if (holder instanceof ChildViewHolder) {
+            Log.d(TAG, "OnBind position: " + position);
+            Log.d(TAG, "OnBind - OnClick global position: " + childParentPosition);
+            Log.d(TAG, "OnBind - OnClick global original position: " + childParentOriginalPosition);
+
             ChildViewHolder childViewHolder = (ChildViewHolder) holder;
-            ParentViewHolder parentViewHolder = (ParentViewHolder) viewHolders.get(position - 1);
             if (childViewHolder.getOriginalPosition() == -1) {
-                childViewHolder.setOriginalPosition(parentViewHolder.getOriginalPosition());
+                childViewHolder.setOriginalPosition(childParentOriginalPosition);
             }
-            Log.d(TAG, "Position: " + position);
-            Log.d(TAG, "Original position: " + parentViewHolder.getOriginalPosition());
             viewHolders.add(position, childViewHolder);
-            onBindChildViewHolder(childViewHolder, position, parentViewHolder.getOriginalPosition());
+            onBindChildViewHolder(childViewHolder, position, childParentOriginalPosition);
         } else {
             return; // ERROR
         }
@@ -140,6 +144,8 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
             viewHolders.remove(position + 1);
             notifyItemRemoved(position + 1);
         } else {
+            this.childParentPosition = position;
+            this.childParentOriginalPosition = originalPosition;
             expandableItem.setExpanded(true);
             notifyItemInserted(position + 1);
         }

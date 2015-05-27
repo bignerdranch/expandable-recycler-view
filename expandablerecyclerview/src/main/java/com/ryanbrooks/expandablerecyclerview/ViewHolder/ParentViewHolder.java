@@ -9,14 +9,13 @@ import com.ryanbrooks.expandablerecyclerview.ClickListener.ParentItemClickListen
 /**
  * Created by Ryan Brooks on 5/21/15.
  */
-public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class ParentViewHolder extends AbstractViewHolder implements View.OnClickListener {
     private final String TAG = this.getClass().getSimpleName();
     private static final int TYPE_PARENT = 0;
 
     private boolean expanded;
     private int childPosition;
     private ParentItemClickListener parentItemClickListener;
-    private int originalPosition = -1;
 
     protected ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
         super(itemView);
@@ -31,14 +30,6 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
 
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
-    }
-
-    public int getOriginalPosition() {
-        return originalPosition;
-    }
-
-    public void setOriginalPosition(int originalPosition) {
-        this.originalPosition = originalPosition;
     }
 
     public ParentItemClickListener getParentItemClickListener() {
