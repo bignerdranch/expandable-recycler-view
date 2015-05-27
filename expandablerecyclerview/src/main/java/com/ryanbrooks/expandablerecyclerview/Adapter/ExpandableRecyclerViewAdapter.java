@@ -132,7 +132,7 @@ public abstract class ExpandableRecyclerViewAdapter extends RecyclerView.Adapter
     // TODO: Figure this out
     @Override
     public void onParentItemClickListener(int position, int viewType, int originalPosition) {
-        ExpandableItem expandableItem = itemList.get(position - getExpandedBeforePosition(position));
+        ExpandableItem expandableItem = itemList.get(originalPosition);
         if (expandableItem.isExpanded()) {
             expandableItem.setExpanded(false);
             notifyItemRemoved(position + 1);
