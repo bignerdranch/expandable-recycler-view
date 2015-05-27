@@ -13,19 +13,19 @@ Then, navigate inside the directory, clean and build from Android Studio or with
 ./gradlew clean app:assemble
 ```
 
-Now run the sample app on any device or emulator/simulator to view the basic functionality of the list. Code for the sample is located under /app/src/main. All library code is located under /expandablerecyclerview/src/main
+Now run the sample app on any device or emulator/simulator to view the basic functionality of the list. Code for the sample is located under ```/app/src/main```. All library code is located under ```/expandablerecyclerview/src/main```.
 
 ##Overview
-Expandable RecyclerView can be used with any default RecyclerView (As of now it cannot work with other variants or libraries of RecyclerView). Create a RecyclerView in your xml view and instantiate/define it in your activity/fragment as you would usually do.
+Expandable RecyclerView can be used with any default RecyclerView. **As of now it cannot work with other variants or libraries of RecyclerView**. Create a RecyclerView in your xml view and instantiate/define it in your activity/fragment as you would usually do.
 
-The main difference between a regular RecyclerView and the Expandable RecyclerView is you will now use two different ViewHolders, a Parent ViewHolder (your main, non-expanding view) and a Child ViewHolder (the view that will drop down from the parent when the parent or defined view item is clicked). Inside each ViewHolder, you will customize and set the ViewHolders' views as you usually would respectively in ```onBindParentViewHolder``` and ```onBindChildViewHolder```. 
+The main difference between a regular RecyclerView and the Expandable RecyclerView is you will now use two different ViewHolders, a parent ViewHolder (your main, non-expanding view) and a child ViewHolder (the view that will drop down from the parent when the parent or defined view item is clicked). Inside each ViewHolder, you will customize and set the ViewHolders' views as you usually would respectively in ```onBindParentViewHolder``` and ```onBindChildViewHolder```. 
 
-The objects you display in your RecyclerView will need to extend ```ExpandableItem<ChildType>```. Inside ```ExpandableItem<>```, you must set a specific Child Object for each Parent. You will be forced to do this in the constructor. If the object changes later, you can call ```setChildObject(T childObject)```, but this value can never be null. The class inside the diamonds will define the class of the Child.
+The objects you wish to display in your RecyclerView will need to extend ```ExpandableItem<ChildType>```. Inside ```ExpandableItem<>```, you must set a specific Child Object for each Parent. You will be forced to do this in the constructor. If the object changes later, you can call ```setChildObject(T childObject)```, but this value can never be null. The class inside the diamonds will define the class of the Child.
 
 ##Usage
 First, define both a parent object and a child object. The child object simply needs to be a dedicated object to hold any data to be displayed in the expanded view. The parent object **MUST** extend ```ExpandableItem<ChildType>```. Inside the generic, include the class name of the child. Simply implement the generic constructor and you can add as modify the object just as you would any other object.
 
-All expanding of items is handled in the adapter. To use Expandable RecyclerView, you must create your own Custom adapter that extends ```ExpandableRecyclerAdapter```. The ExpandableRecyclerAdapter takes in the context from the Activity containing the RecyclerView and a List of parent items (that extends ExpandableItem) that the RecyclerView will display. Example:
+All expansion of items is handled in the adapter. To use Expandable RecyclerView, you must create your own Custom adapter that extends ```ExpandableRecyclerAdapter```. The ExpandableRecyclerAdapter takes in the context from the Activity containing the RecyclerView and a List of parent items (that extends ExpandableItem) that the RecyclerView will display. Here is an example expanding adapter:
 
 ```
 public class MyCustomExpandingAdapter extends ExpandableRecyclerAdapter {
@@ -65,7 +65,8 @@ public class MyCustomExpandingAdapter extends ExpandableRecyclerAdapter {
   }
 }
 ```
- You must also create two separate ViewHolders, a Parent ViewHolder and a Child ViewHolder, either inside the Adapter or separate. For ParentViewHolder, make sure to imclude ```super(itemView, parentItemClickListener)```, then modify as you would a normal viewHolder. The same can be done for ChildViewHolder. Also, make sure to cast your passed ParentViewHolder and ChildViewHolder in ```onBindParentViewHolder``` and ```onBindChildViewHolder``` to whatever custom viewHolders you created for each.
+
+ You must also create two separate ViewHolders, a parent ViewHolder and a child ViewHolder, either as a class inside the Adapter or as a separate class altogether. The parent ViewHolder must extend ParentViewHolder, and the child ViewHolder must extend ChildViewHolder. This also means you must create two separate XML layouts for the ParentViewHolder and ChildViewHolder respectively. For ParentViewHolder, make sure to imclude ```super(itemView, parentItemClickListener)``` in your constructor, then modify as you would a normal viewHolder. The same should be done for ChildViewHolder. Also, make sure to cast your passed ParentViewHolder and ChildViewHolder in ```onBindParentViewHolder``` and ```onBindChildViewHolder``` of the adapter to your custom viewHolders you created for each to allow for proper binding of data.
  
  After implementing these, in the activity or fragment that is holding your RecyclerView, simply set the adapter to your custom adapter, and set the layout manager to a new LinearLayoutManager. An example is here:
  
