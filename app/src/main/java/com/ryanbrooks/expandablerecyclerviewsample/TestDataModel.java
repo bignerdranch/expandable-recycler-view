@@ -11,9 +11,11 @@ public class TestDataModel extends ExpandableItem<ChildDataModel>{
 
     private String data;
     private int number;
-    private ChildDataModel childObject;
 
-    public TestDataModel() {}
+    public TestDataModel(ChildDataModel childObject) {
+        super(childObject);
+        this.childObject = childObject;
+    }
 
     public String getData() {
         return data;
@@ -29,15 +31,5 @@ public class TestDataModel extends ExpandableItem<ChildDataModel>{
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    @Override
-    public ChildDataModel getChildObject() {
-        return childObject;
-    }
-
-    @Override
-    public void setChildObject(ChildDataModel childObject) {
-        this.childObject = childObject;
     }
 }

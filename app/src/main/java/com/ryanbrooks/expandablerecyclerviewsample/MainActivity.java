@@ -33,12 +33,11 @@ public class MainActivity extends Activity {
     private ArrayList<TestDataModel> setUpTestData(int numItems) {
         ArrayList<TestDataModel> data = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
-            TestDataModel dataModel = new TestDataModel();
             ChildDataModel childDataModel = new ChildDataModel();
+            childDataModel.setData("Child" + i);
+            TestDataModel dataModel = new TestDataModel(childDataModel);
             dataModel.setNumber(i);
             dataModel.setData("Parent " + i);
-            childDataModel.setData("Child" + i);
-            dataModel.setChildObject(childDataModel);
             data.add(dataModel);
         }
         return data;

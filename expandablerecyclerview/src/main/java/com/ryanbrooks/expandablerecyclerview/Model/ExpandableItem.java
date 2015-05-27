@@ -12,15 +12,20 @@ package com.ryanbrooks.expandablerecyclerview.Model;
 public abstract class ExpandableItem<T> {
 
     private boolean expanded;
-    private T childObject;
+    protected T childObject;
 
-    public ExpandableItem() {
-        expanded = false;
+    public ExpandableItem(T childObject) {
+        this.expanded = false;
+        this.childObject = childObject;
     }
 
-    public abstract T getChildObject();
+    public T getChildObject() {
+        return this.childObject;
+    }
 
-    public abstract void setChildObject(T childObject);
+    public void setChildObject(T childObject) {
+        this.childObject = childObject;
+    }
 
     public boolean hasChildObject() {
         return childObject != null;
