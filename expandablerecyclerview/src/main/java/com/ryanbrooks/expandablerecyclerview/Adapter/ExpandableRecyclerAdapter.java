@@ -2,12 +2,12 @@ package com.ryanbrooks.expandablerecyclerview.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 
 import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
 import com.ryanbrooks.expandablerecyclerview.Model.ChildObject;
+import com.ryanbrooks.expandablerecyclerview.Model.ExpandingObject;
 import com.ryanbrooks.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
@@ -23,15 +23,11 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     public static final int TYPE_CHILD = 1;
 
     protected Context context;
-    protected List<Object> itemList;
-    protected LayoutInflater inflater;
-    protected ParentItemClickListener parentItemClickListener;
+    protected List<ExpandingObject> itemList;
 
-    public ExpandableRecyclerAdapter(Context context, List<Object> itemList) {
+    public ExpandableRecyclerAdapter(Context context, List<ExpandingObject> itemList) {
         this.context = context;
         this.itemList = itemList;
-        this.parentItemClickListener = this;
-        inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -49,7 +45,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (itemList.get(position) instanceof ParentObject) {
             ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
-            parentViewHolder.setParentItemClickListener(this.parentItemClickListener);
+            parentViewHolder.setParentItemClickListener(this);
             onBindParentViewHolder(parentViewHolder, position);
         } else if (itemList.get(position) instanceof ChildObject) {
             onBindChildViewHolder((ChildViewHolder) holder, position);
@@ -75,8 +71,10 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     public int getItemViewType(int position) {
         if (itemList.get(position) instanceof ParentObject) {
             return TYPE_PARENT;
-        } else {
+        } else if (itemList.get(position) instanceof ChildObject) {
             return TYPE_CHILD;
+        } else {
+            return TYPE_PARENT; // TODO: Add null case
         }
     }
 

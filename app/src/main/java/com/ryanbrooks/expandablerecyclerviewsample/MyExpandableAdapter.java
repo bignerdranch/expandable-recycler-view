@@ -1,11 +1,13 @@
 package com.ryanbrooks.expandablerecyclerviewsample;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ryanbrooks.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
+import com.ryanbrooks.expandablerecyclerview.Model.ExpandingObject;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
@@ -14,17 +16,20 @@ import java.util.List;
 /**
  * Created by Ryan Brooks on 5/21/15.
  */
-public class MyExpandableAdapter extends ExpandableRecyclerAdapter {
+public class MyExpandableAdapter extends ExpandableRecyclerAdapter implements ParentItemClickListener {
     private final String TAG = this.getClass().getSimpleName();
 
-    public MyExpandableAdapter(Context context, List<Object> itemList) {
+    private LayoutInflater inflater;
+
+    public MyExpandableAdapter(Context context, List<ExpandingObject> itemList) {
         super(context, itemList);
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
     public ParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
         View view = inflater.inflate(R.layout.recycler_item_layout_parent, parent, false);
-        return new CustomParentViewHolder(view);
+        return new CustomParentViewHolder(view, this);
     }
 
     @Override
@@ -45,7 +50,6 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter {
     public void onBindChildViewHolder(ChildViewHolder childViewHolder, int position) {
         CustomChildViewHolder customChildViewHolder = (CustomChildViewHolder) childViewHolder;
         CustomChildObject childObject = (CustomChildObject) itemList.get(position);
-        // CustomChildObject customChildObject = testDataModel.getChildObject(); <-- Could be right depending on which position I pass
         customChildViewHolder.dataText.setText(childObject.getData());
     }
 }

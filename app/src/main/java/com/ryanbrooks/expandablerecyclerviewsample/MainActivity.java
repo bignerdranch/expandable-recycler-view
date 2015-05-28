@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+
+import com.ryanbrooks.expandablerecyclerview.Model.ExpandingObject;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ryan Brooks on 5/19/15.
@@ -26,11 +30,11 @@ public class MainActivity extends Activity {
     }
 
     // TODO: Set one to null and test result
-    private ArrayList<Object> setUpTestData(int numItems) {
-        ArrayList<Object> data = new ArrayList<>();
+    private List<ExpandingObject> setUpTestData(int numItems) {
+        ArrayList<ExpandingObject> data = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
             CustomChildObject customChildObject = new CustomChildObject();
-            customChildObject.setData("Child" + i);
+            customChildObject.setData("Child " + i);
             CustomParentObject customParentObject = new CustomParentObject(customChildObject);
             customParentObject.setNumber(i);
             customParentObject.setData("Parent " + i);
