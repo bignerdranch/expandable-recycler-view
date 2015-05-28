@@ -23,11 +23,8 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     public static final int TYPE_PARENT = 0;
     public static final int TYPE_CHILD = 1;
 
-    private boolean firstRun;
-
     protected Context context;
     protected static List<ExpandingObject> itemList;
-    protected RecyclerView recyclerView;
 
     public ExpandableRecyclerAdapter(Context context, List<ExpandingObject> itemList) {
         this.context = context;
