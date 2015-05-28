@@ -1,35 +1,20 @@
 package com.ryanbrooks.expandablerecyclerview.ViewHolder;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
-import com.ryanbrooks.expandablerecyclerview.ClickListener.ParentItemClickListener;
+import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
 
 /**
- * Created by Ryan Brooks on 5/21/15.
+ * Created by Ryan Brooks on 5/27/15.
  */
-public class ParentViewHolder extends AbstractViewHolder implements View.OnClickListener {
-    private final String TAG = this.getClass().getSimpleName();
-    private static final int TYPE_PARENT = 0;
+public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private boolean expanded;
-    private int childPosition;
     private ParentItemClickListener parentItemClickListener;
 
-    protected ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
+    public ParentViewHolder(View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
-        this.expanded = false;
-        this.parentItemClickListener = parentItemClickListener;
-    }
-
-    public boolean isExpanded() {
-        return expanded;
-    }
-
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
     }
 
     public ParentItemClickListener getParentItemClickListener() {
@@ -42,9 +27,8 @@ public class ParentViewHolder extends AbstractViewHolder implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        // Expand and collapse
         if (parentItemClickListener != null) {
-            parentItemClickListener.onParentItemClickListener(getLayoutPosition(), TYPE_PARENT, originalPosition);
+            parentItemClickListener.onParentItemClickListener(getLayoutPosition());
         }
     }
 }

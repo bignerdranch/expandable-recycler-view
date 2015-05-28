@@ -4,11 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.Toast;
-
-import com.ryanbrooks.expandablerecyclerview.ClickListener.ChildItemClickListener;
-import com.ryanbrooks.expandablerecyclerview.ClickListener.RecyclerItemClickListener;
 
 import java.util.ArrayList;
 
@@ -30,15 +25,16 @@ public class MainActivity extends Activity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private ArrayList<TestDataModel> setUpTestData(int numItems) {
-        ArrayList<TestDataModel> data = new ArrayList<>();
+    // TODO: Set one to null and test result
+    private ArrayList<Object> setUpTestData(int numItems) {
+        ArrayList<Object> data = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
-            ChildDataModel childDataModel = new ChildDataModel();
-            childDataModel.setData("Child" + i);
-            TestDataModel dataModel = new TestDataModel(childDataModel);
-            dataModel.setNumber(i);
-            dataModel.setData("Parent " + i);
-            data.add(dataModel);
+            CustomChildObject customChildObject = new CustomChildObject();
+            customChildObject.setData("Child" + i);
+            CustomParentObject customParentObject = new CustomParentObject(customChildObject);
+            customParentObject.setNumber(i);
+            customParentObject.setData("Parent " + i);
+            data.add(customParentObject);
         }
         return data;
     }

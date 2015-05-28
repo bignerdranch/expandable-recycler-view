@@ -1,13 +1,15 @@
 package com.ryanbrooks.expandablerecyclerviewsample;
 
+import com.ryanbrooks.expandablerecyclerview.Model.ChildObject;
+
 /**
  * Created by Ryan Brooks on 5/20/15.
  */
-public class ChildDataModel {
+public class CustomChildObject extends ChildObject {
 
     private String data;
 
-    public ChildDataModel() {
+    public CustomChildObject() {
     }
 
     public String getData() {

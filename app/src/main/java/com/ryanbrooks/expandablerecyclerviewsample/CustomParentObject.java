@@ -1,20 +1,18 @@
 package com.ryanbrooks.expandablerecyclerviewsample;
 
-import com.ryanbrooks.expandablerecyclerview.Model.ExpandableItem;
-
-import java.util.Objects;
+import com.ryanbrooks.expandablerecyclerview.Model.ChildObject;
+import com.ryanbrooks.expandablerecyclerview.Model.ParentObject;
 
 /**
- * Created by Ryan Brooks on 5/19/15.
+ * Created by Ryan Brooks on 5/28/15.
  */
-public class TestDataModel extends ExpandableItem<ChildDataModel>{
+public class CustomParentObject extends ParentObject {
 
     private String data;
     private int number;
 
-    public TestDataModel(ChildDataModel childObject) {
+    public CustomParentObject(ChildObject childObject) {
         super(childObject);
-        this.childObject = childObject;
     }
 
     public String getData() {
