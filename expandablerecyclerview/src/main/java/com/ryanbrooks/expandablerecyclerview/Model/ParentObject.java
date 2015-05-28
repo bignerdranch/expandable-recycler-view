@@ -8,7 +8,7 @@ public class ParentObject extends ExpandingObject {
     private boolean expanded;
     protected ChildObject childObject;
 
-    public ParentObject(ChildObject childObject) {
+    public ParentObject (ChildObject childObject) {
         this.expanded = false;
         this.childObject = childObject;
     }

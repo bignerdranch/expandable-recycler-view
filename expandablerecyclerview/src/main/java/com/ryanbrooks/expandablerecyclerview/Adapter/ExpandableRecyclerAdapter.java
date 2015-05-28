@@ -2,6 +2,7 @@ package com.ryanbrooks.expandablerecyclerview.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ViewGroup;
 
 
@@ -22,13 +23,18 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     public static final int TYPE_PARENT = 0;
     public static final int TYPE_CHILD = 1;
 
+    private boolean firstRun;
+
     protected Context context;
-    protected List<ExpandingObject> itemList;
+    protected static List<ExpandingObject> itemList;
+    protected RecyclerView recyclerView;
 
     public ExpandableRecyclerAdapter(Context context, List<ExpandingObject> itemList) {
         this.context = context;
         this.itemList = itemList;
     }
+
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -82,15 +88,19 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     public void onParentItemClickListener(int position) {
         if (itemList.get(position) instanceof ParentObject) {
             ParentObject parentObject = (ParentObject) itemList.get(position);
-            if (parentObject.isExpanded()) {
-                parentObject.setExpanded(false);
-                itemList.remove(position + 1);
-                notifyItemRemoved(position + 1);
-            } else {
-                parentObject.setExpanded(true);
-                itemList.add(position + 1, parentObject.getChildObject());
-                notifyItemInserted(position + 1);
-            }
+            expandParent(parentObject, position);
+        }
+    }
+
+    private void expandParent(ParentObject parentObject, int position) {
+        if (parentObject.isExpanded()) {
+            parentObject.setExpanded(false);
+            itemList.remove(position + 1);
+            notifyItemRemoved(position + 1);
+        } else {
+            parentObject.setExpanded(true);
+            itemList.add(position + 1, parentObject.getChildObject());
+            notifyItemInserted(position + 1);
         }
     }
 }
