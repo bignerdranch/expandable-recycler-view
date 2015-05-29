@@ -1,5 +1,7 @@
 # Expandable RecyclerView
+[![Build Status](https://magnum.travis-ci.com/bignerdranch/expandable-recycler-view.svg?token=cHtfwvsfoiWYD2CaiRkc&branch=master)](https://magnum.travis-ci.com/bignerdranch/expandable-recycler-view)
 
+## About
 The Expandable RecyclerView is a library written to allow for an expanded view to be attached to each ViewHolder. To allow for full functionality of a normal RecyclerView in both the parent ViewHolder and the expanded child ViewHolder, the recyclerview has been modified to use two types of ViewHolders, a child and a parent with the ability to customize each separately.
 
 ##Project Setup
