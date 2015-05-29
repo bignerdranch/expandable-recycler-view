@@ -5,7 +5,4 @@ package com.ryanbrooks.expandablerecyclerview.Model;
  * This is more of a placeholder than anything. Here to assure user extends it
  */
 public class ChildObject extends ExpandingObject {
-
-    public ChildObject() {
-    }
 }

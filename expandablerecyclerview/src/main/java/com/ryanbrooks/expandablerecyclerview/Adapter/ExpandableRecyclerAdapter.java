@@ -37,7 +37,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         } else if (viewType == TYPE_CHILD) {
             return onCreateChildViewHolder(viewGroup);
         } else {
-            return null; // Error, should never get here
+            throw new IllegalStateException("Incorrect ViewType found");
         }
     }
 
@@ -51,7 +51,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         } else if (mItemList.get(position) instanceof ChildObject) {
             onBindChildViewHolder((ChildViewHolder) holder, position);
         } else {
-            return; // Error, should never get here
+            throw new IllegalStateException("Incorrect ViewHolder found");
         }
     }
 
@@ -74,8 +74,10 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
             return TYPE_PARENT;
         } else if (mItemList.get(position) instanceof ChildObject) {
             return TYPE_CHILD;
+        } else if (mItemList.get(position) == null) {
+            throw new IllegalStateException("Null object added");
         } else {
-            return TYPE_PARENT; // TODO: Add null case
+            return TYPE_PARENT;
         }
     }
 

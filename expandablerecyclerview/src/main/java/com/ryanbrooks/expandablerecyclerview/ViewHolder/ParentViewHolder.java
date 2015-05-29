@@ -13,6 +13,7 @@ import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListe
  */
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
+    // TODO: Animation constants
 
     private ParentItemClickListener mParentItemClickListener;
     private View mClickableView;
@@ -20,7 +21,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     private boolean mIsRotated;
     private boolean mIsExpanded;
     private long mDuration;
-    private float mRoataion;
+    private float mRotation;
 
     public ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
         super(itemView);
@@ -35,7 +36,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         this.mClickableView = mClickableView;
         itemView.setOnClickListener(null);
         mClickableView.setOnClickListener(this);
-        mClickableView.setRotation(mRoataion);
+        mClickableView.setRotation(mRotation);
     }
 
     public boolean isExpanded() {
@@ -46,6 +47,8 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         this.mIsExpanded = mIsExpanded;
         if (mIsExpanded && mClickableView != null) {
             mClickableView.setRotation(180f);
+        } else if (mClickableView != null) {
+            mClickableView.setRotation(0.0f);
         }
     }
 
@@ -74,10 +77,10 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
                     RotateAnimation rotateAnimation;
                     if (mIsRotated) {
                         rotateAnimation = new RotateAnimation(180f, 360f, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-                        mRoataion = 0.0f;
+                        mRotation = 0.0f;
                     } else {
                         rotateAnimation = new RotateAnimation(0.0f, 180f, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-                        mRoataion = 180f;
+                        mRotation = 180f;
                     }
                     rotateAnimation.setDuration(mDuration);
                     rotateAnimation.setFillAfter(true);

@@ -5,7 +5,4 @@ package com.ryanbrooks.expandablerecyclerview.Model;
  * Placeholder so user can't just add any object to the List
  */
 public abstract class ExpandingObject {
-
-    public ExpandingObject() {
-    }
 }
