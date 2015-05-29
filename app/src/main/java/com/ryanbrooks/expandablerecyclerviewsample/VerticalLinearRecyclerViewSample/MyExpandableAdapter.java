@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample;
+package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListe
 import com.ryanbrooks.expandablerecyclerview.Model.ExpandingObject;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
+import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.List;
 
