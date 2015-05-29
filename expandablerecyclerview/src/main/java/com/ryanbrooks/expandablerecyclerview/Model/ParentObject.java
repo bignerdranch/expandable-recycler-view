@@ -5,27 +5,27 @@ package com.ryanbrooks.expandablerecyclerview.Model;
  */
 public class ParentObject extends ExpandingObject {
 
-    private boolean expanded;
-    protected ChildObject childObject;
+    private boolean mExpanded;
+    protected ChildObject mChildObject;
 
     public ParentObject (ChildObject childObject) {
-        this.expanded = false;
-        this.childObject = childObject;
+        this.mExpanded = false;
+        this.mChildObject = childObject;
     }
 
     public boolean isExpanded() {
-        return expanded;
+        return mExpanded;
     }
 
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
+    public void setExpanded(boolean mExpanded) {
+        this.mExpanded = mExpanded;
     }
 
     public ChildObject getChildObject() {
-        return childObject;
+        return mChildObject;
     }
 
-    public void setChildObject(ChildObject childObject) {
-        this.childObject = childObject;
+    public void setChildObject(ChildObject mChildObject) {
+        this.mChildObject = mChildObject;
     }
 }

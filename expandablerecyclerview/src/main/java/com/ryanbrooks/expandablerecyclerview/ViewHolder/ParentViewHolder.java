@@ -11,33 +11,33 @@ import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListe
  */
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private ParentItemClickListener parentItemClickListener;
-    private View clickableView;
+    private ParentItemClickListener mParentItemClickListener;
+    private View mClickableView;
 
     public ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
         super(itemView);
         itemView.setOnClickListener(this);
-        this.parentItemClickListener = parentItemClickListener;
+        this.mParentItemClickListener = parentItemClickListener;
     }
 
-    public void setCustomClickableView(View clickableView) {
-        this.clickableView = clickableView;
+    public void setCustomClickableView(View mClickableView) {
+        this.mClickableView = mClickableView;
         itemView.setOnClickListener(null);
-        clickableView.setOnClickListener(this);
+        mClickableView.setOnClickListener(this);
     }
 
     public ParentItemClickListener getParentItemClickListener() {
-        return parentItemClickListener;
+        return mParentItemClickListener;
     }
 
-    public void setParentItemClickListener(ParentItemClickListener parentItemClickListener) {
-        this.parentItemClickListener = parentItemClickListener;
+    public void setParentItemClickListener(ParentItemClickListener mParentItemClickListener) {
+        this.mParentItemClickListener = mParentItemClickListener;
     }
 
     @Override
     public void onClick(View v) {
-        if (parentItemClickListener != null) {
-            parentItemClickListener.onParentItemClickListener(getLayoutPosition());
+        if (mParentItemClickListener != null) {
+            mParentItemClickListener.onParentItemClickListener(getLayoutPosition());
         }
     }
 }

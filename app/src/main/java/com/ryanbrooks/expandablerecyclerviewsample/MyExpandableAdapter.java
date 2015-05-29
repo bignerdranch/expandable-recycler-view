@@ -41,7 +41,7 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter implements Pa
     @Override
     public void onBindParentViewHolder(ParentViewHolder parentViewHolder, int position) {
         CustomParentViewHolder customParentViewHolder = (CustomParentViewHolder) parentViewHolder;
-        CustomParentObject parentObject = (CustomParentObject) itemList.get(position);
+        CustomParentObject parentObject = (CustomParentObject) mItemList.get(position);
         customParentViewHolder.numberText.setText(parentObject.getNumber() + "");
         customParentViewHolder.dataText.setText(parentObject.getData());
     }
@@ -49,7 +49,7 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter implements Pa
     @Override
     public void onBindChildViewHolder(ChildViewHolder childViewHolder, int position) {
         CustomChildViewHolder customChildViewHolder = (CustomChildViewHolder) childViewHolder;
-        CustomChildObject childObject = (CustomChildObject) itemList.get(position);
+        CustomChildObject childObject = (CustomChildObject) mItemList.get(position);
         customChildViewHolder.dataText.setText(childObject.getData());
     }
 }
