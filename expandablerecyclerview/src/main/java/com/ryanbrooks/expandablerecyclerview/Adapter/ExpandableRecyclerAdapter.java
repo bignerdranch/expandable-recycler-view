@@ -30,8 +30,6 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         this.mItemList = mItemList;
     }
 
-
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         if (viewType == TYPE_PARENT) {
@@ -47,6 +45,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (mItemList.get(position) instanceof ParentObject) {
             ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
+            parentViewHolder.setExpanded(((ParentObject) mItemList.get(position)).isExpanded());
             parentViewHolder.setParentItemClickListener(this);
             onBindParentViewHolder(parentViewHolder, position);
         } else if (mItemList.get(position) instanceof ChildObject) {
