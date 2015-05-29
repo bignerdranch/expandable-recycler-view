@@ -3,23 +3,16 @@ package com.ryanbrooks.expandablerecyclerviewsample;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-
-import com.ryanbrooks.expandablerecyclerview.Model.ExpandingObject;
 import com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample.VerticalLinearRecyclerViewSample;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Ryan Brooks on 5/19/15.
  */
-public class MainActivity extends Activity implements View.OnClickListener{
+public class MainActivity extends Activity implements View.OnClickListener {
 
     private Button mVerticalSampleButton;
     private Button mHorizontalSampleButton;
@@ -38,7 +31,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         mHorizontalSampleButton.setOnClickListener(this);
         mGridSampleButton.setOnClickListener(this);
     }
-    
+
     @Override
     public void onClick(View v) {
         if (v == mVerticalSampleButton) {
