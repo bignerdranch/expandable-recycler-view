@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:drawable/btn_default"
-    >
+    android:background="@android:drawable/btn_default">
 
     <TextView
         android:id="@+id/recycler_item_number_parent"
@@ -11,8 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:text="X" />
+        android:layout_marginTop="8dp" />
 
     <TextView
         android:id="@+id/recycler_item_text_parent"
@@ -20,15 +18,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="72dp"
-        android:layout_marginTop="8dp"
-        android:text="Text" />
+        android:layout_marginTop="8dp" />
 
     <ImageButton
         android:id="@+id/recycler_item_arrow_parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/arrow_down_float"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:src="@android:drawable/arrow_down_float" />
 
 
 </RelativeLayout>

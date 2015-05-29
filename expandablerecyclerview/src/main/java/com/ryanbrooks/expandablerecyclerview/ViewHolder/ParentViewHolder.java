@@ -17,7 +17,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     private static final float INITIAL_POSITION = 0.0f;
     private static final float ROTATED_POSITION = 180f;
     private static final float PIVOT_VALUE = 0.5f;
-    private static final long DEFAULT_ROTATE_DURATION = 200;
+    private static final long DEFAULT_ROTATE_DURATION_MS = 200;
 
     private ParentItemClickListener mParentItemClickListener;
     private View mClickableView;
@@ -30,11 +30,11 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     public ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
         super(itemView);
         itemView.setOnClickListener(this);
-        this.mParentItemClickListener = parentItemClickListener;
-        this.mRotationEnabled = false;
-        this.mIsRotated = false;
-        this.mIsExpanded = false;
-        this.mRotation = DEFAULT_ROTATE_DURATION;
+        mParentItemClickListener = parentItemClickListener;
+        mRotationEnabled = false;
+        mIsRotated = false;
+        mIsExpanded = false;
+        mRotation = DEFAULT_ROTATE_DURATION_MS;
     }
 
     public void setCustomClickableView(View mClickableView) {
@@ -106,6 +106,4 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
             mParentItemClickListener.onParentItemClickListener(getLayoutPosition());
         }
     }
-
-
 }
