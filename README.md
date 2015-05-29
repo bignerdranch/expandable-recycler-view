@@ -18,12 +18,12 @@ Now run the sample app on any device or emulator/simulator to view the basic fun
 ##Overview
 Expandable RecyclerView can be used with any default RecyclerView. **As of now it cannot work with other variants or libraries of RecyclerView**. Create a RecyclerView in your xml view and instantiate/define it in your activity/fragment as you would usually do.
 
-The main difference between a regular RecyclerView and the Expandable RecyclerView is you will now use two different ViewHolders, a parent ViewHolder (your main, non-expanding view) and a child ViewHolder (the view that will drop down from the parent when the parent or defined view item is clicked). Inside each ViewHolder, you will customize and set the ViewHolders' views as you usually would respectively in ```onBindParentViewHolder``` and ```onBindChildViewHolder```. 
+The main difference between a regular RecyclerView and the Expandable RecyclerView is you will now use two different ViewHolders, a parent ViewHolder (your main, non-expanding view) and a child ViewHolder (the view that will drop down from the parent when the parent or defined view item is clicked). Inside each ViewHolder, you will customize and set the ViewHolders' views as you usually would respectively in ```onBindParentViewHolder``` and ```onBindChildViewHolder```.
 
-The objects you wish to display in your RecyclerView will need to extend ```ExpandableItem<ChildType>```. Inside ```ExpandableItem<>```, you must set a specific Child Object for each Parent. You will be forced to do this in the constructor. If the object changes later, you can call ```setChildObject(T childObject)```, but this value can never be null. The class inside the diamonds will define the class of the Child.
+The objects you wish to display in your RecyclerView as a Parent will need to extend ```ParentObject``` and any data you wish to display in the dropdown will need to be included in an Object that extends ```ChildObject```. When constructing a ParentObject, you will need to pass a child object in that contains the data. **This child object does not have to contain any data, as long as you handle the view in the onBindChildViewHolder method. If there is no data to display, simply create a placeholder object with an expty constructor.** The child object should simply hold data. That data can be set by the parent object itself or another object as long as it extends ```ChildObject```. If the object changes later, you can call or Override ```setChildObject(ChildObject childObject)```, but this value can never be null.
 
 ##Usage
-First, define both a parent object and a child object. The child object simply needs to be a dedicated object to hold any data to be displayed in the expanded view. The parent object **MUST** extend ```ExpandableItem<ChildType>```. Inside the generic, include the class name of the child. Simply implement the generic constructor and you can add as modify the object just as you would any other object.
+First, define both a parent object and a child object. The child object simply needs to be a dedicated object to hold any data to be displayed in the expanded view that **must** extend ```ChildObject```. Similarly, the parent object **must** extend ```ParentObject```. Simply implement the generic constructor for each and you can add parameters or modify the object just as you would any other object.
 
 All expansion of items is handled in the adapter. To use Expandable RecyclerView, you must create your own Custom adapter that extends ```ExpandableRecyclerAdapter```. The ExpandableRecyclerAdapter takes in the context from the Activity containing the RecyclerView and a List of parent items (that extends ExpandableItem) that the RecyclerView will display. Here is an example expanding adapter:
 
@@ -36,7 +36,7 @@ public class MyCustomExpandingAdapter extends ExpandableRecyclerAdapter {
   }
   
   @Override
-  public ParentViewHolder onCreateParentViewHolder(ViewGroup parent, int viewType) {
+  public ParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
     // Inflate your parent layout here and return a ViewHolder that extends ParentViewHolder
   }
   
@@ -67,7 +67,12 @@ public class MyCustomExpandingAdapter extends ExpandableRecyclerAdapter {
 }
 ```
 
- You must also create two separate ViewHolders, a parent ViewHolder and a child ViewHolder, either as a class inside the Adapter or as a separate class altogether. The parent ViewHolder must extend ParentViewHolder, and the child ViewHolder must extend ChildViewHolder. This also means you must create two separate XML layouts for the ParentViewHolder and ChildViewHolder respectively. For ParentViewHolder, make sure to imclude ```super(itemView, parentItemClickListener)``` in your constructor, then modify as you would a normal viewHolder. The same should be done for ChildViewHolder. Also, make sure to cast your passed ParentViewHolder and ChildViewHolder in ```onBindParentViewHolder``` and ```onBindChildViewHolder``` of the adapter to your custom viewHolders you created for each to allow for proper binding of data.
+ You must also create two separate ViewHolders, a parent ViewHolder and a child ViewHolder, either as a class inside the Adapter or as a separate class altogether. The parent ViewHolder must extend ParentViewHolder, and the child ViewHolder must extend ChildViewHolder. This also means you must create two separate XML layouts for the ParentViewHolder and ChildViewHolder respectively. For ParentViewHolder, make sure to imclude ```super(itemView, parentItemClickListener)``` in your constructor, then modify as you would a normal viewHolder. The same should be done for ChildViewHolder, but rather ```super(itemView)```. Also, make sure to cast your passed ParentViewHolder and ChildViewHolder in ```onBindParentViewHolder``` and ```onBindChildViewHolder``` of the adapter to your custom viewHolders you created for each to allow for proper binding of data.
+ 
+ ####Extras
+ You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, after defining your clickable trigger button or view, call ```setCustomClickableView(Your Custom View)``` and pass in the view in the constructor of your ParentViewHolder. 
+ 
+ If you do set a custom clickable view, you can also set an animation for the view to rotate 180 degrees when expanding and collapsing. This is useful primarily with arrows which signifies for the user to click it to change the expansion. You can do this by calling ```setRotation(long duration)``` in the constructor below where you called ```setCustomClickableView()```.
  
  After implementing these, in the activity or fragment that is holding your RecyclerView, simply set the adapter to your custom adapter, and set the layout manager to a new LinearLayoutManager. An example is here:
  
@@ -81,5 +86,4 @@ You should now be able to run the application and click on an item to expand it.
 ##Features Coming
   - Horizontal Expansion
   - GridLayout Expansion
-  - Define a view to click that expands the layout
   - Ability to click on child views
