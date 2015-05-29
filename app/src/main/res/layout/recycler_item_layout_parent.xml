@@ -23,5 +23,12 @@
         android:layout_marginTop="8dp"
         android:text="Text" />
 
+    <ImageButton
+        android:id="@+id/recycler_item_arrow_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/arrow_down_float"
+        android:layout_alignParentRight="true"/>
+
 
 </RelativeLayout>

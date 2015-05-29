@@ -12,11 +12,18 @@ import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListe
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private ParentItemClickListener parentItemClickListener;
+    private View clickableView;
 
     public ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
         super(itemView);
         itemView.setOnClickListener(this);
         this.parentItemClickListener = parentItemClickListener;
+    }
+
+    public void setCustomClickableView(View clickableView) {
+        this.clickableView = clickableView;
+        itemView.setOnClickListener(null);
+        clickableView.setOnClickListener(this);
     }
 
     public ParentItemClickListener getParentItemClickListener() {
