@@ -1,5 +1,6 @@
 package com.ryanbrooks.expandablerecyclerview.ViewHolder;
 
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.RotateAnimation;
@@ -40,7 +41,9 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         this.mClickableView = mClickableView;
         itemView.setOnClickListener(null);
         mClickableView.setOnClickListener(this);
-        mClickableView.setRotation(mRotation);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mClickableView.setRotation(mRotation);
+        }
     }
 
     public boolean isExpanded() {
@@ -49,14 +52,18 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
 
     public void setExpanded(boolean mIsExpanded) {
         this.mIsExpanded = mIsExpanded;
-        if (mIsExpanded && mClickableView != null) {
+        if (mIsExpanded && mClickableView != null && isHoneycomb()) {
             mClickableView.setRotation(ROTATED_POSITION);
-        } else if (mClickableView != null) {
+        } else if (mClickableView != null && isHoneycomb()) {
             mClickableView.setRotation(INITIAL_POSITION);
         }
     }
 
-    public boolean isRoatationEnabled() {
+    private boolean isHoneycomb() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    }
+
+    public boolean isRotationEnabled() {
         return mRotationEnabled;
     }
 

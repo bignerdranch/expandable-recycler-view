@@ -26,9 +26,4 @@ public class CustomParentViewHolder extends ParentViewHolder {
         setCustomClickableView(arrowExpand);
         setRotation(200);
     }
-
-    @Override
-    public void setCustomClickableView(View clickableView) {
-        super.setCustomClickableView(clickableView);
-    }
 }
