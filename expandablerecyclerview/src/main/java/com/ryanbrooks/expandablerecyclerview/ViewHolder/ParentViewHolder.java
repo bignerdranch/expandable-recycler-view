@@ -1,7 +1,6 @@
 package com.ryanbrooks.expandablerecyclerview.ViewHolder;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 
@@ -13,7 +12,11 @@ import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListe
  */
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
-    // TODO: Animation constants
+
+    private static final float INITIAL_POSITION = 0.0f;
+    private static final float ROTATED_POSITION = 180f;
+    private static final float PIVOT_VALUE = 0.5f;
+    private static final long DEFAULT_ROTATE_DURATION = 200;
 
     private ParentItemClickListener mParentItemClickListener;
     private View mClickableView;
@@ -30,6 +33,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         this.mRotationEnabled = false;
         this.mIsRotated = false;
         this.mIsExpanded = false;
+        this.mRotation = DEFAULT_ROTATE_DURATION;
     }
 
     public void setCustomClickableView(View mClickableView) {
@@ -46,9 +50,9 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     public void setExpanded(boolean mIsExpanded) {
         this.mIsExpanded = mIsExpanded;
         if (mIsExpanded && mClickableView != null) {
-            mClickableView.setRotation(180f);
+            mClickableView.setRotation(ROTATED_POSITION);
         } else if (mClickableView != null) {
-            mClickableView.setRotation(0.0f);
+            mClickableView.setRotation(INITIAL_POSITION);
         }
     }
 
@@ -56,7 +60,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         return mRotationEnabled;
     }
 
-    public void setRoataion(long duration) {
+    public void setRotation(long duration) {
         this.mRotationEnabled = true;
         this.mDuration = duration;
     }
@@ -76,11 +80,15 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
                 if (mRotationEnabled) {
                     RotateAnimation rotateAnimation;
                     if (mIsRotated) {
-                        rotateAnimation = new RotateAnimation(180f, 360f, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-                        mRotation = 0.0f;
+                        rotateAnimation = new RotateAnimation(ROTATED_POSITION, INITIAL_POSITION,
+                                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE,
+                                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE);
+                        mRotation = INITIAL_POSITION;
                     } else {
-                        rotateAnimation = new RotateAnimation(0.0f, 180f, RotateAnimation.RELATIVE_TO_SELF, 0.5f, RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-                        mRotation = 180f;
+                        rotateAnimation = new RotateAnimation(INITIAL_POSITION, ROTATED_POSITION,
+                                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE,
+                                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE);
+                        mRotation = ROTATED_POSITION;
                     }
                     rotateAnimation.setDuration(mDuration);
                     rotateAnimation.setFillAfter(true);

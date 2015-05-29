@@ -8,26 +8,28 @@ import com.ryanbrooks.expandablerecyclerview.Model.ParentObject;
  */
 public class CustomParentObject extends ParentObject {
 
-    private String data;
-    private int number;
+    private String mData;
+    private int mNumber;
 
     public CustomParentObject(ChildObject childObject) {
         super(childObject);
     }
 
     public String getData() {
-        return data;
+        return mData;
     }
 
     public void setData(String data) {
-        this.data = data;
+        mData = data;
     }
 
     public int getNumber() {
-        return number;
+        return mNumber;
     }
 
     public void setNumber(int number) {
-        this.number = number;
+        mNumber = number;
     }
+
+
 }

@@ -13,7 +13,8 @@ import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
  */
 public class CustomParentViewHolder extends ParentViewHolder {
 
-    public TextView numberText, dataText;
+    public TextView numberText;
+    public TextView dataText;
     public ImageButton arrowExpand;
 
     public CustomParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
@@ -23,7 +24,7 @@ public class CustomParentViewHolder extends ParentViewHolder {
         dataText = (TextView) itemView.findViewById(R.id.recycler_item_text_parent);
         arrowExpand = (ImageButton) itemView.findViewById(R.id.recycler_item_arrow_parent);
         setCustomClickableView(arrowExpand);
-        setRoataion(200);
+        setRotation(200);
     }
 
     @Override
