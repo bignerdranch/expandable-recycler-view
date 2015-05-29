@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
 
+
 /**
  * Created by Ryan Brooks on 5/20/15.
  */

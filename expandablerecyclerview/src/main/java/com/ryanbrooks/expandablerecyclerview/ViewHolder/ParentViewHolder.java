@@ -1,56 +1,109 @@
 package com.ryanbrooks.expandablerecyclerview.ViewHolder;
 
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
+import android.view.animation.RotateAnimation;
 
-import com.ryanbrooks.expandablerecyclerview.ClickListener.ParentItemClickListener;
+import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
+
 
 /**
- * Created by Ryan Brooks on 5/21/15.
- * Doesn't do anything other than allow user to differentiate between Parent and Child VH
+ * Created by Ryan Brooks on 5/27/15.
  */
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    private final String TAG = this.getClass().getSimpleName();
-    private static final int TYPE_PARENT = 0;
+    private final String TAG = getClass().getSimpleName();
 
-    private boolean expanded;
-    private int childPosition;
-    private ParentItemClickListener parentItemClickListener;
+    private static final float INITIAL_POSITION = 0.0f;
+    private static final float ROTATED_POSITION = 180f;
+    private static final float PIVOT_VALUE = 0.5f;
+    private static final long DEFAULT_ROTATE_DURATION_MS = 200;
 
-    protected ParentViewHolder(View itemView) {
-        super(itemView);
-        expanded = false;
-    }
+    private ParentItemClickListener mParentItemClickListener;
+    private View mClickableView;
+    private boolean mRotationEnabled;
+    private boolean mIsRotated;
+    private boolean mIsExpanded;
+    private long mDuration;
+    private float mRotation;
 
-    protected ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
+    public ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
         super(itemView);
         itemView.setOnClickListener(this);
-        this.expanded = false;
-        this.parentItemClickListener = parentItemClickListener;
+        mParentItemClickListener = parentItemClickListener;
+        mRotationEnabled = false;
+        mIsRotated = false;
+        mIsExpanded = false;
+        mRotation = DEFAULT_ROTATE_DURATION_MS;
+    }
+
+    public void setCustomClickableView(View mClickableView) {
+        this.mClickableView = mClickableView;
+        itemView.setOnClickListener(null);
+        mClickableView.setOnClickListener(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            mClickableView.setRotation(mRotation);
+        }
     }
 
     public boolean isExpanded() {
-        return expanded;
+        return mIsExpanded;
     }
 
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
+    public void setExpanded(boolean mIsExpanded) {
+        this.mIsExpanded = mIsExpanded;
+        if (mIsExpanded && mClickableView != null && isHoneycomb()) {
+            mClickableView.setRotation(ROTATED_POSITION);
+        } else if (mClickableView != null && isHoneycomb()) {
+            mClickableView.setRotation(INITIAL_POSITION);
+        }
+    }
+
+    private boolean isHoneycomb() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    }
+
+    public boolean isRotationEnabled() {
+        return mRotationEnabled;
+    }
+
+    public void setRotation(long duration) {
+        this.mRotationEnabled = true;
+        this.mDuration = duration;
     }
 
     public ParentItemClickListener getParentItemClickListener() {
-        return parentItemClickListener;
+        return mParentItemClickListener;
     }
 
-    public void setParentItemClickListener(ParentItemClickListener parentItemClickListener) {
-        this.parentItemClickListener = parentItemClickListener;
+    public void setParentItemClickListener(ParentItemClickListener mParentItemClickListener) {
+        this.mParentItemClickListener = mParentItemClickListener;
     }
 
     @Override
     public void onClick(View v) {
-        // Expand and collapse
-        if (parentItemClickListener != null) {
-            parentItemClickListener.onParentItemClickListener(getAdapterPosition(), TYPE_PARENT);
+        if (mParentItemClickListener != null) {
+            if (mClickableView != null) {
+                if (mRotationEnabled) {
+                    RotateAnimation rotateAnimation;
+                    if (mIsRotated) {
+                        rotateAnimation = new RotateAnimation(ROTATED_POSITION, INITIAL_POSITION,
+                                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE,
+                                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE);
+                        mRotation = INITIAL_POSITION;
+                    } else {
+                        rotateAnimation = new RotateAnimation(INITIAL_POSITION, ROTATED_POSITION,
+                                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE,
+                                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE);
+                        mRotation = ROTATED_POSITION;
+                    }
+                    rotateAnimation.setDuration(mDuration);
+                    rotateAnimation.setFillAfter(true);
+                    v.startAnimation(rotateAnimation);
+                    this.mIsRotated = !mIsRotated;
+                }
+            }
+            mParentItemClickListener.onParentItemClickListener(getLayoutPosition());
         }
     }
 }

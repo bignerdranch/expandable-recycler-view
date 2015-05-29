@@ -1,55 +1,55 @@
 package com.ryanbrooks.expandablerecyclerviewsample;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ryanbrooks.expandablerecyclerview.Adapter.ExpandableRecyclerViewAdapter;
-import com.ryanbrooks.expandablerecyclerview.ClickListener.ChildItemClickListener;
-import com.ryanbrooks.expandablerecyclerview.ClickListener.ParentItemClickListener;
-import com.ryanbrooks.expandablerecyclerview.Model.ExpandableItem;
+import com.ryanbrooks.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
+import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
+import com.ryanbrooks.expandablerecyclerview.Model.ExpandingObject;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ryan Brooks on 5/21/15.
  */
-public class MyExpandableAdapter extends ExpandableRecyclerViewAdapter implements ParentItemClickListener {
+public class MyExpandableAdapter extends ExpandableRecyclerAdapter implements ParentItemClickListener {
+    private final String TAG = this.getClass().getSimpleName();
 
-    public MyExpandableAdapter(Context context, ArrayList<? extends ExpandableItem> itemList) {
+    private LayoutInflater inflater;
+
+    public MyExpandableAdapter(Context context, List<ExpandingObject> itemList) {
         super(context, itemList);
+        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
-    public ParentViewHolder onCreateParentViewHolder(ViewGroup parent, int viewType) {
+    public ParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
         View view = inflater.inflate(R.layout.recycler_item_layout_parent, parent, false);
-        CustomParentViewHolder itemHolder = new CustomParentViewHolder(view, this);
-        return itemHolder;
+        return new CustomParentViewHolder(view, this);
     }
 
     @Override
-    public ChildViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
+    public ChildViewHolder onCreateChildViewHolder(ViewGroup parent) {
         View view = inflater.inflate(R.layout.recycler_item_layout_child, parent, false);
-        CustomChildViewHolder itemHolder = new CustomChildViewHolder(view);
-        return itemHolder;
+        return new CustomChildViewHolder(view);
     }
 
     @Override
-    public void onBindParentViewHolder(ParentViewHolder holder, int position) {
-        CustomParentViewHolder customParentViewHolder = (CustomParentViewHolder) holder;
-        TestDataModel testDataModel = (TestDataModel) itemList.get(position);
-        customParentViewHolder.numberText.setText(testDataModel.getNumber() + "");
-        customParentViewHolder.dataText.setText(testDataModel.getData());
+    public void onBindParentViewHolder(ParentViewHolder parentViewHolder, int position) {
+        CustomParentViewHolder customParentViewHolder = (CustomParentViewHolder) parentViewHolder;
+        CustomParentObject parentObject = (CustomParentObject) mItemList.get(position);
+        customParentViewHolder.numberText.setText(Integer.toString(parentObject.getNumber()));
+        customParentViewHolder.dataText.setText(parentObject.getData());
     }
 
     @Override
-    public void onBindChildViewHolder(ChildViewHolder holder, int position) {
-        CustomChildViewHolder customChildViewHolder = (CustomChildViewHolder) holder;
-        TestDataModel testDataModel = (TestDataModel) itemList.get(position);
-        ChildDataModel childDataModel = testDataModel.getChildObject();
-        customChildViewHolder.dataText.setText(childDataModel.getData());
+    public void onBindChildViewHolder(ChildViewHolder childViewHolder, int position) {
+        CustomChildViewHolder customChildViewHolder = (CustomChildViewHolder) childViewHolder;
+        CustomChildObject childObject = (CustomChildObject) mItemList.get(position);
+        customChildViewHolder.dataText.setText(childObject.getData());
     }
 }
