@@ -1,9 +1,10 @@
-package com.ryanbrooks.expandablerecyclerviewsample;
+package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
 
 import android.view.View;
 import android.widget.TextView;
 
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
+import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 
 /**
