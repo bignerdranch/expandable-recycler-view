@@ -40,7 +40,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         this.mClickableView = mClickableView;
         itemView.setOnClickListener(null);
         mClickableView.setOnClickListener(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && mRotationEnabled) {
             mClickableView.setRotation(mRotation);
         }
     }
@@ -51,10 +51,12 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
 
     public void setExpanded(boolean mIsExpanded) {
         this.mIsExpanded = mIsExpanded;
-        if (mIsExpanded && mClickableView != null && isHoneycomb()) {
-            mClickableView.setRotation(ROTATED_POSITION);
-        } else if (mClickableView != null && isHoneycomb()) {
-            mClickableView.setRotation(INITIAL_POSITION);
+        if (mRotationEnabled) {
+            if (mIsExpanded && mClickableView != null && isHoneycomb()) {
+                mClickableView.setRotation(ROTATED_POSITION);
+            } else if (mClickableView != null && isHoneycomb()) {
+                mClickableView.setRotation(INITIAL_POSITION);
+            }
         }
     }
 
@@ -92,9 +94,9 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
                     rotateAnimation.setDuration(mDuration);
                     rotateAnimation.setFillAfter(true);
                     v.startAnimation(rotateAnimation);
-                    setExpanded(!mIsExpanded);
                 }
             }
+            setExpanded(!mIsExpanded);
             mParentItemClickListener.onParentItemClickListener(getLayoutPosition());
         }
     }
