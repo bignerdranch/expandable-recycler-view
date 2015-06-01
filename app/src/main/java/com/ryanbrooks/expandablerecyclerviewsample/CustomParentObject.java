@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
+package com.ryanbrooks.expandablerecyclerviewsample;
 
 import com.ryanbrooks.expandablerecyclerview.Model.ChildObject;
 import com.ryanbrooks.expandablerecyclerview.Model.ParentObject;
