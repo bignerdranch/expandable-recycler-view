@@ -2,6 +2,7 @@ package com.ryanbrooks.expandablerecyclerview.ViewHolder;
 
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 
@@ -22,7 +23,6 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     private ParentItemClickListener mParentItemClickListener;
     private View mClickableView;
     private boolean mRotationEnabled;
-    private boolean mIsRotated;
     private boolean mIsExpanded;
     private long mDuration;
     private float mRotation;
@@ -32,7 +32,6 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         itemView.setOnClickListener(this);
         mParentItemClickListener = parentItemClickListener;
         mRotationEnabled = false;
-        mIsRotated = false;
         mIsExpanded = false;
         mRotation = DEFAULT_ROTATE_DURATION_MS;
     }
@@ -41,7 +40,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         this.mClickableView = mClickableView;
         itemView.setOnClickListener(null);
         mClickableView.setOnClickListener(this);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && mRotationEnabled) {
             mClickableView.setRotation(mRotation);
         }
     }
@@ -52,10 +51,12 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
 
     public void setExpanded(boolean mIsExpanded) {
         this.mIsExpanded = mIsExpanded;
-        if (mIsExpanded && mClickableView != null && isHoneycomb()) {
-            mClickableView.setRotation(ROTATED_POSITION);
-        } else if (mClickableView != null && isHoneycomb()) {
-            mClickableView.setRotation(INITIAL_POSITION);
+        if (mRotationEnabled) {
+            if (mIsExpanded && mClickableView != null && isHoneycomb()) {
+                mClickableView.setRotation(ROTATED_POSITION);
+            } else if (mClickableView != null && isHoneycomb()) {
+                mClickableView.setRotation(INITIAL_POSITION);
+            }
         }
     }
 
@@ -85,24 +86,17 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         if (mParentItemClickListener != null) {
             if (mClickableView != null) {
                 if (mRotationEnabled) {
-                    RotateAnimation rotateAnimation;
-                    if (mIsRotated) {
-                        rotateAnimation = new RotateAnimation(ROTATED_POSITION, INITIAL_POSITION,
-                                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE,
-                                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE);
-                        mRotation = INITIAL_POSITION;
-                    } else {
-                        rotateAnimation = new RotateAnimation(INITIAL_POSITION, ROTATED_POSITION,
-                                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE,
-                                RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE);
-                        mRotation = ROTATED_POSITION;
-                    }
+                    RotateAnimation rotateAnimation = new RotateAnimation(ROTATED_POSITION,
+                            INITIAL_POSITION,
+                            RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE,
+                            RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE);
+                    mRotation = INITIAL_POSITION;
                     rotateAnimation.setDuration(mDuration);
                     rotateAnimation.setFillAfter(true);
                     v.startAnimation(rotateAnimation);
-                    this.mIsRotated = !mIsRotated;
                 }
             }
+            setExpanded(!mIsExpanded);
             mParentItemClickListener.onParentItemClickListener(getLayoutPosition());
         }
     }
