@@ -1,15 +1,3 @@
 <resources>
     <string name="app_name">Expandable RecyclerView Sample</string>
-    <string name="vertical_linear_recycler_title">Vertical Linear Expansion Sample</string>
-
-    <string name="coming_soon">Feature coming soon</string>
-
-    <!-- Main Activity Buttons -->
-    <string name="vertical_linear_sample_button">Vertical Linear Sample</string>
-    <string name="horizontal_linear_sample_button">Horizontal Linear Sample</string>
-    <string name="grid_sample_button">Grid Layout Sample</string>
-
-    <!-- Vertical sample activity -->
-    <string name="activity_main_header">Expanding RecyclerView</string>
-
 </resources>

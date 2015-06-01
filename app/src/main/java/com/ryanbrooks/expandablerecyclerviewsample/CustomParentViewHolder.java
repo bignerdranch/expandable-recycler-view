@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
+package com.ryanbrooks.expandablerecyclerviewsample;
 
 import android.view.View;
 import android.widget.ImageButton;
@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
-import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 
 /**

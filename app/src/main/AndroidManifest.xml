@@ -16,14 +16,5 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".VerticalLinearRecyclerViewSample.VerticalLinearRecyclerViewSample"
-            android:label="@string/vertical_linear_recycler_title"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-
     </application>
 </manifest>

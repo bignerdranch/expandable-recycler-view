@@ -1,39 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/main_header_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/activity_main_header"
-        android:layout_marginTop="@dimen/regular_margin"
-        android:textSize="@dimen/large_text_size" />
-
-    <Button
-        android:id="@+id/main_vertical_linear_button"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/main_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main_header_text"
-        android:layout_margin="@dimen/regular_margin"
-        android:text="@string/vertical_linear_sample_button" />
-
-    <Button
-        android:id="@+id/main_horizontal_linear_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main_vertical_linear_button"
-        android:layout_margin="@dimen/regular_margin"
-        android:text="@string/horizontal_linear_sample_button" />
-
-    <Button
-        android:id="@+id/main_grid_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main_horizontal_linear_button"
-        android:layout_margin="@dimen/regular_margin"
-        android:text="@string/grid_sample_button" />
+        android:layout_height="match_parent"
+        />
 
 </RelativeLayout>
