@@ -1,45 +1,57 @@
 package com.ryanbrooks.expandablerecyclerviewsample;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
-
-import com.ryanbrooks.expandablerecyclerview.Model.ExpandingObject;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample.VerticalLinearRecyclerViewSample;
 
 /**
  * Created by Ryan Brooks on 5/19/15.
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
 
-    private RecyclerView mRecyclerView;
+    private Button mVerticalSampleButton;
+    private Button mHorizontalSampleButton;
+    private Button mGridSampleButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        mRecyclerView = (RecyclerView) findViewById(R.id.main_recyclerview);
-        MyExpandableAdapter expandableAdapter = new MyExpandableAdapter(this, setUpTestData(20));
-        mRecyclerView.setAdapter(expandableAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mVerticalSampleButton = (Button) findViewById(R.id.main_vertical_linear_button);
+        mHorizontalSampleButton = (Button) findViewById(R.id.main_horizontal_linear_button);
+        mGridSampleButton = (Button) findViewById(R.id.main_grid_button);
+
+        mVerticalSampleButton.setOnClickListener(this);
+        mHorizontalSampleButton.setOnClickListener(this);
+        mGridSampleButton.setOnClickListener(this);
     }
 
-    // TODO: Set one to null and test result
-    private List<ExpandingObject> setUpTestData(int numItems) {
-        ArrayList<ExpandingObject> data = new ArrayList<>();
-        for (int i = 0; i < numItems; i++) {
-            CustomChildObject customChildObject = new CustomChildObject();
-            customChildObject.setData("Child " + i);
-            CustomParentObject customParentObject = new CustomParentObject(customChildObject);
-            customParentObject.setNumber(i);
-            customParentObject.setData("Parent " + i);
-            data.add(customParentObject);
+    @Override
+    public void onClick(View v) {
+        if (v == mVerticalSampleButton) {
+            Intent i = new Intent(this, VerticalLinearRecyclerViewSample.class);
+            startActivity(i);
+        } else if (v == mHorizontalSampleButton) {
+            Toast.makeText(this,
+                    this.getResources().getString(R.string.coming_soon),
+                    Toast.LENGTH_SHORT)
+                    .show();
+        } else if (v == mGridSampleButton) {
+            Toast.makeText(this,
+                    this.getResources().getString(R.string.coming_soon),
+                    Toast.LENGTH_SHORT)
+                    .show();
+        } else {
+            Toast.makeText(this,
+                    this.getResources().getString(R.string.coming_soon),
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
-        return data;
     }
 }
