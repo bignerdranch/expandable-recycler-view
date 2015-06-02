@@ -3,9 +3,7 @@ package com.ryanbrooks.expandablerecyclerview.Adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
-
 
 import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
 import com.ryanbrooks.expandablerecyclerview.Model.ChildObject;
@@ -14,16 +12,15 @@ import com.ryanbrooks.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
-import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Ryan Brooks on 5/27/15.
  */
 public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
     private final String TAG = this.getClass().getSimpleName();
+
     private static final String STABLE_ID_MAP = "StableIdMap";
     public static final int TYPE_PARENT = 0;
     public static final int TYPE_CHILD = 1;
@@ -31,7 +28,6 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     protected Context mContext;
     protected List<ExpandingObject> mItemList;
     private HashMap<Integer, Boolean> mStableIdMap;
-
 
     public ExpandableRecyclerAdapter(Context context, List<ExpandingObject> itemList) {
         mContext = context;
@@ -53,12 +49,11 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (mItemList.get(position) instanceof ParentObject) {
+            ParentObject parentObject = (ParentObject) mItemList.get(position);
             ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
             parentViewHolder.setExpanded(((ParentObject) mItemList.get(position)).isExpanded());
-            if (((ParentObject) mItemList.get(position)).isExpanded()) {
-                if (!(mItemList.get(position + 1) instanceof ChildObject)) {
-                    mItemList.add(position + 1, ((ParentObject) mItemList.get(position)).getChildObject());
-                }
+            if (parentObject.isExpanded()) {
+
             }
             parentViewHolder.setParentItemClickListener(this);
             onBindParentViewHolder(parentViewHolder, position);
@@ -128,25 +123,29 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         return parentObjectHashMap;
     }
 
-    public Bundle getSavedInstanceStateBundle(Bundle bundle) {
+    public Bundle onSaveInstanceState(Bundle bundle) {
         bundle.putSerializable(STABLE_ID_MAP, generateStableIdMapFromList(mItemList));
         return bundle;
     }
 
-    public void setSavedInstanceStateBundle(Bundle savedInstanceStateBundle) {
-        if (savedInstanceStateBundle != null) {
-            mStableIdMap = (HashMap<Integer, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
-            for (int i = 0; i < mItemList.size(); i++) {
-                if (mItemList.get(i) instanceof ParentObject) {
-                    ParentObject parentObject = (ParentObject) mItemList.get(i);
-                    if (mStableIdMap.containsKey(parentObject.getStableID())) {
-                        parentObject.setExpanded(mStableIdMap.get(parentObject.getStableID()));
-                    } else {
-                        parentObject.setExpanded(false);
+    public void onRestoreInstanceState(Bundle savedInstanceStateBundle) {
+        mStableIdMap = (HashMap<Integer, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
+        int i = 0;
+        while (i < mItemList.size()) {
+            if (mItemList.get(i) instanceof ParentObject) {
+                ParentObject parentObject = (ParentObject) mItemList.get(i);
+                if (mStableIdMap.containsKey(parentObject.getStableID())) {
+                    parentObject.setExpanded(mStableIdMap.get(parentObject.getStableID()));
+                    if (parentObject.isExpanded()) {
+                        i++;
+                        mItemList.add(i, parentObject.getChildObject());
                     }
+                } else {
+                    parentObject.setExpanded(false);
                 }
             }
-            notifyDataSetChanged();
+            i++;
         }
+        notifyDataSetChanged();
     }
 }
