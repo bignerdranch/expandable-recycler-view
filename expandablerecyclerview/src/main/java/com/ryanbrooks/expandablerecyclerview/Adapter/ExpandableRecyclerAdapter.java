@@ -52,9 +52,6 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
             ParentObject parentObject = (ParentObject) mItemList.get(position);
             ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
             parentViewHolder.setExpanded(((ParentObject) mItemList.get(position)).isExpanded());
-            if (parentObject.isExpanded()) {
-
-            }
             parentViewHolder.setParentItemClickListener(this);
             onBindParentViewHolder(parentViewHolder, position);
         } else if (mItemList.get(position) instanceof ChildObject) {
