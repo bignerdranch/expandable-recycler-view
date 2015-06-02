@@ -46,8 +46,8 @@ public class VerticalLinearRecyclerViewSample extends Activity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState = mExpandableAdapter.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
+        outState = mExpandableAdapter.onSaveInstanceState(outState);
     }
 
     @Override
