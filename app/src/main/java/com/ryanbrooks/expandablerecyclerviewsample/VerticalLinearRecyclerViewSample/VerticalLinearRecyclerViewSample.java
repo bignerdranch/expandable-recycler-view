@@ -17,6 +17,7 @@ import java.util.List;
 public class VerticalLinearRecyclerViewSample extends Activity {
 
     private RecyclerView mRecyclerView;
+    private MyExpandableAdapter mExpandableAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +25,8 @@ public class VerticalLinearRecyclerViewSample extends Activity {
         setContentView(R.layout.activity_vertical_recyclerview_sample);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.vertical_recyclerview_sample);
-        MyExpandableAdapter expandableAdapter = new MyExpandableAdapter(this, setUpTestData(20));
-        mRecyclerView.setAdapter(expandableAdapter);
+        mExpandableAdapter = new MyExpandableAdapter(this, setUpTestData(20));
+        mRecyclerView.setAdapter(mExpandableAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -34,11 +35,24 @@ public class VerticalLinearRecyclerViewSample extends Activity {
         for (int i = 0; i < numItems; i++) {
             CustomChildObject customChildObject = new CustomChildObject();
             customChildObject.setData("Child " + i);
-            CustomParentObject customParentObject = new CustomParentObject(customChildObject);
+
+            CustomParentObject customParentObject = new CustomParentObject(i, customChildObject);
             customParentObject.setNumber(i);
             customParentObject.setData("Parent " + i);
             data.add(customParentObject);
         }
         return data;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState = mExpandableAdapter.getSavedInstanceStateBundle(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mExpandableAdapter.setSavedInstanceStateBundle(savedInstanceState);
     }
 }

@@ -11,8 +11,8 @@ public class CustomParentObject extends ParentObject {
     private String mData;
     private int mNumber;
 
-    public CustomParentObject(ChildObject childObject) {
-        super(childObject);
+    public CustomParentObject(int stableID, ChildObject childObject) {
+        super(stableID, childObject);
     }
 
     public String getData() {
