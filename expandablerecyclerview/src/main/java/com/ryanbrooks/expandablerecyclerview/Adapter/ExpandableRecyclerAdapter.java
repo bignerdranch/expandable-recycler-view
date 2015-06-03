@@ -130,7 +130,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         }
         mStableIdMap = new HashMap<>();
         mStableIdMap = (HashMap<Integer, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
-        if (mStableIdMap != null || !mStableIdMap.isEmpty()) {
+        if (mStableIdMap != null && !mStableIdMap.isEmpty()) {
             int i = 0;
             while (i < mItemList.size()) {
                 if (mItemList.get(i) instanceof ParentObject) {
