@@ -4,10 +4,17 @@
     android:id="@+id/toolbar"
     android:layout_height="?attr/actionBarSize"
     android:layout_width="match_parent"
-    android:background="?attr/colorPrimary">
+    android:background="@color/main_gray">
+
+    <CheckBox
+        android:id="@+id/toolbar_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Animation"/>
 
     <Spinner
         android:id="@+id/toolbar_spinner"
+        android:layout_gravity="right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

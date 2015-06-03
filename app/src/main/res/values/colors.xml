@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main">#fdfcf3</color>
+    <color name="main_gray">#bbbbbb</color>
 </resources>
