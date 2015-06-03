@@ -3,6 +3,7 @@ package com.ryanbrooks.expandablerecyclerview.Adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
     private final String TAG = this.getClass().getSimpleName();
+    private static final long DEFAULT_ROTATE_DURATION_MS = 200;
 
     private static final String STABLE_ID_MAP = "ExpandableRecyclerAdapter.StableIdMap";
     public static final int TYPE_PARENT = 0;
@@ -28,11 +30,30 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     protected Context mContext;
     protected List<ExpandingObject> mItemList;
     private HashMap<Integer, Boolean> mStableIdMap;
+    private int mCustomParentAnimationViewId = -1;
+    private long mAnimationDuration = -1;
 
     public ExpandableRecyclerAdapter(Context context, List<ExpandingObject> itemList) {
         mContext = context;
         mItemList = itemList;
         mStableIdMap = generateStableIdMapFromList(itemList);
+    }
+
+    public ExpandableRecyclerAdapter(Context context, List<ExpandingObject> itemList,
+                                     int customParentAnimationViewId) {
+        mContext = context;
+        mItemList = itemList;
+        mStableIdMap = generateStableIdMapFromList(itemList);
+        mCustomParentAnimationViewId = customParentAnimationViewId;
+    }
+
+    public ExpandableRecyclerAdapter(Context context, List<ExpandingObject> itemList,
+                                     int customParentAnimationViewId, long animationDuration) {
+        mContext = context;
+        mItemList = itemList;
+        mStableIdMap = generateStableIdMapFromList(itemList);
+        mCustomParentAnimationViewId = customParentAnimationViewId;
+        mAnimationDuration = animationDuration;
     }
 
     @Override
@@ -50,8 +71,18 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (mItemList.get(position) instanceof ParentObject) {
             ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
+
+            if (mCustomParentAnimationViewId != -1l && mAnimationDuration != -1l) {
+                parentViewHolder.setCustomClickableView(mCustomParentAnimationViewId);
+                parentViewHolder.setAnimationDuration(mAnimationDuration);
+            } else if (mCustomParentAnimationViewId != -1l) { // Animation disabled, custom view enabled
+                parentViewHolder.setCustomClickableView(mCustomParentAnimationViewId);
+                parentViewHolder.cancelAnimation();
+            } else {
+                parentViewHolder.setMainItemClickToExpand();
+            }
+
             parentViewHolder.setExpanded(((ParentObject) mItemList.get(position)).isExpanded());
-            parentViewHolder.setParentItemClickListener(this);
             onBindParentViewHolder(parentViewHolder, position);
         } else if (mItemList.get(position) instanceof ChildObject) {
             onBindChildViewHolder((ChildViewHolder) holder, position);
@@ -93,6 +124,24 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
             expandParent(parentObject, position);
         }
     }
+
+    public void setParentClickableViewAnimationDefaultDuration() {
+        mAnimationDuration = DEFAULT_ROTATE_DURATION_MS;
+    }
+
+    public void setParentClickableViewAnimationDuration(long animationDuration) {
+        mAnimationDuration = animationDuration;
+    }
+
+    public void setCustomParentAnimationViewId(int customParentAnimationViewId) {
+        mCustomParentAnimationViewId = customParentAnimationViewId;
+    }
+
+    public void removeAnimation() {
+        mCustomParentAnimationViewId = -1;
+        mAnimationDuration = -1;
+    }
+
 
     private void expandParent(ParentObject parentObject, int position) {
         if (parentObject.isExpanded()) {

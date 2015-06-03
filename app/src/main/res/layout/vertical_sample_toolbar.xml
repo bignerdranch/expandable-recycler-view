@@ -10,11 +10,12 @@
         android:id="@+id/vertical_sample_toolbar_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enable Animation"/>
+        android:text="@string/vertical_sample_toolbar_checkbox"/>
 
     <Spinner
         android:id="@+id/vertical_sample_toolbar_spinner"
         android:layout_gravity="right"
+        android:layout_marginRight="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

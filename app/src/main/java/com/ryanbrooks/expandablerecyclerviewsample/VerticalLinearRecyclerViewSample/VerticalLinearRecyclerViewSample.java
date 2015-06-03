@@ -5,7 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 
 import com.ryanbrooks.expandablerecyclerview.Model.ExpandingObject;
@@ -21,8 +24,10 @@ import butterknife.InjectView;
  * Created by Ryan Brooks on 5/29/15.
  */
 public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
+    private final String TAG = this.getClass().getSimpleName();
 
     private MyExpandableAdapter mExpandableAdapter;
+    private ArrayList<Long> mDurationList;
 
     @InjectView(R.id.vertical_sample_toolbar)
     Toolbar mToolbar;
@@ -43,9 +48,56 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mDurationList = generateSpinnerSpeeds();
+
         mExpandableAdapter = new MyExpandableAdapter(this, setUpTestData(20));
         mRecyclerView.setAdapter(mExpandableAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(this, mDurationList);
+        mToolbarSpinner.setAdapter(customSpinnerAdapter);
+
+        mToolbarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (mAnimationEnabledCheckBox.isChecked()) {
+                    if (mDurationList.get(position) == 0) {
+                        mExpandableAdapter.setParentClickableViewAnimationDuration(-1);
+                    } else {
+                        mExpandableAdapter.setParentClickableViewAnimationDuration(mDurationList.get(position));
+                    }
+                } else {
+                    mExpandableAdapter.setParentClickableViewAnimationDuration(mDurationList.get(position));
+                }
+                mExpandableAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mAnimationEnabledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (mDurationList.get(mToolbarSpinner.getSelectedItemPosition()) == 0) {
+                        mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
+                        mExpandableAdapter.notifyDataSetChanged();
+                    } else {
+                        mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
+                        mExpandableAdapter.setParentClickableViewAnimationDuration(
+                                mDurationList.get(mToolbarSpinner.getSelectedItemPosition()));
+                        mExpandableAdapter.notifyDataSetChanged();
+                    }
+                } else {
+                    mExpandableAdapter.removeAnimation();
+                    mExpandableAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
     }
 
     private List<ExpandingObject> setUpTestData(int numItems) {
@@ -60,6 +112,16 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
             data.add(customParentObject);
         }
         return data;
+    }
+
+    private ArrayList<Long> generateSpinnerSpeeds() {
+        long initialSpeed = 100;
+        ArrayList<Long> speedList = new ArrayList<>();
+        speedList.add(-1l);
+        for (int i = 1; i <= 10; i++) {
+            speedList.add(initialSpeed * i);
+        }
+        return speedList;
     }
 
     @Override

@@ -20,22 +20,34 @@ import java.util.List;
 public class MyExpandableAdapter extends ExpandableRecyclerAdapter implements ParentItemClickListener {
     private final String TAG = this.getClass().getSimpleName();
 
-    private LayoutInflater inflater;
+    private LayoutInflater mInflater;
 
     public MyExpandableAdapter(Context context, List<ExpandingObject> itemList) {
         super(context, itemList);
-        this.inflater = LayoutInflater.from(context);
+        mInflater = LayoutInflater.from(context);
+    }
+
+    public MyExpandableAdapter(Context context, List<ExpandingObject> itemList,
+                               int customClickableViewId) {
+        super(context, itemList, customClickableViewId);
+        mInflater = LayoutInflater.from(context);
+    }
+
+    public MyExpandableAdapter(Context context, List<ExpandingObject> itemList,
+                               int customClickableViewId, long animationDuration) {
+        super(context, itemList, customClickableViewId, animationDuration);
+        mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public ParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
-        View view = inflater.inflate(R.layout.recycler_item_layout_parent, parent, false);
+        View view = mInflater.inflate(R.layout.recycler_item_layout_parent, parent, false);
         return new CustomParentViewHolder(view, this);
     }
 
     @Override
     public ChildViewHolder onCreateChildViewHolder(ViewGroup parent) {
-        View view = inflater.inflate(R.layout.recycler_item_layout_child, parent, false);
+        View view = mInflater.inflate(R.layout.recycler_item_layout_child, parent, false);
         return new CustomChildViewHolder(view);
     }
 

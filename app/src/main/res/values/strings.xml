@@ -8,8 +8,10 @@
     <string name="vertical_linear_sample_button">Vertical Linear Sample</string>
     <string name="horizontal_linear_sample_button">Horizontal Linear Sample</string>
     <string name="grid_sample_button">Grid Layout Sample</string>
+    <string name="activity_main_header">Expanding RecyclerView</string>
 
     <!-- Vertical sample activity -->
-    <string name="activity_main_header">Expanding RecyclerView</string>
+    <string name="vertical_sample_toolbar_checkbox">Custom Expand Button</string>
+    <string name="vertical_sample_toolbar_animation">Animation Speed</string>
 
 </resources>

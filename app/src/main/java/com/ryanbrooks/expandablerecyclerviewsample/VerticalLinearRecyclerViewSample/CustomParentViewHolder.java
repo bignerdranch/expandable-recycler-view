@@ -24,7 +24,5 @@ public class CustomParentViewHolder extends ParentViewHolder {
         numberText = (TextView) itemView.findViewById(R.id.recycler_item_number_parent);
         dataText = (TextView) itemView.findViewById(R.id.recycler_item_text_parent);
         arrowExpand = (ImageButton) itemView.findViewById(R.id.recycler_item_arrow_parent);
-        setCustomClickableView(arrowExpand);
-        setRotation(200);
     }
 }
