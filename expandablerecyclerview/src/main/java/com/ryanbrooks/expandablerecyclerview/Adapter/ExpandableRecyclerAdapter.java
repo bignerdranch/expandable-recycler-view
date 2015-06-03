@@ -128,27 +128,25 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         if (savedInstanceStateBundle == null) {
             return;
         }
-        mStableIdMap = (HashMap<Integer, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
-        if (mStableIdMap != null) {
-            int i = 0;
-            while (i < mItemList.size()) {
-                if (mItemList.get(i) instanceof ParentObject) {
-                    ParentObject parentObject = (ParentObject) mItemList.get(i);
-                    if (mStableIdMap.containsKey(parentObject.getStableID())) {
-                        parentObject.setExpanded(mStableIdMap.get(parentObject.getStableID()));
-                        if (parentObject.isExpanded()) {
-                            i++;
-                            mItemList.add(i, parentObject.getChildObject());
-                        }
-                    } else {
-                        parentObject.setExpanded(false);
-                    }
-                }
-                i++;
-            }
-            notifyDataSetChanged();
-        } else {
-            mStableIdMap = generateStableIdMapFromList(mItemList);
+        if (!savedInstanceStateBundle.containsKey(STABLE_ID_MAP)) {
+            return;
         }
+        int i = 0;
+        while (i < mItemList.size()) {
+            if (mItemList.get(i) instanceof ParentObject) {
+                ParentObject parentObject = (ParentObject) mItemList.get(i);
+                if (mStableIdMap.containsKey(parentObject.getStableID())) {
+                    parentObject.setExpanded(mStableIdMap.get(parentObject.getStableID()));
+                    if (parentObject.isExpanded()) {
+                        i++;
+                        mItemList.add(i, parentObject.getChildObject());
+                    }
+                } else {
+                    parentObject.setExpanded(false);
+                }
+            }
+            i++;
+        }
+        notifyDataSetChanged();
     }
 }
