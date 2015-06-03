@@ -119,9 +119,9 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         return parentObjectHashMap;
     }
 
-    public Bundle onSaveInstanceState(Bundle bundle) {
-        bundle.putSerializable(STABLE_ID_MAP, mStableIdMap);
-        return bundle;
+    public Bundle onSaveInstanceState(Bundle savedInstanceStateBundle) {
+        savedInstanceStateBundle.putSerializable(STABLE_ID_MAP, mStableIdMap);
+        return savedInstanceStateBundle;
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceStateBundle) {
