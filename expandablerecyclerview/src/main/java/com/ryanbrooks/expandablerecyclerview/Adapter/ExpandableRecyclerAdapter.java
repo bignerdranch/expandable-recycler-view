@@ -119,37 +119,35 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         return parentObjectHashMap;
     }
 
-    public Bundle onSaveInstanceState(Bundle bundle) {
-        bundle.putSerializable(STABLE_ID_MAP, mStableIdMap);
-        return bundle;
+    public Bundle onSaveInstanceState(Bundle savedInstanceStateBundle) {
+        savedInstanceStateBundle.putSerializable(STABLE_ID_MAP, mStableIdMap);
+        return savedInstanceStateBundle;
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceStateBundle) {
         if (savedInstanceStateBundle == null) {
             return;
         }
-        mStableIdMap = new HashMap<>();
-        mStableIdMap = (HashMap<Integer, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
-        if (mStableIdMap != null && !mStableIdMap.isEmpty()) {
-            int i = 0;
-            while (i < mItemList.size()) {
-                if (mItemList.get(i) instanceof ParentObject) {
-                    ParentObject parentObject = (ParentObject) mItemList.get(i);
-                    if (mStableIdMap.containsKey(parentObject.getStableID())) {
-                        parentObject.setExpanded(mStableIdMap.get(parentObject.getStableID()));
-                        if (parentObject.isExpanded()) {
-                            i++;
-                            mItemList.add(i, parentObject.getChildObject());
-                        }
-                    } else {
-                        parentObject.setExpanded(false);
-                    }
-                }
-                i++;
-            }
-            notifyDataSetChanged();
-        } else {
-            mStableIdMap = generateStableIdMapFromList(mItemList);
+        if (!savedInstanceStateBundle.containsKey(STABLE_ID_MAP)) {
+            return;
         }
+        mStableIdMap = (HashMap<Integer, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
+        int i = 0;
+        while (i < mItemList.size()) {
+            if (mItemList.get(i) instanceof ParentObject) {
+                ParentObject parentObject = (ParentObject) mItemList.get(i);
+                if (mStableIdMap.containsKey(parentObject.getStableID())) {
+                    parentObject.setExpanded(mStableIdMap.get(parentObject.getStableID()));
+                    if (parentObject.isExpanded()) {
+                        i++;
+                        mItemList.add(i, parentObject.getChildObject());
+                    }
+                } else {
+                    parentObject.setExpanded(false);
+                }
+            }
+            i++;
+        }
+        notifyDataSetChanged();
     }
 }
