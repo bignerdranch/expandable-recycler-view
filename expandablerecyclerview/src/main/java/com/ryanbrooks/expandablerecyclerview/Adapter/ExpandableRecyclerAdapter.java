@@ -120,7 +120,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     }
 
     public Bundle onSaveInstanceState(Bundle bundle) {
-        bundle.putSerializable(STABLE_ID_MAP, generateStableIdMapFromList(mItemList));
+        bundle.putSerializable(STABLE_ID_MAP, mStableIdMap);
         return bundle;
     }
 
@@ -128,8 +128,9 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         if (savedInstanceStateBundle == null) {
             return;
         }
+        mStableIdMap = new HashMap<>();
         mStableIdMap = (HashMap<Integer, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
-        if (mStableIdMap != null) {
+        if (mStableIdMap != null && !mStableIdMap.isEmpty()) {
             int i = 0;
             while (i < mItemList.size()) {
                 if (mItemList.get(i) instanceof ParentObject) {
@@ -147,6 +148,8 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
                 i++;
             }
             notifyDataSetChanged();
+        } else {
+            mStableIdMap = generateStableIdMapFromList(mItemList);
         }
     }
 }
