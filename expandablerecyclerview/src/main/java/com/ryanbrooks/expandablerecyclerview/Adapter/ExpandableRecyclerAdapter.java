@@ -131,6 +131,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         if (!savedInstanceStateBundle.containsKey(STABLE_ID_MAP)) {
             return;
         }
+        mStableIdMap = (HashMap<Integer, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
         int i = 0;
         while (i < mItemList.size()) {
             if (mItemList.get(i) instanceof ParentObject) {
