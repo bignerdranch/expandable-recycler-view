@@ -21,7 +21,7 @@ import java.util.List;
 public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
     private final String TAG = this.getClass().getSimpleName();
 
-    private static final String STABLE_ID_MAP = "StableIdMap";
+    private static final String STABLE_ID_MAP = "ExpandableRecyclerAdapter.StableIdMap";
     public static final int TYPE_PARENT = 0;
     public static final int TYPE_CHILD = 1;
 
