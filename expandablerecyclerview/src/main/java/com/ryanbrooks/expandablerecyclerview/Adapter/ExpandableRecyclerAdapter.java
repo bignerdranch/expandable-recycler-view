@@ -120,7 +120,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     }
 
     public Bundle onSaveInstanceState(Bundle bundle) {
-        bundle.putSerializable(STABLE_ID_MAP, generateStableIdMapFromList(mItemList));
+        bundle.putSerializable(STABLE_ID_MAP, mStableIdMap);
         return bundle;
     }
 
