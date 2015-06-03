@@ -125,6 +125,9 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceStateBundle) {
+        if (savedInstanceStateBundle == null) {
+            return;
+        }
         mStableIdMap = (HashMap<Integer, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
         int i = 0;
         while (i < mItemList.size()) {
