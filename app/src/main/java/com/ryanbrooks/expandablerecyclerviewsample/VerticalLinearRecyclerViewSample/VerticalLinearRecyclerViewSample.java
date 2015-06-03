@@ -2,8 +2,13 @@ package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSa
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.widget.Button;
+import android.widget.Spinner;
 
 import com.ryanbrooks.expandablerecyclerview.Model.ExpandingObject;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
@@ -11,20 +16,32 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by Ryan Brooks on 5/29/15.
  */
-public class VerticalLinearRecyclerViewSample extends Activity {
+public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
     private MyExpandableAdapter mExpandableAdapter;
+
+    @InjectView(R.id.toolbar)
+    Toolbar mToolbar;
+    @InjectView(R.id.vertical_recyclerview_sample)
+    RecyclerView mRecyclerView;
+    @InjectView(R.id.toolbar_spinner)
+    Spinner mToolbarSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vertical_recyclerview_sample);
+        ButterKnife.inject(this);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.vertical_recyclerview_sample);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         mExpandableAdapter = new MyExpandableAdapter(this, setUpTestData(20));
         mRecyclerView.setAdapter(mExpandableAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
