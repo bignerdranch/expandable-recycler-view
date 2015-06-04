@@ -19,39 +19,35 @@ public class CustomSpinnerAdapter extends ArrayAdapter<Long> {
     private static final String MS = " ms";
     private static final String ONE_SECOND = "1 s";
 
-    private Context mContext;
-    private ArrayList<Long> mSpeedList;
     private LayoutInflater mInflater;
 
     public CustomSpinnerAdapter(Context context, ArrayList<Long> speedList) {
         super(context, R.layout.spinner_item_layout, speedList);
-        mContext = context;
-        mSpeedList = speedList;
-        mInflater = LayoutInflater.from(mContext);
+        mInflater = LayoutInflater.from(getContext());
     }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        return getCustomView(position, convertView, parent);
+        return getCustomView(position, parent);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return getCustomView(position, convertView, parent);
+        return getCustomView(position, parent);
     }
 
-    public View getCustomView(int position, View convertView, ViewGroup parent) {
+    public View getCustomView(int position, ViewGroup parent) {
 
         View row = mInflater.inflate(R.layout.spinner_item_layout, parent, false);
 
         TextView rowItemText = (TextView) row.findViewById(R.id.spinner_item_text);
 
-        if (mSpeedList.get(position) == -1) {
+        if (getItem(position) == -1) {
             rowItemText.setText(NO_ANIMATION_TEXT);
-        } else if(mSpeedList.get(position) == 1000) {
+        } else if(getItem(position) == 1000) {
             rowItemText.setText(ONE_SECOND);
         } else {
-            rowItemText.setText(mSpeedList.get(position).toString() + MS);
+            rowItemText.setText(getItem(position).toString() + MS);
         }
 
         return row;
