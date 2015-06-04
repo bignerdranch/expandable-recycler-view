@@ -37,6 +37,39 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     @InjectView(R.id.vertical_sample_toolbar_spinner)
     Spinner mToolbarSpinner;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_vertical_recyclerview_sample);
+        ButterKnife.inject(this);
+
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mDurationList = generateSpinnerSpeeds();
+
+        mExpandableAdapter = new MyExpandableAdapter(this, setUpTestData(20));
+        mRecyclerView.setAdapter(mExpandableAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(this, mDurationList);
+        mToolbarSpinner.setAdapter(customSpinnerAdapter);
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState = mExpandableAdapter.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
+    }
+
     @OnItemSelected(R.id.vertical_sample_toolbar_spinner)
     void onItemSelected(int position) {
         if (mAnimationEnabledCheckBox.isChecked()) {
@@ -69,28 +102,6 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         }
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vertical_recyclerview_sample);
-        ButterKnife.inject(this);
-
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        mDurationList = generateSpinnerSpeeds();
-
-        mExpandableAdapter = new MyExpandableAdapter(this, setUpTestData(20));
-        mRecyclerView.setAdapter(mExpandableAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(this, mDurationList);
-        mToolbarSpinner.setAdapter(customSpinnerAdapter);
-
-    }
-
     private List<ExpandingObject> setUpTestData(int numItems) {
         ArrayList<ExpandingObject> data = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
@@ -113,17 +124,5 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
             speedList.add(initialSpeed * i);
         }
         return speedList;
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState = mExpandableAdapter.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
     }
 }
