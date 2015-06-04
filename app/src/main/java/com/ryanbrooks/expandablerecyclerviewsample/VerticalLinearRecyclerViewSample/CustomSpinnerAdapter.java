@@ -28,28 +28,37 @@ public class CustomSpinnerAdapter extends ArrayAdapter<Long> {
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        return getCustomView(position, parent);
+        return getCustomView(position, convertView, parent);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return getCustomView(position, parent);
+        return getCustomView(position, convertView, parent);
     }
 
-    public View getCustomView(int position, ViewGroup parent) {
+    public View getCustomView(int position, View convertView, ViewGroup parent) {
+        RowViewHolder rowViewHolder;
+        if (convertView == null) {
+            rowViewHolder = new RowViewHolder();
+            convertView = mInflater.inflate(R.layout.spinner_item_layout, parent, false);
+            rowViewHolder.rowItemText = (TextView) convertView.findViewById(R.id.spinner_item_text);
 
-        View row = mInflater.inflate(R.layout.spinner_item_layout, parent, false);
-
-        TextView rowItemText = (TextView) row.findViewById(R.id.spinner_item_text);
-
-        if (getItem(position) == -1) {
-            rowItemText.setText(NO_ANIMATION_TEXT);
-        } else if(getItem(position) == 1000) {
-            rowItemText.setText(ONE_SECOND);
+            if (getItem(position) == -1) {
+                rowViewHolder.rowItemText.setText(NO_ANIMATION_TEXT);
+            } else if (getItem(position) == 1000) {
+                rowViewHolder.rowItemText.setText(ONE_SECOND);
+            } else {
+                rowViewHolder.rowItemText.setText(getItem(position).toString() + MS);
+            }
         } else {
-            rowItemText.setText(getItem(position).toString() + MS);
+            rowViewHolder = (RowViewHolder) convertView.getTag();
         }
 
-        return row;
+        convertView.setTag(rowViewHolder);
+        return convertView;
+    }
+
+    private class RowViewHolder {
+        TextView rowItemText;
     }
 }
