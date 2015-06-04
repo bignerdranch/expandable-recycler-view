@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/vertical_sample_toolbar"
+    android:layout_height="?attr/actionBarSize"
+    android:layout_width="match_parent"
+    android:background="@color/main_gray">
+
+    <CheckBox
+        android:id="@+id/vertical_sample_toolbar_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/vertical_sample_toolbar_checkbox"/>
+
+    <Spinner
+        android:id="@+id/vertical_sample_toolbar_spinner"
+        android:layout_gravity="right"
+        android:layout_marginRight="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</android.support.v7.widget.Toolbar>

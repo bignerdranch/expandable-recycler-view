@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.v7.widget.RecyclerView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/vertical_recyclerview_sample"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    >
+
+    <include layout="@layout/vertical_sample_toolbar"
+        android:id="@+id/vertical_sample_toolbar"/>
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/vertical_recyclerview_sample"
+        android:layout_below="@+id/vertical_sample_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
