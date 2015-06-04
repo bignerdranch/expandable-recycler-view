@@ -20,18 +20,19 @@ import java.util.List;
  * Created by Ryan Brooks on 5/27/15.
  */
 public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
-    private final String TAG = this.getClass().getSimpleName();
-    private static final long DEFAULT_ROTATE_DURATION_MS = 200;
-
+    private static final String TAG = ExpandableRecyclerAdapter.class.getClass().getSimpleName();
     private static final String STABLE_ID_MAP = "ExpandableRecyclerAdapter.StableIdMap";
-    public static final int TYPE_PARENT = 0;
-    public static final int TYPE_CHILD = 1;
+    private static final int TYPE_PARENT = 0;
+    private static final int TYPE_CHILD = 1;
+    private static final int CUSTOM_ANIMATION_VIEW_NOT_SET = -1;
+    private static final long DEFAULT_ROTATE_DURATION_MS = 200l;
+    private static final long CUSTOM_ANIMATION_DURATION_NOT_SET = -1l;
 
     protected Context mContext;
     protected List<ExpandingObject> mItemList;
     private HashMap<Integer, Boolean> mStableIdMap;
-    private int mCustomParentAnimationViewId = -1;
-    private long mAnimationDuration = -1;
+    private int mCustomParentAnimationViewId = CUSTOM_ANIMATION_VIEW_NOT_SET;
+    private long mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
 
     public ExpandableRecyclerAdapter(Context context, List<ExpandingObject> itemList) {
         mContext = context;
@@ -72,10 +73,11 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         if (mItemList.get(position) instanceof ParentObject) {
             ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
 
-            if (mCustomParentAnimationViewId != -1l && mAnimationDuration != -1l) {
+            if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET
+                    && mAnimationDuration != CUSTOM_ANIMATION_DURATION_NOT_SET) {
                 parentViewHolder.setCustomClickableView(mCustomParentAnimationViewId);
                 parentViewHolder.setAnimationDuration(mAnimationDuration);
-            } else if (mCustomParentAnimationViewId != -1l) { // Animation disabled, custom view enabled
+            } else if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET) {
                 parentViewHolder.setCustomClickableView(mCustomParentAnimationViewId);
                 parentViewHolder.cancelAnimation();
             } else {
@@ -138,8 +140,8 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     }
 
     public void removeAnimation() {
-        mCustomParentAnimationViewId = -1;
-        mAnimationDuration = -1;
+        mCustomParentAnimationViewId = CUSTOM_ANIMATION_VIEW_NOT_SET;
+        mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
     }
 
 
