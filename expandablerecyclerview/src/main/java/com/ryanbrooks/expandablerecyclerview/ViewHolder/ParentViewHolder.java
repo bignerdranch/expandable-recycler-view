@@ -45,9 +45,18 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         }
     }
 
-    public void setCustomClickableView(int clickableViewId) {
+    public void setCustomClickableViewOnly(int clickableViewId) {
         mClickableView = itemView.findViewById(clickableViewId);
         itemView.setOnClickListener(null);
+        mClickableView.setOnClickListener(this);
+        if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
+            mClickableView.setRotation(mRotation);
+        }
+    }
+
+    public void setCustomClickableViewAndItem(int clickableViewId) {
+        mClickableView = itemView.findViewById(clickableViewId);
+        itemView.setOnClickListener(this);
         mClickableView.setOnClickListener(this);
         if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
             mClickableView.setRotation(mRotation);
@@ -121,7 +130,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
                     mRotation = INITIAL_POSITION;
                     rotateAnimation.setDuration(mDuration);
                     rotateAnimation.setFillAfter(true);
-                    v.startAnimation(rotateAnimation);
+                    mClickableView.startAnimation(rotateAnimation);
                 }
             }
             setExpanded(!mIsExpanded);

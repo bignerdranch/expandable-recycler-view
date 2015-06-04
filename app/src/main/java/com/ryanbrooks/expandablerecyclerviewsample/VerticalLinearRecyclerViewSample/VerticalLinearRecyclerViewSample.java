@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
@@ -55,7 +56,8 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
 
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(this, mDurationList);
         mToolbarSpinner.setAdapter(customSpinnerAdapter);
-
+        // Initial setting
+        Log.d(TAG, "Initial item selected: " + mToolbarSpinner.getSelectedItemPosition());
     }
 
     @Override
@@ -74,12 +76,22 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     void onItemSelected(int position) {
         if (mAnimationEnabledCheckBox.isChecked()) {
             if (mDurationList.get(position) == 0) {
-                mExpandableAdapter.setParentClickableViewAnimationDuration(-1);
+                mExpandableAdapter.setParentClickableViewAnimationDuration(
+                        mExpandableAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);
             } else {
                 mExpandableAdapter.setParentClickableViewAnimationDuration(mDurationList.get(position));
             }
+            mExpandableAdapter.setParentAndIconExpandOnClick(false);
         } else {
-            mExpandableAdapter.setParentClickableViewAnimationDuration(mDurationList.get(position));
+            if (mDurationList.get(position) == 0) {
+                mExpandableAdapter.setParentClickableViewAnimationDuration(
+                        mExpandableAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);
+                mExpandableAdapter.setParentAndIconExpandOnClick(false);
+            } else {
+                mExpandableAdapter.setParentClickableViewAnimationDuration(mDurationList.get(position));
+                mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
+                mExpandableAdapter.setParentAndIconExpandOnClick(true);
+            }
         }
         mExpandableAdapter.notifyDataSetChanged();
     }
@@ -87,17 +99,12 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     @OnCheckedChanged(R.id.vertical_sample_toolbar_checkbox)
     void onCheckChanged(boolean isChecked) {
         if (isChecked) {
-            if (mDurationList.get(mToolbarSpinner.getSelectedItemPosition()) == 0) {
-                mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
-                mExpandableAdapter.notifyDataSetChanged();
-            } else {
-                mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
-                mExpandableAdapter.setParentClickableViewAnimationDuration(
-                        mDurationList.get(mToolbarSpinner.getSelectedItemPosition()));
-                mExpandableAdapter.notifyDataSetChanged();
-            }
+            mExpandableAdapter.setParentAndIconExpandOnClick(false);
+            mExpandableAdapter.notifyDataSetChanged();
         } else {
-            mExpandableAdapter.removeAnimation();
+            mExpandableAdapter.setParentAndIconExpandOnClick(true);
+            mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
+            mExpandableAdapter.setParentClickableViewAnimationDuration((Long) mToolbarSpinner.getSelectedItem());
             mExpandableAdapter.notifyDataSetChanged();
         }
     }

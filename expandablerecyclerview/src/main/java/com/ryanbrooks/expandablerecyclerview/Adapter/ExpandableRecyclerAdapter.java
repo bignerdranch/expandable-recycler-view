@@ -3,6 +3,7 @@ package com.ryanbrooks.expandablerecyclerview.Adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
@@ -30,6 +31,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     protected Context mContext;
     protected List<ExpandingObject> mItemList;
     private HashMap<Integer, Boolean> mStableIdMap;
+    private boolean mParentAndIconClickable = false;
     private int mCustomParentAnimationViewId = CUSTOM_ANIMATION_VIEW_NOT_SET;
     private long mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
 
@@ -72,15 +74,28 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         if (mItemList.get(position) instanceof ParentObject) {
             ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
 
-            if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET
-                    && mAnimationDuration != CUSTOM_ANIMATION_DURATION_NOT_SET) {
-                parentViewHolder.setCustomClickableView(mCustomParentAnimationViewId);
-                parentViewHolder.setAnimationDuration(mAnimationDuration);
-            } else if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET) {
-                parentViewHolder.setCustomClickableView(mCustomParentAnimationViewId);
-                parentViewHolder.cancelAnimation();
+            if (mParentAndIconClickable) {
+                if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET
+                        && mAnimationDuration != CUSTOM_ANIMATION_DURATION_NOT_SET) {
+                    parentViewHolder.setCustomClickableViewAndItem(mCustomParentAnimationViewId);
+                    parentViewHolder.setAnimationDuration(mAnimationDuration);
+                } else if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET) {
+                    parentViewHolder.setCustomClickableViewAndItem(mCustomParentAnimationViewId);
+                    parentViewHolder.cancelAnimation();
+                } else {
+                    parentViewHolder.setMainItemClickToExpand();
+                }
             } else {
-                parentViewHolder.setMainItemClickToExpand();
+                if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET
+                        && mAnimationDuration != CUSTOM_ANIMATION_DURATION_NOT_SET) {
+                    parentViewHolder.setCustomClickableViewOnly(mCustomParentAnimationViewId);
+                    parentViewHolder.setAnimationDuration(mAnimationDuration);
+                } else if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET) {
+                    parentViewHolder.setCustomClickableViewOnly(mCustomParentAnimationViewId);
+                    parentViewHolder.cancelAnimation();
+                } else {
+                    parentViewHolder.setMainItemClickToExpand();
+                }
             }
 
             parentViewHolder.setExpanded(((ParentObject) mItemList.get(position)).isExpanded());
@@ -136,6 +151,10 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
 
     public void setCustomParentAnimationViewId(int customParentAnimationViewId) {
         mCustomParentAnimationViewId = customParentAnimationViewId;
+    }
+
+    public void setParentAndIconExpandOnClick(boolean parentAndIconClickable) {
+        mParentAndIconClickable = parentAndIconClickable;
     }
 
     public void removeAnimation() {
