@@ -7,20 +7,20 @@ public class ParentObject extends ExpandingObject {
 
     private boolean mExpanded;
     protected ChildObject mChildObject;
-    protected int mStableID;
+    protected int mStableId;
 
     public ParentObject (int stableID, ChildObject childObject) {
         mExpanded = false;
         mChildObject = childObject;
-        mStableID = stableID;
+        mStableId = stableID;
     }
 
     public boolean isExpanded() {
         return mExpanded;
     }
 
-    public void setExpanded(boolean mExpanded) {
-        this.mExpanded = mExpanded;
+    public void setExpanded(boolean expanded) {
+        mExpanded = expanded;
     }
 
     public ChildObject getChildObject() {
@@ -32,10 +32,10 @@ public class ParentObject extends ExpandingObject {
     }
 
     public int getStableID() {
-        return mStableID;
+        return mStableId;
     }
 
-    public void setStableID(int stableID) {
-        mStableID = stableID;
+    public void setStableID(int stableId) {
+        mStableId = stableId;
     }
 }
