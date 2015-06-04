@@ -18,6 +18,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     private static final float ROTATED_POSITION = 180f;
     private static final float PIVOT_VALUE = 0.5f;
     private static final long DEFAULT_ROTATE_DURATION_MS = 200;
+    private static final boolean HONEYCOMB_AND_ABOVE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
     private ParentItemClickListener mParentItemClickListener;
     private View mClickableView;
@@ -39,7 +40,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         mClickableView = clickableView;
         itemView.setOnClickListener(null);
         mClickableView.setOnClickListener(this);
-        if (isHoneycomb() && mRotationEnabled) {
+        if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
             mClickableView.setRotation(mRotation);
         }
     }
@@ -48,7 +49,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         mClickableView = itemView.findViewById(clickableViewId);
         itemView.setOnClickListener(null);
         mClickableView.setOnClickListener(this);
-        if (isHoneycomb() && mRotationEnabled) {
+        if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
             mClickableView.setRotation(mRotation);
         }
     }
@@ -56,14 +57,14 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     public void setAnimationDuration(long animationDuration) {
         mRotationEnabled = true;
         mDuration = animationDuration;
-        if (isHoneycomb() && mRotationEnabled) {
+        if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
             mClickableView.setRotation(mRotation);
         }
     }
 
     public void cancelAnimation() {
         mRotationEnabled = false;
-        if (isHoneycomb() && mRotationEnabled) {
+        if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
             mClickableView.setRotation(mRotation);
         }
     }
@@ -83,16 +84,12 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     public void setExpanded(boolean isExpanded) {
         mIsExpanded = isExpanded;
         if (mRotationEnabled) {
-            if (mIsExpanded && mClickableView != null && isHoneycomb()) {
+            if (mIsExpanded && mClickableView != null && HONEYCOMB_AND_ABOVE) {
                 mClickableView.setRotation(ROTATED_POSITION);
-            } else if (mClickableView != null && isHoneycomb()) {
+            } else if (mClickableView != null && HONEYCOMB_AND_ABOVE) {
                 mClickableView.setRotation(INITIAL_POSITION);
             }
         }
-    }
-
-    private boolean isHoneycomb() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
     }
 
     public boolean isRotationEnabled() {
