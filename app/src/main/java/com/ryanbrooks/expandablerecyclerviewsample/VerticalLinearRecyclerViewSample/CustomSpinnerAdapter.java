@@ -42,16 +42,16 @@ public class CustomSpinnerAdapter extends ArrayAdapter<Long> {
             rowViewHolder = new RowViewHolder();
             convertView = mInflater.inflate(R.layout.spinner_item_layout, parent, false);
             rowViewHolder.rowItemText = (TextView) convertView.findViewById(R.id.spinner_item_text);
-
-            if (getItem(position) == -1) {
-                rowViewHolder.rowItemText.setText(NO_ANIMATION_TEXT);
-            } else if (getItem(position) == 1000) {
-                rowViewHolder.rowItemText.setText(ONE_SECOND);
-            } else {
-                rowViewHolder.rowItemText.setText(getItem(position).toString() + MS);
-            }
         } else {
             rowViewHolder = (RowViewHolder) convertView.getTag();
+        }
+
+        if (getItem(position) == -1) {
+            rowViewHolder.rowItemText.setText(NO_ANIMATION_TEXT);
+        } else if (getItem(position) == 1000) {
+            rowViewHolder.rowItemText.setText(ONE_SECOND);
+        } else {
+            rowViewHolder.rowItemText.setText(getItem(position).toString() + MS);
         }
 
         convertView.setTag(rowViewHolder);
