@@ -3,7 +3,6 @@ package com.ryanbrooks.expandablerecyclerview.Adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
@@ -24,9 +23,9 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     private static final String STABLE_ID_MAP = "ExpandableRecyclerAdapter.StableIdMap";
     private static final int TYPE_PARENT = 0;
     private static final int TYPE_CHILD = 1;
-    private static final int CUSTOM_ANIMATION_VIEW_NOT_SET = -1;
-    private static final long DEFAULT_ROTATE_DURATION_MS = 200l;
-    private static final long CUSTOM_ANIMATION_DURATION_NOT_SET = -1l;
+    public static final int CUSTOM_ANIMATION_VIEW_NOT_SET = -1;
+    public static final long DEFAULT_ROTATE_DURATION_MS = 200l;
+    public static final long CUSTOM_ANIMATION_DURATION_NOT_SET = -1l;
 
     protected Context mContext;
     protected List<ExpandingObject> mItemList;

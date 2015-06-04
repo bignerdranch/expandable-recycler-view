@@ -117,7 +117,7 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     private ArrayList<Long> generateSpinnerSpeeds() {
         long initialSpeed = 100;
         ArrayList<Long> speedList = new ArrayList<>();
-        speedList.add(-1l);
+        speedList.add(mExpandableAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);
         for (int i = 1; i <= 10; i++) {
             speedList.add(initialSpeed * i);
         }
