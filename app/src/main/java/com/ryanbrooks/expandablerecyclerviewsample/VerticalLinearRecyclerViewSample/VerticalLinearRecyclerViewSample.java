@@ -61,7 +61,6 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
 
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(this, mDurationList);
         mToolbarSpinner.setAdapter(customSpinnerAdapter);
-        Log.d(TAG, "OnCreate Finished");
     }
 
     @Override
@@ -69,17 +68,13 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState = mExpandableAdapter.onSaveInstanceState(outState);
         outState.putBoolean(CUSTOM_EXPAND_BUTTON_CHECKED, mAnimationEnabledCheckBox.isChecked());
-        outState.putInt(CUSTOM_ANIMATION_DURATION_POSITION,  mToolbarSpinner.getSelectedItemPosition());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        Log.d(TAG, "OnRestoreInstanceState called");
         super.onRestoreInstanceState(savedInstanceState);
         mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
-        Log.d(TAG, "Position: " + savedInstanceState.getInt(CUSTOM_ANIMATION_DURATION_POSITION));
-        Log.d(TAG, "Checked: " + savedInstanceState.getBoolean(CUSTOM_EXPAND_BUTTON_CHECKED));
-        onItemSelected(savedInstanceState.getInt(CUSTOM_ANIMATION_DURATION_POSITION));
+        Log.d(TAG, savedInstanceState.getBoolean(CUSTOM_EXPAND_BUTTON_CHECKED) + "");
         onCheckChanged(savedInstanceState.getBoolean(CUSTOM_EXPAND_BUTTON_CHECKED));
     }
 
@@ -111,6 +106,8 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     void onCheckChanged(boolean isChecked) {
         if (isChecked) {
             mExpandableAdapter.setParentAndIconExpandOnClick(false);
+            mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
+            mExpandableAdapter.setParentClickableViewAnimationDuration((Long) mToolbarSpinner.getSelectedItem());
             mExpandableAdapter.notifyDataSetChanged();
         } else {
             mExpandableAdapter.setParentAndIconExpandOnClick(true);

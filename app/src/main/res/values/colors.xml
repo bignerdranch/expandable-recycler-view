@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="main_gray">#bbbbbb</color>
+    <color name="primary_green">#8BC34A</color>
     <color name="black">#000</color>
+    <color name="white">#fff</color>
+
+    <color name="transparent">#00000000</color>
+
+    <!-- card colors -->
+    <color name="card_background">#fefefe</color>
 </resources>
