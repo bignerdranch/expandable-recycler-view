@@ -12,4 +12,8 @@ public interface ParentObject {
     Object getChildObject();
 
     void setChildObject(Object mChildObject);
+
+    long getStableId();
+
+    void setStableId(long stableId);
 }

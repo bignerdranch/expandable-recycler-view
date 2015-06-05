@@ -1,13 +1,10 @@
 package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
 
 import com.ryanbrooks.expandablerecyclerview.Model.ChildObject;
-
-import java.io.Serializable;
-
 /**
  * Created by Ryan Brooks on 5/20/15.
  */
-public class CustomChildObject implements Serializable, ChildObject {
+public class CustomChildObject implements ChildObject {
     private Object mParentObject;
     private String mChildText;
 

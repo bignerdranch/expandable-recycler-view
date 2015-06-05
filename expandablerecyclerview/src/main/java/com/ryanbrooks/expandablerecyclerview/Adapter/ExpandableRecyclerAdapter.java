@@ -31,8 +31,9 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
 
     protected Context mContext;
     protected ArrayList<Object> mItemList;
-    private HashMap<Object, Boolean> mStableIdMap;
+    private HashMap<Long, Boolean> mStableIdMap;
     private boolean mParentAndIconClickable = false;
+    private boolean mHasStableIds = false;
     private int mCustomParentAnimationViewId = CUSTOM_ANIMATION_VIEW_NOT_SET;
     private long mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
 
@@ -163,67 +164,78 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
     }
 
+    public void setHasStableIds() {
+        if (!mHasStableIds) {
+            mStableIdMap = generateStableIdMapFromList(mItemList);
+            Log.d(TAG, "SetHasStableIds map set");
+        }
+        mHasStableIds = true;
+    }
 
     private void expandParent(ParentObject parentObject, int position) {
         if (parentObject.isExpanded()) {
             parentObject.setExpanded(false);
-            mStableIdMap.put(parentObject.toString(), false);
+            if (mHasStableIds) {
+                mStableIdMap.put(parentObject.getStableId(), false);
+            }
             mItemList.remove(position + 1);
             notifyItemRemoved(position + 1);
         } else {
             parentObject.setExpanded(true);
-            mStableIdMap.put(parentObject.toString(), true);
+            if (mHasStableIds) {
+                mStableIdMap.put(parentObject.getStableId(), true);
+            }
             mItemList.add(position + 1, parentObject.getChildObject());
             notifyItemInserted(position + 1);
         }
     }
 
-    private HashMap<Object, Boolean> generateStableIdMapFromList(List<Object> itemList) {
-        HashMap<Object, Boolean> parentObjectHashMap = new HashMap<>();
+    private HashMap<Long, Boolean> generateStableIdMapFromList(List<Object> itemList) {
+        HashMap<Long, Boolean> parentObjectHashMap = new HashMap<>();
         for (int i = 0; i < itemList.size(); i++) {
             if (itemList.get(i) instanceof ParentObject) {
                 ParentObject parentObject = (ParentObject) itemList.get(i);
-                parentObjectHashMap.put(itemList.get(i), parentObject.isExpanded());
+                parentObjectHashMap.put(parentObject.getStableId(), parentObject.isExpanded());
             }
         }
         return parentObjectHashMap;
     }
 
     public Bundle onSaveInstanceState(Bundle savedInstanceStateBundle) {
-        savedInstanceStateBundle.putSerializable(STABLE_ID_MAP, mStableIdMap);
-        savedInstanceStateBundle.putSerializable(STABLE_ID_LIST, mItemList);
+        if (mHasStableIds) {
+            Log.d("Save Instance State", mStableIdMap.toString());
+            savedInstanceStateBundle.putSerializable(STABLE_ID_MAP, mStableIdMap);
+        }
         return savedInstanceStateBundle;
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceStateBundle) {
-        if (savedInstanceStateBundle == null) {
-            return;
-        }
-        if (!savedInstanceStateBundle.containsKey(STABLE_ID_MAP) ||
-                !savedInstanceStateBundle.containsKey(STABLE_ID_LIST)) {
-            return;
-        }
-        mItemList = (ArrayList<Object>) savedInstanceStateBundle.getSerializable(STABLE_ID_LIST);
-        mStableIdMap = (HashMap<Object, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
-        Log.d(TAG, mStableIdMap.toString());
-        int i = 0;
-        while (i < mItemList.size()) {
-            if (mItemList.get(i) instanceof ParentObject) {
-                ParentObject parentObject = (ParentObject) mItemList.get(i);
-                Log.d(TAG, "Got parentObject: " + parentObject.toString());
-                if (mStableIdMap.containsKey(parentObject)) {
-                    Log.d(TAG, "Got key:" + parentObject.toString());
-                    parentObject.setExpanded(mStableIdMap.get(parentObject));
-                    if (parentObject.isExpanded()) {
-                        i++;
-                        mItemList.add(i, parentObject.getChildObject());
-                    }
-                } else {
-                    parentObject.setExpanded(false);
-                }
+        if (mHasStableIds) {
+            if (savedInstanceStateBundle == null) {
+                return;
             }
-            i++;
+            if (!savedInstanceStateBundle.containsKey(STABLE_ID_MAP)) {
+                return;
+            }
+            mStableIdMap = (HashMap<Long, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
+            Log.d(TAG, mStableIdMap.toString());
+            int i = 0;
+            while (i < mItemList.size()) {
+                if (mItemList.get(i) instanceof ParentObject) {
+                    ParentObject parentObject = (ParentObject) mItemList.get(i);
+                    if (mStableIdMap.containsKey(parentObject.getStableId())) {
+                        parentObject.setExpanded(mStableIdMap.get(parentObject.getStableId()));
+                        if (parentObject.isExpanded()) {
+                            i++;
+                            mItemList.add(i, parentObject.getChildObject());
+                        }
+                    } else {
+                        parentObject.setExpanded(false);
+                    }
+                }
+                i++;
+            }
+            notifyDataSetChanged();
         }
-        notifyDataSetChanged();
     }
 }
