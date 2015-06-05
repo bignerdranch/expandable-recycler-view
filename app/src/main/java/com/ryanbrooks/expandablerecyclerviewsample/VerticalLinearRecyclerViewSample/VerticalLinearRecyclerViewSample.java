@@ -9,7 +9,6 @@ import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
-import com.ryanbrooks.expandablerecyclerview.Model.ExpandingObject;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
@@ -109,15 +108,18 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         }
     }
 
-    private List<ExpandingObject> setUpTestData(int numItems) {
-        ArrayList<ExpandingObject> data = new ArrayList<>();
+    private ArrayList<Object> setUpTestData(int numItems) {
+        ArrayList<Object> data = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
             CustomChildObject customChildObject = new CustomChildObject();
-            customChildObject.setData("Child " + i);
+            customChildObject.setChildText("Child " + i);
 
-            CustomParentObject customParentObject = new CustomParentObject(i, customChildObject);
-            customParentObject.setNumber(i);
-            customParentObject.setData("Parent " + i);
+            CustomParentObject customParentObject = new CustomParentObject();
+
+            customChildObject.setParentObject(customParentObject); //TODO: How can this be done better
+            customParentObject.setChildObject(customChildObject);
+            customParentObject.setParentNumber(i);
+            customParentObject.setParentText("Parent " + i);
             data.add(customParentObject);
         }
         return data;

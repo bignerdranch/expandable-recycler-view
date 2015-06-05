@@ -5,5 +5,8 @@ package com.ryanbrooks.expandablerecyclerview.Model;
  * This is more of a placeholder than anything. Here to assure user extends it
  */
 public interface ChildObject {
-    
+
+    Object getParentObject();
+
+    void setParentObject(Object parentObject);
 }
