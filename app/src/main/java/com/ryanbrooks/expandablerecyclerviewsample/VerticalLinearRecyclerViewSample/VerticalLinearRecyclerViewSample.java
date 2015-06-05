@@ -77,17 +77,14 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         Log.d(TAG, "OnRestoreInstanceState called");
         super.onRestoreInstanceState(savedInstanceState);
         mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
-        spinnerItemSelected(savedInstanceState.getInt(CUSTOM_ANIMATION_DURATION_POSITION));
-        checkboxItemChanged(savedInstanceState.getBoolean(CUSTOM_EXPAND_BUTTON_CHECKED));
-        mExpandableAdapter.notifyDataSetChanged();
+        Log.d(TAG, "Position: " + savedInstanceState.getInt(CUSTOM_ANIMATION_DURATION_POSITION));
+        Log.d(TAG, "Checked: " + savedInstanceState.getBoolean(CUSTOM_EXPAND_BUTTON_CHECKED));
+        onItemSelected(savedInstanceState.getInt(CUSTOM_ANIMATION_DURATION_POSITION));
+        onCheckChanged(savedInstanceState.getBoolean(CUSTOM_EXPAND_BUTTON_CHECKED));
     }
 
     @OnItemSelected(R.id.vertical_sample_toolbar_spinner)
     void onItemSelected(int position) {
-        spinnerItemSelected(position);
-    }
-
-    private void spinnerItemSelected(int position) {
         if (mAnimationEnabledCheckBox.isChecked()) {
             if (mDurationList.get(position) == 0) {
                 mExpandableAdapter.setParentClickableViewAnimationDuration(
@@ -112,11 +109,7 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
 
     @OnCheckedChanged(R.id.vertical_sample_toolbar_checkbox)
     void onCheckChanged(boolean isChecked) {
-        checkboxItemChanged(isChecked);
-    }
-
-    private void checkboxItemChanged(boolean newCheckValue) {
-        if (newCheckValue) {
+        if (isChecked) {
             mExpandableAdapter.setParentAndIconExpandOnClick(false);
             mExpandableAdapter.notifyDataSetChanged();
         } else {
