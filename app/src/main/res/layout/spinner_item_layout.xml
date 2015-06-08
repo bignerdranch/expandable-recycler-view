@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:background="@color/main_gray"
+    android:background="@color/primary_green"
     android:orientation="vertical" >
 
     <TextView
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:textSize="18sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         />
 
 </RelativeLayout>

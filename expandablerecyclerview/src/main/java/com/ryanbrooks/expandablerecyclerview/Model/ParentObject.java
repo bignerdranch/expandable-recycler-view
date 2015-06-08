@@ -3,39 +3,17 @@ package com.ryanbrooks.expandablerecyclerview.Model;
 /**
  * Created by Ryan Brooks on 5/27/15.
  */
-public class ParentObject extends ExpandingObject {
+public interface ParentObject {
 
-    private boolean mExpanded;
-    protected ChildObject mChildObject;
-    protected int mStableId;
+    boolean isExpanded();
 
-    public ParentObject (int stableID, ChildObject childObject) {
-        mExpanded = false;
-        mChildObject = childObject;
-        mStableId = stableID;
-    }
+    void setExpanded(boolean expanded);
 
-    public boolean isExpanded() {
-        return mExpanded;
-    }
+    Object getChildObject();
 
-    public void setExpanded(boolean expanded) {
-        mExpanded = expanded;
-    }
+    void setChildObject(Object mChildObject);
 
-    public ChildObject getChildObject() {
-        return mChildObject;
-    }
+    long getStableId();
 
-    public void setChildObject(ChildObject mChildObject) {
-        this.mChildObject = mChildObject;
-    }
-
-    public int getStableID() {
-        return mStableId;
-    }
-
-    public void setStableID(int stableId) {
-        mStableId = stableId;
-    }
+    void setStableId(long stableId);
 }

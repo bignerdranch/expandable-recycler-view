@@ -9,11 +9,9 @@ import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
-import com.ryanbrooks.expandablerecyclerview.Model.ExpandingObject;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,6 +23,11 @@ import butterknife.OnItemSelected;
  */
 public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
+    private static final String CUSTOM_EXPAND_BUTTON_CHECKED = "CUSTOM_EXPAND_BUTTON_CHECKED";
+    private static final String CUSTOM_ANIMATION_DURATION_POSITION = "CUSTOM_ANIMATION_DURATION_POSITION";
+    private static final String CHILD_TEXT = "Child ";
+    private static final String PARENT_TEXT = "Parent ";
+    private static final long INITIAL_ROTATION_SPEED_MS = 100;
 
     private MyExpandableAdapter mExpandableAdapter;
     private ArrayList<Long> mDurationList;
@@ -51,25 +54,27 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         mDurationList = generateSpinnerSpeeds();
 
         mExpandableAdapter = new MyExpandableAdapter(this, setUpTestData(20));
+        mExpandableAdapter.setHasStableIds();
         mRecyclerView.setAdapter(mExpandableAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(this, mDurationList);
         mToolbarSpinner.setAdapter(customSpinnerAdapter);
-        // Initial setting
-        Log.d(TAG, "Initial item selected: " + mToolbarSpinner.getSelectedItemPosition());
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState = mExpandableAdapter.onSaveInstanceState(outState);
+        outState.putBoolean(CUSTOM_EXPAND_BUTTON_CHECKED, mAnimationEnabledCheckBox.isChecked());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
+        Log.d(TAG, savedInstanceState.getBoolean(CUSTOM_EXPAND_BUTTON_CHECKED) + "");
+        onCheckChanged(savedInstanceState.getBoolean(CUSTOM_EXPAND_BUTTON_CHECKED));
     }
 
     @OnItemSelected(R.id.vertical_sample_toolbar_spinner)
@@ -100,6 +105,8 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     void onCheckChanged(boolean isChecked) {
         if (isChecked) {
             mExpandableAdapter.setParentAndIconExpandOnClick(false);
+            mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
+            mExpandableAdapter.setParentClickableViewAnimationDuration((Long) mToolbarSpinner.getSelectedItem());
             mExpandableAdapter.notifyDataSetChanged();
         } else {
             mExpandableAdapter.setParentAndIconExpandOnClick(true);
@@ -109,26 +116,29 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         }
     }
 
-    private List<ExpandingObject> setUpTestData(int numItems) {
-        ArrayList<ExpandingObject> data = new ArrayList<>();
+    private ArrayList<Object> setUpTestData(int numItems) {
+        ArrayList<Object> data = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
             CustomChildObject customChildObject = new CustomChildObject();
-            customChildObject.setData("Child " + i);
+            customChildObject.setChildText(CHILD_TEXT + i);
 
-            CustomParentObject customParentObject = new CustomParentObject(i, customChildObject);
-            customParentObject.setNumber(i);
-            customParentObject.setData("Parent " + i);
+            CustomParentObject customParentObject = new CustomParentObject();
+
+            customChildObject.setParentObject(customParentObject);
+            customParentObject.setChildObject(customChildObject);
+            customParentObject.setStableId(i);
+            customParentObject.setParentNumber(i);
+            customParentObject.setParentText(PARENT_TEXT + i);
             data.add(customParentObject);
         }
         return data;
     }
 
     private ArrayList<Long> generateSpinnerSpeeds() {
-        long initialSpeed = 100;
         ArrayList<Long> speedList = new ArrayList<>();
         speedList.add(mExpandableAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);
         for (int i = 1; i <= 10; i++) {
-            speedList.add(initialSpeed * i);
+            speedList.add(INITIAL_ROTATION_SPEED_MS * i);
         }
         return speedList;
     }

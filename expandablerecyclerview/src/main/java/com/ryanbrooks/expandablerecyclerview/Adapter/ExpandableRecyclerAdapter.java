@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
 import com.ryanbrooks.expandablerecyclerview.Model.ChildObject;
-import com.ryanbrooks.expandablerecyclerview.Model.ExpandingObject;
 import com.ryanbrooks.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
@@ -22,6 +21,7 @@ import java.util.List;
 public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
     private static final String TAG = ExpandableRecyclerAdapter.class.getClass().getSimpleName();
     private static final String STABLE_ID_MAP = "ExpandableRecyclerAdapter.StableIdMap";
+    private static final String STABLE_ID_LIST = "ExpandableRecyclerAdapter.StableIdList";
     private static final int TYPE_PARENT = 0;
     private static final int TYPE_CHILD = 1;
     public static final int CUSTOM_ANIMATION_VIEW_NOT_SET = -1;
@@ -29,19 +29,20 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     public static final long CUSTOM_ANIMATION_DURATION_NOT_SET = -1l;
 
     protected Context mContext;
-    protected List<ExpandingObject> mItemList;
-    private HashMap<Integer, Boolean> mStableIdMap;
+    protected List<Object> mItemList;
+    private HashMap<Long, Boolean> mStableIdMap;
     private boolean mParentAndIconClickable = false;
+    private boolean mHasStableIds = false;
     private int mCustomParentAnimationViewId = CUSTOM_ANIMATION_VIEW_NOT_SET;
     private long mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
 
-    public ExpandableRecyclerAdapter(Context context, List<ExpandingObject> itemList) {
+    public ExpandableRecyclerAdapter(Context context, List<Object> itemList) {
         mContext = context;
         mItemList = itemList;
         mStableIdMap = generateStableIdMapFromList(itemList);
     }
 
-    public ExpandableRecyclerAdapter(Context context, List<ExpandingObject> itemList,
+    public ExpandableRecyclerAdapter(Context context, List<Object> itemList,
                                      int customParentAnimationViewId) {
         mContext = context;
         mItemList = itemList;
@@ -49,7 +50,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         mCustomParentAnimationViewId = customParentAnimationViewId;
     }
 
-    public ExpandableRecyclerAdapter(Context context, List<ExpandingObject> itemList,
+    public ExpandableRecyclerAdapter(Context context, List<Object> itemList,
                                      int customParentAnimationViewId, long animationDuration) {
         mContext = context;
         mItemList = itemList;
@@ -162,51 +163,67 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
         mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
     }
 
+    public void setHasStableIds() {
+        if (!mHasStableIds) {
+            mStableIdMap = generateStableIdMapFromList(mItemList);
+        }
+        mHasStableIds = true;
+    }
 
     private void expandParent(ParentObject parentObject, int position) {
         if (parentObject.isExpanded()) {
             parentObject.setExpanded(false);
-            mStableIdMap.put(parentObject.getStableID(), false);
+            if (mHasStableIds) {
+                mStableIdMap.put(parentObject.getStableId(), false);
+            }
             mItemList.remove(position + 1);
             notifyItemRemoved(position + 1);
         } else {
             parentObject.setExpanded(true);
-            mStableIdMap.put(parentObject.getStableID(), true);
+            if (mHasStableIds) {
+                mStableIdMap.put(parentObject.getStableId(), true);
+            }
             mItemList.add(position + 1, parentObject.getChildObject());
             notifyItemInserted(position + 1);
         }
     }
 
-    private HashMap<Integer, Boolean> generateStableIdMapFromList(List<ExpandingObject> itemList) {
-        HashMap<Integer, Boolean> parentObjectHashMap = new HashMap<>();
+    private HashMap<Long, Boolean> generateStableIdMapFromList(List<Object> itemList) {
+        HashMap<Long, Boolean> parentObjectHashMap = new HashMap<>();
         for (int i = 0; i < itemList.size(); i++) {
             if (itemList.get(i) instanceof ParentObject) {
                 ParentObject parentObject = (ParentObject) itemList.get(i);
-                parentObjectHashMap.put(parentObject.getStableID(), parentObject.isExpanded());
+                parentObjectHashMap.put(parentObject.getStableId(), parentObject.isExpanded());
             }
         }
         return parentObjectHashMap;
     }
 
     public Bundle onSaveInstanceState(Bundle savedInstanceStateBundle) {
-        savedInstanceStateBundle.putSerializable(STABLE_ID_MAP, mStableIdMap);
+        if (mHasStableIds) {
+            savedInstanceStateBundle.putSerializable(STABLE_ID_MAP, mStableIdMap);
+        }
         return savedInstanceStateBundle;
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceStateBundle) {
+        if (!mHasStableIds) {
+            return;
+        }
         if (savedInstanceStateBundle == null) {
             return;
         }
         if (!savedInstanceStateBundle.containsKey(STABLE_ID_MAP)) {
             return;
         }
-        mStableIdMap = (HashMap<Integer, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
+        mStableIdMap = (HashMap<Long, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
+        Log.d(TAG, mStableIdMap.toString());
         int i = 0;
         while (i < mItemList.size()) {
             if (mItemList.get(i) instanceof ParentObject) {
                 ParentObject parentObject = (ParentObject) mItemList.get(i);
-                if (mStableIdMap.containsKey(parentObject.getStableID())) {
-                    parentObject.setExpanded(mStableIdMap.get(parentObject.getStableID()));
+                if (mStableIdMap.containsKey(parentObject.getStableId())) {
+                    parentObject.setExpanded(mStableIdMap.get(parentObject.getStableId()));
                     if (parentObject.isExpanded()) {
                         i++;
                         mItemList.add(i, parentObject.getChildObject());

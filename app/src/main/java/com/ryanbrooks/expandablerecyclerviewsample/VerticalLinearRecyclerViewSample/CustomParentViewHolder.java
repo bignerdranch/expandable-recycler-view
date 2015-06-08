@@ -1,7 +1,7 @@
 package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
 
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
@@ -16,13 +16,13 @@ public class CustomParentViewHolder extends ParentViewHolder {
 
     public TextView numberText;
     public TextView dataText;
-    public ImageButton arrowExpand;
+    public ImageView arrowExpand;
 
     public CustomParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
         super(itemView, parentItemClickListener);
 
         numberText = (TextView) itemView.findViewById(R.id.recycler_item_number_parent);
         dataText = (TextView) itemView.findViewById(R.id.recycler_item_text_parent);
-        arrowExpand = (ImageButton) itemView.findViewById(R.id.recycler_item_arrow_parent);
+        arrowExpand = (ImageView) itemView.findViewById(R.id.recycler_item_arrow_parent);
     }
 }
