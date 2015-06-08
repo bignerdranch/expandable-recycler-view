@@ -167,7 +167,6 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
     public void setHasStableIds() {
         if (!mHasStableIds) {
             mStableIdMap = generateStableIdMapFromList(mItemList);
-            Log.d(TAG, "SetHasStableIds map set");
         }
         mHasStableIds = true;
     }
@@ -203,7 +202,6 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
 
     public Bundle onSaveInstanceState(Bundle savedInstanceStateBundle) {
         if (mHasStableIds) {
-            Log.d("Save Instance State", mStableIdMap.toString());
             savedInstanceStateBundle.putSerializable(STABLE_ID_MAP, mStableIdMap);
         }
         return savedInstanceStateBundle;

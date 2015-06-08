@@ -12,7 +12,6 @@ import android.widget.Spinner;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
