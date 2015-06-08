@@ -16,7 +16,14 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by Ryan Brooks on 5/27/15.
+ * The Base class for an Expandable RecyclerView Adapter
+ *
+ * Provides the base for a user to implement binding custom views to a Parent ViewHolder and a
+ * Child ViewHolder
+ *
+ * @author Ryan Brooks
+ * @since 5/27/2015
+ * @version 1.0
  */
 public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
     private static final String TAG = ExpandableRecyclerAdapter.class.getClass().getSimpleName();

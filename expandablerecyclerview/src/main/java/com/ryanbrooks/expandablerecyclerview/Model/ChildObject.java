@@ -1,11 +1,25 @@
 package com.ryanbrooks.expandablerecyclerview.Model;
 
 /**
- * Created by Ryan Brooks on 5/27/15.
+ * Interface for implementing required methods in a ChildObject
+ *
+ * In the user's implementation of ChildObject, they should have a instance variable of type Object
+ * (or casted to their custom ParentObject) for the ParentObject that corresponds with the ChildObject.
+ * This is used in ExpandableRecyclerAdapter for association with the correct ParentObject.
  */
 public interface ChildObject {
 
+    /**
+     * Getter for a reference to the Child's ParentObject
+     *
+     * @return reference to the corresponding ParentObject
+     */
     Object getParentObject();
 
+    /**
+     * Setter for a reference to the Child's ParentObject
+     *
+     * @param parentObject
+     */
     void setParentObject(Object parentObject);
 }
