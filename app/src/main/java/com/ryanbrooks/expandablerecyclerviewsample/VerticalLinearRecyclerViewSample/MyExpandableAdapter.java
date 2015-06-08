@@ -11,7 +11,7 @@ import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ryan Brooks on 5/21/15.
@@ -21,18 +21,18 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter implements Pa
 
     private LayoutInflater mInflater;
 
-    public MyExpandableAdapter(Context context, ArrayList<Object> itemList) {
+    public MyExpandableAdapter(Context context, List<Object> itemList) {
         super(context, itemList);
         mInflater = LayoutInflater.from(context);
     }
 
-    public MyExpandableAdapter(Context context, ArrayList<Object> itemList,
+    public MyExpandableAdapter(Context context, List<Object> itemList,
                                int customClickableViewId) {
         super(context, itemList, customClickableViewId);
         mInflater = LayoutInflater.from(context);
     }
 
-    public MyExpandableAdapter(Context context, ArrayList<Object> itemList,
+    public MyExpandableAdapter(Context context, List<Object> itemList,
                                int customClickableViewId, long animationDuration) {
         super(context, itemList, customClickableViewId, animationDuration);
         mInflater = LayoutInflater.from(context);
