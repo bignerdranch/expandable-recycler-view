@@ -97,7 +97,7 @@ public class MyCustomParentObject implements ParentObject {
  mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
  ```
  
-####Saving Expanded States onResune() or on Roatation
+####Saving Expanded States onResume() or on Roatation
  To do this, simply call ```myCustomExpandingAdapter.setHasStableIds``` before you set the adapter to your RecyclerView. In your ParentObject, you must have set a unique id for each item. This id will now be used to save the expanded/collapsed state of the item. You must also override onSaveInstanceState and onRestoreInstanceState in the Activity or Fragment that contains the RecyclerView. Inside onSaveInstanceState(Bundle outState), you must call ```myCustomExpandingAdapter.onSaveInstanceState(outState)``` and call super in your implementation. In onRestoreInstanceState(Bundle savedInstanceState(Bundle savedInstanceState), you must call ```myCustomExpandingAdapter.onRestoreInstanceState(savedInstanceState)```. Here is an example of how to override in your activity or fragment:
  
  ```
@@ -116,6 +116,5 @@ public class MyCustomParentObject implements ParentObject {
 Check out the sample application for a full working demo!
  
 ##Features Coming
-  - Horizontal Expansion
-  - GridLayout Expansion
+  - Multiple Children
   - Ability to click on child views
