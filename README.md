@@ -111,8 +111,7 @@ public class MyCustomParentObject implements ParentObject {
         super.onRestoreInstanceState(savedInstanceState);
         mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
     }
-    ```
-    
+ ```
 Check out the sample application for a full working demo!
  
 ##Features Coming
