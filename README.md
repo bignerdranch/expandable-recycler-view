@@ -84,34 +84,34 @@ public class MyCustomParentObject implements ParentObject {
  You must also create two separate ViewHolders, a parent ViewHolder and a child ViewHolder, either as a class inside your custom Adapter or as a separate class altogether. The parent ViewHolder must extend ParentViewHolder, and the child ViewHolder must extend ChildViewHolder. This also means you must create two separate XML layouts for the ParentViewHolder and ChildViewHolder respectively. For ParentViewHolder, make sure to include ```super(itemView, parentItemClickListener)``` in your constructor, then modify as you would a normal viewHolder. The same should be done for ChildViewHolder, but rather ```super(itemView)```. Also, make sure to cast your passed ParentViewHolder and ChildViewHolder in ```onBindParentViewHolder``` and ```onBindChildViewHolder``` of the adapter to your custom viewHolders you created for each to allow for proper binding of data.
  
   ####Extras
- You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, after defining your clickable trigger button or view, call ```myCustomExpandingAdapter.setCustomClickableView(Your Custom View ID)``` and pass in the id.
+  You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, after defining your clickable trigger button or view, call ```myCustomExpandingAdapter.setCustomClickableView(Your Custom View ID)``` and pass in the id.
+  
+  If you do set a custom clickable view, you can also set an animation for the view to rotate 180 degrees when expanding and collapsing. This is useful primarily with arrows which signifies for the user to click it to change the expansion. You can do this by calling ```myCustomExpandingAdapter.setRotation(long duration)``` in the constructor below where you called ```setCustomClickableView()```.
+  
+  After implementing these, in the activity or fragment that is holding your RecyclerView, simply set the adapter to your custom adapter, and set the layout manager to a new LinearLayoutManager. An example is here:
+  
+  ```
+  MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, objectList);
+  mRecyclerView.setAdapter(myCustomExpandingAdapter);
+  mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+  ```
+  
+  ####Saving Expanded States onResune() or on Roatation
+  To do this, simply call ```myCustomExpandingAdapter.setHasStableIds``` before you set the adapter to your RecyclerView. In your ParentObject, you must have set a unique id for each item. This id will now be used to save the expanded/collapsed state of the item. You must also override onSaveInstanceState and onRestoreInstanceState in the Activity or Fragment that contains the RecyclerView. Inside onSaveInstanceState(Bundle outState), you must call ```myCustomExpandingAdapter.onSaveInstanceState(outState)``` and call super in your implementation. In onRestoreInstanceState(Bundle savedInstanceState(Bundle savedInstanceState), you must call ```myCustomExpandingAdapter.onRestoreInstanceState(savedInstanceState)```. Here is an example of how to override in your activity or fragment:
+  
+  ```
+  @Override
+     protected void onSaveInstanceState(Bundle outState) {
+         super.onSaveInstanceState(outState);
+         outState = myCustomExpandingAdapter.onSaveInstanceState(outState);
+     }
  
- If you do set a custom clickable view, you can also set an animation for the view to rotate 180 degrees when expanding and collapsing. This is useful primarily with arrows which signifies for the user to click it to change the expansion. You can do this by calling ```myCustomExpandingAdapter.setRotation(long duration)``` in the constructor below where you called ```setCustomClickableView()```.
- 
- After implementing these, in the activity or fragment that is holding your RecyclerView, simply set the adapter to your custom adapter, and set the layout manager to a new LinearLayoutManager. An example is here:
- 
- ```
- MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, objectList);
- mRecyclerView.setAdapter(myCustomExpandingAdapter);
- mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
- ```
- 
- ####Saving Expanded States onResune() or on Roatation
- To do this, simply call ```myCustomExpandingAdapter.setHasStableIds``` before you set the adapter to your RecyclerView. In your ParentObject, you must have set a unique id for each item. This id will now be used to save the expanded/collapsed state of the item. You must also override onSaveInstanceState and onRestoreInstanceState in the Activity or Fragment that contains the RecyclerView. Inside onSaveInstanceState(Bundle outState), you must call ```myCustomExpandingAdapter.onSaveInstanceState(outState)``` and call super in your implementation. In onRestoreInstanceState(Bundle savedInstanceState(Bundle savedInstanceState), you must call ```myCustomExpandingAdapter.onRestoreInstanceState(savedInstanceState)```. Here is an example of how to override in your activity or fragment:
- 
- ```
- @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState = myCustomExpandingAdapter.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
-    }
- ```
+     @Override
+     protected void onRestoreInstanceState(Bundle savedInstanceState) {
+         super.onRestoreInstanceState(savedInstanceState);
+         mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
+     }
+  ```
 Check out the sample application for a full working demo!
  
 ##Features Coming
