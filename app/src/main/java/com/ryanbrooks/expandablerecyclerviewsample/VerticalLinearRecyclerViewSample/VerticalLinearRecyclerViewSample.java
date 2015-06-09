@@ -73,7 +73,6 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
-        Log.d(TAG, savedInstanceState.getBoolean(CUSTOM_EXPAND_BUTTON_CHECKED) + "");
         onCheckChanged(savedInstanceState.getBoolean(CUSTOM_EXPAND_BUTTON_CHECKED));
     }
 
