@@ -8,8 +8,8 @@ import android.view.View;
  * this and implement as they wish for their ChildObject.
  *
  * @author Ryan Brooks
- * @since 5/27/2015
  * @version 1.0
+ * @since 5/27/2015
  */
 public class ChildViewHolder extends RecyclerView.ViewHolder {
 

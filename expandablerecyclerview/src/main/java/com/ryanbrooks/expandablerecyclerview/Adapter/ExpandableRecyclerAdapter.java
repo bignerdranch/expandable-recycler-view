@@ -17,13 +17,13 @@ import java.util.List;
 
 /**
  * The Base class for an Expandable RecyclerView Adapter
- *
+ * <p>
  * Provides the base for a user to implement binding custom views to a Parent ViewHolder and a
  * Child ViewHolder
  *
  * @author Ryan Brooks
- * @since 5/27/2015
  * @version 1.0
+ * @since 5/27/2015
  */
 public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
     private static final String TAG = ExpandableRecyclerAdapter.class.getClass().getSimpleName();
@@ -95,7 +95,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
 
     /**
      * Override of RecyclerView's default onCreateViewHolder.
-     *
+     * <p>
      * This implementation determines if the item is a child or a parent view and will then call
      * the respective onCreateViewHolder method that the user must implement in their custom
      * implementation.
@@ -117,11 +117,11 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
 
     /**
      * Override of RecyclerView's default onBindViewHolder
-     *
+     * <p>
      * This implementation determines first if the ViewHolder is a ParentViewHolder or a
      * ChildViewHolder. The respective onBindViewHolders for ParentObjects and ChildObject are then
      * called.
-     *
+     * <p>
      * If the item is a ParentObject, setting the ParentViewHolder's animation settings are then handled
      * here.
      *
@@ -362,6 +362,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
      * Should be called from onRestoreInstanceState of Activity that contains the ExpandingRecyclerView.
      * This will fetch the HashMap that was saved in onSaveInstanceState() and use it to restore
      * the expanded states before the rotation or onSaveInstanceState was called.
+     *
      * @param savedInstanceStateBundle
      */
     public void onRestoreInstanceState(Bundle savedInstanceStateBundle) {

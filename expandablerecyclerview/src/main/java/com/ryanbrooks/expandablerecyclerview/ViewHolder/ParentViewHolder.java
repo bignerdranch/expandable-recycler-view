@@ -13,8 +13,8 @@ import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListe
  * handling is done here.
  *
  * @author Ryan Brooks
- * @since 5/27/2015
  * @version 1.0
+ * @since 5/27/2015
  */
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
