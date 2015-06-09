@@ -83,7 +83,7 @@ public class MyCustomParentObject implements ParentObject {
 
  You must also create two separate ViewHolders, a parent ViewHolder and a child ViewHolder, either as a class inside your custom Adapter or as a separate class altogether. The parent ViewHolder must extend ParentViewHolder, and the child ViewHolder must extend ChildViewHolder. This also means you must create two separate XML layouts for the ParentViewHolder and ChildViewHolder respectively. For ParentViewHolder, make sure to include ```super(itemView, parentItemClickListener)``` in your constructor, then modify as you would a normal viewHolder. The same should be done for ChildViewHolder, but rather ```super(itemView)```. Also, make sure to cast your passed ParentViewHolder and ChildViewHolder in ```onBindParentViewHolder``` and ```onBindChildViewHolder``` of the adapter to your custom viewHolders you created for each to allow for proper binding of data.
  
- ####Extras
+  ####Extras
  You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, after defining your clickable trigger button or view, call ```myCustomExpandingAdapter.setCustomClickableView(Your Custom View ID)``` and pass in the id.
  
  If you do set a custom clickable view, you can also set an animation for the view to rotate 180 degrees when expanding and collapsing. This is useful primarily with arrows which signifies for the user to click it to change the expansion. You can do this by calling ```myCustomExpandingAdapter.setRotation(long duration)``` in the constructor below where you called ```setCustomClickableView()```.
