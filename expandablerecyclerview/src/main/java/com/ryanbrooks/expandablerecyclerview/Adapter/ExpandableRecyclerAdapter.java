@@ -25,7 +25,7 @@ import java.util.List;
  * @version 1.0
  * @since 5/27/2015
  */
-public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
+public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements ParentItemClickListener {
     private static final String TAG = ExpandableRecyclerAdapter.class.getClass().getSimpleName();
     private static final String STABLE_ID_MAP = "ExpandableRecyclerAdapter.StableIdMap";
     private static final String STABLE_ID_LIST = "ExpandableRecyclerAdapter.StableIdList";
@@ -105,7 +105,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
      * @return the ViewHolder that cooresponds to the item at the position.
      */
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public VH onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         if (viewType == TYPE_PARENT) {
             return onCreateParentViewHolder(viewGroup);
         } else if (viewType == TYPE_CHILD) {
@@ -173,7 +173,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
      * @param parentViewGroup
      * @return ParentViewHolder that the user must create and inflate.
      */
-    public abstract ParentViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup);
+    public abstract VH onCreateParentViewHolder(ViewGroup parentViewGroup);
 
     /**
      * Creates the Child ViewHolder. Called from onCreateViewHolder when the item is a ChildObject.
@@ -181,7 +181,7 @@ public abstract class ExpandableRecyclerAdapter extends RecyclerView.Adapter<Rec
      * @param childViewGroup
      * @return ChildViewHolder that the user must create and inflate.
      */
-    public abstract ChildViewHolder onCreateChildViewHolder(ViewGroup childViewGroup);
+    public abstract VH onCreateChildViewHolder(ViewGroup childViewGroup);
 
     /**
      * Binds the data to the ParentViewHolder. Called from onBindViewHolder when the item is a
