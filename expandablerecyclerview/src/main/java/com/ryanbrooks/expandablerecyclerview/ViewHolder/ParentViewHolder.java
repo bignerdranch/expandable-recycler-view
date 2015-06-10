@@ -9,7 +9,12 @@ import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListe
 
 
 /**
- * Created by Ryan Brooks on 5/27/15.
+ * ParentViewHolder that extends the Base RecyclerView ViewHolder. All expansion animation and click
+ * handling is done here.
+ *
+ * @author Ryan Brooks
+ * @version 1.0
+ * @since 5/27/2015
  */
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
@@ -27,6 +32,14 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     private long mDuration;
     private float mRotation;
 
+    /**
+     * Public constructor that takes in an ItemView along with an implementation of
+     * ParentItemClickListener to handle the clicks of either the Parent item or the custom defined
+     * view.
+     *
+     * @param itemView
+     * @param parentItemClickListener
+     */
     public ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
         super(itemView);
 
@@ -36,15 +49,13 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         mRotation = INITIAL_POSITION;
     }
 
-    public void setCustomClickableView(View clickableView) {
-        mClickableView = clickableView;
-        itemView.setOnClickListener(null);
-        mClickableView.setOnClickListener(this);
-        if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
-            mClickableView.setRotation(mRotation);
-        }
-    }
-
+    /**
+     * Setter for a custom Clickable view rather than the Parent item. By calling this method, the
+     * Parent item is no longer responsible for triggering the expansion. The user should pass in
+     * the id of the view that they wish to be the expansion trigger.
+     *
+     * @param clickableViewId
+     */
     public void setCustomClickableViewOnly(int clickableViewId) {
         mClickableView = itemView.findViewById(clickableViewId);
         itemView.setOnClickListener(null);
@@ -54,6 +65,14 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         }
     }
 
+    /**
+     * Setter for a custom Clickable view and the Parent item. By calling this method, the
+     * Parent item and the clickable view are responsible for triggering the expansion. This means
+     * that either can be clicked and an expansion will occur. The user should pass in an id of the
+     * view they wish to set as the clickable expansion button.
+     *
+     * @param clickableViewId
+     */
     public void setCustomClickableViewAndItem(int clickableViewId) {
         mClickableView = itemView.findViewById(clickableViewId);
         itemView.setOnClickListener(this);
@@ -63,6 +82,11 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         }
     }
 
+    /**
+     * Setter method for a user defined Animation duration (in MS)
+     *
+     * @param animationDuration
+     */
     public void setAnimationDuration(long animationDuration) {
         mRotationEnabled = true;
         mDuration = animationDuration;
@@ -71,6 +95,9 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         }
     }
 
+    /**
+     * Disables animation of the custom clickable button.
+     */
     public void cancelAnimation() {
         mRotationEnabled = false;
         if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
@@ -78,6 +105,10 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         }
     }
 
+    /**
+     * Sets the Parent only as the trigger to expand the item. Also disables rotation of the custom
+     * clickable view.
+     */
     public void setMainItemClickToExpand() {
         if (mClickableView != null) {
             mClickableView.setOnClickListener(null);
@@ -86,10 +117,21 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         mRotationEnabled = false;
     }
 
+    /**
+     * Returns if the item is currently expanded.
+     *
+     * @return true if expanded, false if not
+     */
     public boolean isExpanded() {
         return mIsExpanded;
     }
 
+    /**
+     * Setter method for the item to be expanded or not. Also triggers the animation of the custom
+     * clickable view if it and the rotation duration are both defined.
+     *
+     * @param isExpanded
+     */
     public void setExpanded(boolean isExpanded) {
         mIsExpanded = isExpanded;
         if (mRotationEnabled) {
@@ -101,23 +143,47 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         }
     }
 
+    /**
+     * @return true if rotation is enabled, false if not
+     */
     public boolean isRotationEnabled() {
         return mRotationEnabled;
     }
 
+    /**
+     * Sets the position of the custom clickable view. 0f is default and 180f is roatated
+     *
+     * @param rotation
+     */
     public void setRotation(float rotation) {
         mRotationEnabled = true;
         mRotation = rotation;
     }
 
+    /**
+     * Getter for the ParentItemClickListener passed from the ExpandableRecyclerAdapter
+     *
+     * @return the ViewHolder's set ParentItemClickListner
+     */
     public ParentItemClickListener getParentItemClickListener() {
         return mParentItemClickListener;
     }
 
+    /**
+     * Setter for the ParentItemClickListener implemented in ExpandableRecyclerAdapter
+     *
+     * @param mParentItemClickListener
+     */
     public void setParentItemClickListener(ParentItemClickListener mParentItemClickListener) {
         this.mParentItemClickListener = mParentItemClickListener;
     }
 
+    /**
+     * Implementation of View.onClick to listen for the clicks on either the Parent item or the
+     * custom clickable view if applicable. Triggers rotation if enabled on click.
+     *
+     * @param v the view that is the trigger for expansion
+     */
     @Override
     public void onClick(View v) {
         if (mParentItemClickListener != null) {
