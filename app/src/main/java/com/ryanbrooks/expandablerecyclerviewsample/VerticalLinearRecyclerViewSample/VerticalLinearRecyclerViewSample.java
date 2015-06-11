@@ -54,7 +54,6 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         mDurationList = generateSpinnerSpeeds();
 
         mExpandableAdapter = new MyExpandableAdapter(this, setUpTestData(20));
-        mExpandableAdapter.setHasStableIds();
         mRecyclerView.setAdapter(mExpandableAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -76,6 +75,7 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         onCheckChanged(savedInstanceState.getBoolean(CUSTOM_EXPAND_BUTTON_CHECKED));
     }
 
+    // TODO: Comment these
     @OnItemSelected(R.id.vertical_sample_toolbar_spinner)
     void onItemSelected(int position) {
         if (mAnimationEnabledCheckBox.isChecked()) {
@@ -122,10 +122,7 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
             customChildObject.setChildText(CHILD_TEXT + i);
 
             CustomParentObject customParentObject = new CustomParentObject();
-
-            customChildObject.setParentObject(customParentObject);
             customParentObject.setChildObject(customChildObject);
-            customParentObject.setStableId(i);
             customParentObject.setParentNumber(i);
             customParentObject.setParentText(PARENT_TEXT + i);
             data.add(customParentObject);

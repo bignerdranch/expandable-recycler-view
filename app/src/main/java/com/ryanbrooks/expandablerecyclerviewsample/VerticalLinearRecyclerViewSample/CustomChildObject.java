@@ -1,10 +1,9 @@
 package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
 
-import com.ryanbrooks.expandablerecyclerview.Model.ChildObject;
 /**
  * Created by Ryan Brooks on 5/20/15.
  */
-public class CustomChildObject implements ChildObject {
+public class CustomChildObject {
     private Object mParentObject;
     private String mChildText;
 
@@ -16,15 +15,5 @@ public class CustomChildObject implements ChildObject {
 
     public void setChildText(String childText) {
         mChildText = childText;
-    }
-
-    @Override
-    public Object getParentObject() {
-        return mParentObject;
-    }
-
-    @Override
-    public void setParentObject(Object parentObject) {
-        mParentObject = parentObject;
     }
 }
