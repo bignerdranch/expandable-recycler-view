@@ -1,7 +1,5 @@
 package com.ryanbrooks.expandablerecyclerview.Adapter;
 
-import android.util.Log;
-
 import com.ryanbrooks.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerview.Model.ParentWrapper;
 

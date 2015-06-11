@@ -20,6 +20,7 @@ import butterknife.OnItemSelected;
 
 /**
  * Created by Ryan Brooks on 5/29/15.
+ * TODO: Comment Sample application
  */
 public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
@@ -65,17 +66,14 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState = mExpandableAdapter.onSaveInstanceState(outState);
-        outState.putBoolean(CUSTOM_EXPAND_BUTTON_CHECKED, mAnimationEnabledCheckBox.isChecked());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
-        onCheckChanged(savedInstanceState.getBoolean(CUSTOM_EXPAND_BUTTON_CHECKED));
     }
 
-    // TODO: Comment these
     @OnItemSelected(R.id.vertical_sample_toolbar_spinner)
     void onItemSelected(int position) {
         if (mAnimationEnabledCheckBox.isChecked()) {
