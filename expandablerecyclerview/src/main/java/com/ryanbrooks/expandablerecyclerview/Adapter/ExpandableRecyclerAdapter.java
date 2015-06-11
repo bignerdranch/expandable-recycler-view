@@ -135,7 +135,7 @@ public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHold
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (mExpandableRecyclerAdapterHelper.getHelperItemAtPosition(position) instanceof ParentWrapper) { // TODO: this should be done differently
+        if (mExpandableRecyclerAdapterHelper.getHelperItemAtPosition(position) instanceof ParentWrapper) {
             ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
 
             if (mParentAndIconClickable) {
