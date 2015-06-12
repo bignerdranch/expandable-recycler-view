@@ -26,6 +26,7 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     private static final String CUSTOM_EXPAND_BUTTON_CHECKED = "CUSTOM_EXPAND_BUTTON_CHECKED";
     private static final String CUSTOM_ANIMATION_DURATION_POSITION = "CUSTOM_ANIMATION_DURATION_POSITION";
     private static final String CHILD_TEXT = "Child ";
+    private static final String SECOND_CHILD_TEXT = "_2";
     private static final String PARENT_TEXT = "Parent ";
     private static final long INITIAL_ROTATION_SPEED_MS = 100;
 
@@ -115,11 +116,24 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     private ArrayList<Object> setUpTestData(int numItems) {
         ArrayList<Object> data = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
-            CustomChildObject customChildObject = new CustomChildObject();
-            customChildObject.setChildText(CHILD_TEXT + i);
+            ArrayList<Object> childObjectList = new ArrayList<>();
+
+            // Evens get 2 children, odds get 1
+            if (i % 2 == 0) {
+                CustomChildObject customChildObject = new CustomChildObject();
+                CustomChildObject customChildObject2 = new CustomChildObject();
+                customChildObject.setChildText(CHILD_TEXT + i);
+                customChildObject2.setChildText(CHILD_TEXT + i + SECOND_CHILD_TEXT);
+                childObjectList.add(customChildObject);
+                childObjectList.add(customChildObject2);
+            } else {
+                CustomChildObject customChildObject = new CustomChildObject();
+                customChildObject.setChildText(CHILD_TEXT + i);
+                childObjectList.add(customChildObject);
+            }
 
             CustomParentObject customParentObject = new CustomParentObject();
-            customParentObject.setChildObject(customChildObject);
+            customParentObject.setChildObjectList(childObjectList);
             customParentObject.setParentNumber(i);
             customParentObject.setParentText(PARENT_TEXT + i);
             data.add(customParentObject);
