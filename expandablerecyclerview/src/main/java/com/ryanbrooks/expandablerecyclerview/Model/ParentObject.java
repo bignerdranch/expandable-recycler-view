@@ -1,5 +1,7 @@
 package com.ryanbrooks.expandablerecyclerview.Model;
 
+import java.util.List;
+
 /**
  * Interface for implementing required methods in a ParentObject
  * <p/>
@@ -16,16 +18,17 @@ package com.ryanbrooks.expandablerecyclerview.Model;
 public interface ParentObject {
 
     /**
-     * Getter method object to the reference to this ParentObject's child
+     * Getter method object to the reference to this ParentObject's child list. The list should
+     * contain all children to be displayed. If list is empty, no children will be added.
      *
      * @return this Parent's child object
      */
-    Object getChildObject();
+    List<Object> getChildObjectList();
 
     /**
-     * Setter method for this parent's child object
+     * Setter method for this parent's child object list. Multiple can be added or none
      *
-     * @param childObject
+     * @param childObjectList
      */
-    void setChildObject(Object childObject);
+    void setChildObjectList(List<Object> childObjectList);
 }
