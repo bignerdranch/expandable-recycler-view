@@ -3,6 +3,7 @@ package com.ryanbrooks.expandablerecyclerview.Adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
@@ -11,7 +12,6 @@ import com.ryanbrooks.expandablerecyclerview.Model.ParentWrapper;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -293,7 +293,7 @@ public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHold
 
     /**
      * Method called to expand a ParentObject when clicked. This handles saving state, adding the
-     * corresponding child object to the list and updating the list.
+     * corresponding child objects to the list (the recyclerview list) and updating that list.
      *
      * @param parentObject
      * @param position
@@ -306,21 +306,25 @@ public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHold
         if (parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(false);
             mStableIdMap.put(parentWrapper.getStableId(), false);
-            mItemList.remove(position + 1);
-            mExpandableRecyclerAdapterHelper.getHelperItemList().remove(position + 1);
-            notifyItemRemoved(position + 1);
+            List<Object> childObjectList = ((ParentObject) parentWrapper.getParentObject()).getChildObjectList();
+            if (childObjectList != null) {
+                for (int i = childObjectList.size() - 1; i >= 0; i--) {
+                    mItemList.remove(position + i + 1);
+                    mExpandableRecyclerAdapterHelper.getHelperItemList().remove(position + i + 1);
+                    notifyItemRemoved(position + i + 1);
+                    Log.d(TAG, "Removed " + childObjectList.get(i).toString());
+                }
+            }
         } else {
             parentWrapper.setExpanded(true);
             mStableIdMap.put(parentWrapper.getStableId(), true);
-            List<Object> childObjectList = parentObject.getChildObjectList();
-            if (!childObjectList.isEmpty()) {
+            List<Object> childObjectList = ((ParentObject) parentWrapper.getParentObject()).getChildObjectList();
+            if (childObjectList != null) {
                 for (int i = 0; i < childObjectList.size(); i++) {
-                    mItemList.add(position + i, childObjectList.get(i));
-                    mExpandableRecyclerAdapterHelper.getHelperItemList().add(position + i, childObjectList.get(i));
-                    notifyItemInserted(position + i);
+                    mItemList.add(position + i + 1, childObjectList.get(i));
+                    mExpandableRecyclerAdapterHelper.getHelperItemList().add(position + i + 1, childObjectList.get(i));
+                    notifyItemInserted(position + i + 1);
                 }
-            } else {
-                // List is empty, don't expand anything
             }
         }
     }
@@ -378,9 +382,14 @@ public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHold
                 if (mStableIdMap.containsKey(parentWrapper.getStableId())) {
                     parentWrapper.setExpanded(mStableIdMap.get(parentWrapper.getStableId()));
                     if (parentWrapper.isExpanded()) {
-                        i++;
-                        mItemList.add(i, ((ParentObject) parentWrapper.getParentObject()).getChildObject());
-                        mExpandableRecyclerAdapterHelper.getHelperItemList().add(i, ((ParentObject) parentWrapper.getParentObject()).getChildObject());
+                        List<Object> childObjectList = ((ParentObject) parentWrapper.getParentObject()).getChildObjectList();
+                        if (childObjectList != null) {
+                            for (int j = 0; j < childObjectList.size(); j++) {
+                                i++;
+                                mItemList.add(i, childObjectList.get(j));
+                                mExpandableRecyclerAdapterHelper.getHelperItemList().add(i, childObjectList.get(j));
+                            }
+                        }
                     }
                 } else {
                     parentWrapper.setExpanded(false);
