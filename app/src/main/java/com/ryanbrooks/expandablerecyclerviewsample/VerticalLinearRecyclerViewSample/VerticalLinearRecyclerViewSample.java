@@ -117,7 +117,7 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         ArrayList<Object> data = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
             ArrayList<Object> childObjectList = new ArrayList<>();
-            
+
             // Evens get 2 children, odds get 1
             if (i % 2 == 0) {
                 CustomChildObject customChildObject = new CustomChildObject();
