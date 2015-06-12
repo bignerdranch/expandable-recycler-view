@@ -11,6 +11,7 @@ import com.ryanbrooks.expandablerecyclerview.Model.ParentWrapper;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -311,9 +312,16 @@ public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHold
         } else {
             parentWrapper.setExpanded(true);
             mStableIdMap.put(parentWrapper.getStableId(), true);
-            mItemList.add(position + 1, parentObject.getChildObject());
-            mExpandableRecyclerAdapterHelper.getHelperItemList().add(position + 1, parentObject.getChildObject());
-            notifyItemInserted(position + 1);
+            List<Object> childObjectList = parentObject.getChildObjectList();
+            if (!childObjectList.isEmpty()) {
+                for (int i = 0; i < childObjectList.size(); i++) {
+                    mItemList.add(position + i, childObjectList.get(i));
+                    mExpandableRecyclerAdapterHelper.getHelperItemList().add(position + i, childObjectList.get(i));
+                    notifyItemInserted(position + i);
+                }
+            } else {
+                // List is empty, don't expand anything
+            }
         }
     }
 

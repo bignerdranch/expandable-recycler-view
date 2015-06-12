@@ -2,11 +2,13 @@ package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSa
 
 import com.ryanbrooks.expandablerecyclerview.Model.ParentObject;
 
+import java.util.List;
+
 /**
  * Created by Ryan Brooks on 5/28/15.
  */
 public class CustomParentObject implements ParentObject {
-    private Object mChildObject;
+    private List<Object> mChildObjectList;
 
     private String mParentText;
     private int mParentNumber;
@@ -31,12 +33,12 @@ public class CustomParentObject implements ParentObject {
     }
 
     @Override
-    public Object getChildObject() {
-        return mChildObject;
+    public List<Object> getChildObjectList() {
+        return mChildObjectList;
     }
 
     @Override
-    public void setChildObject(Object childObject) {
-        mChildObject = childObject;
+    public void setChildObjectList(List<Object> childObjectList) {
+        mChildObjectList = childObjectList;
     }
 }
