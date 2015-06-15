@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerview.Adapter;
+package com.bignerdranch.expandablerecyclerview.Adapter;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,11 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ViewGroup;
 
-import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
-import com.ryanbrooks.expandablerecyclerview.Model.ParentObject;
-import com.ryanbrooks.expandablerecyclerview.Model.ParentWrapper;
-import com.ryanbrooks.expandablerecyclerview.ViewHolder.ChildViewHolder;
-import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
+import com.bignerdranch.expandablerecyclerview.ClickListeners.ParentItemClickListener;
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
+import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
+import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
 import java.util.HashMap;
 import java.util.List;
