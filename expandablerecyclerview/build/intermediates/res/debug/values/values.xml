@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RecyclerView"><attr format="string" name="layoutManager"/><attr name="android:orientation"/><attr format="integer" name="spanCount"/><attr format="boolean" name="reverseLayout"/><attr format="boolean" name="stackFromEnd"/></declare-styleable>
+    <!-- From: file:/Users/ryanbrooks/Documents/android_apps/ExpandableRecyclerViewSample/expandablerecyclerview/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/22.2.0/res/values/values.xml -->
+    <eat-comment/>
+    <dimen name="item_touch_helper_max_drag_scroll_per_frame">20dp</dimen>
+    <item name="item_touch_helper_previous_elevation" type="id"/>
+    <!-- From: file:/Users/ryanbrooks/Documents/android_apps/ExpandableRecyclerViewSample/expandablerecyclerview/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="app_name">ExpandableRecyclerView</string>
+</resources>
