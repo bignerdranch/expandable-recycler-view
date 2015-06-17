@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerview.Model;
+package com.bignerdranch.expandablerecyclerview.Model;
 
 /**
  * Created by Ryan Brooks on 6/11/15.

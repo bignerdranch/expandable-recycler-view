@@ -4,8 +4,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
-import com.ryanbrooks.expandablerecyclerview.ViewHolder.ParentViewHolder;
+import com.bignerdranch.expandablerecyclerview.ClickListeners.ParentItemClickListener;
+import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 

@@ -1,11 +1,11 @@
-package com.ryanbrooks.expandablerecyclerview.ViewHolder;
+package com.bignerdranch.expandablerecyclerview.ViewHolder;
 
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 
-import com.ryanbrooks.expandablerecyclerview.ClickListeners.ParentItemClickListener;
+import com.bignerdranch.expandablerecyclerview.ClickListeners.ParentItemClickListener;
 
 
 /**
