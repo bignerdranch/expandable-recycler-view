@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.List;
@@ -19,7 +17,8 @@ import java.util.List;
  * @version 1.0
  * @since 5/27/2015
  */
-public class MyExpandableAdapter extends ExpandableRecyclerAdapter {
+public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentViewHolder, CustomChildViewHolder> {
+    private final String TAG = this.getClass().getSimpleName();
 
     private LayoutInflater mInflater;
 
@@ -73,7 +72,7 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter {
      * @return the user's custom parent ViewHolder that must extend ParentViewHolder
      */
     @Override
-    public ParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
+    public CustomParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
         View view = mInflater.inflate(R.layout.recycler_item_layout_parent, parent, false);
         return new CustomParentViewHolder(view, this);
     }
@@ -86,7 +85,7 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter {
      * @return the user's custom parent ViewHolder that must extend ParentViewHolder
      */
     @Override
-    public ChildViewHolder onCreateChildViewHolder(ViewGroup parent) {
+    public CustomChildViewHolder onCreateChildViewHolder(ViewGroup parent) {
         View view = mInflater.inflate(R.layout.recycler_item_layout_child, parent, false);
         return new CustomChildViewHolder(view);
     }
@@ -99,11 +98,10 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter {
      * @param position the position in the RecyclerView of the item
      */
     @Override
-    public void onBindParentViewHolder(ParentViewHolder parentViewHolder, int position) {
-        CustomParentViewHolder customParentViewHolder = (CustomParentViewHolder) parentViewHolder;
-        CustomParentObject parentObject = (CustomParentObject) mItemList.get(position);
-        customParentViewHolder.numberText.setText(Integer.toString(parentObject.getParentNumber()));
-        customParentViewHolder.dataText.setText(parentObject.getParentText());
+    public void onBindParentViewHolder(CustomParentViewHolder parentViewHolder, int position, Object parentObject) {
+        CustomParentObject customParentObject = (CustomParentObject) parentObject;
+        parentViewHolder.numberText.setText(Integer.toString(customParentObject.getParentNumber()));
+        parentViewHolder.dataText.setText(customParentObject.getParentText());
     }
 
     /**
@@ -114,9 +112,8 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter {
      * @param position the position in the RecyclerView of the item
      */
     @Override
-    public void onBindChildViewHolder(ChildViewHolder childViewHolder, int position) {
-        CustomChildViewHolder customChildViewHolder = (CustomChildViewHolder) childViewHolder;
-        CustomChildObject childObject = (CustomChildObject) mItemList.get(position);
-        customChildViewHolder.dataText.setText(childObject.getChildText());
+    public void onBindChildViewHolder(CustomChildViewHolder childViewHolder, int position, Object childObject) {
+        CustomChildObject customChildObject = (CustomChildObject) childObject;
+        childViewHolder.dataText.setText(customChildObject.getChildText());
     }
 }
