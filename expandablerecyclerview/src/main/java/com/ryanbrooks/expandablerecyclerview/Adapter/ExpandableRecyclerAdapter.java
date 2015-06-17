@@ -162,11 +162,11 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             }
 
             parentViewHolder.setExpanded(((ParentWrapper) mExpandableRecyclerAdapterHelper.getHelperItemAtPosition(position)).isExpanded());
-            onBindParentViewHolder(parentViewHolder, position);
+            onBindParentViewHolder(parentViewHolder, position, mItemList.get(position));
         } else if (mItemList.get(position) == null) {
             throw new IllegalStateException("Incorrect ViewHolder found");
         } else {
-            onBindChildViewHolder((CVH) holder, position);
+            onBindChildViewHolder((CVH) holder, position, mItemList.get(position));
         }
     }
 
@@ -193,7 +193,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param parentViewHolder
      * @param position
      */
-    public abstract void onBindParentViewHolder(PVH parentViewHolder, int position);
+    public abstract void onBindParentViewHolder(PVH parentViewHolder, int position, Object parentObject);
 
     /**
      * Binds the data to the ChildViewHolder. Called from onBindViewHolder when the item is a
@@ -202,7 +202,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param childViewHolder
      * @param position
      */
-    public abstract void onBindChildViewHolder(CVH childViewHolder, int position);
+    public abstract void onBindChildViewHolder(CVH childViewHolder, int position, Object childObject);
 
     /**
      * Returns the size of the list that contains Parent and Child objects
