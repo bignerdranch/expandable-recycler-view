@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by Ryan Brooks on 5/21/15.
  */
-public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentViewHolder, CustomChildViewHolder> implements ParentItemClickListener {
+public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentViewHolder, CustomChildViewHolder> {
     private final String TAG = this.getClass().getSimpleName();
 
     private LayoutInflater mInflater;
@@ -51,15 +51,15 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
     }
 
     @Override
-    public void onBindParentViewHolder(CustomParentViewHolder parentViewHolder, int position) {
-        CustomParentObject parentObject = (CustomParentObject) mItemList.get(position);
-        parentViewHolder.numberText.setText(Integer.toString(parentObject.getParentNumber()));
-        parentViewHolder.dataText.setText(parentObject.getParentText());
+    public void onBindParentViewHolder(CustomParentViewHolder parentViewHolder, int position, Object parentObject) {
+        CustomParentObject customParentObject = (CustomParentObject) parentObject;
+        parentViewHolder.numberText.setText(Integer.toString(customParentObject.getParentNumber()));
+        parentViewHolder.dataText.setText(customParentObject.getParentText());
     }
 
     @Override
-    public void onBindChildViewHolder(CustomChildViewHolder childViewHolder, int position) {
-        CustomChildObject childObject = (CustomChildObject) mItemList.get(position);
-        childViewHolder.dataText.setText(childObject.getChildText());
+    public void onBindChildViewHolder(CustomChildViewHolder childViewHolder, int position, Object childObject) {
+        CustomChildObject customChildObject = (CustomChildObject) childObject;
+        childViewHolder.dataText.setText(customChildObject.getChildText());
     }
 }
