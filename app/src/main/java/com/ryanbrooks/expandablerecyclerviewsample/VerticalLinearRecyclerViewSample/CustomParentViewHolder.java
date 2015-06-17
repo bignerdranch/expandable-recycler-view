@@ -28,7 +28,7 @@ public class CustomParentViewHolder extends ParentViewHolder {
     /**
      * Public constructor for the CustomViewHolder.
      *
-     * @param itemView                the view of the parent item. Find/modify views using this.
+     * @param itemView the view of the parent item. Find/modify views using this.
      * @param parentItemClickListener used by the adapter. Do not modify
      */
     public CustomParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {

@@ -26,7 +26,7 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter {
     /**
      * Public primary constructor.
      *
-     * @param context  for inflating views
+     * @param context for inflating views
      * @param itemList the list of items to be displayed in the RecyclerView
      */
     public MyExpandableAdapter(Context context, List<Object> itemList) {
@@ -35,12 +35,12 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter {
     }
 
     /**
-     * Public secondary constructor. This constructor add the ability to add a custom triggering
+     * Public secondary constructor. This constructor adds the ability to add a custom triggering
      * view when the adapter is created without having to set it later. This is here for demo
      * purposes.
      *
-     * @param context               for inflating views
-     * @param itemList              the list of items to be displayed in the RecyclerView
+     * @param context for inflating views
+     * @param itemList the list of items to be displayed in the RecyclerView
      * @param customClickableViewId the id of the view that triggers the expansion
      */
     public MyExpandableAdapter(Context context, List<Object> itemList,
@@ -50,14 +50,14 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter {
     }
 
     /**
-     * Public secondary constructor. This constructor add the ability to add a custom triggering
+     * Public secondary constructor. This constructor adds the ability to add a custom triggering
      * view and a custom animation duration when the adapter is created without having to set them
      * later. This is here for demo purposes.
      *
-     * @param context               for inflating views
-     * @param itemList              the list of items to be displayed in the RecyclerView
+     * @param context for inflating views
+     * @param itemList the list of items to be displayed in the RecyclerView
      * @param customClickableViewId the id of the view that triggers the expansion
-     * @param animationDuration     the duration (in ms) of the rotation animation
+     * @param animationDuration the duration (in ms) of the rotation animation
      */
     public MyExpandableAdapter(Context context, List<Object> itemList,
                                int customClickableViewId, long animationDuration) {
@@ -96,7 +96,7 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter {
      * parent view should be performed here.
      *
      * @param parentViewHolder the ViewHolder of the parent item created in OnCreateParentViewHolder
-     * @param position         the position in the RecyclerView of the item
+     * @param position the position in the RecyclerView of the item
      */
     @Override
     public void onBindParentViewHolder(ParentViewHolder parentViewHolder, int position) {
@@ -111,7 +111,7 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter {
      * child view should be performed here.
      *
      * @param childViewHolder the ViewHolder of the child item created in OnCreateChildViewHolder
-     * @param position        the position in the RecyclerView of the item
+     * @param position the position in the RecyclerView of the item
      */
     @Override
     public void onBindChildViewHolder(ChildViewHolder childViewHolder, int position) {
