@@ -25,7 +25,7 @@ import java.util.List;
  * @version 1.0
  * @since 5/27/2015
  */
-public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements ParentItemClickListener {
+public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CVH extends ChildViewHolder> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
     private static final String TAG = ExpandableRecyclerAdapter.class.getClass().getSimpleName();
     private static final String STABLE_ID_MAP = "ExpandableRecyclerAdapter.StableIdMap";
     private static final String STABLE_ID_LIST = "ExpandableRecyclerAdapter.StableIdList";
@@ -108,7 +108,7 @@ public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHold
      * @return the ViewHolder that cooresponds to the item at the position.
      */
     @Override
-    public VH onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         if (viewType == TYPE_PARENT) {
             return onCreateParentViewHolder(viewGroup);
         } else if (viewType == TYPE_CHILD) {
@@ -135,7 +135,7 @@ public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (mExpandableRecyclerAdapterHelper.getHelperItemAtPosition(position) instanceof ParentWrapper) {
-            ParentViewHolder parentViewHolder = (ParentViewHolder) holder;
+            PVH parentViewHolder = (PVH) holder;
 
             if (mParentAndIconClickable) {
                 if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET
@@ -162,11 +162,11 @@ public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHold
             }
 
             parentViewHolder.setExpanded(((ParentWrapper) mExpandableRecyclerAdapterHelper.getHelperItemAtPosition(position)).isExpanded());
-            onBindParentViewHolder(parentViewHolder, position);
+            onBindParentViewHolder(parentViewHolder, position, mItemList.get(position));
         } else if (mItemList.get(position) == null) {
             throw new IllegalStateException("Incorrect ViewHolder found");
         } else {
-            onBindChildViewHolder((ChildViewHolder) holder, position);
+            onBindChildViewHolder((CVH) holder, position, mItemList.get(position));
         }
     }
 
@@ -176,7 +176,7 @@ public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHold
      * @param parentViewGroup
      * @return ParentViewHolder that the user must create and inflate.
      */
-    public abstract VH onCreateParentViewHolder(ViewGroup parentViewGroup);
+    public abstract PVH onCreateParentViewHolder(ViewGroup parentViewGroup);
 
     /**
      * Creates the Child ViewHolder. Called from onCreateViewHolder when the item is a ChildObject.
@@ -184,7 +184,7 @@ public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHold
      * @param childViewGroup
      * @return ChildViewHolder that the user must create and inflate.
      */
-    public abstract VH onCreateChildViewHolder(ViewGroup childViewGroup);
+    public abstract CVH onCreateChildViewHolder(ViewGroup childViewGroup);
 
     /**
      * Binds the data to the ParentViewHolder. Called from onBindViewHolder when the item is a
@@ -193,7 +193,7 @@ public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHold
      * @param parentViewHolder
      * @param position
      */
-    public abstract void onBindParentViewHolder(ParentViewHolder parentViewHolder, int position);
+    public abstract void onBindParentViewHolder(PVH parentViewHolder, int position, Object parentObject);
 
     /**
      * Binds the data to the ChildViewHolder. Called from onBindViewHolder when the item is a
@@ -202,7 +202,7 @@ public abstract class ExpandableRecyclerAdapter<VH extends RecyclerView.ViewHold
      * @param childViewHolder
      * @param position
      */
-    public abstract void onBindChildViewHolder(ChildViewHolder childViewHolder, int position);
+    public abstract void onBindChildViewHolder(CVH childViewHolder, int position, Object childObject);
 
     /**
      * Returns the size of the list that contains Parent and Child objects
