@@ -14,7 +14,12 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
- * Created by Ryan Brooks on 5/19/15.
+ * Main Activity that contains navigation for sample application.
+ * Uses ButterKnife to inject view resources.
+ *
+ * @author Ryan Brooks
+ * @version 1.0
+ * @since 5/27/2015
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
