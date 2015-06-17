@@ -18,8 +18,12 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnItemSelected;
 
 /**
- * Created by Ryan Brooks on 5/29/15.
- * TODO: Comment Sample application
+ * Sample Activity for the vertical linear RecyclerView sample.
+ * Uses ButterKnife to inject view resources.
+ *
+ * @author Ryan Brooks
+ * @version 1.0
+ * @since 5/27/2015
  */
 public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
@@ -52,60 +56,95 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Generate spinner's list of rotation speeds (in ms)
         mDurationList = generateSpinnerSpeeds();
 
+        // Create a new adapter with 20 test data items
         mExpandableAdapter = new MyExpandableAdapter(this, setUpTestData(20));
+        // Set the RecyclerView's adapter to the ExpandableAdapter we just created
         mRecyclerView.setAdapter(mExpandableAdapter);
+        // Set the layout manager to a LinearLayout manager for vertical list
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Set spinner adapter
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(this, mDurationList);
         mToolbarSpinner.setAdapter(customSpinnerAdapter);
     }
 
+    /**
+     * Save the instance state of the adapter to keep expanded/collapsed states when rotating or
+     * pausing the activity.
+     *
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState = mExpandableAdapter.onSaveInstanceState(outState);
     }
 
+    /**
+     * Load the expanded/collapsed states of the adapter back into the view when done rotating or
+     * resuming the activity.
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
     }
 
+    /**
+     * On item selected listener of the rotation speed spinner in the Toolbar.
+     *
+     * @param position
+     */
     @OnItemSelected(R.id.vertical_sample_toolbar_spinner)
     void onItemSelected(int position) {
-        if (mAnimationEnabledCheckBox.isChecked()) {
+        if (mAnimationEnabledCheckBox.isChecked()) { // Only the custom triggering view triggers expansion
             if (mDurationList.get(position) == 0) {
+                // Sets the rotation animation to off
                 mExpandableAdapter.setParentClickableViewAnimationDuration(
                         mExpandableAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);
             } else {
+                // Sets the animation duration to the corresponding duration at the selected position
                 mExpandableAdapter.setParentClickableViewAnimationDuration(mDurationList.get(position));
             }
+            // Disables clicking of both the item and the custom clickable view declared by the user
             mExpandableAdapter.setParentAndIconExpandOnClick(false);
-        } else {
+        } else { // Both the custom triggering view and the parent item trigger expansion when clicked
             if (mDurationList.get(position) == 0) {
+                // Sets the rotation animation to off
                 mExpandableAdapter.setParentClickableViewAnimationDuration(
                         mExpandableAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);
+                // Disable clicking of both parent and child to trigger expansion/collapsing
                 mExpandableAdapter.setParentAndIconExpandOnClick(false);
             } else {
+                // Sets the animation duration to the corresponding duration at the selected position
                 mExpandableAdapter.setParentClickableViewAnimationDuration(mDurationList.get(position));
+                // Sets the custom triggering view to the id of the view
                 mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
+                // Sets both the custom triggering view and the parent item to trigger expansion
                 mExpandableAdapter.setParentAndIconExpandOnClick(true);
             }
         }
         mExpandableAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Check changed listener for the custom triggering view checkbox.
+     *
+     * @param isChecked
+     */
     @OnCheckedChanged(R.id.vertical_sample_toolbar_checkbox)
     void onCheckChanged(boolean isChecked) {
-        if (isChecked) {
+        if (isChecked) { // Only the custom triggering view can trigger expansion
             mExpandableAdapter.setParentAndIconExpandOnClick(false);
             mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
             mExpandableAdapter.setParentClickableViewAnimationDuration((Long) mToolbarSpinner.getSelectedItem());
             mExpandableAdapter.notifyDataSetChanged();
-        } else {
+        } else { // Both the custom triggering view and the parent item can trigger expansion
             mExpandableAdapter.setParentAndIconExpandOnClick(true);
             mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
             mExpandableAdapter.setParentClickableViewAnimationDuration((Long) mToolbarSpinner.getSelectedItem());
@@ -113,6 +152,18 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to set up test data used in the RecyclerView.
+     * <p>
+     * Each child object contains a string.
+     * Each parent object contains a number corresponding to the number of the parent and a string
+     * that contains a message.
+     * Each parent also contains a list of children which is generated in this. Every odd numbered
+     * parent gets one child and every even numbered parent gets two children.
+     *
+     * @param numItems
+     * @return an ArrayList of Objects that contains all parent items. Expansion of children are handled in the adapter
+     */
     private ArrayList<Object> setUpTestData(int numItems) {
         ArrayList<Object> data = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
@@ -141,6 +192,13 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
         return data;
     }
 
+    /**
+     * Method to set up the list of animation durations for the Toolbar's Spinner.
+     * <p>
+     * The list contains long values that correspond to the length of time (in ms) of the animation.
+     *
+     * @return the list of times (in ms) to be populated into the Toolbar's spinner.
+     */
     private ArrayList<Long> generateSpinnerSpeeds() {
         ArrayList<Long> speedList = new ArrayList<>();
         speedList.add(mExpandableAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);

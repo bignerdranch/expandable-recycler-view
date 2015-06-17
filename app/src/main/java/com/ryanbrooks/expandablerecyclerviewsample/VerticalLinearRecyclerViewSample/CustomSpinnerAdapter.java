@@ -12,7 +12,11 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
 import java.util.ArrayList;
 
 /**
- * Created by ryanbrooks on 6/3/15.
+ * Cusstom adapter for the animation duration selection Spinner in the Toolbar.
+ *
+ * @author Ryan Brooks
+ * @version 1.0
+ * @since 5/27/2015
  */
 public class CustomSpinnerAdapter extends ArrayAdapter<Long> {
     private static final String NO_ANIMATION_TEXT = "No Animation";
