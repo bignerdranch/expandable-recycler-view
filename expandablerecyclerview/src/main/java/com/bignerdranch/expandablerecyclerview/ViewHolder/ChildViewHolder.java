@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerview.ViewHolder;
+package com.bignerdranch.expandablerecyclerview.ViewHolder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

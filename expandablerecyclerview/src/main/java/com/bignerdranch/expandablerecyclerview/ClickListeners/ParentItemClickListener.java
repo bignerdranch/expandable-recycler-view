@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerview.ClickListeners;
+package com.bignerdranch.expandablerecyclerview.ClickListeners;
 
 /**
  * Interface to allow for handling clicks of the ParentObject.
