@@ -45,9 +45,6 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     private int mCustomParentAnimationViewId = CUSTOM_ANIMATION_VIEW_NOT_SET;
     private long mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
 
-    // TODO: Make private list or add to helper that is total list. User should only pass in parents
-    // with reference to children inside of them
-
     /**
      * Public constructor for the base ExpandableRecyclerView. This constructor takes in no
      * extra parameters for custom clickable views and animation durations. This means a click of
