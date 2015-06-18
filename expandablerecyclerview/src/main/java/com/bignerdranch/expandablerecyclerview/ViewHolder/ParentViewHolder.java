@@ -38,12 +38,9 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      * view.
      *
      * @param itemView
-     * @param parentItemClickListener
      */
-    public ParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
+    public ParentViewHolder(View itemView) {
         super(itemView);
-
-        mParentItemClickListener = parentItemClickListener;
         mIsExpanded = false;
         mDuration = DEFAULT_ROTATE_DURATION_MS;
         mRotation = INITIAL_POSITION;

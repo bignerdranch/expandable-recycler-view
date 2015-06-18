@@ -155,7 +155,7 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
 
     /**
      * Method to set up test data used in the RecyclerView.
-     * <p>
+     * <p/>
      * Each child object contains a string.
      * Each parent object contains a number corresponding to the number of the parent and a string
      * that contains a message.
@@ -195,7 +195,7 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
 
     /**
      * Method to set up the list of animation durations for the Toolbar's Spinner.
-     * <p>
+     * <p/>
      * The list contains long values that correspond to the length of time (in ms) of the animation.
      *
      * @return the list of times (in ms) to be populated into the Toolbar's spinner.

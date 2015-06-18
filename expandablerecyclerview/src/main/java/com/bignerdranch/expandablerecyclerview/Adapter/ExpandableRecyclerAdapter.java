@@ -118,7 +118,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         if (viewType == TYPE_PARENT) {
-            return onCreateParentViewHolder(viewGroup);
+            PVH pvh = onCreateParentViewHolder(viewGroup);
+            pvh.setParentItemClickListener(this);
+            return pvh;
         } else if (viewType == TYPE_CHILD) {
             return onCreateChildViewHolder(viewGroup);
         } else {

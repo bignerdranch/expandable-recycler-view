@@ -75,7 +75,7 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
     @Override
     public CustomParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
         View view = mInflater.inflate(R.layout.recycler_item_layout_parent, parent, false);
-        return new CustomParentViewHolder(view, this);
+        return new CustomParentViewHolder(view);
     }
 
     /**
