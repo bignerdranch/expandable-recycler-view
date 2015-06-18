@@ -12,6 +12,7 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,11 +38,15 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     protected Context mContext;
     protected List<Object> mItemList;
+    protected List<ParentObject> mParentItemList;
     private HashMap<Long, Boolean> mStableIdMap;
     private ExpandableRecyclerAdapterHelper mExpandableRecyclerAdapterHelper;
     private boolean mParentAndIconClickable = false;
     private int mCustomParentAnimationViewId = CUSTOM_ANIMATION_VIEW_NOT_SET;
     private long mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
+
+    // TODO: Make private list or add to helper that is total list. User should only pass in parents
+    // with reference to children inside of them
 
     /**
      * Public constructor for the base ExpandableRecyclerView. This constructor takes in no
@@ -49,12 +54,13 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * the parent item will trigger the expansion.
      *
      * @param context
-     * @param itemList
+     * @param parentItemList
      */
-    public ExpandableRecyclerAdapter(Context context, List<Object> itemList) {
+    public ExpandableRecyclerAdapter(Context context, List<ParentObject> parentItemList) {
         mContext = context;
-        mItemList = itemList;
-        mExpandableRecyclerAdapterHelper = new ExpandableRecyclerAdapterHelper(itemList);
+        mParentItemList = parentItemList;
+        mItemList = generateObjectList(parentItemList);
+        mExpandableRecyclerAdapterHelper = new ExpandableRecyclerAdapterHelper(mItemList);
         mStableIdMap = generateStableIdMapFromList(mExpandableRecyclerAdapterHelper.getHelperItemList());
     }
 
@@ -64,14 +70,15 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * By default, a parent item click is the trigger for the expanding/collapsing.
      *
      * @param context
-     * @param itemList
+     * @param parentItemList
      * @param customParentAnimationViewId
      */
-    public ExpandableRecyclerAdapter(Context context, List<Object> itemList,
+    public ExpandableRecyclerAdapter(Context context, List<ParentObject> parentItemList,
                                      int customParentAnimationViewId) {
         mContext = context;
-        mItemList = itemList;
-        mExpandableRecyclerAdapterHelper = new ExpandableRecyclerAdapterHelper(itemList);
+        mParentItemList = parentItemList;
+        mItemList = generateObjectList(parentItemList);
+        mExpandableRecyclerAdapterHelper = new ExpandableRecyclerAdapterHelper(mItemList);
         mStableIdMap = generateStableIdMapFromList(mExpandableRecyclerAdapterHelper.getHelperItemList());
         mCustomParentAnimationViewId = customParentAnimationViewId;
     }
@@ -82,15 +89,16 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * child along with a long for a custom duration in MS for the rotation animation.
      *
      * @param context
-     * @param itemList
+     * @param parentItemList
      * @param customParentAnimationViewId
      * @param animationDuration
      */
-    public ExpandableRecyclerAdapter(Context context, List<Object> itemList,
+    public ExpandableRecyclerAdapter(Context context, List<ParentObject> parentItemList,
                                      int customParentAnimationViewId, long animationDuration) {
         mContext = context;
-        mItemList = itemList;
-        mExpandableRecyclerAdapterHelper = new ExpandableRecyclerAdapterHelper(itemList);
+        mParentItemList = parentItemList;
+        mItemList = generateObjectList(parentItemList);
+        mExpandableRecyclerAdapterHelper = new ExpandableRecyclerAdapterHelper(mItemList);
         mStableIdMap = generateStableIdMapFromList(mExpandableRecyclerAdapterHelper.getHelperItemList());
         mCustomParentAnimationViewId = customParentAnimationViewId;
         mAnimationDuration = animationDuration;
@@ -345,6 +353,22 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             }
         }
         return parentObjectHashMap;
+    }
+
+    /**
+     * Generates an ArrayList of type Object for keeping track of all objects including children
+     * that are added to the RV. Takes in a list of parents so the user doesn't have to pass in
+     * a list of objects.
+     *
+     * @param parentObjectList the list of all parent objects provided by the user
+     * @return ArrayList of type Object that handles the items in the RV
+     */
+    private ArrayList<Object> generateObjectList(List<ParentObject> parentObjectList) {
+        ArrayList<Object> objectList = new ArrayList<>();
+        for (ParentObject parentObject : parentObjectList) {
+            objectList.add(parentObject);
+        }
+        return objectList;
     }
 
     /**

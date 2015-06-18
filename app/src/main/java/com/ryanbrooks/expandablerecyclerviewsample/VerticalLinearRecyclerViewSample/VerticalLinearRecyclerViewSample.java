@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
@@ -164,8 +165,8 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
      * @param numItems
      * @return an ArrayList of Objects that contains all parent items. Expansion of children are handled in the adapter
      */
-    private ArrayList<Object> setUpTestData(int numItems) {
-        ArrayList<Object> data = new ArrayList<>();
+    private ArrayList<ParentObject> setUpTestData(int numItems) {
+        ArrayList<ParentObject> parentObjectList = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
             ArrayList<Object> childObjectList = new ArrayList<>();
 
@@ -187,9 +188,9 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
             customParentObject.setChildObjectList(childObjectList);
             customParentObject.setParentNumber(i);
             customParentObject.setParentText(PARENT_TEXT + i);
-            data.add(customParentObject);
+            parentObjectList.add(customParentObject);
         }
-        return data;
+        return parentObjectList;
     }
 
     /**
