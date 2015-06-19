@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.List;
@@ -26,10 +27,10 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
      * Public primary constructor.
      *
      * @param context for inflating views
-     * @param itemList the list of items to be displayed in the RecyclerView
+     * @param parentItemList the list of parent items to be displayed in the RecyclerView
      */
-    public MyExpandableAdapter(Context context, List<Object> itemList) {
-        super(context, itemList);
+    public MyExpandableAdapter(Context context, List<ParentObject> parentItemList) {
+        super(context, parentItemList);
         mInflater = LayoutInflater.from(context);
     }
 
@@ -39,12 +40,12 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
      * purposes.
      *
      * @param context for inflating views
-     * @param itemList the list of items to be displayed in the RecyclerView
+     * @param parentItemList the list of parent items to be displayed in the RecyclerView
      * @param customClickableViewId the id of the view that triggers the expansion
      */
-    public MyExpandableAdapter(Context context, List<Object> itemList,
+    public MyExpandableAdapter(Context context, List<ParentObject> parentItemList,
                                int customClickableViewId) {
-        super(context, itemList, customClickableViewId);
+        super(context, parentItemList, customClickableViewId);
         mInflater = LayoutInflater.from(context);
     }
 
@@ -54,13 +55,13 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
      * later. This is here for demo purposes.
      *
      * @param context for inflating views
-     * @param itemList the list of items to be displayed in the RecyclerView
+     * @param parentItemList the list of parent items to be displayed in the RecyclerView
      * @param customClickableViewId the id of the view that triggers the expansion
      * @param animationDuration the duration (in ms) of the rotation animation
      */
-    public MyExpandableAdapter(Context context, List<Object> itemList,
+    public MyExpandableAdapter(Context context, List<ParentObject> parentItemList,
                                int customClickableViewId, long animationDuration) {
-        super(context, itemList, customClickableViewId, animationDuration);
+        super(context, parentItemList, customClickableViewId, animationDuration);
         mInflater = LayoutInflater.from(context);
     }
 
@@ -74,7 +75,7 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
     @Override
     public CustomParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
         View view = mInflater.inflate(R.layout.recycler_item_layout_parent, parent, false);
-        return new CustomParentViewHolder(view, this);
+        return new CustomParentViewHolder(view);
     }
 
     /**

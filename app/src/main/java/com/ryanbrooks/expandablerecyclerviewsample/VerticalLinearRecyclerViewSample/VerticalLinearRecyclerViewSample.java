@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
@@ -154,7 +155,7 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
 
     /**
      * Method to set up test data used in the RecyclerView.
-     * <p>
+     * <p/>
      * Each child object contains a string.
      * Each parent object contains a number corresponding to the number of the parent and a string
      * that contains a message.
@@ -164,8 +165,8 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
      * @param numItems
      * @return an ArrayList of Objects that contains all parent items. Expansion of children are handled in the adapter
      */
-    private ArrayList<Object> setUpTestData(int numItems) {
-        ArrayList<Object> data = new ArrayList<>();
+    private ArrayList<ParentObject> setUpTestData(int numItems) {
+        ArrayList<ParentObject> parentObjectList = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
             ArrayList<Object> childObjectList = new ArrayList<>();
 
@@ -187,14 +188,14 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
             customParentObject.setChildObjectList(childObjectList);
             customParentObject.setParentNumber(i);
             customParentObject.setParentText(PARENT_TEXT + i);
-            data.add(customParentObject);
+            parentObjectList.add(customParentObject);
         }
-        return data;
+        return parentObjectList;
     }
 
     /**
      * Method to set up the list of animation durations for the Toolbar's Spinner.
-     * <p>
+     * <p/>
      * The list contains long values that correspond to the length of time (in ms) of the animation.
      *
      * @return the list of times (in ms) to be populated into the Toolbar's spinner.

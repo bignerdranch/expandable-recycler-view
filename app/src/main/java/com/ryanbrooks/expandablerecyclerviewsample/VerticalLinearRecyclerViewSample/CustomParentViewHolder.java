@@ -29,10 +29,9 @@ public class CustomParentViewHolder extends ParentViewHolder {
      * Public constructor for the CustomViewHolder.
      *
      * @param itemView the view of the parent item. Find/modify views using this.
-     * @param parentItemClickListener used by the adapter. Do not modify
      */
-    public CustomParentViewHolder(View itemView, ParentItemClickListener parentItemClickListener) {
-        super(itemView, parentItemClickListener);
+    public CustomParentViewHolder(View itemView) {
+        super(itemView);
 
         numberText = (TextView) itemView.findViewById(R.id.recycler_item_number_parent);
         dataText = (TextView) itemView.findViewById(R.id.recycler_item_text_parent);
