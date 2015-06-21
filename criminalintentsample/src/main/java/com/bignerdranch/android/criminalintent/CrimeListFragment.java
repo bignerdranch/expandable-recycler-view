@@ -25,12 +25,12 @@ public class CrimeListFragment extends Fragment {
         mCrimeRecyclerView = (RecyclerView) view.findViewById(R.id.crime_recycler_view);
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        CrimeExpandableAdapter mCrimeExpandableAdapter = new CrimeExpandableAdapter(getActivity(), generateCrimes());
-        mCrimeExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
-        mCrimeExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
-        mCrimeExpandableAdapter.setParentAndIconExpandOnClick(true);
+        CrimeExpandableAdapter crimeExpandableAdapter = new CrimeExpandableAdapter(getActivity(), generateCrimes());
+        crimeExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
+        crimeExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
+        crimeExpandableAdapter.setParentAndIconExpandOnClick(true);
 
-        mCrimeRecyclerView.setAdapter(mCrimeExpandableAdapter);
+        mCrimeRecyclerView.setAdapter(crimeExpandableAdapter);
 
         return view;
     }
