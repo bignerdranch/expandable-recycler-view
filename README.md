@@ -122,7 +122,7 @@ To save expanded/collapsed states, inside onSaveInstanceState(Bundle outState) o
     }
  ```
  
-You can also check out the sample application for a full working demo.
+You can also check out the two sample applications for a full working demo.
 
 License
 -------
