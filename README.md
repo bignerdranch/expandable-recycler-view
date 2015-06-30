@@ -56,7 +56,7 @@ Javadocs for the library and sample are available [here](http://bignerdranch.git
  
 ```java
 RecyclerView mRecyclerView = (RecyclerView) findViewById(YOUR RECYCLERVIEW ID);
-MyExpandable mExpandableAdapter = new MyExpandableAdapter(getActivity(), PARENTOBJECT LIST);
+MyExpandable mExpandableAdapter = new MyExpandableAdapter(getActivity(), YOUR ParentObject LIST);
 mRecyclerView.setAdapter(mExpandableAdapter);
 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 ```
