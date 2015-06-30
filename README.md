@@ -93,15 +93,15 @@ When generating the list of parent objects, you should attach all children to th
 #### Extras
  You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, in your activity or fragment, call ```myCustomExpandingAdapter.setCustomClickableView(Your Custom View ID)``` and pass in the id.
  
- If you do set a custom clickable view, you can also set an animation for the view to rotate 180 degrees when expanding and collapsing. This is useful primarily with arrows which signifies for the user to click it to change the expansion. You can do this by calling ```myCustomExpandingAdapter.setRotation(long durationInMS)``` in the constructor below where you called ```setCustomClickableView()```.
- 
- By default the rotation is off. If you'd like to use the default state, call ```myCustomExpandingAdapter.setParentClickableViewAnimationDefaultDuration()```. This rotation's duration is 200 ms.
+ If you do set a custom clickable view, you can also set an animation for the view to rotate 180 degrees when expanding and collapsing. This is useful primarily with arrows which signifies for the user to click it to change the expansion. By default the rotation is off. You can enable rotation by calling ```myCustomExpandingAdapter.setRotation(long durationInMS)``` in the constructor, below where you called ```setCustomClickableView()```. When setting the rotation, you must pass in a duration in Milliseconds. If you'd like to use the default rotation duration rather than defining your own, call ```myCustomExpandingAdapter.setParentClickableViewAnimationDefaultDuration()``` instead. The default rotation duration is 200 ms.
  
  After implementing these, in the activity or fragment that is holding your RecyclerView, simply set the adapter to your custom adapter, and set the layout manager to a new LinearLayoutManager. An example is here:
  
  ```
  MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, objectList);
- // Animation configuration goes here
+ 
+ // Optional animation configuration goes here
+ 
  mRecyclerView.setAdapter(myCustomExpandingAdapter);
  mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
  ```
