@@ -28,7 +28,7 @@ Then, navigate inside the directory, clean and build from Android Studio or with
 Now run the sample app on any device or emulator/simulator to view the basic functionality of the list. Code for the sample is located under ```/app/src/main```. All library code is located under ```/expandablerecyclerview/src/main```. The CriminalIntent sample is located under ```/criminalintentsample/src/main```.
 
 ## Overview
-Expandable RecyclerView can be used with any default RecyclerView.
+Expandable RecyclerView can be used with any stock Android RecyclerView.
 
 **What you need to implement:**
 - A custom adapter that extends ```ExpandableRecyclerAdapter```
