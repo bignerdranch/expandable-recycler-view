@@ -44,9 +44,9 @@ I have written an in-depth tutorial but it has yet to be published yet. The link
 Javadocs for the library and sample are available [here](http://bignerdranch.github.io/expandable-recycler-view/).
 
 ## Usage
- First, Create a RecyclerView in your xml layout and instantiate/define it in your activity/fragment as you would usually do.
+ First, Create a RecyclerView in your xml layout and instantiate/define it in your /res/layout/xml layout as you would usually do.
  
- Next, create an adapter class that extends ExpandableRecyclerAdapter. Implement the required methods.
+ Next, create an adapter class that extends ```ExpandableRecyclerAdapter```. Implement the required methods.
  
  Then, create two ViewHolders and their respective layouts. One ViewHolder must extend ```ParentViewHolder``` and the other must extend ```ChildViewHolder```. Create their respective views and create variables in these ViewHolders to access those views.
  
