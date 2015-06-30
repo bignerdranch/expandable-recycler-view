@@ -39,7 +39,7 @@ Expandable RecyclerView can be used with any stock Android RecyclerView.
 
 ## Tutorial
 
-I have written an in-depth tutorial on how to use this library. View the tutorial [here](). **Link to Blogpost**
+I have written an in-depth tutorial but it has yet to be published yet. The link will be posted here when available.
 
 Javadocs for the library and sample are available [here](http://bignerdranch.github.io/expandable-recycler-view/).
 
