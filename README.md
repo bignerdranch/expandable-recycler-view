@@ -41,6 +41,8 @@ Expandable RecyclerView can be used with any default RecyclerView.
 
 I have written an in-depth tutorial on how to use this library. View the tutorial [here](). **Link to Blogpost**
 
+Javadocs for the library and sample are available [here](http://bignerdranch.github.io/expandable-recycler-view/).
+
 ## Usage
  First, Create a RecyclerView in your xml layout and instantiate/define it in your activity/fragment as you would usually do.
  
