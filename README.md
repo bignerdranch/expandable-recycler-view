@@ -63,7 +63,7 @@ mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
  Inside your ExpandableRecyclerAdapter, you can create and bind your Parent and Child ViewHolders just as you would create and bind ViewHolders in a normal RecyclerView.
 
- Then, define a parent object and implement ```ParentObject```. It is also best practice to create a separate child object to store any data that you need to display in the child view, but it is not required. When you implement ```ParentObject```, you need to create an instance variable, List<Object>, to store all the children of the parent object in. It must be type Object. If it is null or empty, no child will be shown.
+ Then, define a parent object and implement ```ParentObject```. It is also best practice to create a separate child object to store any data that you need to display in the child view, but it is not required. When you implement ```ParentObject```, you need to create an instance variable, List<Object>, to store all the children of the parent object in. The list must be type casted to Object. If it is null or empty, no child will be shown.
  
 ```java
 public class MyCustomParentObject implements ParentObject {
