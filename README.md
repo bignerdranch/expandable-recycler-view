@@ -44,7 +44,7 @@ I have written an in-depth tutorial but it has yet to be published yet. The link
 Javadocs for the library and sample are available [here](http://bignerdranch.github.io/expandable-recycler-view/).
 
 ## Usage
- First, Create a RecyclerView in your xml layout and instantiate/define it in your /res/layout/xml layout as you would usually do.
+ First, Create a stock RecyclerView in xml and add it to your layout file as you would usually do.
  
  Next, create an adapter class that extends ```ExpandableRecyclerAdapter```. Implement the required methods.
  
