@@ -5,7 +5,17 @@
 The Expandable RecyclerView is a library written to allow for an expanded view to be attached to each ViewHolder. To allow for full functionality of a normal RecyclerView in both the parent ViewHolder and the expanded child ViewHolder, the recyclerview has been modified to use two types of ViewHolders, a child and a parent with the ability to customize each separately.
 
 ##Project Setup
-To use this library, clone the repository along with the sample project with
+**Gradle**
+
+Simply add this to your app's build.gradle:
+```gradle
+compile 'com.bignerdranch.android:expandablerecyclerview:1.0.3'
+```
+
+
+You can also clone the project and add it as a module to your project.
+
+Clone with:
 ```
 git clone git@github.com:bignerdranch/expandable-recycler-view.git
 ```
@@ -15,90 +25,90 @@ Then, navigate inside the directory, clean and build from Android Studio or with
 ./gradlew clean app:assemble
 ```
 
-Now run the sample app on any device or emulator/simulator to view the basic functionality of the list. Code for the sample is located under ```/app/src/main```. All library code is located under ```/expandablerecyclerview/src/main```.
+Now run the sample app on any device or emulator/simulator to view the basic functionality of the list. Code for the sample is located under ```/app/src/main```. All library code is located under ```/expandablerecyclerview/src/main```. The CriminalIntent sample is located under ```/criminalintentsample/src/main```.
 
-##Overview
-Expandable RecyclerView can be used with any default RecyclerView. **As of now it cannot work with other variants or libraries of RecyclerView**.
+## Overview
+Expandable RecyclerView can be used with any stock Android RecyclerView.
 
-The main difference between a regular RecyclerView and the Expandable RecyclerView is you will now use two different ViewHolders, a parent ViewHolder (your main, non-expanding view) and a child ViewHolder (the view that will drop down from the parent when the parent or defined view item is clicked). Inside each ViewHolder, you will customize and set the ViewHolders' views as you usually would respectively in ```onBindParentViewHolder``` and ```onBindChildViewHolder```.
+**What you need to implement:**
+- A custom adapter that extends ```ExpandableRecyclerAdapter```
+- Two custom ViewHolders: a parent ViewHolder that extends ```ParentViewHolder``` and a child ViewHolder that extends ```ChildViewHolder```
+- The list of objects you wish to display in your RecyclerView must extend ```ParentObject```.
+  - It is best practice to separate your child data into its own Object, although it is not required.
+- A parent layout and a child layout
 
-The objects you wish to display in your RecyclerView as a Parent will need to extend ```ParentObject``` and any data you wish to display in the dropdown will need to be included in an Object that extends ```ChildObject```. When constructing a ParentObject, you will need to pass a child object in that contains the data. **This child object does not have to contain any data, as long as you handle the view in the onBindChildViewHolder method. If there is no data to display, simply create a placeholder object with an empty constructor.** The child object should simply hold data. That data can be set by the parent object itself or another object as long as it extends ```ChildObject```. If the object changes later, you can call or Override ```setChildObject(ChildObject childObject)```, but this value can never be null.
+## Tutorial
 
-##Usage
- First, Create a RecyclerView in your xml view and instantiate/define it in your activity/fragment as you would usually do. All expansion of items is handled in the adapter and ParentViewHolder. To use Expandable RecyclerView, you must create your own Custom adapter that extends ```ExpandableRecyclerAdapter```. The ExpandableRecyclerAdapter takes in the context from the Activity containing the RecyclerView and a List of Objects. This List of Objects should initially contain all parent objects. Children are added dynamically when expand is triggered.
+I have written an in-depth tutorial but it has yet to be published yet. The link will be posted here when available.
+
+Javadocs for the library and sample are available [here](http://bignerdranch.github.io/expandable-recycler-view/).
+
+## Usage
+ First, create a stock RecyclerView in your layout file and inflate it in your activity/fragment as you would usually do.
  
+ Next, create an adapter class that extends ```ExpandableRecyclerAdapter```. Implement the required methods.
+ 
+ Then, create two ViewHolders and their respective layouts. One ViewHolder must extend ```ParentViewHolder``` and the other must extend ```ChildViewHolder```. Create their respective views and create variables in these ViewHolders to access those views.
+ 
+ Next, the Object that contains the data to be displayed in your RecyclerView must extend ```ParentObject```
 
- In onCreate or onCreateView of your activity or fragment, it should look like this:
-```
+ In onCreate or onCreateView of your activity or fragment, create and attach your custom expandable adapter like so:
+ 
+```java
 RecyclerView mRecyclerView = (RecyclerView) findViewById(YOUR RECYCLERVIEW ID);
-MyExpandable mExpandableAdapter = new MyExpandableAdapter(getActivity(), PARENT ITEM LIST);
+MyExpandable mExpandableAdapter = new MyExpandableAdapter(getActivity(), YOUR ParentObject LIST);
 mRecyclerView.setAdapter(mExpandableAdapter);
 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 ```
+
  Inside your ExpandableRecyclerAdapter, you can create and bind your Parent and Child ViewHolders just as you would create and bind ViewHolders in a normal RecyclerView.
 
- Then, define both a parent object and a child object. The child object simply needs to be a dedicated object to hold any data to be displayed in the expanded view that **must** implement ```ChildObject``` and its cooresponding methods. Similarly, the parent object **must** impement ```ParentObject```. Here is an example of how the methods in the Object that implements ```ParentObject``` should be implemented:
-```
+ Then, define a parent object and implement ```ParentObject```. It is also best practice to create a separate child object to store any data that you need to display in the child view, but it is not required. When you implement ```ParentObject```, you need to create an instance variable, List<Object>, to store all the children of the parent object in. The list must be type casted to Object. If it is null or empty, no child will be shown.
+ 
+```java
 public class MyCustomParentObject implements ParentObject {
-
-    private boolean mExpanded = false;
-    private long mStableId;
-    private Object mChildObject;
-
+    private List<Object> mChildObjectList;
+    
     /**
-     * Your variables, data and methods for your Object go here
+     * Your constructors, variables, data and methods for your Object go here
      */
+    
+    @Override
+    public List<Object> getChildObject() {
+        /**
+         * You can either return a newly created list of children here or attach them later
+         */
      
-    @Override
-    public long getStableId() {
-        return mStableId;
+        return mChildObjectList;
     }
-
+    
     @Override
-    public void setStableId(long stableId) {
-        mStableId = stableId;
-    }
-
-    @Override
-    public boolean isExpanded() {
-        return mExpanded;
-    }
-
-    @Override
-    public void setExpanded(boolean expanded) {
-        mExpanded = expanded;
-    }
-
-    @Override
-    public Object getChildObject() {
-        return mChildObject;
-    }
-
-    @Override
-    public void setChildObject(Object childObject) {
-        mChildObject = childObject;
+    public void setChildObject(List<Object> childObjectList) {
+        mChildObjectList = childObjectList;
     }
 }
 ```
-**Please note that all ParentObjects must have a reference to their cooresponding ChildObject. Without this, the expand and collapse will not work correctly.**
-
- You must also create two separate ViewHolders, a parent ViewHolder and a child ViewHolder, either as a class inside your custom Adapter or as a separate class altogether. The parent ViewHolder must extend ParentViewHolder, and the child ViewHolder must extend ChildViewHolder. This also means you must create two separate XML layouts for the ParentViewHolder and ChildViewHolder respectively. For ParentViewHolder, make sure to include ```super(itemView, parentItemClickListener)``` in your constructor, then modify as you would a normal viewHolder. The same should be done for ChildViewHolder, but rather ```super(itemView)```. Also, make sure to cast your passed ParentViewHolder and ChildViewHolder in ```onBindParentViewHolder``` and ```onBindChildViewHolder``` of the adapter to your custom viewHolders you created for each to allow for proper binding of data.
+When generating the list of parent objects, you should attach all children to them there. If the children share data with your ```ParentObject```, you can simply create a list of children in the constructor for your parent object or in the getter method for the list.
  
-####Extras
- You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, after defining your clickable trigger button or view, call ```myCustomExpandingAdapter.setCustomClickableView(Your Custom View ID)``` and pass in the id.
+#### Extras
+ You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, in your activity or fragment, call ```myCustomExpandingAdapter.setCustomClickableView(Your Custom View ID)``` and pass in the id.
  
- If you do set a custom clickable view, you can also set an animation for the view to rotate 180 degrees when expanding and collapsing. This is useful primarily with arrows which signifies for the user to click it to change the expansion. You can do this by calling ```myCustomExpandingAdapter.setRotation(long duration)``` in the constructor below where you called ```setCustomClickableView()```.
+ If you do set a custom clickable view, you can also set an animation for the view to rotate 180 degrees when expanding and collapsing. This is useful primarily with arrows which signifies for the user to click it to change the expansion. By default the rotation is off. You can enable rotation by calling ```myCustomExpandingAdapter.setRotation(long durationInMS)``` in the constructor, below where you called ```setCustomClickableView()```. When setting the rotation, you must pass in a duration in Milliseconds. If you'd like to use the default rotation duration rather than defining your own, call ```myCustomExpandingAdapter.setParentClickableViewAnimationDefaultDuration()``` instead. The default rotation duration is 200 ms.
  
  After implementing these, in the activity or fragment that is holding your RecyclerView, simply set the adapter to your custom adapter, and set the layout manager to a new LinearLayoutManager. An example is here:
  
  ```
  MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, objectList);
+ 
+ // Optional animation configuration goes here
+ 
  mRecyclerView.setAdapter(myCustomExpandingAdapter);
  mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
  ```
  
-####Saving Expanded States onResume() or on Roatation
- To do this, simply call ```myCustomExpandingAdapter.setHasStableIds``` before you set the adapter to your RecyclerView. In your ParentObject, you must have set a unique id for each item. This id will now be used to save the expanded/collapsed state of the item. You must also override onSaveInstanceState and onRestoreInstanceState in the Activity or Fragment that contains the RecyclerView. Inside onSaveInstanceState(Bundle outState), you must call ```myCustomExpandingAdapter.onSaveInstanceState(outState)``` and call super in your implementation. In onRestoreInstanceState(Bundle savedInstanceState(Bundle savedInstanceState), you must call ```myCustomExpandingAdapter.onRestoreInstanceState(savedInstanceState)```. Here is an example of how to override in your activity or fragment:
+#### Saving Expanded States onResume() or on Rotation
+
+To save expanded/collapsed states, inside onSaveInstanceState(Bundle outState) of your activity or fragment, call ```myCustomExpandingAdapter.onSaveInstanceState(outState)```. In onRestoreInstanceState(Bundle savedInstanceState(Bundle savedInstanceState), call ```myCustomExpandingAdapter.onRestoreInstanceState(savedInstanceState)```. Here is an example of how to override in your activity or fragment:
  
  ```
  @Override
@@ -113,8 +123,30 @@ public class MyCustomParentObject implements ParentObject {
         mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
     }
  ```
-Check out the sample application for a full working demo!
  
-##Features Coming
-  - Multiple Children
-  - Ability to click on child views
+You can also check out the two sample applications for a full working demo.
+
+License
+-------
+
+      The MIT License
+      
+      Copyright (c) 2015 Big Nerd Ranch
+      
+      Permission is hereby granted, free of charge, to any person obtaining a copy
+      of this software and associated documentation files (the "Software"), to deal
+      in the Software without restriction, including without limitation the rights
+      to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+      copies of the Software, and to permit persons to whom the Software is
+      furnished to do so, subject to the following conditions:
+      
+      The above copyright notice and this permission notice shall be included in
+      all copies or substantial portions of the Software.
+      
+      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+      IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+      FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+      AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+      LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+      THE SOFTWARE.
