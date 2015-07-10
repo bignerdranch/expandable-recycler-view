@@ -1,6 +1,8 @@
 # Expandable RecyclerView
 [![Build Status](https://magnum.travis-ci.com/bignerdranch/expandable-recycler-view.svg?token=cHtfwvsfoiWYD2CaiRkc&branch=master)](https://magnum.travis-ci.com/bignerdranch/expandable-recycler-view)
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Expandable%20RecyclerView-green.svg?style=flat)](https://android-arsenal.com/details/1/2119)
+
 ## About
 The Expandable RecyclerView is a library written to allow for an expanded view to be attached to each ViewHolder. To allow for full functionality of a normal RecyclerView in both the parent ViewHolder and the expanded child ViewHolder, the recyclerview has been modified to use two types of ViewHolders, a child and a parent with the ability to customize each separately.
 
