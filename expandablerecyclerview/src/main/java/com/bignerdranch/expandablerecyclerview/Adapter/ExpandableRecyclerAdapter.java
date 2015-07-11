@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import com.bignerdranch.expandablerecyclerview.ClickListeners.ExpandCollapseListener;
 import com.bignerdranch.expandablerecyclerview.ClickListeners.ParentItemClickListener;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
@@ -41,6 +42,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     protected List<ParentObject> mParentItemList;
     private HashMap<Long, Boolean> mStableIdMap;
     private ExpandableRecyclerAdapterHelper mExpandableRecyclerAdapterHelper;
+    private ExpandCollapseListener mExpandCollapseListener;
     private boolean mParentAndIconClickable = false;
     private int mCustomParentAnimationViewId = CUSTOM_ANIMATION_VIEW_NOT_SET;
     private long mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
@@ -298,9 +300,14 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
     }
 
+    public void addExpandCollapseListener(ExpandCollapseListener expandCollapseListener) {
+        mExpandCollapseListener = expandCollapseListener;
+    }
+
     /**
      * Method called to expand a ParentObject when clicked. This handles saving state, adding the
      * corresponding child objects to the list (the recyclerview list) and updating that list.
+     * It also calls the appropriate ExpandCollapseListener methods, if it exists
      *
      * @param parentObject
      * @param position
@@ -312,6 +319,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
         if (parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(false);
+            mExpandCollapseListener.onRecyclerViewItemCollapsed();
             mStableIdMap.put(parentWrapper.getStableId(), false);
             List<Object> childObjectList = ((ParentObject) parentWrapper.getParentObject()).getChildObjectList();
             if (childObjectList != null) {
@@ -324,6 +332,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             }
         } else {
             parentWrapper.setExpanded(true);
+            mExpandCollapseListener.onRecyclerViewItemExpanded();
             mStableIdMap.put(parentWrapper.getStableId(), true);
             List<Object> childObjectList = ((ParentObject) parentWrapper.getParentObject()).getChildObjectList();
             if (childObjectList != null) {
