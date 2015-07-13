@@ -108,7 +108,7 @@ When generating the list of parent objects, you should attach all children to th
  mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
  ```
  
-#### Listening for expansion and collapsing
+#### Listening for Expansion and Collapsing
 
 You can listen for expansion and collapsing events by implementing ```ExpandCollapseListener``` in the activity or fragment hosting your RecyclerView. Two methods will be added, ```onRecyclerViewItemExpanded(int position)``` and ```onRecyclerViewItemCollapsed(int position)```. This will allow you to listen for expansion and collapsing of ParentObjects. The position passed into these methods is the position of the item in the ParentObject list. Any expanded children before the item are not included in that position integer.
 
