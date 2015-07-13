@@ -2,7 +2,6 @@ package com.bignerdranch.expandablerecyclerview.ViewHolder;
 
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 
