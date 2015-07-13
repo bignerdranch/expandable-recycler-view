@@ -99,7 +99,7 @@ When generating the list of parent objects, you should attach all children to th
  
  After implementing these, in the activity or fragment that is holding your RecyclerView, simply set the adapter to your custom adapter, and set the layout manager to a new LinearLayoutManager. An example is here:
  
- ```
+ ```java
  MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, objectList);
  
  // Optional animation configuration goes here
@@ -114,7 +114,7 @@ You can listen for expansion and collapsing events by implementing ```ExpandColl
 
 As an example, let's say we implemented ```ExpandCollapseListener``` in an activity. For this to work, after creating the adapter and before setting the RecyclerView's adapter, we must call ```addExpandCollapseListener(ExpandCollapseListener yourExpandCollapseListener``` on the adapter. Here is an example:
 
-```
+```java
  MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, objectList);
  
  myCustomExpandingAdapter.addExpandCollapseListener(this);
@@ -126,18 +126,18 @@ As an example, let's say we implemented ```ExpandCollapseListener``` in an activ
 
 To save expanded/collapsed states, inside onSaveInstanceState(Bundle outState) of your activity or fragment, call ```myCustomExpandingAdapter.onSaveInstanceState(outState)```. In onRestoreInstanceState(Bundle savedInstanceState(Bundle savedInstanceState), call ```myCustomExpandingAdapter.onRestoreInstanceState(savedInstanceState)```. Here is an example of how to override in your activity or fragment:
  
- ```
+ ```java
  @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState = myCustomExpandingAdapter.onSaveInstanceState(outState);
-    }
+  protected void onSaveInstanceState(Bundle outState) {
+      super.onSaveInstanceState(outState);
+      outState = myCustomExpandingAdapter.onSaveInstanceState(outState);
+  }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
-    }
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+      super.onRestoreInstanceState(savedInstanceState);
+      mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
+  }
  ```
  
 You can also check out the two sample applications for a full working demo.
