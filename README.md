@@ -127,7 +127,7 @@ As an example, let's say we implemented ```ExpandCollapseListener``` in an activ
 To save expanded/collapsed states, inside onSaveInstanceState(Bundle outState) of your activity or fragment, call ```myCustomExpandingAdapter.onSaveInstanceState(outState)```. In onRestoreInstanceState(Bundle savedInstanceState(Bundle savedInstanceState), call ```myCustomExpandingAdapter.onRestoreInstanceState(savedInstanceState)```. Here is an example of how to override in your activity or fragment:
  
  ```java
- @Override
+  @Override
   protected void onSaveInstanceState(Bundle outState) {
       super.onSaveInstanceState(outState);
       outState = myCustomExpandingAdapter.onSaveInstanceState(outState);
