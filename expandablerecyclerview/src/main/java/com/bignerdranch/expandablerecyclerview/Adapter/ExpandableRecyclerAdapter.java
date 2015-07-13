@@ -319,7 +319,11 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
         if (parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(false);
-            mExpandCollapseListener.onRecyclerViewItemCollapsed(position);
+            
+            if (mExpandCollapseListener != null) {
+                mExpandCollapseListener.onRecyclerViewItemCollapsed(position);
+            }
+            
             mStableIdMap.put(parentWrapper.getStableId(), false);
             List<Object> childObjectList = ((ParentObject) parentWrapper.getParentObject()).getChildObjectList();
             if (childObjectList != null) {
@@ -332,7 +336,11 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             }
         } else {
             parentWrapper.setExpanded(true);
-            mExpandCollapseListener.onRecyclerViewItemExpanded(position);
+            
+            if (mExpandCollapseListener != null) {
+                mExpandCollapseListener.onRecyclerViewItemExpanded(position);
+            }
+            
             mStableIdMap.put(parentWrapper.getStableId(), true);
             List<Object> childObjectList = ((ParentObject) parentWrapper.getParentObject()).getChildObjectList();
             if (childObjectList != null) {
