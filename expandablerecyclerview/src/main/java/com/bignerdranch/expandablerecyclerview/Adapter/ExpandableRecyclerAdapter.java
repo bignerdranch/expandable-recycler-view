@@ -3,9 +3,9 @@ package com.bignerdranch.expandablerecyclerview.Adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
 
+import com.bignerdranch.expandablerecyclerview.ClickListeners.ExpandCollapseListener;
 import com.bignerdranch.expandablerecyclerview.ClickListeners.ParentItemClickListener;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
@@ -41,6 +41,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     protected List<ParentObject> mParentItemList;
     private HashMap<Long, Boolean> mStableIdMap;
     private ExpandableRecyclerAdapterHelper mExpandableRecyclerAdapterHelper;
+    private ExpandCollapseListener mExpandCollapseListener;
     private boolean mParentAndIconClickable = false;
     private int mCustomParentAnimationViewId = CUSTOM_ANIMATION_VIEW_NOT_SET;
     private long mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
@@ -298,9 +299,14 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
     }
 
+    public void addExpandCollapseListener(ExpandCollapseListener expandCollapseListener) {
+        mExpandCollapseListener = expandCollapseListener;
+    }
+
     /**
      * Method called to expand a ParentObject when clicked. This handles saving state, adding the
      * corresponding child objects to the list (the recyclerview list) and updating that list.
+     * It also calls the appropriate ExpandCollapseListener methods, if it exists
      *
      * @param parentObject
      * @param position
@@ -312,6 +318,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
         if (parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(false);
+
+            if (mExpandCollapseListener != null) {
+                int expandedCountBeforePosition = getExpandedItemCount(position);
+                mExpandCollapseListener.onRecyclerViewItemCollapsed(position - expandedCountBeforePosition);
+            }
+
             mStableIdMap.put(parentWrapper.getStableId(), false);
             List<Object> childObjectList = ((ParentObject) parentWrapper.getParentObject()).getChildObjectList();
             if (childObjectList != null) {
@@ -319,11 +331,16 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                     mItemList.remove(position + i + 1);
                     mExpandableRecyclerAdapterHelper.getHelperItemList().remove(position + i + 1);
                     notifyItemRemoved(position + i + 1);
-                    Log.d(TAG, "Removed " + childObjectList.get(i).toString());
                 }
             }
         } else {
             parentWrapper.setExpanded(true);
+
+            if (mExpandCollapseListener != null) {
+                int expandedCountBeforePosition = getExpandedItemCount(position);
+                mExpandCollapseListener.onRecyclerViewItemExpanded(position - expandedCountBeforePosition);
+            }
+
             mStableIdMap.put(parentWrapper.getStableId(), true);
             List<Object> childObjectList = ((ParentObject) parentWrapper.getParentObject()).getChildObjectList();
             if (childObjectList != null) {
@@ -334,6 +351,27 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 }
             }
         }
+    }
+
+    /**
+     * Method to get the number of expanded children before the specified position.
+     *
+     * @param position
+     * @return number of expanded children before the specified position
+     */
+    private int getExpandedItemCount(int position) {
+        if (position == 0) {
+            return 0;
+        }
+
+        int expandedCount = 0;
+        for (int i = 0; i < position; i++) {
+            Object object = mItemList.get(i);
+            if (!(object instanceof ParentObject)) {
+                expandedCount++;
+            }
+        }
+        return expandedCount;
     }
 
     /**

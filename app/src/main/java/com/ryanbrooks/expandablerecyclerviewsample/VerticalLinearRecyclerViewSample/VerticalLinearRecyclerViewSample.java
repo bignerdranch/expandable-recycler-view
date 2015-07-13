@@ -7,7 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.CheckBox;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.bignerdranch.expandablerecyclerview.ClickListeners.ExpandCollapseListener;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
@@ -26,7 +28,7 @@ import butterknife.OnItemSelected;
  * @version 1.0
  * @since 5/27/2015
  */
-public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
+public class VerticalLinearRecyclerViewSample extends AppCompatActivity implements ExpandCollapseListener{
     private final String TAG = this.getClass().getSimpleName();
     private static final String CUSTOM_EXPAND_BUTTON_CHECKED = "CUSTOM_EXPAND_BUTTON_CHECKED";
     private static final String CUSTOM_ANIMATION_DURATION_POSITION = "CUSTOM_ANIMATION_DURATION_POSITION";
@@ -62,6 +64,10 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
 
         // Create a new adapter with 20 test data items
         mExpandableAdapter = new MyExpandableAdapter(this, setUpTestData(20));
+
+        // Attach this activity to the Adapter as the ExpandCollapseListener
+        mExpandableAdapter.addExpandCollapseListener(this);
+
         // Set the RecyclerView's adapter to the ExpandableAdapter we just created
         mRecyclerView.setAdapter(mExpandableAdapter);
         // Set the layout manager to a LinearLayout manager for vertical list
@@ -207,5 +213,15 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity {
             speedList.add(INITIAL_ROTATION_SPEED_MS * i);
         }
         return speedList;
+    }
+
+    @Override
+    public void onRecyclerViewItemExpanded(int position) {
+        Toast.makeText(this, "Item Expanded " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRecyclerViewItemCollapsed(int position) {
+        Toast.makeText(this, "Item Collapsed " + position, Toast.LENGTH_SHORT).show();
     }
 }
