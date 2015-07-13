@@ -112,13 +112,11 @@ When generating the list of parent objects, you should attach all children to th
 
 You can listen for expansion and collapsing events by implementing ```ExpandCollapseListener``` in the activity or fragment hosting your RecyclerView. Two methods will be added, ```onRecyclerViewItemExpanded(int position)``` and ```onRecyclerViewItemCollapsed(int position)```. This will allow you to listen for expansion and collapsing of ParentObjects. The position passed into these methods is the position of the item in the ParentObject list. Any expanded children before the item are not included in that position integer.
 
-As an example, let's say we implemented ```ExpandCollapseListener``` in an activity. For this to work, after creating the adapter and before setting the RecyclerView's adapter, we must call ```addExpandCollapseListener(ExpandCollapseListener yourExpandCollapseListener``` on the adapter. Here is an example:
+As an example, let's say we implemented ```ExpandCollapseListener``` in an activity. For this to work, after creating the adapter and before setting the RecyclerView's adapter, we must call ```addExpandCollapseListener(ExpandCollapseListener yourExpandCollapseListener``` on the adapter:
 
 ```java
  MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, objectList);
- 
  myCustomExpandingAdapter.addExpandCollapseListener(this);
- 
  mRecyclerView.setAdapter(myCustomExpandingAdapter);
  ```
  
