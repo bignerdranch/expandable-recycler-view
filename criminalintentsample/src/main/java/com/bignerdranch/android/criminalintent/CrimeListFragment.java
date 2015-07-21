@@ -29,10 +29,16 @@ public class CrimeListFragment extends Fragment {
         crimeExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
         crimeExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
         crimeExpandableAdapter.setParentAndIconExpandOnClick(true);
+        crimeExpandableAdapter.onRestoreInstanceState(savedInstanceState);
 
         mCrimeRecyclerView.setAdapter(crimeExpandableAdapter);
 
         return view;
+    }
+
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        ((CrimeExpandableAdapter) mCrimeRecyclerView.getAdapter()).onSaveInstanceState(outState);
     }
 
     private ArrayList<ParentObject> generateCrimes() {
