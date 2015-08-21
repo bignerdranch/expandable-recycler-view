@@ -26,11 +26,7 @@ public class ExpandableRecyclerAdapterHelper {
     }
 
     public Object getHelperItemAtPosition(int position) {
-        if (mHelperItemList.get(position) instanceof ParentWrapper) {
-            return mHelperItemList.get(position);
-        } else {
-            return mHelperItemList.get(position);
-        }
+        return mHelperItemList.get(position);
     }
 
     public List<Object> generateHelperItemList(List<Object> itemList) {
