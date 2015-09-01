@@ -21,8 +21,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile project(':expandablerecyclerview')
     compile 'com.android.support:support-v4:22.1.0'
     compile 'com.android.support:recyclerview-v7:22.1.0'
     compile 'com.android.support:appcompat-v7:22.1.0'
-    compile 'com.bignerdranch.android:expandablerecyclerview:1.0.3'
 }

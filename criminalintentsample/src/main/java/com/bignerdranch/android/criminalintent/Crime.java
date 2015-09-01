@@ -2,7 +2,6 @@ package com.bignerdranch.android.criminalintent;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -56,5 +55,10 @@ public class Crime implements ParentObject {
     @Override
     public void setChildObjectList(List<Object> list) {
         mChildrenList = list;
+    }
+
+    @Override
+    public boolean isInitiallyExpanded() {
+        return false;
     }
 }
