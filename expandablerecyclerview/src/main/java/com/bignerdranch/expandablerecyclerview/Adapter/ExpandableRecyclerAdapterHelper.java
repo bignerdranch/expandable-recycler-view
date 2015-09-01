@@ -21,6 +21,7 @@ public class ExpandableRecyclerAdapterHelper {
             sCurrentId++;
             parentWrapperList.add(parentWrapper);
             if (parentObject.isInitiallyExpanded()) {
+                parentWrapper.setExpanded(true);
                 for (int j = 0; j < parentObject.getChildObjectList().size(); j++) {
                     parentWrapperList.add(parentObject.getChildObjectList().get(j));
                 }

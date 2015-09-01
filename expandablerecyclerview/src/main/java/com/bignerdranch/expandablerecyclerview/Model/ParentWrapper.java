@@ -23,11 +23,11 @@ public class ParentWrapper {
     }
 
     public boolean isExpanded() {
-        return mIsExpanded != mParentObject.isInitiallyExpanded();
+        return mIsExpanded;
     }
 
     public void setExpanded(boolean isExpanded) {
-        mIsExpanded = isExpanded != mParentObject.isInitiallyExpanded();
+        mIsExpanded = isExpanded;
     }
 
     public long getStableId() {
