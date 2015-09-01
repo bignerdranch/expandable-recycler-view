@@ -16,7 +16,7 @@ public class ExpandableRecyclerAdapterHelper {
     private List<Object> mHelperItemList;
     private static int sCurrentId;
 
-    public ExpandableRecyclerAdapterHelper(List<Object> itemList) {
+    public ExpandableRecyclerAdapterHelper(List<? extends ParentObject> itemList) {
         sCurrentId = INITIAL_STABLE_ID;
         mHelperItemList = generateHelperItemList(itemList);
     }
@@ -29,15 +29,17 @@ public class ExpandableRecyclerAdapterHelper {
         return mHelperItemList.get(position);
     }
 
-    public List<Object> generateHelperItemList(List<Object> itemList) {
+    public List<Object> generateHelperItemList(List<? extends ParentObject> itemList) {
         ArrayList<Object> parentWrapperList = new ArrayList<>();
         for (int i = 0; i < itemList.size(); i++) {
-            if (itemList.get(i) instanceof ParentObject) {
-                ParentWrapper parentWrapper = new ParentWrapper(itemList.get(i), sCurrentId);
-                sCurrentId++;
-                parentWrapperList.add(parentWrapper);
-            } else {
-                parentWrapperList.add(itemList.get(i));
+            ParentObject parentObject = itemList.get(i);
+            ParentWrapper parentWrapper = new ParentWrapper(parentObject, sCurrentId);
+            sCurrentId++;
+            parentWrapperList.add(parentWrapper);
+            if (parentObject.isInitiallyExpanded()) {
+                for (int j = 0; j < parentObject.getChildObjectList().size(); j++) {
+                    parentWrapperList.add(parentObject.getChildObjectList().get(j));
+                }
             }
         }
         return parentWrapperList;

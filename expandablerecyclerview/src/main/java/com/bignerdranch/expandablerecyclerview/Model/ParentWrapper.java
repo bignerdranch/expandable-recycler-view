@@ -6,28 +6,28 @@ package com.bignerdranch.expandablerecyclerview.Model;
 public class ParentWrapper {
     private boolean mIsExpanded;
     private long mStableId;
-    private Object mParentObject;
+    private ParentObject mParentObject;
 
-    public ParentWrapper(Object parentObject, int stableId) {
+    public ParentWrapper(ParentObject parentObject, int stableId) {
         mParentObject = parentObject;
         mStableId = stableId;
         mIsExpanded = false;
     }
 
-    public Object getParentObject() {
+    public ParentObject getParentObject() {
         return mParentObject;
     }
 
-    public void setParentObject(Object parentObject) {
+    public void setParentObject(ParentObject parentObject) {
         mParentObject = parentObject;
     }
 
     public boolean isExpanded() {
-        return mIsExpanded;
+        return mIsExpanded != mParentObject.isInitiallyExpanded();
     }
 
     public void setExpanded(boolean isExpanded) {
-        mIsExpanded = isExpanded;
+        mIsExpanded = isExpanded != mParentObject.isInitiallyExpanded();
     }
 
     public long getStableId() {

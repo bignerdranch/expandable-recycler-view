@@ -56,8 +56,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public ExpandableRecyclerAdapter(Context context, List<ParentObject> parentItemList) {
         mContext = context;
         mParentItemList = parentItemList;
-        ArrayList<Object> itemList = generateObjectList(parentItemList);
-        mExpandableRecyclerAdapterHelper = new ExpandableRecyclerAdapterHelper(itemList);
+        mExpandableRecyclerAdapterHelper = new ExpandableRecyclerAdapterHelper(mParentItemList);
         mStableIdMap = generateStableIdMapFromList(mExpandableRecyclerAdapterHelper.getHelperItemList());
     }
 
@@ -74,8 +73,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                                      int customParentAnimationViewId) {
         mContext = context;
         mParentItemList = parentItemList;
-        ArrayList<Object> itemList = generateObjectList(parentItemList);
-        mExpandableRecyclerAdapterHelper = new ExpandableRecyclerAdapterHelper(itemList);
+        mExpandableRecyclerAdapterHelper = new ExpandableRecyclerAdapterHelper(mParentItemList);
         mStableIdMap = generateStableIdMapFromList(mExpandableRecyclerAdapterHelper.getHelperItemList());
         mCustomParentAnimationViewId = customParentAnimationViewId;
     }
@@ -94,8 +92,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                                      int customParentAnimationViewId, long animationDuration) {
         mContext = context;
         mParentItemList = parentItemList;
-        ArrayList<Object> itemList = generateObjectList(parentItemList);
-        mExpandableRecyclerAdapterHelper = new ExpandableRecyclerAdapterHelper(itemList);
+        mExpandableRecyclerAdapterHelper = new ExpandableRecyclerAdapterHelper(mParentItemList);
         mStableIdMap = generateStableIdMapFromList(mExpandableRecyclerAdapterHelper.getHelperItemList());
         mCustomParentAnimationViewId = customParentAnimationViewId;
         mAnimationDuration = animationDuration;
@@ -249,7 +246,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public void onParentItemClickListener(int position) {
         Object helperItem = mExpandableRecyclerAdapterHelper.getHelperItemAtPosition(position);
         if (helperItem instanceof ParentWrapper) {
-            ParentObject parentObject = (ParentObject) ((ParentWrapper) helperItem).getParentObject();
+            ParentObject parentObject = ((ParentWrapper) helperItem).getParentObject();
             expandParent(parentObject, position);
         }
     }
@@ -325,7 +322,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             }
 
             mStableIdMap.put(parentWrapper.getStableId(), false);
-            List<Object> childObjectList = ((ParentObject) parentWrapper.getParentObject()).getChildObjectList();
+            List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
             if (childObjectList != null) {
                 for (int i = childObjectList.size() - 1; i >= 0; i--) {
                     mExpandableRecyclerAdapterHelper.getHelperItemList().remove(position + i + 1);
@@ -341,7 +338,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             }
 
             mStableIdMap.put(parentWrapper.getStableId(), true);
-            List<Object> childObjectList = ((ParentObject) parentWrapper.getParentObject()).getChildObjectList();
+            List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
             if (childObjectList != null) {
                 for (int i = 0; i < childObjectList.size(); i++) {
                     mExpandableRecyclerAdapterHelper.getHelperItemList().add(position + i + 1, childObjectList.get(i));
@@ -383,8 +380,11 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         HashMap<Long, Boolean> parentObjectHashMap = new HashMap<>();
         for (int i = 0; i < itemList.size(); i++) {
             if (itemList.get(i) != null) {
-                ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapterHelper.getHelperItemAtPosition(i);
-                parentObjectHashMap.put(parentWrapper.getStableId(), parentWrapper.isExpanded());
+                Object helperItem = mExpandableRecyclerAdapterHelper.getHelperItemAtPosition(i);
+                if (helperItem instanceof ParentWrapper) {
+                    ParentWrapper parentWrapper = (ParentWrapper) helperItem;
+                    parentObjectHashMap.put(parentWrapper.getStableId(), parentWrapper.isExpanded());
+                }
             }
         }
         return parentObjectHashMap;
@@ -440,13 +440,18 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapterHelper.getHelperItemAtPosition(i);
                 if (mStableIdMap.containsKey(parentWrapper.getStableId())) {
                     parentWrapper.setExpanded(mStableIdMap.get(parentWrapper.getStableId()));
-                    if (parentWrapper.isExpanded()) {
-                        List<Object> childObjectList = ((ParentObject) parentWrapper.getParentObject()).getChildObjectList();
+                    if (parentWrapper.isExpanded() && !parentWrapper.getParentObject().isInitiallyExpanded()) {
+                        List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
                         if (childObjectList != null) {
                             for (int j = 0; j < childObjectList.size(); j++) {
                                 i++;
                                 mExpandableRecyclerAdapterHelper.getHelperItemList().add(i, childObjectList.get(j));
                             }
+                        }
+                    } else if (!parentWrapper.isExpanded() && parentWrapper.getParentObject().isInitiallyExpanded()) {
+                        List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
+                        for (int j = 0; j < childObjectList.size(); j++) {
+                            mExpandableRecyclerAdapterHelper.getHelperItemList().remove(i + 1);
                         }
                     }
                 } else {

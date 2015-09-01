@@ -31,4 +31,12 @@ public interface ParentObject {
      * @param childObjectList
      */
     void setChildObjectList(List<Object> childObjectList);
+
+    /**
+     * Used to determine whether parent view should show up initially as expanded.
+     * Should not be changed once the adapter is created
+     *
+     * @return true if parent should be expanded
+     */
+    boolean isInitiallyExpanded();
 }
