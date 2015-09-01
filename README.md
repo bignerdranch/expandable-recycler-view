@@ -52,7 +52,37 @@ Javadocs for the library and sample are available [here](http://bignerdranch.git
  
  Then, create two ViewHolders and their respective layouts. One ViewHolder must extend ```ParentViewHolder``` and the other must extend ```ChildViewHolder```. Create their respective views and create variables in these ViewHolders to access those views.
  
- Next, the Object that contains the data to be displayed in your RecyclerView must extend ```ParentObject```
+ Next, the Object that contains the data to be displayed in your RecyclerView must extend ```ParentObject```. When you implement ```ParentObject``` there are three methods that you must implement, shown in the example below:
+ ```java
+ public class MyCustomParentObject implements ParentObject {
+     private List<Object> mChildObjectList;
+
+     /**
+      * Your constructors, variables, data and methods for your Object go here
+      */
+
+     @Override
+     public List<Object> getChildObjectList() {
+         /**
+          * You can either return a newly created list of children here or attach them later
+          */
+
+         return mChildObjectList;
+     }
+
+     @Override
+     public void setChildObjectList(List<Object> childObjectList) {
+         mChildObjectList = childObjectList;
+     }
+
+     @Override
+     public boolean isInitiallyExpanded() {
+         // Allows you to specify if the row should be expanded when first shown to the user
+         return false;
+     }
+ }
+ ```
+ When generating the list of parent objects, you should attach all children to them there. If the children share data with your ```ParentObject```, you can simply create a list of children in the constructor for your parent object or in the getter method for the list.
 
  In onCreate or onCreateView of your activity or fragment, create and attach your custom expandable adapter like so:
  
@@ -65,32 +95,7 @@ mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
  Inside your ExpandableRecyclerAdapter, you can create and bind your Parent and Child ViewHolders just as you would create and bind ViewHolders in a normal RecyclerView.
 
- Then, define a parent object and implement ```ParentObject```. It is also best practice to create a separate child object to store any data that you need to display in the child view, but it is not required. When you implement ```ParentObject```, you need to create an instance variable, List<Object>, to store all the children of the parent object in. The list must be type casted to Object. If it is null or empty, no child will be shown.
- 
-```java
-public class MyCustomParentObject implements ParentObject {
-    private List<Object> mChildObjectList;
-    
-    /**
-     * Your constructors, variables, data and methods for your Object go here
-     */
-    
-    @Override
-    public List<Object> getChildObject() {
-        /**
-         * You can either return a newly created list of children here or attach them later
-         */
-     
-        return mChildObjectList;
-    }
-    
-    @Override
-    public void setChildObject(List<Object> childObjectList) {
-        mChildObjectList = childObjectList;
-    }
-}
-```
-When generating the list of parent objects, you should attach all children to them there. If the children share data with your ```ParentObject```, you can simply create a list of children in the constructor for your parent object or in the getter method for the list.
+
  
 #### Extras
  You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, in your activity or fragment, call ```myCustomExpandingAdapter.setCustomClickableView(Your Custom View ID)``` and pass in the id.
