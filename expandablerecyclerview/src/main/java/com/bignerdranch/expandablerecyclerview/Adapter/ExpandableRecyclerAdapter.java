@@ -138,7 +138,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (getHelperItem(position) instanceof ParentWrapper) {
+        Object helperItem = getHelperItem(position);
+        if (helperItem instanceof ParentWrapper) {
             PVH parentViewHolder = (PVH) holder;
 
             if (mParentAndIconClickable) {
@@ -165,12 +166,13 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 }
             }
 
-            parentViewHolder.setExpanded(((ParentWrapper) getHelperItem(position)).isExpanded());
-            onBindParentViewHolder(parentViewHolder, position, ((ParentWrapper) getHelperItem(position)).getParentObject());
-        } else if (getHelperItem(position) == null) {
+            ParentWrapper parentWrapper = (ParentWrapper) helperItem;
+            parentViewHolder.setExpanded(parentWrapper.isExpanded());
+            onBindParentViewHolder(parentViewHolder, position, parentWrapper.getParentObject());
+        } else if (helperItem == null) {
             throw new IllegalStateException("Incorrect ViewHolder found");
         } else {
-            onBindChildViewHolder((CVH) holder, position, getHelperItem(position));
+            onBindChildViewHolder((CVH) holder, position, helperItem);
         }
     }
 
@@ -227,9 +229,10 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      */
     @Override
     public int getItemViewType(int position) {
-        if (getHelperItem(position) instanceof ParentWrapper) {
+        Object helperItem = getHelperItem(position);
+        if (helperItem instanceof ParentWrapper) {
             return TYPE_PARENT;
-        } else if (getHelperItem(position) == null) {
+        } else if (helperItem == null) {
             throw new IllegalStateException("Null object added");
         } else {
             return TYPE_CHILD;
@@ -436,8 +439,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         mStableIdMap = (HashMap<Long, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
         int i = 0;
         while (i < mHelperItemList.size()) {
-            if (getHelperItem(i) instanceof ParentWrapper) {
-                ParentWrapper parentWrapper = (ParentWrapper) getHelperItem(i);
+            Object helperItem = getHelperItem(i);
+            if (helperItem instanceof ParentWrapper) {
+                ParentWrapper parentWrapper = (ParentWrapper) helperItem;
                 if (mStableIdMap.containsKey(parentWrapper.getStableId())) {
                     parentWrapper.setExpanded(mStableIdMap.get(parentWrapper.getStableId()));
                     if (parentWrapper.isExpanded() && !parentWrapper.getParentObject().isInitiallyExpanded()) {
