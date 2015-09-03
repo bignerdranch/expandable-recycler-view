@@ -54,10 +54,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param parentItemList
      */
     public ExpandableRecyclerAdapter(Context context, List<ParentObject> parentItemList) {
-        mContext = context;
-        mParentItemList = parentItemList;
-        mHelperItemList = ExpandableRecyclerAdapterHelper.generateHelperItemList(parentItemList);
-        mStableIdMap = generateStableIdMapFromList(mHelperItemList);
+        this(context, parentItemList, CUSTOM_ANIMATION_VIEW_NOT_SET, CUSTOM_ANIMATION_DURATION_NOT_SET);
     }
 
     /**
@@ -71,11 +68,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      */
     public ExpandableRecyclerAdapter(Context context, List<ParentObject> parentItemList,
                                      int customParentAnimationViewId) {
-        mContext = context;
-        mParentItemList = parentItemList;
-        mHelperItemList = ExpandableRecyclerAdapterHelper.generateHelperItemList(parentItemList);
-        mStableIdMap = generateStableIdMapFromList(mHelperItemList);
-        mCustomParentAnimationViewId = customParentAnimationViewId;
+        this(context, parentItemList, customParentAnimationViewId, CUSTOM_ANIMATION_DURATION_NOT_SET);
     }
 
     /**
