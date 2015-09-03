@@ -12,7 +12,6 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -371,22 +370,6 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             }
         }
         return parentObjectHashMap;
-    }
-
-    /**
-     * Generates an ArrayList of type Object for keeping track of all objects including children
-     * that are added to the RV. Takes in a list of parents so the user doesn't have to pass in
-     * a list of objects.
-     *
-     * @param parentObjectList the list of all parent objects provided by the user
-     * @return ArrayList of type Object that handles the items in the RV
-     */
-    private ArrayList<Object> generateObjectList(List<ParentObject> parentObjectList) {
-        ArrayList<Object> objectList = new ArrayList<>();
-        for (ParentObject parentObject : parentObjectList) {
-            objectList.add(parentObject);
-        }
-        return objectList;
     }
 
     /**
