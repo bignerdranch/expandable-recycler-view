@@ -271,7 +271,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Call this when removing the animtion. This will set the parent item to be the expand/collapse
+     * Call this when removing the animation. This will set the parent item to be the expand/collapse
      * trigger. It will also disable the rotation animation.
      */
     public void removeAnimation() {
