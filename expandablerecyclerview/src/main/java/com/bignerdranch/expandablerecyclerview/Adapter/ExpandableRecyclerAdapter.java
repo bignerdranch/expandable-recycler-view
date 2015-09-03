@@ -2,6 +2,8 @@ package com.bignerdranch.expandablerecyclerview.Adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -36,7 +38,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public static final long CUSTOM_ANIMATION_DURATION_NOT_SET = -1l;
 
     protected Context mContext;
-    protected List<ParentObject> mParentItemList;
+    protected List<? extends ParentObject> mParentItemList;
     private List<Object> mHelperItemList;
     private HashMap<Long, Boolean> mStableIdMap;
     private ExpandCollapseListener mExpandCollapseListener;
@@ -52,7 +54,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param context
      * @param parentItemList
      */
-    public ExpandableRecyclerAdapter(Context context, List<ParentObject> parentItemList) {
+    public ExpandableRecyclerAdapter(Context context, @NonNull List<? extends ParentObject> parentItemList) {
         this(context, parentItemList, CUSTOM_ANIMATION_VIEW_NOT_SET, CUSTOM_ANIMATION_DURATION_NOT_SET);
     }
 
@@ -65,8 +67,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param parentItemList
      * @param customParentAnimationViewId
      */
-    public ExpandableRecyclerAdapter(Context context, List<ParentObject> parentItemList,
-                                     int customParentAnimationViewId) {
+    public ExpandableRecyclerAdapter(Context context, @NonNull List<? extends ParentObject> parentItemList,
+                                     @IdRes int customParentAnimationViewId) {
         this(context, parentItemList, customParentAnimationViewId, CUSTOM_ANIMATION_DURATION_NOT_SET);
     }
 
@@ -80,8 +82,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param customParentAnimationViewId
      * @param animationDuration
      */
-    public ExpandableRecyclerAdapter(Context context, List<ParentObject> parentItemList,
-                                     int customParentAnimationViewId, long animationDuration) {
+    public ExpandableRecyclerAdapter(Context context, @NonNull List<? extends ParentObject> parentItemList,
+                                     @IdRes int customParentAnimationViewId, long animationDuration) {
         mContext = context;
         mParentItemList = parentItemList;
         mHelperItemList = ExpandableRecyclerAdapterHelper.generateHelperItemList(parentItemList);
@@ -255,7 +257,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *
      * @param customParentAnimationViewId
      */
-    public void setCustomParentAnimationViewId(int customParentAnimationViewId) {
+    public void setCustomParentAnimationViewId(@IdRes int customParentAnimationViewId) {
         mCustomParentAnimationViewId = customParentAnimationViewId;
     }
 
