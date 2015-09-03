@@ -135,28 +135,15 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         if (helperItem instanceof ParentWrapper) {
             PVH parentViewHolder = (PVH) holder;
 
-            if (mParentAndIconClickable) {
-                if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET
-                        && mAnimationDuration != CUSTOM_ANIMATION_DURATION_NOT_SET) {
-                    parentViewHolder.setCustomClickableViewAndItem(mCustomParentAnimationViewId);
-                    parentViewHolder.setAnimationDuration(mAnimationDuration);
-                } else if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET) {
-                    parentViewHolder.setCustomClickableViewAndItem(mCustomParentAnimationViewId);
-                    parentViewHolder.cancelAnimation();
-                } else {
-                    parentViewHolder.setMainItemClickToExpand();
-                }
+            parentViewHolder.cancelAnimation();
+
+            if (hasCustomAnimationView() && hasAnimationDuration()) {
+                parentViewHolder.setCustomClickableView(mCustomParentAnimationViewId, mParentAndIconClickable);
+                parentViewHolder.setAnimationDuration(mAnimationDuration);
+            } else if (hasCustomAnimationView()) {
+                parentViewHolder.setCustomClickableView(mCustomParentAnimationViewId, mParentAndIconClickable);
             } else {
-                if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET
-                        && mAnimationDuration != CUSTOM_ANIMATION_DURATION_NOT_SET) {
-                    parentViewHolder.setCustomClickableViewOnly(mCustomParentAnimationViewId);
-                    parentViewHolder.setAnimationDuration(mAnimationDuration);
-                } else if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET) {
-                    parentViewHolder.setCustomClickableViewOnly(mCustomParentAnimationViewId);
-                    parentViewHolder.cancelAnimation();
-                } else {
-                    parentViewHolder.setMainItemClickToExpand();
-                }
+                parentViewHolder.setMainItemClickToExpand();
             }
 
             ParentWrapper parentWrapper = (ParentWrapper) helperItem;
@@ -462,5 +449,13 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     private Object getHelperItem(int position) {
         return mHelperItemList.get(position);
+    }
+
+    private boolean hasCustomAnimationView() {
+        return mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET;
+    }
+
+    private boolean hasAnimationDuration() {
+        return mAnimationDuration != CUSTOM_ANIMATION_DURATION_NOT_SET;
     }
 }
