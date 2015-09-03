@@ -28,9 +28,8 @@ import java.util.List;
  * @since 5/27/2015
  */
 public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CVH extends ChildViewHolder> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
-    private static final String TAG = ExpandableRecyclerAdapter.class.getClass().getSimpleName();
+
     private static final String STABLE_ID_MAP = "ExpandableRecyclerAdapter.StableIdMap";
-    private static final String STABLE_ID_LIST = "ExpandableRecyclerAdapter.StableIdList";
     private static final int TYPE_PARENT = 0;
     private static final int TYPE_CHILD = 1;
     public static final int CUSTOM_ANIMATION_VIEW_NOT_SET = -1;
