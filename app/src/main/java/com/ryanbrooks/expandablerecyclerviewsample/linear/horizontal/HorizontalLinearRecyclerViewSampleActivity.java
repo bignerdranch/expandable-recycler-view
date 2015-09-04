@@ -1,7 +1,10 @@
-package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
+package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
 
-import android.os.Bundle;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.ClickListeners.ExpandCollapseListener;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
@@ -20,50 +24,47 @@ import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnItemSelected;
 
-/**
- * Sample Activity for the vertical linear RecyclerView sample.
- * Uses ButterKnife to inject view resources.
- *
- * @author Ryan Brooks
- * @version 1.0
- * @since 5/27/2015
- */
-public class VerticalLinearRecyclerViewSample extends AppCompatActivity implements ExpandCollapseListener{
-    private final String TAG = this.getClass().getSimpleName();
-    private static final String CUSTOM_EXPAND_BUTTON_CHECKED = "CUSTOM_EXPAND_BUTTON_CHECKED";
-    private static final String CUSTOM_ANIMATION_DURATION_POSITION = "CUSTOM_ANIMATION_DURATION_POSITION";
+public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivity implements ExpandCollapseListener {
+
     private static final String CHILD_TEXT = "Child ";
     private static final String SECOND_CHILD_TEXT = "_2";
     private static final String PARENT_TEXT = "Parent ";
     private static final long INITIAL_ROTATION_SPEED_MS = 100;
 
-    private MyExpandableAdapter mExpandableAdapter;
-    private ArrayList<Long> mDurationList;
-
-    @InjectView(R.id.vertical_sample_toolbar)
+    @InjectView(R.id.activity_horizontal_linear_recycler_view_sample_toolbar)
     Toolbar mToolbar;
-    @InjectView(R.id.vertical_recyclerview_sample)
+    @InjectView(R.id.activity_horizontal_linear_recycler_view_sample_recyclerView)
     RecyclerView mRecyclerView;
     @InjectView(R.id.vertical_sample_toolbar_checkbox)
     CheckBox mAnimationEnabledCheckBox;
     @InjectView(R.id.vertical_sample_toolbar_spinner)
     Spinner mToolbarSpinner;
 
+    private HorizontalExpandableAdapter mExpandableAdapter;
+    private ArrayList<Long> mDurationList;
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, HorizontalLinearRecyclerViewSampleActivity.class);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vertical_recyclerview_sample);
+        setContentView(R.layout.activity_horizontal_linear_recycler_view_sample);
         ButterKnife.inject(this);
 
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         // Generate spinner's list of rotation speeds (in ms)
         mDurationList = generateSpinnerSpeeds();
 
         // Create a new adapter with 20 test data items
-        mExpandableAdapter = new MyExpandableAdapter(this, setUpTestData(20));
+        mExpandableAdapter = new HorizontalExpandableAdapter(this, setUpTestData(20));
 
         // Attach this activity to the Adapter as the ExpandCollapseListener
         mExpandableAdapter.addExpandCollapseListener(this);
@@ -71,10 +72,10 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity implemen
         // Set the RecyclerView's adapter to the ExpandableAdapter we just created
         mRecyclerView.setAdapter(mExpandableAdapter);
         // Set the layout manager to a LinearLayout manager for vertical list
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         // Set spinner adapter
-        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(this, mDurationList);
+        HorizontalSpinnerAdapter customSpinnerAdapter = new HorizontalSpinnerAdapter(this, mDurationList);
         mToolbarSpinner.setAdapter(customSpinnerAdapter);
     }
 
@@ -87,7 +88,7 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity implemen
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState = mExpandableAdapter.onSaveInstanceState(outState);
+        mExpandableAdapter.onSaveInstanceState(outState);
     }
 
     /**
@@ -113,7 +114,7 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity implemen
             if (mDurationList.get(position) == 0) {
                 // Sets the rotation animation to off
                 mExpandableAdapter.setParentClickableViewAnimationDuration(
-                        mExpandableAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);
+                        ExpandableRecyclerAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);
             } else {
                 // Sets the animation duration to the corresponding duration at the selected position
                 mExpandableAdapter.setParentClickableViewAnimationDuration(mDurationList.get(position));
@@ -124,14 +125,14 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity implemen
             if (mDurationList.get(position) == 0) {
                 // Sets the rotation animation to off
                 mExpandableAdapter.setParentClickableViewAnimationDuration(
-                        mExpandableAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);
+                        ExpandableRecyclerAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);
                 // Disable clicking of both parent and child to trigger expansion/collapsing
                 mExpandableAdapter.setParentAndIconExpandOnClick(false);
             } else {
                 // Sets the animation duration to the corresponding duration at the selected position
                 mExpandableAdapter.setParentClickableViewAnimationDuration(mDurationList.get(position));
                 // Sets the custom triggering view to the id of the view
-                mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
+                mExpandableAdapter.setCustomParentAnimationViewId(R.id.list_item_parent_horizontal_arrow_imageView);
                 // Sets both the custom triggering view and the parent item to trigger expansion
                 mExpandableAdapter.setParentAndIconExpandOnClick(true);
             }
@@ -148,12 +149,12 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity implemen
     void onCheckChanged(boolean isChecked) {
         if (isChecked) { // Only the custom triggering view can trigger expansion
             mExpandableAdapter.setParentAndIconExpandOnClick(false);
-            mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
+            mExpandableAdapter.setCustomParentAnimationViewId(R.id.list_item_parent_horizontal_arrow_imageView);
             mExpandableAdapter.setParentClickableViewAnimationDuration((Long) mToolbarSpinner.getSelectedItem());
             mExpandableAdapter.notifyDataSetChanged();
         } else { // Both the custom triggering view and the parent item can trigger expansion
             mExpandableAdapter.setParentAndIconExpandOnClick(true);
-            mExpandableAdapter.setCustomParentAnimationViewId(R.id.recycler_item_arrow_parent);
+            mExpandableAdapter.setCustomParentAnimationViewId(R.id.list_item_parent_horizontal_arrow_imageView);
             mExpandableAdapter.setParentClickableViewAnimationDuration((Long) mToolbarSpinner.getSelectedItem());
             mExpandableAdapter.notifyDataSetChanged();
         }
@@ -178,26 +179,26 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity implemen
 
             // Evens get 2 children, odds get 1
             if (i % 2 == 0) {
-                CustomChildObject customChildObject = new CustomChildObject();
-                CustomChildObject customChildObject2 = new CustomChildObject();
-                customChildObject.setChildText(CHILD_TEXT + i);
-                customChildObject2.setChildText(CHILD_TEXT + i + SECOND_CHILD_TEXT);
-                childObjectList.add(customChildObject);
-                childObjectList.add(customChildObject2);
+                HorizontalChildObject horizontalChildObject = new HorizontalChildObject();
+                HorizontalChildObject horizontalChildObject2 = new HorizontalChildObject();
+                horizontalChildObject.setChildText(CHILD_TEXT + i);
+                horizontalChildObject2.setChildText(CHILD_TEXT + i + SECOND_CHILD_TEXT);
+                childObjectList.add(horizontalChildObject);
+                childObjectList.add(horizontalChildObject2);
             } else {
-                CustomChildObject customChildObject = new CustomChildObject();
-                customChildObject.setChildText(CHILD_TEXT + i);
-                childObjectList.add(customChildObject);
+                HorizontalChildObject horizontalChildObject = new HorizontalChildObject();
+                horizontalChildObject.setChildText(CHILD_TEXT + i);
+                childObjectList.add(horizontalChildObject);
             }
 
-            CustomParentObject customParentObject = new CustomParentObject();
-            customParentObject.setChildObjectList(childObjectList);
-            customParentObject.setParentNumber(i);
-            customParentObject.setParentText(PARENT_TEXT + i);
+            HorizontalParentObject horizontalParentObject = new HorizontalParentObject();
+            horizontalParentObject.setChildObjectList(childObjectList);
+            horizontalParentObject.setParentNumber(i);
+            horizontalParentObject.setParentText(PARENT_TEXT + i);
             if (i == 0) {
-                customParentObject.setInitiallyExpanded(true);
+                horizontalParentObject.setInitiallyExpanded(true);
             }
-            parentObjectList.add(customParentObject);
+            parentObjectList.add(horizontalParentObject);
         }
         return parentObjectList;
     }
@@ -211,7 +212,7 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity implemen
      */
     private ArrayList<Long> generateSpinnerSpeeds() {
         ArrayList<Long> speedList = new ArrayList<>();
-        speedList.add(mExpandableAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);
+        speedList.add(ExpandableRecyclerAdapter.CUSTOM_ANIMATION_DURATION_NOT_SET);
         for (int i = 1; i <= 10; i++) {
             speedList.add(INITIAL_ROTATION_SPEED_MS * i);
         }

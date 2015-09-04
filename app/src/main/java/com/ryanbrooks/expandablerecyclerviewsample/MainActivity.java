@@ -8,7 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample.VerticalLinearRecyclerViewSample;
+import com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal.HorizontalLinearRecyclerViewSampleActivity;
+import com.ryanbrooks.expandablerecyclerviewsample.linear.vertical.VerticalLinearRecyclerViewSampleActivity;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -48,13 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v == mVerticalSampleButton) {
-            Intent i = new Intent(this, VerticalLinearRecyclerViewSample.class);
+            Intent i = new Intent(this, VerticalLinearRecyclerViewSampleActivity.class);
             startActivity(i);
         } else if (v == mHorizontalSampleButton) {
-            Toast.makeText(this,
-                    this.getResources().getString(R.string.coming_soon),
-                    Toast.LENGTH_SHORT)
-                    .show();
+            startActivity(HorizontalLinearRecyclerViewSampleActivity.newIntent(v.getContext()));
         } else if (v == mGridSampleButton) {
             Toast.makeText(this,
                     this.getResources().getString(R.string.coming_soon),

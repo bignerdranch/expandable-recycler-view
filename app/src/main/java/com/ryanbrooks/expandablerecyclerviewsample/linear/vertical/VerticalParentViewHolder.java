@@ -1,10 +1,9 @@
-package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
+package com.ryanbrooks.expandablerecyclerviewsample.linear.vertical;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bignerdranch.expandablerecyclerview.ClickListeners.ParentItemClickListener;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
@@ -19,7 +18,7 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
  * @version 1.0
  * @since 5/27/2015
  */
-public class CustomParentViewHolder extends ParentViewHolder {
+public class VerticalParentViewHolder extends ParentViewHolder {
 
     public TextView numberText;
     public TextView dataText;
@@ -30,7 +29,7 @@ public class CustomParentViewHolder extends ParentViewHolder {
      *
      * @param itemView the view of the parent item. Find/modify views using this.
      */
-    public CustomParentViewHolder(View itemView) {
+    public VerticalParentViewHolder(View itemView) {
         super(itemView);
 
         numberText = (TextView) itemView.findViewById(R.id.recycler_item_number_parent);

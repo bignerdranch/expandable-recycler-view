@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
+package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
 
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
@@ -14,7 +14,7 @@ import java.util.List;
  * @version 1.0
  * @since 5/27/2015
  */
-public class CustomParentObject implements ParentObject {
+public class HorizontalParentObject implements ParentObject {
     // A List<Object> or subclass of List must be added for the object to work correctly
     private List<Object> mChildObjectList;
 
@@ -23,7 +23,7 @@ public class CustomParentObject implements ParentObject {
     private boolean mInitiallyExpanded;
 
 
-    public CustomParentObject() {
+    public HorizontalParentObject() {
     }
 
     public String getParentText() {

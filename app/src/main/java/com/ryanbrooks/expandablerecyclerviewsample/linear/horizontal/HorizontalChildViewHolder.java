@@ -1,11 +1,10 @@
-package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
+package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
 
 import android.view.View;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
-
 
 /**
  * Custom child ViewHolder. Any views should be found and set to public variables here to be
@@ -17,7 +16,7 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
  * @version 1.0
  * @since 5/27/2015
  */
-public class CustomChildViewHolder extends ChildViewHolder {
+public class HorizontalChildViewHolder extends ChildViewHolder {
 
     public TextView dataText;
 
@@ -26,9 +25,9 @@ public class CustomChildViewHolder extends ChildViewHolder {
      *
      * @param itemView the child ViewHolder's view
      */
-    public CustomChildViewHolder(View itemView) {
+    public HorizontalChildViewHolder(View itemView) {
         super(itemView);
 
-        dataText = (TextView) itemView.findViewById(R.id.recycler_item_text_child);
+        dataText = (TextView) itemView.findViewById(R.id.list_item_horizontal_child_textView);
     }
 }

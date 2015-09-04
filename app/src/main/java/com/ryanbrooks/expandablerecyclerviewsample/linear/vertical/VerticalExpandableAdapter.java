@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
+package com.ryanbrooks.expandablerecyclerviewsample.linear.vertical;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,7 +18,7 @@ import java.util.List;
  * @version 1.0
  * @since 5/27/2015
  */
-public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentViewHolder, CustomChildViewHolder> {
+public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<VerticalParentViewHolder, VerticalChildViewHolder> {
     private final String TAG = this.getClass().getSimpleName();
 
     private LayoutInflater mInflater;
@@ -29,7 +29,7 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
      * @param context for inflating views
      * @param parentItemList the list of parent items to be displayed in the RecyclerView
      */
-    public MyExpandableAdapter(Context context, List<ParentObject> parentItemList) {
+    public VerticalExpandableAdapter(Context context, List<ParentObject> parentItemList) {
         super(context, parentItemList);
         mInflater = LayoutInflater.from(context);
     }
@@ -43,8 +43,8 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
      * @param parentItemList the list of parent items to be displayed in the RecyclerView
      * @param customClickableViewId the id of the view that triggers the expansion
      */
-    public MyExpandableAdapter(Context context, List<ParentObject> parentItemList,
-                               int customClickableViewId) {
+    public VerticalExpandableAdapter(Context context, List<ParentObject> parentItemList,
+                                     int customClickableViewId) {
         super(context, parentItemList, customClickableViewId);
         mInflater = LayoutInflater.from(context);
     }
@@ -59,8 +59,8 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
      * @param customClickableViewId the id of the view that triggers the expansion
      * @param animationDuration the duration (in ms) of the rotation animation
      */
-    public MyExpandableAdapter(Context context, List<ParentObject> parentItemList,
-                               int customClickableViewId, long animationDuration) {
+    public VerticalExpandableAdapter(Context context, List<ParentObject> parentItemList,
+                                     int customClickableViewId, long animationDuration) {
         super(context, parentItemList, customClickableViewId, animationDuration);
         mInflater = LayoutInflater.from(context);
     }
@@ -73,9 +73,9 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
      * @return the user's custom parent ViewHolder that must extend ParentViewHolder
      */
     @Override
-    public CustomParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
-        View view = mInflater.inflate(R.layout.recycler_item_layout_parent, parent, false);
-        return new CustomParentViewHolder(view);
+    public VerticalParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
+        View view = mInflater.inflate(R.layout.list_item_parent_vertical, parent, false);
+        return new VerticalParentViewHolder(view);
     }
 
     /**
@@ -86,9 +86,9 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
      * @return the user's custom parent ViewHolder that must extend ParentViewHolder
      */
     @Override
-    public CustomChildViewHolder onCreateChildViewHolder(ViewGroup parent) {
-        View view = mInflater.inflate(R.layout.recycler_item_layout_child, parent, false);
-        return new CustomChildViewHolder(view);
+    public VerticalChildViewHolder onCreateChildViewHolder(ViewGroup parent) {
+        View view = mInflater.inflate(R.layout.list_item_child_vertical, parent, false);
+        return new VerticalChildViewHolder(view);
     }
 
     /**
@@ -99,10 +99,10 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
      * @param position the position in the RecyclerView of the item
      */
     @Override
-    public void onBindParentViewHolder(CustomParentViewHolder parentViewHolder, int position, Object parentObject) {
-        CustomParentObject customParentObject = (CustomParentObject) parentObject;
-        parentViewHolder.numberText.setText(Integer.toString(customParentObject.getParentNumber()));
-        parentViewHolder.dataText.setText(customParentObject.getParentText());
+    public void onBindParentViewHolder(VerticalParentViewHolder parentViewHolder, int position, Object parentObject) {
+        VerticalParentObject verticalParentObject = (VerticalParentObject) parentObject;
+        parentViewHolder.numberText.setText(Integer.toString(verticalParentObject.getParentNumber()));
+        parentViewHolder.dataText.setText(verticalParentObject.getParentText());
     }
 
     /**
@@ -113,8 +113,8 @@ public class MyExpandableAdapter extends ExpandableRecyclerAdapter<CustomParentV
      * @param position the position in the RecyclerView of the item
      */
     @Override
-    public void onBindChildViewHolder(CustomChildViewHolder childViewHolder, int position, Object childObject) {
-        CustomChildObject customChildObject = (CustomChildObject) childObject;
-        childViewHolder.dataText.setText(customChildObject.getChildText());
+    public void onBindChildViewHolder(VerticalChildViewHolder childViewHolder, int position, Object childObject) {
+        VerticalChildObject verticalChildObject = (VerticalChildObject) childObject;
+        childViewHolder.dataText.setText(verticalChildObject.getChildText());
     }
 }

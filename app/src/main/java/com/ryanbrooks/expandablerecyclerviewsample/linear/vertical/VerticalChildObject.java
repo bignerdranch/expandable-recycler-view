@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
+package com.ryanbrooks.expandablerecyclerviewsample.linear.vertical;
 
 /**
  * /**
@@ -9,10 +9,10 @@ package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSa
  * @version 1.0
  * @since 5/27/2015
  */
-public class CustomChildObject {
+public class VerticalChildObject {
     private String mChildText;
 
-    public CustomChildObject() {
+    public VerticalChildObject() {
     }
 
     public String getChildText() {

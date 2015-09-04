@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample;
+package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,14 +18,14 @@ import java.util.ArrayList;
  * @version 1.0
  * @since 5/27/2015
  */
-public class CustomSpinnerAdapter extends ArrayAdapter<Long> {
+public class HorizontalSpinnerAdapter extends ArrayAdapter<Long> {
     private static final String NO_ANIMATION_TEXT = "No Animation";
     private static final String MS = " ms";
     private static final String ONE_SECOND = "1 s";
 
     private LayoutInflater mInflater;
 
-    public CustomSpinnerAdapter(Context context, ArrayList<Long> speedList) {
+    public HorizontalSpinnerAdapter(Context context, ArrayList<Long> speedList) {
         super(context, R.layout.spinner_item_layout, speedList);
         mInflater = LayoutInflater.from(getContext());
     }

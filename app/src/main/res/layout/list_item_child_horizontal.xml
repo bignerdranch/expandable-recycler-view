@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="96dp"
     android:background="@drawable/child_bg"
-    android:layout_marginLeft="8dp"
+    android:layout_marginTop="8dp"
     android:layout_marginRight="8dp">
 
     <TextView
-        android:id="@+id/recycler_item_text_child"
+        android:id="@+id/list_item_horizontal_child_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="72dp"
-        android:layout_marginTop="8dp" />
+        android:layout_margin="8dp" />
 
 
 </RelativeLayout>

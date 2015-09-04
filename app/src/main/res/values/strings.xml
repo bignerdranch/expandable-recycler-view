@@ -13,5 +13,11 @@
     <!-- Vertical sample activity -->
     <string name="vertical_sample_toolbar_checkbox">Custom Expand Button</string>
     <string name="vertical_sample_toolbar_animation">Animation Speed</string>
+    <string name="title_activity_horizontal_linear_recycler_view_sample">
+        HorizontalLinearRecyclerViewSampleActivity
+    </string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
