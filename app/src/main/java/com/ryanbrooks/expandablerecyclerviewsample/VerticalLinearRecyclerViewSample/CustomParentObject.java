@@ -20,6 +20,7 @@ public class CustomParentObject implements ParentObject {
 
     private String mParentText;
     private int mParentNumber;
+    private boolean mInitiallyExpanded;
 
 
     public CustomParentObject() {
@@ -59,5 +60,14 @@ public class CustomParentObject implements ParentObject {
     @Override
     public void setChildObjectList(List<Object> childObjectList) {
         mChildObjectList = childObjectList;
+    }
+
+    @Override
+    public boolean isInitiallyExpanded() {
+        return mInitiallyExpanded;
+    }
+
+    public void setInitiallyExpanded(boolean initiallyExpanded) {
+        mInitiallyExpanded = initiallyExpanded;
     }
 }

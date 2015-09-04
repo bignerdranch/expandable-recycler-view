@@ -194,6 +194,9 @@ public class VerticalLinearRecyclerViewSample extends AppCompatActivity implemen
             customParentObject.setChildObjectList(childObjectList);
             customParentObject.setParentNumber(i);
             customParentObject.setParentText(PARENT_TEXT + i);
+            if (i == 0) {
+                customParentObject.setInitiallyExpanded(true);
+            }
             parentObjectList.add(customParentObject);
         }
         return parentObjectList;
