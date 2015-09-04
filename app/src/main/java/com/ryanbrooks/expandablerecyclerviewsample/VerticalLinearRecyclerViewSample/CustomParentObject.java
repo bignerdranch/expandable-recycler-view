@@ -20,7 +20,7 @@ public class CustomParentObject implements ParentObject {
 
     private String mParentText;
     private int mParentNumber;
-    private boolean mInitiallyExpand;
+    private boolean mInitiallyExpanded;
 
 
     public CustomParentObject() {
@@ -64,10 +64,10 @@ public class CustomParentObject implements ParentObject {
 
     @Override
     public boolean isInitiallyExpanded() {
-        return mInitiallyExpand;
+        return mInitiallyExpanded;
     }
 
-    public void setInitiallyExpand(boolean initiallyExpand) {
-        mInitiallyExpand = initiallyExpand;
+    public void setInitiallyExpanded(boolean initiallyExpanded) {
+        mInitiallyExpanded = initiallyExpanded;
     }
 }
