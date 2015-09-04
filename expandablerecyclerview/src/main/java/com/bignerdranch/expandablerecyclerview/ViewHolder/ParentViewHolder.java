@@ -1,6 +1,7 @@
 package com.bignerdranch.expandablerecyclerview.ViewHolder;
 
 import android.os.Build;
+import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.RotateAnimation;
@@ -53,7 +54,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      * @param clickableViewId id of view which should be clickable
      * @param itemViewClickable whether the entire itemView is clickable as well.
      */
-    public void setCustomClickableView(int clickableViewId, boolean itemViewClickable) {
+    public void setCustomClickableView(@IdRes int clickableViewId, boolean itemViewClickable) {
         mClickableView = itemView.findViewById(clickableViewId);
         mClickableView.setOnClickListener(this);
         if (itemViewClickable) {
