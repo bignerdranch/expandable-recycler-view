@@ -52,7 +52,6 @@ public class Crime implements ParentObject {
         return mChildrenList;
     }
 
-    @Override
     public void setChildObjectList(List<Object> list) {
         mChildrenList = list;
     }

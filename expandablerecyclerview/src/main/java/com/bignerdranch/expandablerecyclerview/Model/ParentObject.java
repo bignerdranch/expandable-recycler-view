@@ -26,13 +26,6 @@ public interface ParentObject {
     List<Object> getChildObjectList();
 
     /**
-     * Setter method for this parent's child object list. Multiple can be added or none
-     *
-     * @param childObjectList
-     */
-    void setChildObjectList(List<Object> childObjectList);
-
-    /**
      * Used to determine whether parent view should show up initially as expanded.
      *
      * @return true if parent should be expanded
