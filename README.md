@@ -9,25 +9,24 @@ The Expandable RecyclerView is a library written to allow for an expanded view t
 ##Project Setup
 **Gradle**
 
-Simply add this to your app's build.gradle:
+The [latest release](https://github.com/bignerdranch/expandable-recycler-view/releases/tag/v1.0.3) can be used by adding this to your app's build.gradle:
 ```gradle
 compile 'com.bignerdranch.android:expandablerecyclerview:1.0.3'
 ```
 
-
+Current development can be found at the following snapshot:
+```gradle
+compile 'com.bignerdranch.android:expandablerecyclerview:1.1.0-SNAPSHOT'
+```
+Add Sonatype's snapshots to your repositories closure in the root `build.gradle`:
+```gradle
+allprojects {
+    repositories {
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    }
+}
+```
 You can also clone the project and add it as a module to your project.
-
-Clone with:
-```
-git clone git@github.com:bignerdranch/expandable-recycler-view.git
-```
-
-Then, navigate inside the directory, clean and build from Android Studio or with
-```
-./gradlew clean app:assemble
-```
-
-Now run the sample app on any device or emulator/simulator to view the basic functionality of the list. Code for the sample is located under ```/app/src/main```. All library code is located under ```/expandablerecyclerview/src/main```. The CriminalIntent sample is located under ```/criminalintentsample/src/main```.
 
 ## Overview
 Expandable RecyclerView can be used with any stock Android RecyclerView.
