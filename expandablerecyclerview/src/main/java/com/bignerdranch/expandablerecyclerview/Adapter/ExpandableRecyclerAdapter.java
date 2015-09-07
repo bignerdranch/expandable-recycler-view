@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * The Base class for an Expandable RecyclerView Adapter
- * <p/>
+ *
  * Provides the base for a user to implement binding custom views to a Parent ViewHolder and a
  * Child ViewHolder
  *
@@ -100,7 +100,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * Override of RecyclerView's default onCreateViewHolder.
-     * <p/>
+     *
      * This implementation determines if the item is a child or a parent view and will then call
      * the respective onCreateViewHolder method that the user must implement in their custom
      * implementation.
@@ -124,11 +124,11 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * Override of RecyclerView's default onBindViewHolder
-     * <p/>
+     *
      * This implementation determines first if the ViewHolder is a ParentViewHolder or a
      * ChildViewHolder. The respective onBindViewHolders for ParentObjects and ChildObject are then
      * called.
-     * <p/>
+     *
      * If the item is a ParentObject, setting the ParentViewHolder's animation settings are then handled
      * here.
      *
