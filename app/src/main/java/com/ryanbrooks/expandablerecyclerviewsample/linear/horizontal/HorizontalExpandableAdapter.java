@@ -13,13 +13,8 @@ import java.util.List;
 
 /**
  * An example custom implementation of the ExpandableRecyclerAdapter.
- *
- * @author Ryan Brooks
- * @version 1.0
- * @since 5/27/2015
  */
 public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<HorizontalParentViewHolder, HorizontalChildViewHolder> {
-    private final String TAG = this.getClass().getSimpleName();
 
     private LayoutInflater mInflater;
 
@@ -101,8 +96,7 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
     @Override
     public void onBindParentViewHolder(HorizontalParentViewHolder parentViewHolder, int position, Object parentObject) {
         HorizontalParentObject horizontalParentObject = (HorizontalParentObject) parentObject;
-        parentViewHolder.numberText.setText(Integer.toString(horizontalParentObject.getParentNumber()));
-        parentViewHolder.dataText.setText(horizontalParentObject.getParentText());
+        parentViewHolder.bind(horizontalParentObject.getParentNumber(), horizontalParentObject.getParentText());
     }
 
     /**
@@ -115,6 +109,6 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
     @Override
     public void onBindChildViewHolder(HorizontalChildViewHolder childViewHolder, int position, Object childObject) {
         HorizontalChildObject horizontalChildObject = (HorizontalChildObject) childObject;
-        childViewHolder.dataText.setText(horizontalChildObject.getChildText());
+        childViewHolder.bind(horizontalChildObject.getChildText());
     }
 }

@@ -12,21 +12,16 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
 import java.util.ArrayList;
 
 /**
- * Cusstom adapter for the animation duration selection Spinner in the Toolbar.
- *
- * @author Ryan Brooks
- * @version 1.0
- * @since 5/27/2015
+ * Custom adapter for the animation duration selection Spinner in the Toolbar.
  */
 public class HorizontalSpinnerAdapter extends ArrayAdapter<Long> {
-    private static final String NO_ANIMATION_TEXT = "No Animation";
-    private static final String MS = " ms";
-    private static final String ONE_SECOND = "1 s";
+
+    private static final int MAX_ANIMATION_DURATION_MS = 1000;
 
     private LayoutInflater mInflater;
 
     public HorizontalSpinnerAdapter(Context context, ArrayList<Long> speedList) {
-        super(context, R.layout.spinner_item_layout, speedList);
+        super(context, R.layout.list_item_animation_duration, speedList);
         mInflater = LayoutInflater.from(getContext());
     }
 
@@ -41,21 +36,24 @@ public class HorizontalSpinnerAdapter extends ArrayAdapter<Long> {
     }
 
     public View getCustomView(int position, View convertView, ViewGroup parent) {
+        Context context = getContext();
         RowViewHolder rowViewHolder;
+
         if (convertView == null) {
             rowViewHolder = new RowViewHolder();
-            convertView = mInflater.inflate(R.layout.spinner_item_layout, parent, false);
-            rowViewHolder.rowItemText = (TextView) convertView.findViewById(R.id.spinner_item_text);
+            convertView = mInflater.inflate(R.layout.list_item_animation_duration, parent, false);
+            rowViewHolder.mRowItemTextView = (TextView) convertView.findViewById(R.id.list_item_animation_duration_textView);
         } else {
             rowViewHolder = (RowViewHolder) convertView.getTag();
         }
 
-        if (getItem(position) == -1) {
-            rowViewHolder.rowItemText.setText(NO_ANIMATION_TEXT);
-        } else if (getItem(position) == 1000) {
-            rowViewHolder.rowItemText.setText(ONE_SECOND);
+        long animationDurationMs = getItem(position);
+        if (animationDurationMs == -1) {
+            rowViewHolder.bind(context.getString(R.string.no_animation));
+        } else if (animationDurationMs == MAX_ANIMATION_DURATION_MS) {
+            rowViewHolder.bind(context.getString(R.string.spinner_adapter_time_s));
         } else {
-            rowViewHolder.rowItemText.setText(getItem(position).toString() + MS);
+            rowViewHolder.bind(context.getString(R.string.spinner_adapter_time_ms, animationDurationMs));
         }
 
         convertView.setTag(rowViewHolder);
@@ -63,6 +61,11 @@ public class HorizontalSpinnerAdapter extends ArrayAdapter<Long> {
     }
 
     private class RowViewHolder {
-        TextView rowItemText;
+
+        private TextView mRowItemTextView;
+
+        public void bind(String rowItemText) {
+            mRowItemTextView.setText(rowItemText);
+        }
     }
 }

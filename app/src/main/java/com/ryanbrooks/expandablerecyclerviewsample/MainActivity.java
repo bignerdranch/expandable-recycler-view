@@ -1,6 +1,6 @@
 package com.ryanbrooks.expandablerecyclerviewsample;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,9 +11,6 @@ import android.widget.Toast;
 import com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal.HorizontalLinearRecyclerViewSampleActivity;
 import com.ryanbrooks.expandablerecyclerviewsample.linear.vertical.VerticalLinearRecyclerViewSampleActivity;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
 /**
  * Main Activity that contains navigation for sample application.
  * Uses ButterKnife to inject view resources.
@@ -22,47 +19,51 @@ import butterknife.InjectView;
  * @version 1.0
  * @since 5/27/2015
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
-    @InjectView(R.id.main_vertical_linear_button)
-    Button mVerticalSampleButton;
-    @InjectView(R.id.main_horizontal_linear_button)
-    Button mHorizontalSampleButton;
-    @InjectView(R.id.main_grid_button)
-    Button mGridSampleButton;
-    @InjectView(R.id.activity_main_toolbar)
-    Toolbar mToolbar;
+    private Button mVerticalSampleButton;
+    private Button mHorizontalSampleButton;
+    private Button mGridSampleButton;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
 
+        mToolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         setSupportActionBar(mToolbar);
 
-        mVerticalSampleButton.setOnClickListener(this);
-        mHorizontalSampleButton.setOnClickListener(this);
-        mGridSampleButton.setOnClickListener(this);
+        mVerticalSampleButton = (Button) findViewById(R.id.activity_main_vertical_linear_sample_button);
+        mVerticalSampleButton.setOnClickListener(mVerticalSampleButtonClickListener);
+
+        mHorizontalSampleButton = (Button) findViewById(R.id.activity_main_horizontal_linear_sample_button);
+        mHorizontalSampleButton.setOnClickListener(mHorizontalSampleButtonClickListener);
+
+        mGridSampleButton = (Button) findViewById(R.id.activity_main_grid_sample_button);
+        mGridSampleButton.setOnClickListener(mGridSampleButtonClickListener);
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v == mVerticalSampleButton) {
-            Intent i = new Intent(this, VerticalLinearRecyclerViewSampleActivity.class);
-            startActivity(i);
-        } else if (v == mHorizontalSampleButton) {
-            startActivity(HorizontalLinearRecyclerViewSampleActivity.newIntent(v.getContext()));
-        } else if (v == mGridSampleButton) {
-            Toast.makeText(this,
-                    this.getResources().getString(R.string.coming_soon),
-                    Toast.LENGTH_SHORT)
-                    .show();
-        } else {
-            Toast.makeText(this,
-                    this.getResources().getString(R.string.coming_soon),
-                    Toast.LENGTH_SHORT)
-                    .show();
+    private View.OnClickListener mVerticalSampleButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(VerticalLinearRecyclerViewSampleActivity.newIntent(v.getContext()));
         }
-    }
+    };
+
+    private View.OnClickListener mHorizontalSampleButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(HorizontalLinearRecyclerViewSampleActivity.newIntent(v.getContext()));
+        }
+    };
+
+    private View.OnClickListener mGridSampleButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Context context = v.getContext();
+            String toastMessage = context.getString(R.string.coming_soon);
+            Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
+        }
+    };
 }

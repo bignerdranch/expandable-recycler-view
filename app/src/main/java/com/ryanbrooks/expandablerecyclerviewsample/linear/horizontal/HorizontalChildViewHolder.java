@@ -9,16 +9,12 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
 /**
  * Custom child ViewHolder. Any views should be found and set to public variables here to be
  * referenced in your custom ExpandableAdapter later.
- * <p>
- * Must extend ChildViewHolder
  *
- * @author Ryan Brooks
- * @version 1.0
- * @since 5/27/2015
+ * Must extend ChildViewHolder.
  */
 public class HorizontalChildViewHolder extends ChildViewHolder {
 
-    public TextView dataText;
+    public TextView mDataTextView;
 
     /**
      * Public constructor for the custom child ViewHolder
@@ -28,6 +24,10 @@ public class HorizontalChildViewHolder extends ChildViewHolder {
     public HorizontalChildViewHolder(View itemView) {
         super(itemView);
 
-        dataText = (TextView) itemView.findViewById(R.id.list_item_horizontal_child_textView);
+        mDataTextView = (TextView) itemView.findViewById(R.id.list_item_horizontal_child_textView);
+    }
+
+    public void bind(String childText) {
+        mDataTextView.setText(childText);
     }
 }

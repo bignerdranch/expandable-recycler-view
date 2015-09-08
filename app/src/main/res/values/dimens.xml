@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="large_text_size">36sp</dimen>
-    <dimen name="regular_margin">8dp</dimen>
+    <dimen name="text_size_header_large">36sp</dimen>
+    <dimen name="text_size_header">24sp</dimen>
+    <dimen name="margin_medium">8dp</dimen>
+
+    <!-- Animation duration spinner -->
+    <dimen name="list_item_animation_duration_textSize">18sp</dimen>
+    <dimen name="list_item_animation_duration_layout_margin">10dp</dimen>
+    <dimen name="list_item_animation_duration_padding">5dp</dimen>
+
+    <dimen name="list_item_horizontal_height">96dp</dimen>
+    <dimen name="list_item_parent_horizontal_width">160dp</dimen>
+    <dimen name="list_item_parent_textSize">24sp</dimen>
+    <dimen name="list_item_parent_arrow_size">20dp</dimen>
+    <dimen name="list_item_child_vertical_paddingLeft">72dp</dimen>
+    <dimen name="list_item_parent_vertical_height">96dp</dimen>
+    <dimen name="list_item_parent_vertical_number_textView_marginLeft">16dp</dimen>
+    <dimen name="list_item_parent_vertical_parent_textView_marginLeft">42dp</dimen>
+    <dimen name="list_item_child_background_corner_radius">4dp</dimen>
+    <dimen name="list_item_parent_background_corner_radius">2dp</dimen>
+
 </resources>

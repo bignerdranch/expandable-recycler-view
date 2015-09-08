@@ -11,17 +11,13 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
  * Custom parent ViewHolder. Any views should be found and set to public variables here to be
  * referenced in your custom ExpandableAdapter later.
  * <p>
- * Must extend ParentViewHolder
- *
- * @author Ryan Brooks
- * @version 1.0
- * @since 5/27/2015
+ * Must extend ParentViewHolder.
  */
 public class HorizontalParentViewHolder extends ParentViewHolder {
 
-    public TextView numberText;
-    public TextView dataText;
-    public ImageView arrowExpand;
+    public TextView mNumberTextView;
+    public TextView mDataTextView;
+    public ImageView mArrowExpandImageView;
 
     /**
      * Public constructor for the CustomViewHolder.
@@ -31,8 +27,13 @@ public class HorizontalParentViewHolder extends ParentViewHolder {
     public HorizontalParentViewHolder(View itemView) {
         super(itemView);
 
-        numberText = (TextView) itemView.findViewById(R.id.list_item_parent_horizontal_number_textView);
-        dataText = (TextView) itemView.findViewById(R.id.list_item_parent_horizontal_parent_textView);
-        arrowExpand = (ImageView) itemView.findViewById(R.id.list_item_parent_horizontal_arrow_imageView);
+        mNumberTextView = (TextView) itemView.findViewById(R.id.list_item_parent_horizontal_number_textView);
+        mDataTextView = (TextView) itemView.findViewById(R.id.list_item_parent_horizontal_parent_textView);
+        mArrowExpandImageView = (ImageView) itemView.findViewById(R.id.list_item_parent_horizontal_arrow_imageView);
+    }
+
+    public void bind(int parentNumber, String parentText) {
+        mNumberTextView.setText(String.valueOf(parentNumber));
+        mDataTextView.setText(parentText);
     }
 }

@@ -9,22 +9,15 @@ import java.util.List;
  * Custom parent object that holds a string and an int for displaying data in the parent item. You
  * can use any Object here as long as it implements ParentObject and sets the list to a private
  * variable.
- *
- * @author Ryan Brooks
- * @version 1.0
- * @since 5/27/2015
  */
 public class HorizontalParentObject implements ParentObject {
+
     // A List<Object> or subclass of List must be added for the object to work correctly
     private List<Object> mChildObjectList;
 
     private String mParentText;
     private int mParentNumber;
     private boolean mInitiallyExpanded;
-
-
-    public HorizontalParentObject() {
-    }
 
     public String getParentText() {
         return mParentText;

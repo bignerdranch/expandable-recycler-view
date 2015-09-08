@@ -5,10 +5,10 @@
               android:orientation="vertical">
 
     <include layout="@layout/toolbar_sample"
-             android:id="@+id/activity_horizontal_linear_recycler_view_toolbar"/>
+             android:id="@+id/activity_vertical_linear_recycler_view_sample_toolbar"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/activity_horizontal_linear_recycler_view_sample_recyclerView"
+        android:id="@+id/activity_vertical_linear_recycler_view_sample_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

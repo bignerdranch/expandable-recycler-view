@@ -8,8 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,16 +16,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".linear.vertical.VerticalLinearRecyclerViewSampleActivity"
-            android:label="@string/vertical_linear_recycler_title"
-            android:parentActivityName=".MainActivity" >
+            android:name=".linear.vertical.VerticalLinearRecyclerViewSampleActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name=".linear.horizontal.HorizontalLinearRecyclerViewSampleActivity"
-            android:label="@string/title_activity_horizontal_linear_recycler_view_sample" >
+            android:name=".linear.horizontal.HorizontalLinearRecyclerViewSampleActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />

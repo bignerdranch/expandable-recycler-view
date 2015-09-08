@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="96dp"
-    android:background="@drawable/child_bg"
-    android:layout_marginTop="8dp"
-    android:layout_marginRight="8dp">
-
-    <TextView
-        android:id="@+id/list_item_horizontal_child_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp" />
-
-
-</RelativeLayout>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/list_item_horizontal_child_textView"
+          android:layout_width="wrap_content"
+          android:layout_height="@dimen/list_item_horizontal_height"
+          android:layout_marginTop="@dimen/margin_medium"
+          android:layout_marginEnd="@dimen/margin_medium"
+          android:layout_marginRight="@dimen/margin_medium"
+          android:padding="@dimen/margin_medium"
+          android:background="@drawable/background_list_item_child"/>

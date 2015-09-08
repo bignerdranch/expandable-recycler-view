@@ -1,23 +1,23 @@
 <resources>
     <string name="app_name">Expandable RecyclerView Sample</string>
-    <string name="vertical_linear_recycler_title">Vertical Linear Expansion Sample</string>
 
+    <!-- Main screen -->
+    <string name="activity_main_vertical_linear_sample_button">Vertical Linear Sample</string>
+    <string name="activity_main_horizontal_linear_sample_button">Horizontal Linear Sample</string>
+    <string name="activity_main_grid_sample_button">Grid Layout Sample</string>
+    <string name="activity_main_header">Expanding RecyclerView</string>
     <string name="coming_soon">Feature coming soon</string>
 
-    <!-- Main Activity Buttons -->
-    <string name="vertical_linear_sample_button">Vertical Linear Sample</string>
-    <string name="horizontal_linear_sample_button">Horizontal Linear Sample</string>
-    <string name="grid_sample_button">Grid Layout Sample</string>
-    <string name="activity_main_header">Expanding RecyclerView</string>
+    <!-- Linear sample -->
+    <string name="toolbar_sample_checkBox">Custom Expand Button</string>
+    <string name="child_text">Child %1$d</string>
+    <string name="second_child_text">Child %1$d_2</string>
+    <string name="parent_text">Parent %1$d</string>
+    <string name="arrow_contentDescription">Expand list item arrow</string>
 
-    <!-- Vertical sample activity -->
-    <string name="vertical_sample_toolbar_checkbox">Custom Expand Button</string>
-    <string name="vertical_sample_toolbar_animation">Animation Speed</string>
-    <string name="title_activity_horizontal_linear_recycler_view_sample">
-        HorizontalLinearRecyclerViewSampleActivity
-    </string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <!-- Sample Toolbar -->
+    <string name="no_animation">No animation</string>
+    <string name="spinner_adapter_time_s">1 s</string>
+    <string name="spinner_adapter_time_ms">%1$d ms</string>
 
 </resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/list_item_animation_duration_textView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/list_item_animation_duration_layout_margin"
+          android:padding="@dimen/list_item_animation_duration_padding"
+          android:background="@color/primary_green"
+          android:textSize="@dimen/list_item_animation_duration_textSize"
+          android:textColor="@color/white"/>

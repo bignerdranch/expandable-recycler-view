@@ -15,16 +15,12 @@ import java.util.List;
  * @since 5/27/2015
  */
 public class VerticalParentObject implements ParentObject {
+
     // A List<Object> or subclass of List must be added for the object to work correctly
     private List<Object> mChildObjectList;
-
     private String mParentText;
     private int mParentNumber;
     private boolean mInitiallyExpanded;
-
-
-    public VerticalParentObject() {
-    }
 
     public String getParentText() {
         return mParentText;

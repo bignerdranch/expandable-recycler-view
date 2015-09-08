@@ -20,9 +20,9 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
  */
 public class VerticalParentViewHolder extends ParentViewHolder {
 
-    public TextView numberText;
-    public TextView dataText;
-    public ImageView arrowExpand;
+    public TextView mNumberTextView;
+    public TextView mDataTextView;
+    public ImageView mArrowExpandImageView;
 
     /**
      * Public constructor for the CustomViewHolder.
@@ -32,8 +32,13 @@ public class VerticalParentViewHolder extends ParentViewHolder {
     public VerticalParentViewHolder(View itemView) {
         super(itemView);
 
-        numberText = (TextView) itemView.findViewById(R.id.recycler_item_number_parent);
-        dataText = (TextView) itemView.findViewById(R.id.recycler_item_text_parent);
-        arrowExpand = (ImageView) itemView.findViewById(R.id.recycler_item_arrow_parent);
+        mNumberTextView = (TextView) itemView.findViewById(R.id.list_item_parent_vertical_number_textView);
+        mDataTextView = (TextView) itemView.findViewById(R.id.list_item_parent_vertical_parent_textView);
+        mArrowExpandImageView = (ImageView) itemView.findViewById(R.id.list_item_parent_horizontal_arrow_imageView);
+    }
+
+    public void bind(int parentNumber, String parentText) {
+        mNumberTextView.setText(String.valueOf(parentNumber));
+        mDataTextView.setText(parentText);
     }
 }

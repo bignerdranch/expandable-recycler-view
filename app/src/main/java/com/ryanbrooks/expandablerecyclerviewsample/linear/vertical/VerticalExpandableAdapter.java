@@ -19,7 +19,6 @@ import java.util.List;
  * @since 5/27/2015
  */
 public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<VerticalParentViewHolder, VerticalChildViewHolder> {
-    private final String TAG = this.getClass().getSimpleName();
 
     private LayoutInflater mInflater;
 
@@ -101,8 +100,7 @@ public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<Vertica
     @Override
     public void onBindParentViewHolder(VerticalParentViewHolder parentViewHolder, int position, Object parentObject) {
         VerticalParentObject verticalParentObject = (VerticalParentObject) parentObject;
-        parentViewHolder.numberText.setText(Integer.toString(verticalParentObject.getParentNumber()));
-        parentViewHolder.dataText.setText(verticalParentObject.getParentText());
+        parentViewHolder.bind(verticalParentObject.getParentNumber(), verticalParentObject.getParentText());
     }
 
     /**
@@ -115,6 +113,6 @@ public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<Vertica
     @Override
     public void onBindChildViewHolder(VerticalChildViewHolder childViewHolder, int position, Object childObject) {
         VerticalChildObject verticalChildObject = (VerticalChildObject) childObject;
-        childViewHolder.dataText.setText(verticalChildObject.getChildText());
+        childViewHolder.bind(verticalChildObject.getChildText());
     }
 }
