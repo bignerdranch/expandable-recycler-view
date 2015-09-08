@@ -4,9 +4,9 @@ import java.util.List;
 
 /**
  * Interface for implementing required methods in a ParentObject
- * <p/>
+ *
  * In the user's specified ParentObject, they should set instance variables for the following:
- * <p/>
+ *
  * boolean mExpanded: for the Parent's current expanded state
  * Object (or the user's custom ChildObject type) mChildObject: the reference to the Parent's ChildObject
  * long mStableId: A unique long to properly identify the ParentObject from other ParentObjects

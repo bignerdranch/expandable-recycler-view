@@ -1,17 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
-apply plugin: 'signing'
-
-version '1.0.3'
-group 'com.bignerdranch.android'
-
-def isSnapshot = version.endsWith('-SNAPSHOT')
-def ossrhUsername = hasProperty('ossrhUsername') ?
-        getProperty('ossrhUsername') :
-        'dummyUsername'
-def ossrhPassword = hasProperty('ossrhPassword') ?
-        getProperty('ossrhPassword') :
-        'dummyPassword'
 
 android {
     compileSdkVersion 22
@@ -34,55 +21,9 @@ android {
     }
 }
 
-signing {
-    required { !isSnapshot && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
-}
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:recyclerview-v7:22.2.0'
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment ->
-                signing.signPom(deployment)
-            }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            pom.project {
-                packaging 'aar'
-                name 'Expandable RecyclerView'
-                description 'A lightweight Android library that allows for the expansion and collapsing of RecyclerView items'
-
-                url 'https://bignerdranch.github.io/expandable-recycler-view/'
-
-                scm {
-                    url 'https://github.com/bignerdranch/expandable-recycler-view'
-                    connection 'scm:git:https://github.com/bignerdranch/expandable-recycler-view.git'
-                }
-
-                licenses {
-                    license {
-                        name 'MIT License'
-                        url 'http://opensource.org/licenses/MIT'
-                        distribution 'repo'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'rbrooks'
-                        name 'Ryan Brooks'
-                        email 'rbrooks@bignerdranch.com'
-                    }
-                }
-            }
-        }
-    }
-}
+apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
