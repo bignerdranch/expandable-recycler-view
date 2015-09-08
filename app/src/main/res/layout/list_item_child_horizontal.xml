@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/list_item_horizontal_child_textView"
+          android:layout_width="wrap_content"
+          android:layout_height="@dimen/list_item_horizontal_height"
+          android:layout_marginTop="@dimen/margin_medium"
+          android:layout_marginEnd="@dimen/margin_medium"
+          android:layout_marginRight="@dimen/margin_medium"
+          android:padding="@dimen/margin_medium"
+          android:background="@drawable/background_list_item_child"/>

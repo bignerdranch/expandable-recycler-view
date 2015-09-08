@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_parent_vertical_height"
+    android:layout_marginLeft="@dimen/margin_medium"
+    android:layout_marginRight="@dimen/margin_medium"
+    android:layout_marginTop="@dimen/margin_medium"
+    android:background="@drawable/background_list_item_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/list_item_parent_vertical_number_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_marginLeft="@dimen/list_item_parent_vertical_number_textView_marginLeft"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/text_size_header"/>
+
+    <TextView
+        android:id="@+id/list_item_parent_vertical_parent_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:layout_marginLeft="@dimen/list_item_parent_vertical_parent_textView_marginLeft"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/text_size_header"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <ImageView
+        android:id="@+id/list_item_parent_horizontal_arrow_imageView"
+        android:layout_width="@dimen/list_item_parent_arrow_size"
+        android:layout_height="@dimen/list_item_parent_arrow_size"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/selector_arrow_down"
+        android:contentDescription="@string/arrow_contentDescription"/>
+
+</LinearLayout>

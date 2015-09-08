@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/background_card"/>
+            <corners
+                android:bottomLeftRadius="@dimen/list_item_child_background_corner_radius"
+                android:bottomRightRadius="@dimen/list_item_child_background_corner_radius"/>
+        </shape>
+    </item>
+</layer-list>
