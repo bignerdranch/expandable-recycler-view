@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
@@ -22,20 +23,24 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivity implements ExpandCollapseListener {
 
     private static final long INITIAL_ROTATION_SPEED_MS = 100;
     private static final int NUM_ANIMATION_DURATIONS = 10;
     private static final int NUM_TEST_DATA_ITEMS = 20;
+    private static final int EXPAND_SINGLE_PARENT_INDEX = 2;
 
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private CheckBox mAnimationEnabledCheckBox;
     private Spinner mToolbarSpinner;
+    private Button mExpandParentTwoButton;
 
     private HorizontalExpandableAdapter mExpandableAdapter;
     private ArrayList<Long> mDurationList;
+    private List<ParentObject> mTestDataObjectList;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, HorizontalLinearRecyclerViewSampleActivity.class);
@@ -57,11 +62,15 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         mToolbarSpinner = (Spinner) findViewById(R.id.toolbar_sample_spinner);
         mToolbarSpinner.setOnItemSelectedListener(mToolbarSpinnerItemSelectListener);
 
+        mExpandParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_parent_two_button);
+        mExpandParentTwoButton.setOnClickListener(mExpandParentTwoClickListener);
+
         // Generate spinner's list of rotation speeds (in ms)
         mDurationList = generateSpinnerSpeeds();
 
         // Create a new adapter with 20 test data items
-        mExpandableAdapter = new HorizontalExpandableAdapter(this, setUpTestData(NUM_TEST_DATA_ITEMS));
+        mTestDataObjectList = setUpTestData(NUM_TEST_DATA_ITEMS);
+        mExpandableAdapter = new HorizontalExpandableAdapter(this, mTestDataObjectList);
 
         // Attach this activity to the Adapter as the ExpandCollapseListener
         mExpandableAdapter.addExpandCollapseListener(this);
@@ -138,6 +147,13 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
             // Do nothing
+        }
+    };
+
+    private View.OnClickListener mExpandParentTwoClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.expandParent(EXPAND_SINGLE_PARENT_INDEX);
         }
     };
 

@@ -10,6 +10,13 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/activity_horizontal_linear_recycler_view_sample_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="@dimen/list_item_horizontal_height"/>
+
+    <Button
+        android:id="@+id/activity_horizontal_linear_recycler_view_expand_parent_two_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:text="@string/expand_parent_two"/>
 
 </LinearLayout>

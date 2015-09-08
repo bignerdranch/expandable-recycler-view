@@ -230,7 +230,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         Object helperItem = getHelperItem(position);
         if (helperItem instanceof ParentWrapper) {
             ParentObject parentObject = ((ParentWrapper) helperItem).getParentObject();
-            expandParent(parentObject, position);
+            toggleParentExpansion(position);
         }
     }
 
@@ -284,14 +284,77 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Method called to expand a ParentObject when clicked. This handles saving state, adding the
-     * corresponding child objects to the list (the recyclerview list) and updating that list.
-     * It also calls the appropriate ExpandCollapseListener methods, if it exists
+     * Expands the {@link ParentObject} with the specified index in the parent list.
      *
-     * @param parentObject
+     * @param parentIndex The index of the {@code ParentObject} to expand
+     */
+    public void expandParent(int parentIndex) {
+        int parentWrapperIndex = getParentWrapperIndex(parentIndex);
+
+        Object helperItem = getHelperItem(parentWrapperIndex);
+        ParentWrapper parentWrapper = null;
+        if (helperItem instanceof ParentWrapper) {
+             parentWrapper = (ParentWrapper) helperItem;
+        }
+        if (parentWrapper == null) {
+            return;
+        }
+
+        if (!parentWrapper.isExpanded()) {
+            parentWrapper.setExpanded(true);
+
+            if (mExpandCollapseListener != null) {
+                int expandedCountBeforePosition = getExpandedItemCount(parentWrapperIndex);
+                mExpandCollapseListener.onRecyclerViewItemExpanded(parentWrapperIndex - expandedCountBeforePosition);
+            }
+
+            mStableIdMap.put(parentWrapper.getStableId(), true);
+            List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
+            if (childObjectList != null) {
+                int numChildObjects = childObjectList.size();
+                for (int i = 0; i < numChildObjects; i++) {
+                    mHelperItemList.add(parentWrapperIndex + i + 1, childObjectList.get(i));
+                    notifyItemInserted(parentWrapperIndex + i + 1);
+                }
+            }
+        }
+    }
+
+    public void expandParent(ParentObject parentObject) {
+
+    }
+
+    /**
+     * Expands all parents in the list.
+     */
+    public void expandAllParents() {
+
+    }
+
+    public void closeParent(int parentIndex) {
+
+    }
+
+    public void closeParent(ParentObject parentObject) {
+
+    }
+
+    /**
+     * Closes all parents in the list.
+     */
+    public void closeAllParents() {
+
+    }
+
+    /**
+     * Method called internally to toggle expansion of a {@link ParentObject} when clicked.
+     * This handles saving state, adding the corresponding child objects to the
+     * {@link RecyclerView} list and updating that list.
+     * It also calls the appropriate {@link ExpandCollapseListener} methods, if it exists.
+     *
      * @param position
      */
-    private void expandParent(ParentObject parentObject, int position) {
+    private void toggleParentExpansion(int position) {
         ParentWrapper parentWrapper = (ParentWrapper) getHelperItem(position);
         if (parentWrapper == null) {
             return;
@@ -433,6 +496,31 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     private Object getHelperItem(int position) {
         return mHelperItemList.get(position);
+    }
+
+    /**
+     * Gets the index of a {@link ParentWrapper} within the helper item list
+     * based on the index of the {@code ParentWrapper}.
+     *
+     * @param parentIndex
+     * @return
+     */
+    private int getParentWrapperIndex(int parentIndex) {
+        int parentWrapperIndex = -1;
+        int parentCount = 0;
+        int numHelperItems = mHelperItemList.size();
+        for (int i = 0; i < numHelperItems; i++) {
+            if (mHelperItemList.get(i) instanceof ParentWrapper) {
+                parentCount++;
+
+                if (parentCount > parentIndex) {
+                    parentWrapperIndex = i;
+                    break;
+                }
+            }
+        }
+
+        return parentWrapperIndex;
     }
 
     private boolean hasCustomAnimationView() {
