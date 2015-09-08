@@ -53,7 +53,6 @@ public class VerticalParentObject implements ParentObject {
      *
      * @param childObjectList the list of all children associated with this parent object
      */
-    @Override
     public void setChildObjectList(List<Object> childObjectList) {
         mChildObjectList = childObjectList;
     }

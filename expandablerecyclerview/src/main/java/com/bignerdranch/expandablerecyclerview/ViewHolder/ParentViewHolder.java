@@ -1,6 +1,7 @@
 package com.bignerdranch.expandablerecyclerview.ViewHolder;
 
 import android.os.Build;
+import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.RotateAnimation;
@@ -47,33 +48,20 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     /**
-     * Setter for a custom Clickable view rather than the Parent item. By calling this method, the
-     * Parent item is no longer responsible for triggering the expansion. The user should pass in
-     * the id of the view that they wish to be the expansion trigger.
+     * Setter for a custom Clickable view. The user should pass in the id of the view that they
+     * wish to be the expansion trigger.
      *
-     * @param clickableViewId
+     * @param clickableViewId id of view which should be clickable
+     * @param itemViewClickable whether the entire itemView is clickable as well.
      */
-    public void setCustomClickableViewOnly(int clickableViewId) {
+    public void setCustomClickableView(@IdRes int clickableViewId, boolean itemViewClickable) {
         mClickableView = itemView.findViewById(clickableViewId);
-        itemView.setOnClickListener(null);
         mClickableView.setOnClickListener(this);
-        if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
-            mClickableView.setRotation(mRotation);
+        if (itemViewClickable) {
+            itemView.setOnClickListener(this);
+        } else {
+            itemView.setOnClickListener(null);
         }
-    }
-
-    /**
-     * Setter for a custom Clickable view and the Parent item. By calling this method, the
-     * Parent item and the clickable view are responsible for triggering the expansion. This means
-     * that either can be clicked and an expansion will occur. The user should pass in an id of the
-     * view they wish to set as the clickable expansion button.
-     *
-     * @param clickableViewId
-     */
-    public void setCustomClickableViewAndItem(int clickableViewId) {
-        mClickableView = itemView.findViewById(clickableViewId);
-        itemView.setOnClickListener(this);
-        mClickableView.setOnClickListener(this);
         if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
             mClickableView.setRotation(mRotation);
         }
