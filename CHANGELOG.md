@@ -1,8 +1,9 @@
-Version 1.1.0 SNAPSHOT
+Version 2.0.0 SNAPSHOT
 ----------------------------
 - Added ability to specify if a parent should be expanded initially
 - Added `ExpandCollapseListener`
-- Remove application tag
+- Removed `setChildObjectList` from `ParentObject` interface
+- Remove application tag from manifest
 - README updates
 - Bug fixes: [#42](https://github.com/bignerdranch/expandable-recycler-view/pull/42), [#46](https://github.com/bignerdranch/expandable-recycler-view/pull/46), [#47](https://github.com/bignerdranch/expandable-recycler-view/pull/47)
 
