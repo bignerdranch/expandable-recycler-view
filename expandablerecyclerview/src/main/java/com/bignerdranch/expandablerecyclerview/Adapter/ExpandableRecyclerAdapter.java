@@ -2,6 +2,8 @@ package com.bignerdranch.expandablerecyclerview.Adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -12,7 +14,6 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,9 +28,8 @@ import java.util.List;
  * @since 5/27/2015
  */
 public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CVH extends ChildViewHolder> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
-    private static final String TAG = ExpandableRecyclerAdapter.class.getClass().getSimpleName();
+
     private static final String STABLE_ID_MAP = "ExpandableRecyclerAdapter.StableIdMap";
-    private static final String STABLE_ID_LIST = "ExpandableRecyclerAdapter.StableIdList";
     private static final int TYPE_PARENT = 0;
     private static final int TYPE_CHILD = 1;
     public static final int CUSTOM_ANIMATION_VIEW_NOT_SET = -1;
@@ -37,7 +37,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public static final long CUSTOM_ANIMATION_DURATION_NOT_SET = -1l;
 
     protected Context mContext;
-    protected List<ParentObject> mParentItemList;
+    protected List<? extends ParentObject> mParentItemList;
     private List<Object> mHelperItemList;
     private HashMap<Long, Boolean> mStableIdMap;
     private ExpandCollapseListener mExpandCollapseListener;
@@ -53,11 +53,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param context
      * @param parentItemList
      */
-    public ExpandableRecyclerAdapter(Context context, List<ParentObject> parentItemList) {
-        mContext = context;
-        mParentItemList = parentItemList;
-        mHelperItemList = ExpandableRecyclerAdapterHelper.generateHelperItemList(parentItemList);
-        mStableIdMap = generateStableIdMapFromList(mHelperItemList);
+    public ExpandableRecyclerAdapter(Context context, @NonNull List<? extends ParentObject> parentItemList) {
+        this(context, parentItemList, CUSTOM_ANIMATION_VIEW_NOT_SET, CUSTOM_ANIMATION_DURATION_NOT_SET);
     }
 
     /**
@@ -69,13 +66,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param parentItemList
      * @param customParentAnimationViewId
      */
-    public ExpandableRecyclerAdapter(Context context, List<ParentObject> parentItemList,
-                                     int customParentAnimationViewId) {
-        mContext = context;
-        mParentItemList = parentItemList;
-        mHelperItemList = ExpandableRecyclerAdapterHelper.generateHelperItemList(parentItemList);
-        mStableIdMap = generateStableIdMapFromList(mHelperItemList);
-        mCustomParentAnimationViewId = customParentAnimationViewId;
+    public ExpandableRecyclerAdapter(Context context, @NonNull List<? extends ParentObject> parentItemList,
+                                     @IdRes int customParentAnimationViewId) {
+        this(context, parentItemList, customParentAnimationViewId, CUSTOM_ANIMATION_DURATION_NOT_SET);
     }
 
     /**
@@ -88,8 +81,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param customParentAnimationViewId
      * @param animationDuration
      */
-    public ExpandableRecyclerAdapter(Context context, List<ParentObject> parentItemList,
-                                     int customParentAnimationViewId, long animationDuration) {
+    public ExpandableRecyclerAdapter(Context context, @NonNull List<? extends ParentObject> parentItemList,
+                                     @IdRes int customParentAnimationViewId, long animationDuration) {
         mContext = context;
         mParentItemList = parentItemList;
         mHelperItemList = ExpandableRecyclerAdapterHelper.generateHelperItemList(parentItemList);
@@ -142,28 +135,15 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         if (helperItem instanceof ParentWrapper) {
             PVH parentViewHolder = (PVH) holder;
 
-            if (mParentAndIconClickable) {
-                if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET
-                        && mAnimationDuration != CUSTOM_ANIMATION_DURATION_NOT_SET) {
-                    parentViewHolder.setCustomClickableViewAndItem(mCustomParentAnimationViewId);
-                    parentViewHolder.setAnimationDuration(mAnimationDuration);
-                } else if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET) {
-                    parentViewHolder.setCustomClickableViewAndItem(mCustomParentAnimationViewId);
-                    parentViewHolder.cancelAnimation();
-                } else {
-                    parentViewHolder.setMainItemClickToExpand();
-                }
+            parentViewHolder.cancelAnimation();
+
+            if (hasCustomAnimationView() && hasAnimationDuration()) {
+                parentViewHolder.setCustomClickableView(mCustomParentAnimationViewId, mParentAndIconClickable);
+                parentViewHolder.setAnimationDuration(mAnimationDuration);
+            } else if (hasCustomAnimationView()) {
+                parentViewHolder.setCustomClickableView(mCustomParentAnimationViewId, mParentAndIconClickable);
             } else {
-                if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET
-                        && mAnimationDuration != CUSTOM_ANIMATION_DURATION_NOT_SET) {
-                    parentViewHolder.setCustomClickableViewOnly(mCustomParentAnimationViewId);
-                    parentViewHolder.setAnimationDuration(mAnimationDuration);
-                } else if (mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET) {
-                    parentViewHolder.setCustomClickableViewOnly(mCustomParentAnimationViewId);
-                    parentViewHolder.cancelAnimation();
-                } else {
-                    parentViewHolder.setMainItemClickToExpand();
-                }
+                parentViewHolder.setMainItemClickToExpand();
             }
 
             ParentWrapper parentWrapper = (ParentWrapper) helperItem;
@@ -276,7 +256,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *
      * @param customParentAnimationViewId
      */
-    public void setCustomParentAnimationViewId(int customParentAnimationViewId) {
+    public void setCustomParentAnimationViewId(@IdRes int customParentAnimationViewId) {
         mCustomParentAnimationViewId = customParentAnimationViewId;
     }
 
@@ -291,7 +271,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Call this when removing the animtion. This will set the parent item to be the expand/collapse
+     * Call this when removing the animation. This will set the parent item to be the expand/collapse
      * trigger. It will also disable the rotation animation.
      */
     public void removeAnimation() {
@@ -394,22 +374,6 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Generates an ArrayList of type Object for keeping track of all objects including children
-     * that are added to the RV. Takes in a list of parents so the user doesn't have to pass in
-     * a list of objects.
-     *
-     * @param parentObjectList the list of all parent objects provided by the user
-     * @return ArrayList of type Object that handles the items in the RV
-     */
-    private ArrayList<Object> generateObjectList(List<ParentObject> parentObjectList) {
-        ArrayList<Object> objectList = new ArrayList<>();
-        for (ParentObject parentObject : parentObjectList) {
-            objectList.add(parentObject);
-        }
-        return objectList;
-    }
-
-    /**
      * Should be called from onSaveInstanceState of Activity that holds the RecyclerView. This will
      * make sure to add the generated HashMap as an extra to the bundle to be used in
      * OnRestoreInstanceState().
@@ -469,5 +433,13 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     private Object getHelperItem(int position) {
         return mHelperItemList.get(position);
+    }
+
+    private boolean hasCustomAnimationView() {
+        return mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET;
+    }
+
+    private boolean hasAnimationDuration() {
+        return mAnimationDuration != CUSTOM_ANIMATION_DURATION_NOT_SET;
     }
 }
