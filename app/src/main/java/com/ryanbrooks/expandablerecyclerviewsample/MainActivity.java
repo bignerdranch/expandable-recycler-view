@@ -61,9 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private View.OnClickListener mGridSampleButtonClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Context context = v.getContext();
-            String toastMessage = context.getString(R.string.coming_soon);
-            Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(v.getContext(), R.string.coming_soon, Toast.LENGTH_SHORT).show();
         }
     };
 }

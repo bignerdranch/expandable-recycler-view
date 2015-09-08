@@ -106,12 +106,14 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity 
 
     @Override
     public void onRecyclerViewItemExpanded(int position) {
-        Toast.makeText(this, "Item Expanded " + position, Toast.LENGTH_SHORT).show();
+        String toastMessage = getString(R.string.item_expanded, position);
+        Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRecyclerViewItemCollapsed(int position) {
-        Toast.makeText(this, "Item Collapsed " + position, Toast.LENGTH_SHORT).show();
+        String toastMessage = getString(R.string.item_collapsed, position);
+        Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 
     private CompoundButton.OnCheckedChangeListener mAnimationEnabledCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
