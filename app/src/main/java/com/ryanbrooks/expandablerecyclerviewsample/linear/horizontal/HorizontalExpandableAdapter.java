@@ -30,37 +30,6 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
     }
 
     /**
-     * Public secondary constructor. This constructor adds the ability to add a custom triggering
-     * view when the adapter is created without having to set it later. This is here for demo
-     * purposes.
-     *
-     * @param context for inflating views
-     * @param parentItemList the list of parent items to be displayed in the RecyclerView
-     * @param customClickableViewId the id of the view that triggers the expansion
-     */
-    public HorizontalExpandableAdapter(Context context, List<ParentObject> parentItemList,
-                                       int customClickableViewId) {
-        super(context, parentItemList, customClickableViewId);
-        mInflater = LayoutInflater.from(context);
-    }
-
-    /**
-     * Public secondary constructor. This constructor adds the ability to add a custom triggering
-     * view and a custom animation duration when the adapter is created without having to set them
-     * later. This is here for demo purposes.
-     *
-     * @param context for inflating views
-     * @param parentItemList the list of parent items to be displayed in the RecyclerView
-     * @param customClickableViewId the id of the view that triggers the expansion
-     * @param animationDuration the duration (in ms) of the rotation animation
-     */
-    public HorizontalExpandableAdapter(Context context, List<ParentObject> parentItemList,
-                                       int customClickableViewId, long animationDuration) {
-        super(context, parentItemList, customClickableViewId, animationDuration);
-        mInflater = LayoutInflater.from(context);
-    }
-
-    /**
      * OnCreateViewHolder implementation for parent items. The desired ParentViewHolder should
      * be inflated here
      *
