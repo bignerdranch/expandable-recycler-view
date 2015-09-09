@@ -30,13 +30,14 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private static final long INITIAL_ROTATION_SPEED_MS = 100;
     private static final int NUM_ANIMATION_DURATIONS = 10;
     private static final int NUM_TEST_DATA_ITEMS = 20;
-    private static final int EXPAND_SINGLE_PARENT_INDEX = 2;
+    private static final int EXPAND_COLLAPSE_SINGLE_PARENT_INDEX = 2;
 
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private CheckBox mAnimationEnabledCheckBox;
     private Spinner mToolbarSpinner;
     private Button mExpandParentTwoButton;
+    private Button mCollapseParentTwoButton;
 
     private HorizontalExpandableAdapter mExpandableAdapter;
     private ArrayList<Long> mDurationList;
@@ -64,6 +65,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
         mExpandParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_parent_two_button);
         mExpandParentTwoButton.setOnClickListener(mExpandParentTwoClickListener);
+
+        mCollapseParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_parent_two_button);
+        mCollapseParentTwoButton.setOnClickListener(mCollapseParentTwoClickListener);
 
         // Generate spinner's list of rotation speeds (in ms)
         mDurationList = generateSpinnerSpeeds();
@@ -153,7 +157,14 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private View.OnClickListener mExpandParentTwoClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mExpandableAdapter.expandParent(EXPAND_SINGLE_PARENT_INDEX);
+            mExpandableAdapter.expandParent(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX);
+        }
+    };
+
+    private View.OnClickListener mCollapseParentTwoClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.collapseParent(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX);
         }
     };
 

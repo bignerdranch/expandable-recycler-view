@@ -284,7 +284,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Expands the {@link ParentObject} with the specified index in the parent list.
+     * Expands the {@link ParentObject} with the specified index in the list of parents.
      *
      * @param parentIndex The index of the {@code ParentObject} to expand
      */
@@ -331,18 +331,50 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     }
 
-    public void closeParent(int parentIndex) {
+    /**
+     * Collapses the {@link ParentObject} with the specified index in the list of parents.
+     *
+     * @param parentIndex The index of the {@code ParentObject} to expand
+     */
+    public void collapseParent(int parentIndex) {
+        int parentWrapperIndex = getParentWrapperIndex(parentIndex);
 
+        Object helperItem = getHelperItem(parentWrapperIndex);
+        ParentWrapper parentWrapper = null;
+        if (helperItem instanceof ParentWrapper) {
+            parentWrapper = (ParentWrapper) helperItem;
+        }
+        if (parentWrapper == null) {
+            return;
+        }
+
+        if (parentWrapper.isExpanded()) {
+            parentWrapper.setExpanded(false);
+
+            if (mExpandCollapseListener != null) {
+                int expandedCountBeforePosition = getExpandedItemCount(parentWrapperIndex);
+                mExpandCollapseListener.onRecyclerViewItemCollapsed(parentWrapperIndex - expandedCountBeforePosition);
+            }
+
+            mStableIdMap.put(parentWrapper.getStableId(), false);
+            List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
+            if (childObjectList != null) {
+                for (int i = childObjectList.size() - 1; i >= 0; i--) {
+                    mHelperItemList.remove(parentWrapperIndex + i + 1);
+                    notifyItemRemoved(parentWrapperIndex + i + 1);
+                }
+            }
+        }
     }
 
-    public void closeParent(ParentObject parentObject) {
+    public void collapseParent(ParentObject parentObject) {
 
     }
 
     /**
-     * Closes all parents in the list.
+     * Collapses all parents in the list.
      */
-    public void closeAllParents() {
+    public void collapseAllParents() {
 
     }
 
