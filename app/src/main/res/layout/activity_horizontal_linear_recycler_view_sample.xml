@@ -15,21 +15,40 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_expand_parent_two_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_medium"
             android:text="@string/expand_parent_two"/>
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_collapse_parent_two_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_medium"
             android:text="@string/collapse_parent_two"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_medium">
+
+        <Button
+            android:id="@+id/activity_horizontal_linear_recycler_view_expand_all_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/expand_all"/>
+
+        <Button
+            android:id="@+id/activity_horizontal_linear_recycler_view_collapse_all_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/collapse_all"/>
 
     </LinearLayout>
 

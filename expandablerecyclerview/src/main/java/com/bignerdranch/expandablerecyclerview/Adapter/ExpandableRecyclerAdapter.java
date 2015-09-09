@@ -284,9 +284,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Expands the {@link ParentObject} with the specified index in the list of parents.
+     * Expands the parent with the specified index in the list of parents.
      *
-     * @param parentIndex The index of the {@code ParentObject} to expand
+     * @param parentIndex The index of the parent to expand
      */
     public void expandParent(int parentIndex) {
         int parentWrapperIndex = getParentWrapperIndex(parentIndex);
@@ -300,41 +300,41 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             return;
         }
 
-        if (!parentWrapper.isExpanded()) {
-            parentWrapper.setExpanded(true);
-
-            if (mExpandCollapseListener != null) {
-                int expandedCountBeforePosition = getExpandedItemCount(parentWrapperIndex);
-                mExpandCollapseListener.onRecyclerViewItemExpanded(parentWrapperIndex - expandedCountBeforePosition);
-            }
-
-            mStableIdMap.put(parentWrapper.getStableId(), true);
-            List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
-            if (childObjectList != null) {
-                int numChildObjects = childObjectList.size();
-                for (int i = 0; i < numChildObjects; i++) {
-                    mHelperItemList.add(parentWrapperIndex + i + 1, childObjectList.get(i));
-                    notifyItemInserted(parentWrapperIndex + i + 1);
-                }
-            }
-        }
+        expandHelperItem(parentWrapper, parentWrapperIndex);
     }
 
+    /**
+     * Expands the parent associated with a specified {@link ParentObject} in
+     * the list of parents.
+     *
+     * @param parentObject The {@code ParentObject} of the parent to expand
+     */
     public void expandParent(ParentObject parentObject) {
+        ParentWrapper parentWrapper = getParentWrapper(parentObject);
+        int parentWrapperIndex = mHelperItemList.indexOf(parentWrapper);
+        if (parentWrapperIndex == -1) {
+            return;
+        }
 
+        expandHelperItem(parentWrapper, parentWrapperIndex);
     }
 
     /**
      * Expands all parents in the list.
      */
     public void expandAllParents() {
-
+//        int numHelperItems = mHelperItemList.size();
+//        for (int i = 0; i < numHelperItems; i++) {
+//            if (mHelperItemList.get(i) instanceof ParentWrapper) {
+//                expandParent(i);
+//            }
+//        }
     }
 
     /**
-     * Collapses the {@link ParentObject} with the specified index in the list of parents.
+     * Collapses the parent with the specified index in the list of parents.
      *
-     * @param parentIndex The index of the {@code ParentObject} to expand
+     * @param parentIndex The index of the parent to expand
      */
     public void collapseParent(int parentIndex) {
         int parentWrapperIndex = getParentWrapperIndex(parentIndex);
@@ -348,34 +348,76 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             return;
         }
 
-        if (parentWrapper.isExpanded()) {
-            parentWrapper.setExpanded(false);
-
-            if (mExpandCollapseListener != null) {
-                int expandedCountBeforePosition = getExpandedItemCount(parentWrapperIndex);
-                mExpandCollapseListener.onRecyclerViewItemCollapsed(parentWrapperIndex - expandedCountBeforePosition);
-            }
-
-            mStableIdMap.put(parentWrapper.getStableId(), false);
-            List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
-            if (childObjectList != null) {
-                for (int i = childObjectList.size() - 1; i >= 0; i--) {
-                    mHelperItemList.remove(parentWrapperIndex + i + 1);
-                    notifyItemRemoved(parentWrapperIndex + i + 1);
-                }
-            }
-        }
+        collapseHelperItem(parentWrapper, parentWrapperIndex);
     }
 
+    /**
+     * Collapses the parent associated with a specified {@link ParentObject} in
+     * the list of parents.
+     *
+     * @param parentObject The {@code ParentObject} of the parent to collapse
+     */
     public void collapseParent(ParentObject parentObject) {
+        ParentWrapper parentWrapper = getParentWrapper(parentObject);
+        int parentWrapperIndex = mHelperItemList.indexOf(parentWrapper);
+        if (parentWrapperIndex == -1) {
+            return;
+        }
 
+        collapseHelperItem(parentWrapper, parentWrapperIndex);
     }
 
     /**
      * Collapses all parents in the list.
      */
     public void collapseAllParents() {
+//        int numHelperItems = mHelperItemList.size();
+//        for (int i = 0; i < numHelperItems; i++) {
+//            if (mHelperItemList.get(i) instanceof ParentWrapper) {
+//                collapseParent(i);
+//            }
+//        }
+    }
 
+    private void expandHelperItem(ParentWrapper parentWrapper, int parentIndex) {
+        if (!parentWrapper.isExpanded()) {
+            parentWrapper.setExpanded(true);
+
+            if (mExpandCollapseListener != null) {
+                int expandedCountBeforePosition = getExpandedItemCount(parentIndex);
+                mExpandCollapseListener.onRecyclerViewItemExpanded(parentIndex - expandedCountBeforePosition);
+            }
+
+            mStableIdMap.put(parentWrapper.getStableId(), true);
+            List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
+            if (childObjectList != null) {
+                int numChildObjects = childObjectList.size();
+                for (int i = 0; i < numChildObjects; i++) {
+                    mHelperItemList.add(parentIndex + i + 1, childObjectList.get(i));
+                    notifyItemInserted(parentIndex + i + 1);
+                }
+            }
+        }
+    }
+
+    private void collapseHelperItem(ParentWrapper parentWrapper, int parentIndex) {
+        if (parentWrapper.isExpanded()) {
+            parentWrapper.setExpanded(false);
+
+            if (mExpandCollapseListener != null) {
+                int expandedCountBeforePosition = getExpandedItemCount(parentIndex);
+                mExpandCollapseListener.onRecyclerViewItemCollapsed(parentIndex - expandedCountBeforePosition);
+            }
+
+            mStableIdMap.put(parentWrapper.getStableId(), false);
+            List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
+            if (childObjectList != null) {
+                for (int i = childObjectList.size() - 1; i >= 0; i--) {
+                    mHelperItemList.remove(parentIndex + i + 1);
+                    notifyItemRemoved(parentIndex + i + 1);
+                }
+            }
+        }
     }
 
     /**
@@ -392,37 +434,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             return;
         }
         if (parentWrapper.isExpanded()) {
-            parentWrapper.setExpanded(false);
-
-            if (mExpandCollapseListener != null) {
-                int expandedCountBeforePosition = getExpandedItemCount(position);
-                mExpandCollapseListener.onRecyclerViewItemCollapsed(position - expandedCountBeforePosition);
-            }
-
-            mStableIdMap.put(parentWrapper.getStableId(), false);
-            List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
-            if (childObjectList != null) {
-                for (int i = childObjectList.size() - 1; i >= 0; i--) {
-                    mHelperItemList.remove(position + i + 1);
-                    notifyItemRemoved(position + i + 1);
-                }
-            }
+            collapseHelperItem(parentWrapper, position);
         } else {
-            parentWrapper.setExpanded(true);
-
-            if (mExpandCollapseListener != null) {
-                int expandedCountBeforePosition = getExpandedItemCount(position);
-                mExpandCollapseListener.onRecyclerViewItemExpanded(position - expandedCountBeforePosition);
-            }
-
-            mStableIdMap.put(parentWrapper.getStableId(), true);
-            List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
-            if (childObjectList != null) {
-                for (int i = 0; i < childObjectList.size(); i++) {
-                    mHelperItemList.add(position + i + 1, childObjectList.get(i));
-                    notifyItemInserted(position + i + 1);
-                }
-            }
+            expandHelperItem(parentWrapper, position);
         }
     }
 
@@ -553,6 +567,21 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
 
         return parentWrapperIndex;
+    }
+
+    private ParentWrapper getParentWrapper(ParentObject parentObject) {
+        ParentWrapper parentWrapper = null;
+        int numHelperItems = mHelperItemList.size();
+        for (int i = 0; i < numHelperItems; i++) {
+            Object helperItem = mHelperItemList.get(i);
+            if (helperItem instanceof ParentWrapper) {
+                if (((ParentWrapper) helperItem).getParentObject().equals(parentObject)) {
+                    parentWrapper = (ParentWrapper) helperItem;
+                }
+            }
+        }
+
+        return parentWrapper;
     }
 
     private boolean hasCustomAnimationView() {

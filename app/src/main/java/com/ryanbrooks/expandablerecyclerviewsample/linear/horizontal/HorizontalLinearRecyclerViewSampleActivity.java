@@ -38,6 +38,8 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private Spinner mToolbarSpinner;
     private Button mExpandParentTwoButton;
     private Button mCollapseParentTwoButton;
+    private Button mExpandAllButton;
+    private Button mCollapseAllButton;
 
     private HorizontalExpandableAdapter mExpandableAdapter;
     private ArrayList<Long> mDurationList;
@@ -68,6 +70,12 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
         mCollapseParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_parent_two_button);
         mCollapseParentTwoButton.setOnClickListener(mCollapseParentTwoClickListener);
+
+        mExpandAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_all_button);
+        mExpandAllButton.setOnClickListener(mExpandAllClickListener);
+
+        mCollapseAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_all_button);
+        mCollapseAllButton.setOnClickListener(mCollapseAllClickListener);
 
         // Generate spinner's list of rotation speeds (in ms)
         mDurationList = generateSpinnerSpeeds();
@@ -157,14 +165,30 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private View.OnClickListener mExpandParentTwoClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mExpandableAdapter.expandParent(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX);
+//            mExpandableAdapter.expandParent(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX);
+            mExpandableAdapter.expandParent(mTestDataObjectList.get(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX));
         }
     };
 
     private View.OnClickListener mCollapseParentTwoClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mExpandableAdapter.collapseParent(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX);
+//            mExpandableAdapter.collapseParent(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX);
+            mExpandableAdapter.collapseParent(mTestDataObjectList.get(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX));
+        }
+    };
+
+    private View.OnClickListener mExpandAllClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.expandAllParents();
+        }
+    };
+
+    private View.OnClickListener mCollapseAllClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.collapseAllParents();
         }
     };
 
