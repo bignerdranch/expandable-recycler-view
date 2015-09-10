@@ -67,8 +67,8 @@ public class VerticalParentViewHolder extends ParentViewHolder {
     }
 
     @Override
-    public void expansionToggled(boolean isExpanded) {
-        super.expansionToggled(isExpanded);
+    public void onExpansionToggled(boolean isExpanded) {
+        super.onExpansionToggled(isExpanded);
         if (!HONEYCOMB_AND_ABOVE) {
             return;
         }

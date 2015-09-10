@@ -46,7 +46,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
 
     /**
      * Setter method for expanded state, used for initialization of expanded state.
-     * changes to the state are given in {@link #expansionToggled(boolean)}
+     * changes to the state are given in {@link #onExpansionToggled(boolean)}
      *
      * @param isExpanded
      */
@@ -59,7 +59,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      * Useful for implementing parent view animations for expansion
      * @param isExpanded
      */
-    protected void expansionToggled(boolean isExpanded) {
+    protected void onExpansionToggled(boolean isExpanded) {
 
     }
 
@@ -108,7 +108,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     protected void toggleExpansion() {
         if (mParentItemClickListener != null) {
             setExpanded(!mIsExpanded);
-            expansionToggled(mIsExpanded);
+            onExpansionToggled(mIsExpanded);
             mParentItemClickListener.onParentItemClickListener(getLayoutPosition());
         }
     }
