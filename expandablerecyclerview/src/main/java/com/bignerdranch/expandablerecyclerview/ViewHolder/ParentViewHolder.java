@@ -1,10 +1,7 @@
 package com.bignerdranch.expandablerecyclerview.ViewHolder;
 
-import android.os.Build;
-import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.animation.RotateAnimation;
 
 import com.bignerdranch.expandablerecyclerview.ClickListeners.ParentItemClickListener;
 
@@ -18,20 +15,9 @@ import com.bignerdranch.expandablerecyclerview.ClickListeners.ParentItemClickLis
  * @since 5/27/2015
  */
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-    private final String TAG = getClass().getSimpleName();
-
-    private static final float INITIAL_POSITION = 0.0f;
-    private static final float ROTATED_POSITION = 180f;
-    private static final float PIVOT_VALUE = 0.5f;
-    private static final long DEFAULT_ROTATE_DURATION_MS = 200;
-    private static final boolean HONEYCOMB_AND_ABOVE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
     private ParentItemClickListener mParentItemClickListener;
-    private View mClickableView;
-    private boolean mRotationEnabled;
     private boolean mIsExpanded;
-    private long mDuration;
-    private float mRotation;
 
     /**
      * Public constructor that takes in an ItemView along with an implementation of
@@ -43,51 +29,6 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     public ParentViewHolder(View itemView) {
         super(itemView);
         mIsExpanded = false;
-        mDuration = DEFAULT_ROTATE_DURATION_MS;
-        mRotation = INITIAL_POSITION;
-    }
-
-    /**
-     * Setter for a custom Clickable view. The user should pass in the id of the view that they
-     * wish to be the expansion trigger.
-     *
-     * @param clickableViewId id of view which should be clickable
-     * @param itemViewClickable whether the entire itemView is clickable as well.
-     */
-    public void setCustomClickableView(@IdRes int clickableViewId, boolean itemViewClickable) {
-        mClickableView = itemView.findViewById(clickableViewId);
-        mClickableView.setOnClickListener(this);
-        if (itemViewClickable) {
-            itemView.setOnClickListener(this);
-        } else {
-            itemView.setOnClickListener(null);
-        }
-        if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
-            mClickableView.setRotation(mRotation);
-        }
-    }
-
-    /**
-     * Setter method for a user defined Animation duration (in MS)
-     *
-     * @param animationDuration
-     */
-    public void setAnimationDuration(long animationDuration) {
-        mRotationEnabled = true;
-        mDuration = animationDuration;
-        if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
-            mClickableView.setRotation(mRotation);
-        }
-    }
-
-    /**
-     * Disables animation of the custom clickable button.
-     */
-    public void cancelAnimation() {
-        mRotationEnabled = false;
-        if (HONEYCOMB_AND_ABOVE && mRotationEnabled) {
-            mClickableView.setRotation(mRotation);
-        }
     }
 
     /**
@@ -95,11 +36,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      * clickable view.
      */
     public void setMainItemClickToExpand() {
-        if (mClickableView != null) {
-            mClickableView.setOnClickListener(null);
-        }
         itemView.setOnClickListener(this);
-        mRotationEnabled = false;
     }
 
     /**
@@ -112,37 +49,22 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     /**
-     * Setter method for the item to be expanded or not. Also triggers the animation of the custom
-     * clickable view if it and the rotation duration are both defined.
+     * Setter method for expanded state, used for initialization of expanded state.
+     * changes to the state are given in {@link #expansionToggled(boolean)}
      *
      * @param isExpanded
      */
     public void setExpanded(boolean isExpanded) {
         mIsExpanded = isExpanded;
-        if (mRotationEnabled) {
-            if (mIsExpanded && mClickableView != null && HONEYCOMB_AND_ABOVE) {
-                mClickableView.setRotation(ROTATED_POSITION);
-            } else if (mClickableView != null && HONEYCOMB_AND_ABOVE) {
-                mClickableView.setRotation(INITIAL_POSITION);
-            }
-        }
     }
 
     /**
-     * @return true if rotation is enabled, false if not
+     * Called when expansion is changed, does not get called during the initial binding
+     * Useful for implementing parent view animations for expansion
+     * @param isExpanded
      */
-    public boolean isRotationEnabled() {
-        return mRotationEnabled;
-    }
+    protected void expansionToggled(boolean isExpanded) {
 
-    /**
-     * Sets the position of the custom clickable view. 0f is default and 180f is roatated
-     *
-     * @param rotation
-     */
-    public void setRotation(float rotation) {
-        mRotationEnabled = true;
-        mRotation = rotation;
     }
 
     /**
@@ -171,20 +93,16 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      */
     @Override
     public void onClick(View v) {
+        toggleExpansion();
+    }
+
+    /**
+     * Triggers expansion for the parent row
+     */
+    protected void toggleExpansion() {
         if (mParentItemClickListener != null) {
-            if (mClickableView != null) {
-                if (mRotationEnabled) {
-                    RotateAnimation rotateAnimation = new RotateAnimation(ROTATED_POSITION,
-                            INITIAL_POSITION,
-                            RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE,
-                            RotateAnimation.RELATIVE_TO_SELF, PIVOT_VALUE);
-                    mRotation = INITIAL_POSITION;
-                    rotateAnimation.setDuration(mDuration);
-                    rotateAnimation.setFillAfter(true);
-                    mClickableView.startAnimation(rotateAnimation);
-                }
-            }
             setExpanded(!mIsExpanded);
+            expansionToggled(mIsExpanded);
             mParentItemClickListener.onParentItemClickListener(getLayoutPosition());
         }
     }

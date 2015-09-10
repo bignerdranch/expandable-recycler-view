@@ -2,7 +2,6 @@ package com.bignerdranch.expandablerecyclerview.Adapter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -32,18 +31,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     private static final String STABLE_ID_MAP = "ExpandableRecyclerAdapter.StableIdMap";
     private static final int TYPE_PARENT = 0;
     private static final int TYPE_CHILD = 1;
-    public static final int CUSTOM_ANIMATION_VIEW_NOT_SET = -1;
-    public static final long DEFAULT_ROTATE_DURATION_MS = 200l;
-    public static final long CUSTOM_ANIMATION_DURATION_NOT_SET = -1l;
 
     protected Context mContext;
     protected List<? extends ParentObject> mParentItemList;
     private List<Object> mHelperItemList;
     private HashMap<Long, Boolean> mStableIdMap;
     private ExpandCollapseListener mExpandCollapseListener;
-    private boolean mParentAndIconClickable = false;
-    private int mCustomParentAnimationViewId = CUSTOM_ANIMATION_VIEW_NOT_SET;
-    private long mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
 
     /**
      * Public constructor for the base ExpandableRecyclerView. This constructor takes in no
@@ -54,41 +47,11 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param parentItemList
      */
     public ExpandableRecyclerAdapter(Context context, @NonNull List<? extends ParentObject> parentItemList) {
-        this(context, parentItemList, CUSTOM_ANIMATION_VIEW_NOT_SET, CUSTOM_ANIMATION_DURATION_NOT_SET);
-    }
-
-    /**
-     * Public constructor for a more robust ExpandableRecyclerView. This constructor takes in an
-     * id for a custom clickable view that will trigger the expansion or collapsing of the child.
-     * By default, a parent item click is the trigger for the expanding/collapsing.
-     *
-     * @param context
-     * @param parentItemList
-     * @param customParentAnimationViewId
-     */
-    public ExpandableRecyclerAdapter(Context context, @NonNull List<? extends ParentObject> parentItemList,
-                                     @IdRes int customParentAnimationViewId) {
-        this(context, parentItemList, customParentAnimationViewId, CUSTOM_ANIMATION_DURATION_NOT_SET);
-    }
-
-    /**
-     * Public constructor for even more robust ExpandableRecyclerView. This constructor takes in
-     * both an id for a custom clickable view that will trigger the expansion or collapsing of the
-     * child along with a long for a custom duration in MS for the rotation animation.
-     *
-     * @param context
-     * @param parentItemList
-     * @param customParentAnimationViewId
-     * @param animationDuration
-     */
-    public ExpandableRecyclerAdapter(Context context, @NonNull List<? extends ParentObject> parentItemList,
-                                     @IdRes int customParentAnimationViewId, long animationDuration) {
+        super();
         mContext = context;
         mParentItemList = parentItemList;
         mHelperItemList = ExpandableRecyclerAdapterHelper.generateHelperItemList(parentItemList);
         mStableIdMap = generateStableIdMapFromList(mHelperItemList);
-        mCustomParentAnimationViewId = customParentAnimationViewId;
-        mAnimationDuration = animationDuration;
     }
 
     /**
@@ -135,16 +98,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         if (helperItem instanceof ParentWrapper) {
             PVH parentViewHolder = (PVH) holder;
 
-            parentViewHolder.cancelAnimation();
-
-            if (hasCustomAnimationView() && hasAnimationDuration()) {
-                parentViewHolder.setCustomClickableView(mCustomParentAnimationViewId, mParentAndIconClickable);
-                parentViewHolder.setAnimationDuration(mAnimationDuration);
-            } else if (hasCustomAnimationView()) {
-                parentViewHolder.setCustomClickableView(mCustomParentAnimationViewId, mParentAndIconClickable);
-            } else {
-                parentViewHolder.setMainItemClickToExpand();
-            }
+            parentViewHolder.setMainItemClickToExpand();
 
             ParentWrapper parentWrapper = (ParentWrapper) helperItem;
             parentViewHolder.setExpanded(parentWrapper.isExpanded());
@@ -232,51 +186,6 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             ParentObject parentObject = ((ParentWrapper) helperItem).getParentObject();
             expandParent(parentObject, position);
         }
-    }
-
-    /**
-     * Setter for the Default rotation duration (200 MS)
-     */
-    public void setParentClickableViewAnimationDefaultDuration() {
-        mAnimationDuration = DEFAULT_ROTATE_DURATION_MS;
-    }
-
-    /**
-     * Setter for a custom rotation animation duration in MS
-     *
-     * @param animationDuration in MS
-     */
-    public void setParentClickableViewAnimationDuration(long animationDuration) {
-        mAnimationDuration = animationDuration;
-    }
-
-    /**
-     * Setter for a custom clickable view to expand or collapse the item. This should be passed
-     * as a reference to the View's R.id
-     *
-     * @param customParentAnimationViewId
-     */
-    public void setCustomParentAnimationViewId(@IdRes int customParentAnimationViewId) {
-        mCustomParentAnimationViewId = customParentAnimationViewId;
-    }
-
-    /**
-     * Set the ability to be able to click both the whole parent view and the custom button to trigger
-     * expanding and collapsing
-     *
-     * @param parentAndIconClickable
-     */
-    public void setParentAndIconExpandOnClick(boolean parentAndIconClickable) {
-        mParentAndIconClickable = parentAndIconClickable;
-    }
-
-    /**
-     * Call this when removing the animation. This will set the parent item to be the expand/collapse
-     * trigger. It will also disable the rotation animation.
-     */
-    public void removeAnimation() {
-        mCustomParentAnimationViewId = CUSTOM_ANIMATION_VIEW_NOT_SET;
-        mAnimationDuration = CUSTOM_ANIMATION_DURATION_NOT_SET;
     }
 
     public void addExpandCollapseListener(ExpandCollapseListener expandCollapseListener) {
@@ -433,13 +342,5 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     private Object getHelperItem(int position) {
         return mHelperItemList.get(position);
-    }
-
-    private boolean hasCustomAnimationView() {
-        return mCustomParentAnimationViewId != CUSTOM_ANIMATION_VIEW_NOT_SET;
-    }
-
-    private boolean hasAnimationDuration() {
-        return mAnimationDuration != CUSTOM_ANIMATION_DURATION_NOT_SET;
     }
 }

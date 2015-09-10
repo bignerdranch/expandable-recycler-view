@@ -1,5 +1,7 @@
 package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +16,9 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
  * Must extend ParentViewHolder.
  */
 public class HorizontalParentViewHolder extends ParentViewHolder {
+    private static final float INITIAL_POSITION = 0.0f;
+    private static final float ROTATED_POSITION = 180f;
+    private static final boolean HONEYCOMB_AND_ABOVE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
     public TextView mNumberTextView;
     public TextView mDataTextView;
@@ -35,5 +40,20 @@ public class HorizontalParentViewHolder extends ParentViewHolder {
     public void bind(int parentNumber, String parentText) {
         mNumberTextView.setText(String.valueOf(parentNumber));
         mDataTextView.setText(parentText);
+    }
+
+    @SuppressLint("NewApi")
+    @Override
+    public void setExpanded(boolean isExpanded) {
+        super.setExpanded(isExpanded);
+        if (!HONEYCOMB_AND_ABOVE) {
+            return;
+        }
+
+        if (isExpanded) {
+            mArrowExpandImageView.setRotation(ROTATED_POSITION);
+        } else {
+            mArrowExpandImageView.setRotation(INITIAL_POSITION);
+        }
     }
 }
