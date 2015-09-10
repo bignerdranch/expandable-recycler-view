@@ -16,14 +16,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:label="@string/activity_main_vertical_linear_sample_button"
+            android:label="@string/activity_vertical_linear_sample_title"
             android:name=".linear.vertical.VerticalLinearRecyclerViewSampleActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:label="@string/activity_main_horizontal_linear_sample_button"
+            android:label="@string/activity_horizontal_linear_sample_title"
             android:name=".linear.horizontal.HorizontalLinearRecyclerViewSampleActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

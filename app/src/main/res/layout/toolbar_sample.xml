@@ -4,5 +4,4 @@
     android:id="@+id/activity_vertical_linear_recycler_view_sample_toolbar"
     android:layout_height="?attr/actionBarSize"
     android:layout_width="match_parent"
-    android:background="@color/primary_green">
-</android.support.v7.widget.Toolbar>
+    android:background="@color/primary_green" />
