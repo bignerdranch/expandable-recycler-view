@@ -95,7 +95,7 @@ public class HorizontalParentViewHolder extends ParentViewHolder {
     }
 
     @Override
-    public boolean shouldEntireRowExpand() {
+    public boolean shouldItemViewClickToggleExpansion() {
         return false;
     }
 }

@@ -83,7 +83,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
 
     /**
      * Implementation of View.onClick to listen for the clicks on the entire row.
-     * Only registered if {@link #shouldEntireRowExpand()} is true
+     * Only registered if {@link #shouldItemViewClickToggleExpansion()} is true
      *
      * @param v the view that is the trigger for expansion
      */
@@ -98,7 +98,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      * a click in your custom view.
      * @return true to set a click listener on the item view that toggle expansion
      */
-    public boolean shouldEntireRowExpand() {
+    public boolean shouldItemViewClickToggleExpansion() {
         return true;
     }
 

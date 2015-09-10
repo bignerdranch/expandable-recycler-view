@@ -95,7 +95,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         if (helperItem instanceof ParentWrapper) {
             PVH parentViewHolder = (PVH) holder;
 
-            if (parentViewHolder.shouldEntireRowExpand()) {
+            if (parentViewHolder.shouldItemViewClickToggleExpansion()) {
                 parentViewHolder.setMainItemClickToExpand();
             }
 
