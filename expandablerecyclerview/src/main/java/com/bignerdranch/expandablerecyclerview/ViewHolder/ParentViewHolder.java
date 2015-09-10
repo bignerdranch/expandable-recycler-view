@@ -97,6 +97,16 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     /**
+     * Used to determine whether the entire row should trigger row expansion,
+     * if you return false, call {@link #toggleExpansion()} to toggle an expansion in response to
+     * a click in your custom view.
+     * @return true to set a click listener on the item view that toggle expansion
+     */
+    public boolean shouldEntireRowExpand() {
+        return true;
+    }
+
+    /**
      * Triggers expansion for the parent row
      */
     protected void toggleExpansion() {
