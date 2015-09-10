@@ -4,19 +4,4 @@
     android:id="@+id/activity_vertical_linear_recycler_view_sample_toolbar"
     android:layout_height="?attr/actionBarSize"
     android:layout_width="match_parent"
-    android:background="@color/primary_green">
-
-    <CheckBox
-        android:id="@+id/toolbar_sample_checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="@string/toolbar_sample_checkBox"/>
-
-    <Spinner
-        android:id="@+id/toolbar_sample_spinner"
-        android:layout_gravity="end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-</android.support.v7.widget.Toolbar>
+    android:background="@color/primary_green" />

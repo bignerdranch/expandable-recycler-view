@@ -16,7 +16,7 @@ compile 'com.bignerdranch.android:expandablerecyclerview:1.0.3'
 
 Current development can be found at the following snapshot:
 ```gradle
-compile 'com.bignerdranch.android:expandablerecyclerview:1.1.0-SNAPSHOT'
+compile 'com.bignerdranch.android:expandablerecyclerview:2.0.0-SNAPSHOT'
 ```
 Add Sonatype's snapshots to your repositories closure in the root `build.gradle`:
 ```gradle
@@ -70,11 +70,6 @@ Javadocs for the library and sample are available [here](http://bignerdranch.git
      }
 
      @Override
-     public void setChildObjectList(List<Object> childObjectList) {
-         mChildObjectList = childObjectList;
-     }
-
-     @Override
      public boolean isInitiallyExpanded() {
          // Allows you to specify if the row should be expanded when first shown to the user
          return false;
@@ -87,34 +82,24 @@ Javadocs for the library and sample are available [here](http://bignerdranch.git
  
 ```java
 RecyclerView mRecyclerView = (RecyclerView) findViewById(YOUR RECYCLERVIEW ID);
-MyExpandable mExpandableAdapter = new MyExpandableAdapter(getActivity(), YOUR ParentObject LIST);
+MyExpandable mExpandableAdapter = new MyExpandableAdapter(getActivity(), YOUR_ParentObject_LIST);
 mRecyclerView.setAdapter(mExpandableAdapter);
 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 ```
 
  Inside your ExpandableRecyclerAdapter, you can create and bind your Parent and Child ViewHolders just as you would create and bind ViewHolders in a normal RecyclerView.
 
+ 
+#### View Behaviours
+ You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, your ParentViewHolder implementation should override `shouldItemViewClickToggleExpansion()` to return false. Then in your implementation set an onClickListener to your custom view and call `toggleExpansion()` to trigger the expansion.
+ 
+ You can also create your own animations for expansion by overriding `onExpansionToggled(boolean isExpanded)` which will be called for you when the itemView is expanded or collapsed.
 
- 
-#### Extras
- You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, in your activity or fragment, call ```myCustomExpandingAdapter.setCustomClickableView(Your Custom View ID)``` and pass in the id.
- 
- If you do set a custom clickable view, you can also set an animation for the view to rotate 180 degrees when expanding and collapsing. This is useful primarily with arrows which signifies for the user to click it to change the expansion. By default the rotation is off. You can enable rotation by calling ```myCustomExpandingAdapter.setRotation(long durationInMS)``` in the constructor, below where you called ```setCustomClickableView()```. When setting the rotation, you must pass in a duration in Milliseconds. If you'd like to use the default rotation duration rather than defining your own, call ```myCustomExpandingAdapter.setParentClickableViewAnimationDefaultDuration()``` instead. The default rotation duration is 200 ms.
- 
- After implementing these, in the activity or fragment that is holding your RecyclerView, simply set the adapter to your custom adapter, and set the layout manager to a new LinearLayoutManager. An example is here:
- 
- ```java
- MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, objectList);
- 
- // Optional animation configuration goes here
- 
- mRecyclerView.setAdapter(myCustomExpandingAdapter);
- mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
- ```
+ The `VerticalLinearRecyclerViewSampleActivity` sample shows a rotation animation in response to expansion changing. `HorizontalLinearRecyclerViewSampleActivity` sample shows defining your own click target for expansion.
  
 #### Listening for Expansion and Collapsing
 
-You can listen for expansion and collapsing events by implementing ```ExpandCollapseListener``` in the activity or fragment hosting your RecyclerView. Two methods will be added, ```onRecyclerViewItemExpanded(int position)``` and ```onRecyclerViewItemCollapsed(int position)```. This will allow you to listen for expansion and collapsing of ParentObjects. The position passed into these methods is the position of the item in the ParentObject list. Any expanded children before the item are not included in that position integer.
+ `onExpansionToggled(boolean isExpanded)` is useful for view changes, but if there are controller level changes (database persistence, web requests etc) you can listen for expansion and collapsing events by implementing ```ExpandCollapseListener``` in the activity or fragment hosting your RecyclerView. The interface contains two methods, ```onRecyclerViewItemExpanded(int position)``` and ```onRecyclerViewItemCollapsed(int position)```. This will allow you to listen for expansion and collapsing of ParentObjects. The position passed into these methods is the position of the item in the ParentObject list. Any expanded children before the item are not included in that position integer.
 
 As an example, let's say we implemented ```ExpandCollapseListener``` in an activity. For this to work, after creating the adapter and before setting the RecyclerView's adapter, we must call ```addExpandCollapseListener(ExpandCollapseListener yourExpandCollapseListener``` on the adapter:
 

@@ -9,6 +9,8 @@
     <string name="coming_soon">Feature coming soon</string>
 
     <!-- Linear sample -->
+    <string name="activity_vertical_linear_sample_title">Vertical Linear Sample</string>
+    <string name="activity_horizontal_linear_sample_title">Horizontal Linear Sample</string>
     <string name="toolbar_sample_checkBox">Custom Expand Button</string>
     <string name="child_text">Child %1$d</string>
     <string name="second_child_text">Child %1$d_2</string>
