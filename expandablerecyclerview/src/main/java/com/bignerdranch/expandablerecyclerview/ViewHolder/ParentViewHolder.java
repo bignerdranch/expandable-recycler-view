@@ -7,8 +7,8 @@ import com.bignerdranch.expandablerecyclerview.ClickListeners.ParentItemClickLis
 
 
 /**
- * ParentViewHolder that extends the Base RecyclerView ViewHolder. All expansion animation and click
- * handling is done here.
+ * ParentViewHolder that extends the Base RecyclerView ViewHolder. Keeps track of expansion and
+ * offers the ability to animate in response to a triggered expansion
  *
  * @author Ryan Brooks
  * @version 1.0
@@ -20,11 +20,8 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     private boolean mIsExpanded;
 
     /**
-     * Public constructor that takes in an ItemView along with an implementation of
-     * ParentItemClickListener to handle the clicks of either the Parent item or the custom defined
-     * view.
-     *
-     * @param itemView
+     * Default constructor
+     * @param itemView view that will be shown for this ViewHolder
      */
     public ParentViewHolder(View itemView) {
         super(itemView);
@@ -32,8 +29,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     /**
-     * Sets the Parent only as the trigger to expand the item. Also disables rotation of the custom
-     * clickable view.
+     * Sets the Parent only as the trigger to expand the item.
      */
     public void setMainItemClickToExpand() {
         itemView.setOnClickListener(this);
@@ -86,8 +82,8 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     /**
-     * Implementation of View.onClick to listen for the clicks on either the Parent item or the
-     * custom clickable view if applicable. Triggers rotation if enabled on click.
+     * Implementation of View.onClick to listen for the clicks on the entire row.
+     * Only registered if {@link #shouldEntireRowExpand()} is true
      *
      * @param v the view that is the trigger for expansion
      */

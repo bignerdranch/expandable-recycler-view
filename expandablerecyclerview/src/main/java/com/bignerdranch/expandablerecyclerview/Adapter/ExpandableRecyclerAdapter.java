@@ -39,12 +39,10 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     private ExpandCollapseListener mExpandCollapseListener;
 
     /**
-     * Public constructor for the base ExpandableRecyclerView. This constructor takes in no
-     * extra parameters for custom clickable views and animation durations. This means a click of
-     * the parent item will trigger the expansion.
+     * Public constructor for the base ExpandableRecyclerView.
      *
      * @param context
-     * @param parentItemList
+     * @param parentItemList List of all parent objects that make up the recyclerview
      */
     public ExpandableRecyclerAdapter(Context context, @NonNull List<? extends ParentObject> parentItemList) {
         super();
@@ -63,7 +61,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *
      * @param viewGroup
      * @param viewType
-     * @return the ViewHolder that cooresponds to the item at the position.
+     * @return the ViewHolder that corresponds to the item at the position.
      */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -85,8 +83,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * ChildViewHolder. The respective onBindViewHolders for ParentObjects and ChildObject are then
      * called.
      *
-     * If the item is a ParentObject, setting the ParentViewHolder's animation settings are then handled
-     * here.
+     * If the item is a ParentObject, sets the entire row to trigger expansion if instructed to
      *
      * @param holder
      * @param position
