@@ -70,11 +70,6 @@ Javadocs for the library and sample are available [here](http://bignerdranch.git
      }
 
      @Override
-     public void setChildObjectList(List<Object> childObjectList) {
-         mChildObjectList = childObjectList;
-     }
-
-     @Override
      public boolean isInitiallyExpanded() {
          // Allows you to specify if the row should be expanded when first shown to the user
          return false;
@@ -87,7 +82,7 @@ Javadocs for the library and sample are available [here](http://bignerdranch.git
  
 ```java
 RecyclerView mRecyclerView = (RecyclerView) findViewById(YOUR RECYCLERVIEW ID);
-MyExpandable mExpandableAdapter = new MyExpandableAdapter(getActivity(), YOUR ParentObject LIST);
+MyExpandable mExpandableAdapter = new MyExpandableAdapter(getActivity(), YOUR_ParentObject_LIST);
 mRecyclerView.setAdapter(mExpandableAdapter);
 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 ```
@@ -97,20 +92,11 @@ mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
  
 #### Extras
- You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, in your activity or fragment, call ```myCustomExpandingAdapter.setCustomClickableView(Your Custom View ID)``` and pass in the id.
+ You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, ParentViewHolder implementation override `shouldItemViewClickToggleExpansion()` to return false. Then in your implementation set an onClickListener to your custom view and call `toggleExpansion()` to trigger the expansion.
  
- If you do set a custom clickable view, you can also set an animation for the view to rotate 180 degrees when expanding and collapsing. This is useful primarily with arrows which signifies for the user to click it to change the expansion. By default the rotation is off. You can enable rotation by calling ```myCustomExpandingAdapter.setRotation(long durationInMS)``` in the constructor, below where you called ```setCustomClickableView()```. When setting the rotation, you must pass in a duration in Milliseconds. If you'd like to use the default rotation duration rather than defining your own, call ```myCustomExpandingAdapter.setParentClickableViewAnimationDefaultDuration()``` instead. The default rotation duration is 200 ms.
- 
- After implementing these, in the activity or fragment that is holding your RecyclerView, simply set the adapter to your custom adapter, and set the layout manager to a new LinearLayoutManager. An example is here:
- 
- ```java
- MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, objectList);
- 
- // Optional animation configuration goes here
- 
- mRecyclerView.setAdapter(myCustomExpandingAdapter);
- mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
- ```
+ You can also create your own animations for expansion by overriding `onExpansionToggled(boolean isExpanded)` which will be called for you when the itemView is expanded or collapsed
+
+ The `VerticalLinearRecyclerViewSampleActivity` sample shows a rotation animation in response to expansion changing. 'HorizontalLinearRecyclerViewSampleActivity` sample shows defining your own click target for expansion.
  
 #### Listening for Expansion and Collapsing
 
