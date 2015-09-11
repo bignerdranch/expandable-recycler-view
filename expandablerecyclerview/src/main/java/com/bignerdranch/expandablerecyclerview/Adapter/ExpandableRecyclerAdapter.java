@@ -6,13 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.bignerdranch.expandablerecyclerview.ClickListeners.ExpandCollapseListener;
-import com.bignerdranch.expandablerecyclerview.ClickListeners.ParentItemClickListener;
+import com.bignerdranch.expandablerecyclerview.Listener.ExpandCollapseListener;
+import com.bignerdranch.expandablerecyclerview.Listener.ParentItemExpandCollapseListener;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,7 +27,7 @@ import java.util.List;
  * @version 1.0
  * @since 5/27/2015
  */
-public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CVH extends ChildViewHolder> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemClickListener {
+public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CVH extends ChildViewHolder> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemExpandCollapseListener {
 
     private static final String STABLE_ID_MAP = "ExpandableRecyclerAdapter.StableIdMap";
     private static final int TYPE_PARENT = 0;
@@ -37,6 +38,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     private List<Object> mHelperItemList;
     private HashMap<Long, Boolean> mStableIdMap;
     private ExpandCollapseListener mExpandCollapseListener;
+    private List<RecyclerView> mAttachedRecyclerViewPool;
 
     /**
      * Public constructor for the base ExpandableRecyclerView.
@@ -50,6 +52,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         mParentItemList = parentItemList;
         mHelperItemList = ExpandableRecyclerAdapterHelper.generateHelperItemList(parentItemList);
         mStableIdMap = generateStableIdMapFromList(mHelperItemList);
+        mAttachedRecyclerViewPool = new ArrayList<>();
     }
 
     /**
@@ -67,7 +70,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         if (viewType == TYPE_PARENT) {
             PVH pvh = onCreateParentViewHolder(viewGroup);
-            pvh.setParentItemClickListener(this);
+            pvh.setParentItemExpandCollapseListener(this);
             return pvh;
         } else if (viewType == TYPE_CHILD) {
             return onCreateChildViewHolder(viewGroup);
@@ -172,19 +175,32 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
     }
 
-    /**
-     * On click listener implementation for the ParentObject. This is called from ParentViewHolder.
-     * See OnClick in ParentViewHolder
-     *
-     * @param position
-     */
     @Override
-    public void onParentItemClickListener(int position) {
+    public void onParentItemExpanded(int position) {
         Object helperItem = getHelperItem(position);
         if (helperItem instanceof ParentWrapper) {
-            ParentObject parentObject = ((ParentWrapper) helperItem).getParentObject();
-            toggleParentExpansion(position);
+            expandHelperItem((ParentWrapper) helperItem, position);
         }
+    }
+
+    @Override
+    public void onParentItemCollapsed(int position) {
+        Object helperItem = getHelperItem(position);
+        if (helperItem instanceof ParentWrapper) {
+            collapseHelperItem((ParentWrapper) helperItem, position);
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mAttachedRecyclerViewPool.add(recyclerView);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        mAttachedRecyclerViewPool.remove(recyclerView);
     }
 
     public void addExpandCollapseListener(ExpandCollapseListener expandCollapseListener) {
@@ -208,7 +224,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             return;
         }
 
-        expandHelperItem(parentWrapper, parentWrapperIndex);
+        expandViews(parentWrapperIndex);
     }
 
     /**
@@ -224,7 +240,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             return;
         }
 
-        expandHelperItem(parentWrapper, parentWrapperIndex);
+        expandViews(parentWrapperIndex);
     }
 
     /**
@@ -237,6 +253,16 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 //                expandParent(i);
 //            }
 //        }
+    }
+
+    private void expandViews(int parentIndex) {
+        for (RecyclerView recyclerView : mAttachedRecyclerViewPool) {
+            RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(parentIndex);
+            if (viewHolder != null
+                    && viewHolder instanceof ParentViewHolder) {
+                ((ParentViewHolder) viewHolder).expandView();
+            }
+        }
     }
 
     /**
@@ -256,7 +282,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             return;
         }
 
-        collapseHelperItem(parentWrapper, parentWrapperIndex);
+        collapseViews(parentWrapperIndex);
     }
 
     /**
@@ -272,7 +298,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             return;
         }
 
-        collapseHelperItem(parentWrapper, parentWrapperIndex);
+        collapseViews(parentWrapperIndex);
     }
 
     /**
@@ -285,6 +311,16 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 //                collapseParent(i);
 //            }
 //        }
+    }
+
+    private void collapseViews(int parentIndex) {
+        for (RecyclerView recyclerView : mAttachedRecyclerViewPool) {
+            RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(parentIndex);
+            if (viewHolder != null
+                    && viewHolder instanceof ParentViewHolder) {
+                ((ParentViewHolder) viewHolder).collapseView();
+            }
+        }
     }
 
     private void expandHelperItem(ParentWrapper parentWrapper, int parentIndex) {
@@ -325,26 +361,6 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                     notifyItemRemoved(parentIndex + i + 1);
                 }
             }
-        }
-    }
-
-    /**
-     * Method called internally to toggle expansion of a {@link ParentObject} when clicked.
-     * This handles saving state, adding the corresponding child objects to the
-     * {@link RecyclerView} list and updating that list.
-     * It also calls the appropriate {@link ExpandCollapseListener} methods, if it exists.
-     *
-     * @param position
-     */
-    private void toggleParentExpansion(int position) {
-        ParentWrapper parentWrapper = (ParentWrapper) getHelperItem(position);
-        if (parentWrapper == null) {
-            return;
-        }
-        if (parentWrapper.isExpanded()) {
-            collapseHelperItem(parentWrapper, position);
-        } else {
-            expandHelperItem(parentWrapper, position);
         }
     }
 

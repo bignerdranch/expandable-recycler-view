@@ -3,7 +3,7 @@ package com.bignerdranch.expandablerecyclerview.ViewHolder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.bignerdranch.expandablerecyclerview.ClickListeners.ParentItemClickListener;
+import com.bignerdranch.expandablerecyclerview.Listener.ParentItemExpandCollapseListener;
 
 
 /**
@@ -16,7 +16,7 @@ import com.bignerdranch.expandablerecyclerview.ClickListeners.ParentItemClickLis
  */
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private ParentItemClickListener mParentItemClickListener;
+    private ParentItemExpandCollapseListener mParentItemExpandCollapseListener;
     private boolean mIsExpanded;
 
     /**
@@ -68,17 +68,17 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      *
      * @return the ViewHolder's set ParentItemClickListner
      */
-    public ParentItemClickListener getParentItemClickListener() {
-        return mParentItemClickListener;
+    public ParentItemExpandCollapseListener getParentItemExpandCollapseListener() {
+        return mParentItemExpandCollapseListener;
     }
 
     /**
      * Setter for the ParentItemClickListener implemented in ExpandableRecyclerAdapter
      *
-     * @param mParentItemClickListener
+     * @param mParentItemExpandCollapseListener
      */
-    public void setParentItemClickListener(ParentItemClickListener mParentItemClickListener) {
-        this.mParentItemClickListener = mParentItemClickListener;
+    public void setParentItemExpandCollapseListener(ParentItemExpandCollapseListener mParentItemExpandCollapseListener) {
+        this.mParentItemExpandCollapseListener = mParentItemExpandCollapseListener;
     }
 
     /**
@@ -89,12 +89,12 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      */
     @Override
     public void onClick(View v) {
-        toggleExpansion();
+        toggleViewExpansion();
     }
 
     /**
      * Used to determine whether the entire row should trigger row expansion,
-     * if you return false, call {@link #toggleExpansion()} to toggle an expansion in response to
+     * if you return false, call {@link #toggleViewExpansion()} to toggle an expansion in response to
      * a click in your custom view.
      * @return true to set a click listener on the item view that toggle expansion
      */
@@ -103,13 +103,47 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     /**
-     * Triggers expansion for the parent row
+     * Toggles expansion of the parent list item.
      */
-    protected void toggleExpansion() {
-        if (mParentItemClickListener != null) {
-            setExpanded(!mIsExpanded);
-            onExpansionToggled(mIsExpanded);
-            mParentItemClickListener.onParentItemClickListener(getLayoutPosition());
+    protected void toggleViewExpansion() {
+        setExpanded(!mIsExpanded);
+        onExpansionToggled(mIsExpanded);
+        if (mParentItemExpandCollapseListener != null) {
+            if (mIsExpanded) {
+                mParentItemExpandCollapseListener.onParentItemExpanded(getAdapterPosition());
+            } else {
+                mParentItemExpandCollapseListener.onParentItemCollapsed(getAdapterPosition());
+            }
+        }
+    }
+
+    /**
+     * Triggers expansion of the parent list item.
+     */
+    public void expandView() {
+        if (mIsExpanded) {
+            return;
+        }
+
+        setExpanded(true);
+        onExpansionToggled(false);
+        if (mParentItemExpandCollapseListener != null) {
+            mParentItemExpandCollapseListener.onParentItemExpanded(getAdapterPosition());
+        }
+    }
+
+    /**
+     * Triggers collapse of the parent list item.
+     */
+    public void collapseView() {
+        if (!mIsExpanded) {
+            return;
+        }
+
+        setExpanded(false);
+        onExpansionToggled(true);
+        if (mParentItemExpandCollapseListener != null) {
+            mParentItemExpandCollapseListener.onParentItemCollapsed(getAdapterPosition());
         }
     }
 }

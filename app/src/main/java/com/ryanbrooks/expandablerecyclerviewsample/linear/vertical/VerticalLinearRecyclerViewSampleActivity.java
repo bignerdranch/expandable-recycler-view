@@ -11,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
-import com.bignerdranch.expandablerecyclerview.ClickListeners.ExpandCollapseListener;
+import com.bignerdranch.expandablerecyclerview.Listener.ExpandCollapseListener;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 

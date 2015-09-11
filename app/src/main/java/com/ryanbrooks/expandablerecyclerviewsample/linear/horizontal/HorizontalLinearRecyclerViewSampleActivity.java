@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.bignerdranch.expandablerecyclerview.ClickListeners.ExpandCollapseListener;
+import com.bignerdranch.expandablerecyclerview.Listener.ExpandCollapseListener;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
