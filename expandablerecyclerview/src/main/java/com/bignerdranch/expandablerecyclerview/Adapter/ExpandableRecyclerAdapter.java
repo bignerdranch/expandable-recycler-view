@@ -252,20 +252,6 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
     }
 
-    private void expandViews(int parentIndex) {
-        for (RecyclerView recyclerView : mAttachedRecyclerViewPool) {
-            RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(parentIndex);
-            if (viewHolder instanceof ParentViewHolder) {
-                ((ParentViewHolder) viewHolder).expandView();
-            } else if (viewHolder == null) {
-                Object helperItem = getHelperItem(parentIndex);
-                if (helperItem instanceof ParentWrapper) {
-                    expandHelperItem((ParentWrapper) helperItem, parentIndex);
-                }
-            }
-        }
-    }
-
     /**
      * Collapses the parent with the specified index in the list of parents.
      *
@@ -311,6 +297,38 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
     }
 
+    /**
+     * Calls through to the {@link ParentViewHolder} to expand views for each
+     * {@link RecyclerView} a specified parent is a child of. These calls to
+     * the {@code ParentViewHolder} are made so that animations can be
+     * triggered at the {@link android.support.v7.widget.RecyclerView.ViewHolder}
+     * level.
+     *
+     * @param parentIndex The inject of the parent to expand
+     */
+    private void expandViews(int parentIndex) {
+        for (RecyclerView recyclerView : mAttachedRecyclerViewPool) {
+            RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(parentIndex);
+            if (viewHolder instanceof ParentViewHolder) {
+                ((ParentViewHolder) viewHolder).expandView();
+            } else if (viewHolder == null) {
+                Object helperItem = getHelperItem(parentIndex);
+                if (helperItem instanceof ParentWrapper) {
+                    expandHelperItem((ParentWrapper) helperItem, parentIndex);
+                }
+            }
+        }
+    }
+
+    /**
+     * Calls through to the {@link ParentViewHolder} to collapse views for each
+     * {@link RecyclerView} a specified parent is a child of. These calls to
+     * the {@code ParentViewHolder} are made so that animations can be
+     * triggered at the {@link android.support.v7.widget.RecyclerView.ViewHolder}
+     * level.
+     *
+     * @param parentIndex The inject of the parent to collapse
+     */
     private void collapseViews(int parentIndex) {
         for (RecyclerView recyclerView : mAttachedRecyclerViewPool) {
             RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(parentIndex);
@@ -325,6 +343,13 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
     }
 
+    /**
+     * Expands a specified parent item. Calls through to the {@link ExpandCollapseListener}
+     * and adds children of the specified parent to the total list of items.
+     *
+     * @param parentWrapper The {@link ParentWrapper} of the parent to expand
+     * @param parentIndex The index of the parent to expand
+     */
     private void expandHelperItem(ParentWrapper parentWrapper, int parentIndex) {
         if (!parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(true);
@@ -346,6 +371,13 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
     }
 
+    /**
+     * Collapses a specified parent item. Calls through to the {@link ExpandCollapseListener}
+     * and adds children of the specified parent to the total list of items.
+     *
+     * @param parentWrapper The {@link ParentWrapper} of the parent to collapse
+     * @param parentIndex The index of the parent to collapse
+     */
     private void collapseHelperItem(ParentWrapper parentWrapper, int parentIndex) {
         if (parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(false);
@@ -474,8 +506,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * Gets the index of a {@link ParentWrapper} within the helper item list
      * based on the index of the {@code ParentWrapper}.
      *
-     * @param parentIndex
-     * @return
+     * @param parentIndex The index of the parent in the list of parent items
+     * @return The index of the parent in the list of all views in the adapter
      */
     private int getParentWrapperIndex(int parentIndex) {
         int parentWrapperIndex = -1;
@@ -495,6 +527,14 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         return parentWrapperIndex;
     }
 
+    /**
+     * Gets the {@link ParentWrapper} for a specified {@link ParentObject} from
+     * the list of parents.
+     *
+     * @param parentObject A {@code ParentObject} in the list of parents
+     * @return If the parent exists on the list, returns its {@code ParentWrapper}.
+     *         Otherwise, returns {@value null}.
+     */
     private ParentWrapper getParentWrapper(ParentObject parentObject) {
         ParentWrapper parentWrapper = null;
         int numHelperItems = mHelperItemList.size();
