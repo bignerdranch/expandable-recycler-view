@@ -255,9 +255,13 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     private void expandViews(int parentIndex) {
         for (RecyclerView recyclerView : mAttachedRecyclerViewPool) {
             RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(parentIndex);
-            if (viewHolder != null
-                    && viewHolder instanceof ParentViewHolder) {
+            if (viewHolder instanceof ParentViewHolder) {
                 ((ParentViewHolder) viewHolder).expandView();
+            } else if (viewHolder == null) {
+                Object helperItem = getHelperItem(parentIndex);
+                if (helperItem instanceof ParentWrapper) {
+                    expandHelperItem((ParentWrapper) helperItem, parentIndex);
+                }
             }
         }
     }
@@ -302,7 +306,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * Collapses all parents in the list.
      */
     public void collapseAllParents() {
-        for (ParentObject parentObject : mParentItemList) { // TODO: nothing works if the viewholder is null
+        for (ParentObject parentObject : mParentItemList) {
             collapseParent(parentObject);
         }
     }
@@ -310,9 +314,13 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     private void collapseViews(int parentIndex) {
         for (RecyclerView recyclerView : mAttachedRecyclerViewPool) {
             RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(parentIndex);
-            if (viewHolder != null
-                    && viewHolder instanceof ParentViewHolder) {
+            if (viewHolder instanceof ParentViewHolder) {
                 ((ParentViewHolder) viewHolder).collapseView();
+            } else if (viewHolder == null) {
+                Object helperItem = getHelperItem(parentIndex);
+                if (helperItem instanceof ParentWrapper) {
+                    collapseHelperItem((ParentWrapper) helperItem, parentIndex);
+                }
             }
         }
     }

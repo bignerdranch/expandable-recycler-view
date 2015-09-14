@@ -110,16 +110,14 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private View.OnClickListener mExpandParentTwoClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//            mExpandableAdapter.expandParent(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX);
-            mExpandableAdapter.expandParent(mTestDataObjectList.get(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX));
+            mExpandableAdapter.expandParent(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX);
         }
     };
 
     private View.OnClickListener mCollapseParentTwoClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//            mExpandableAdapter.collapseParent(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX);
-            mExpandableAdapter.collapseParent(mTestDataObjectList.get(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX));
+            mExpandableAdapter.collapseParent(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX);
         }
     };
 
