@@ -247,12 +247,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * Expands all parents in the list.
      */
     public void expandAllParents() {
-//        int numHelperItems = mHelperItemList.size();
-//        for (int i = 0; i < numHelperItems; i++) {
-//            if (mHelperItemList.get(i) instanceof ParentWrapper) {
-//                expandParent(i);
-//            }
-//        }
+        for (ParentObject parentObject : mParentItemList) {
+            expandParent(parentObject);
+        }
     }
 
     private void expandViews(int parentIndex) {
@@ -305,12 +302,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * Collapses all parents in the list.
      */
     public void collapseAllParents() {
-//        int numHelperItems = mHelperItemList.size();
-//        for (int i = 0; i < numHelperItems; i++) {
-//            if (mHelperItemList.get(i) instanceof ParentWrapper) {
-//                collapseParent(i);
-//            }
-//        }
+        for (ParentObject parentObject : mParentItemList) { // TODO: nothing works if the viewholder is null
+            collapseParent(parentObject);
+        }
     }
 
     private void collapseViews(int parentIndex) {
