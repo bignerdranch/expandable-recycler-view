@@ -18,6 +18,10 @@
     <string name="arrow_contentDescription">Expand list item arrow</string>
     <string name="item_expanded">Item %1$d expanded</string>
     <string name="item_collapsed">Item %1$d collapsed</string>
+    <string name="expand_parent_two">Expand parent 2</string>
+    <string name="collapse_parent_two">Collapse parent 2</string>
+    <string name="expand_all">Expand all parents</string>
+    <string name="collapse_all">Collapse all parents</string>
 
     <!-- Sample Toolbar -->
     <string name="no_animation">No animation</string>

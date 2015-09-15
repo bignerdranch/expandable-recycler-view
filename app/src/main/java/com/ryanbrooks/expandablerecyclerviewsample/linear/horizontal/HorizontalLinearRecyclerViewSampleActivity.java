@@ -9,20 +9,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
-import com.bignerdranch.expandablerecyclerview.ClickListeners.ExpandCollapseListener;
+import com.bignerdranch.expandablerecyclerview.Listener.ExpandCollapseListener;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivity implements ExpandCollapseListener {
 
     private static final int NUM_TEST_DATA_ITEMS = 20;
+    private static final int EXPAND_COLLAPSE_SINGLE_PARENT_INDEX = 2;
 
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
+    private Button mExpandParentTwoButton;
+    private Button mCollapseParentTwoButton;
+    private Button mExpandAllButton;
+    private Button mCollapseAllButton;
+
+    private List<ParentObject> mTestDataObjectList;
 
     private HorizontalExpandableAdapter mExpandableAdapter;
 
@@ -40,8 +50,21 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_horizontal_linear_recycler_view_sample_recyclerView);
 
+        mExpandParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_parent_two_button);
+        mExpandParentTwoButton.setOnClickListener(mExpandParentTwoClickListener);
+
+        mCollapseParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_parent_two_button);
+        mCollapseParentTwoButton.setOnClickListener(mCollapseParentTwoClickListener);
+
+        mExpandAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_all_button);
+        mExpandAllButton.setOnClickListener(mExpandAllClickListener);
+
+        mCollapseAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_all_button);
+        mCollapseAllButton.setOnClickListener(mCollapseAllClickListener);
+
         // Create a new adapter with 20 test data items
-        mExpandableAdapter = new HorizontalExpandableAdapter(this, setUpTestData(NUM_TEST_DATA_ITEMS));
+        mTestDataObjectList = setUpTestData(NUM_TEST_DATA_ITEMS);
+        mExpandableAdapter = new HorizontalExpandableAdapter(this, mTestDataObjectList);
 
         // Attach this activity to the Adapter as the ExpandCollapseListener
         mExpandableAdapter.addExpandCollapseListener(this);
@@ -83,6 +106,34 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         String toastMessage = getString(R.string.item_collapsed, position);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
+
+    private View.OnClickListener mExpandParentTwoClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.expandParent(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX);
+        }
+    };
+
+    private View.OnClickListener mCollapseParentTwoClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.collapseParent(EXPAND_COLLAPSE_SINGLE_PARENT_INDEX);
+        }
+    };
+
+    private View.OnClickListener mExpandAllClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.expandAllParents();
+        }
+    };
+
+    private View.OnClickListener mCollapseAllClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.collapseAllParents();
+        }
+    };
 
     private void setupToolbar() {
         setSupportActionBar(mToolbar);

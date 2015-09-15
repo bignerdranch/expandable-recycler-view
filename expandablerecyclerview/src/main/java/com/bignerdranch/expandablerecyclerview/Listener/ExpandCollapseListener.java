@@ -1,4 +1,4 @@
-package com.bignerdranch.expandablerecyclerview.ClickListeners;
+package com.bignerdranch.expandablerecyclerview.Listener;
 
 /**
  * Interface callback allowing objects to register themselves as expand/collapse listeners to be

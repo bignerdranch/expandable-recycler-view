@@ -10,8 +10,8 @@ import java.util.List;
  * Created by Ryan Brooks on 6/11/15.
  */
 public class ExpandableRecyclerAdapterHelper {
-    private static int sCurrentId;
 
+    private static int sCurrentId;
 
     public static List<Object> generateHelperItemList(List<? extends ParentObject> itemList) {
         ArrayList<Object> parentWrapperList = new ArrayList<>();
