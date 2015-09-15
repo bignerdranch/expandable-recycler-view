@@ -352,7 +352,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         if (!parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(true);
 
-            if (expansionTriggeredProgrammatically
+            if (!expansionTriggeredProgrammatically
                     && mExpandCollapseListener != null) {
                 int expandedCountBeforePosition = getExpandedItemCount(parentIndex);
                 mExpandCollapseListener.onRecyclerViewItemExpanded(parentIndex - expandedCountBeforePosition);
@@ -383,7 +383,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         if (parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(false);
 
-            if (collapseTriggeredProgrammatically
+            if (!collapseTriggeredProgrammatically
                     && mExpandCollapseListener != null) {
                 int expandedCountBeforePosition = getExpandedItemCount(parentIndex);
                 mExpandCollapseListener.onRecyclerViewItemCollapsed(parentIndex - expandedCountBeforePosition);
