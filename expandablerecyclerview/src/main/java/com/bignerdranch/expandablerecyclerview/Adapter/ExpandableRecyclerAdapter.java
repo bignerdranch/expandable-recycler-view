@@ -302,7 +302,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * triggered at the {@link android.support.v7.widget.RecyclerView.ViewHolder}
      * level.
      *
-     * @param parentIndex The inject of the parent to expand
+     * @param parentIndex The index of the parent to expand
      */
     private void expandViews(ParentWrapper parentWrapper, int parentIndex) {
         for (RecyclerView recyclerView : mAttachedRecyclerViewPool) {
@@ -324,7 +324,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * triggered at the {@link android.support.v7.widget.RecyclerView.ViewHolder}
      * level.
      *
-     * @param parentIndex The inject of the parent to collapse
+     * @param parentIndex The index of the parent to collapse
      */
     private void collapseViews(ParentWrapper parentWrapper, int parentIndex) {
         for (RecyclerView recyclerView : mAttachedRecyclerViewPool) {
