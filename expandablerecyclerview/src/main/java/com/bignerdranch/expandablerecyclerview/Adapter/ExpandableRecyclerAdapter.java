@@ -29,14 +29,13 @@ import java.util.List;
  */
 public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CVH extends ChildViewHolder> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentItemExpandCollapseListener {
 
-    private static final String STABLE_ID_MAP = "ExpandableRecyclerAdapter.StableIdMap";
+    private static final String EXPANDED_STATE_MAP = "ExpandableRecyclerAdapter.ExpandedStateMap";
     private static final int TYPE_PARENT = 0;
     private static final int TYPE_CHILD = 1;
 
     protected Context mContext;
     protected List<? extends ParentObject> mParentItemList;
     protected List<Object> mHelperItemList;
-    private HashMap<Long, Boolean> mStableIdMap;
     private ExpandCollapseListener mExpandCollapseListener;
     private List<RecyclerView> mAttachedRecyclerViewPool;
 
@@ -51,7 +50,6 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         mContext = context;
         mParentItemList = parentItemList;
         mHelperItemList = ExpandableRecyclerAdapterHelper.generateHelperItemList(parentItemList);
-        mStableIdMap = generateStableIdMapFromList(mHelperItemList);
         mAttachedRecyclerViewPool = new ArrayList<>();
     }
 
@@ -358,7 +356,6 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 mExpandCollapseListener.onRecyclerViewItemExpanded(parentIndex - expandedCountBeforePosition);
             }
 
-            mStableIdMap.put(parentWrapper.getStableId(), true);
             List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
             if (childObjectList != null) {
                 int numChildObjects = childObjectList.size();
@@ -389,7 +386,6 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 mExpandCollapseListener.onRecyclerViewItemCollapsed(parentIndex - expandedCountBeforePosition);
             }
 
-            mStableIdMap.put(parentWrapper.getStableId(), false);
             List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
             if (childObjectList != null) {
                 for (int i = childObjectList.size() - 1; i >= 0; i--) {
@@ -425,17 +421,19 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * Generates a HashMap for storing expanded state when activity is rotated or onResume() is called.
      *
      * @param itemList
-     * @return HashMap containing the Object's stable id along with a boolean indicating its expanded
-     * state
+     * @return HashMap containing the Parents expanded stated stored at the position relative to other parents
      */
-    private HashMap<Long, Boolean> generateStableIdMapFromList(List<Object> itemList) {
-        HashMap<Long, Boolean> parentObjectHashMap = new HashMap<>();
+    private HashMap<Integer, Boolean> generateExpandedStateMap(List<Object> itemList) {
+        HashMap<Integer, Boolean> parentObjectHashMap = new HashMap<>();
+        int childCount = 0;
         for (int i = 0; i < itemList.size(); i++) {
             if (itemList.get(i) != null) {
                 Object helperItem = getHelperItem(i);
                 if (helperItem instanceof ParentWrapper) {
                     ParentWrapper parentWrapper = (ParentWrapper) helperItem;
-                    parentObjectHashMap.put(parentWrapper.getStableId(), parentWrapper.isExpanded());
+                    parentObjectHashMap.put(i - childCount, parentWrapper.isExpanded());
+                } else {
+                    childCount++;
                 }
             }
         }
@@ -451,7 +449,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @return the Bundle passed in with the Id HashMap added if applicable
      */
     public Bundle onSaveInstanceState(Bundle savedInstanceStateBundle) {
-        savedInstanceStateBundle.putSerializable(STABLE_ID_MAP, mStableIdMap);
+        savedInstanceStateBundle.putSerializable(EXPANDED_STATE_MAP, generateExpandedStateMap(mHelperItemList));
         return savedInstanceStateBundle;
     }
 
@@ -460,42 +458,46 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * This will fetch the HashMap that was saved in onSaveInstanceState() and use it to restore
      * the expanded states before the rotation or onSaveInstanceState was called.
      *
+     * Assumes list of parent objects is the same as when saveinstancestate was stored
+     *
      * @param savedInstanceStateBundle
      */
     public void onRestoreInstanceState(Bundle savedInstanceStateBundle) {
         if (savedInstanceStateBundle == null) {
             return;
         }
-        if (!savedInstanceStateBundle.containsKey(STABLE_ID_MAP)) {
+        if (!savedInstanceStateBundle.containsKey(EXPANDED_STATE_MAP)) {
             return;
         }
-        mStableIdMap = (HashMap<Long, Boolean>) savedInstanceStateBundle.getSerializable(STABLE_ID_MAP);
-        int i = 0;
-        while (i < mHelperItemList.size()) {
-            Object helperItem = getHelperItem(i);
+        HashMap<Integer, Boolean> expandedStateMap = (HashMap<Integer, Boolean>) savedInstanceStateBundle.getSerializable(EXPANDED_STATE_MAP);
+        int fullCount = 0;
+        int childCount = 0;
+        while (fullCount < mHelperItemList.size()) {
+            Object helperItem = getHelperItem(fullCount);
             if (helperItem instanceof ParentWrapper) {
                 ParentWrapper parentWrapper = (ParentWrapper) helperItem;
-                if (mStableIdMap.containsKey(parentWrapper.getStableId())) {
-                    parentWrapper.setExpanded(mStableIdMap.get(parentWrapper.getStableId()));
+                if (expandedStateMap.containsKey(fullCount - childCount)) {
+                    parentWrapper.setExpanded(expandedStateMap.get(fullCount - childCount));
                     if (parentWrapper.isExpanded() && !parentWrapper.getParentObject().isInitiallyExpanded()) {
                         List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
                         if (childObjectList != null) {
                             for (int j = 0; j < childObjectList.size(); j++) {
-                                i++;
-                                mHelperItemList.add(i, childObjectList.get(j));
+                                fullCount++;
+                                childCount++;
+                                mHelperItemList.add(fullCount, childObjectList.get(j));
                             }
                         }
                     } else if (!parentWrapper.isExpanded() && parentWrapper.getParentObject().isInitiallyExpanded()) {
                         List<Object> childObjectList = parentWrapper.getParentObject().getChildObjectList();
                         for (int j = 0; j < childObjectList.size(); j++) {
-                            mHelperItemList.remove(i + 1);
+                            mHelperItemList.remove(fullCount + 1);
                         }
                     }
-                } else {
-                    parentWrapper.setExpanded(false);
                 }
+            } else {
+                childCount++;
             }
-            i++;
+            fullCount++;
         }
         notifyDataSetChanged();
     }

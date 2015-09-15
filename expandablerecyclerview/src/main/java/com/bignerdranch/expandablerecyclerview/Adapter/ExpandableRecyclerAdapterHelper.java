@@ -11,14 +11,11 @@ import java.util.List;
  */
 public class ExpandableRecyclerAdapterHelper {
 
-    private static int sCurrentId;
-
     public static List<Object> generateHelperItemList(List<? extends ParentObject> itemList) {
         ArrayList<Object> parentWrapperList = new ArrayList<>();
         for (int i = 0; i < itemList.size(); i++) {
             ParentObject parentObject = itemList.get(i);
-            ParentWrapper parentWrapper = new ParentWrapper(parentObject, sCurrentId);
-            sCurrentId++;
+            ParentWrapper parentWrapper = new ParentWrapper(parentObject);
             parentWrapperList.add(parentWrapper);
             if (parentObject.isInitiallyExpanded()) {
                 parentWrapper.setExpanded(true);
@@ -27,7 +24,6 @@ public class ExpandableRecyclerAdapterHelper {
                 }
             }
         }
-        sCurrentId = 0;
         return parentWrapperList;
     }
 }
