@@ -35,7 +35,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     protected Context mContext;
     protected List<? extends ParentObject> mParentItemList;
-    private List<Object> mHelperItemList;
+    protected List<Object> mHelperItemList;
     private HashMap<Long, Boolean> mStableIdMap;
     private ExpandCollapseListener mExpandCollapseListener;
     private List<RecyclerView> mAttachedRecyclerViewPool;
@@ -500,7 +500,13 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         notifyDataSetChanged();
     }
 
-    private Object getHelperItem(int position) {
+    /**
+     * Returns the helper item held at the adapter position
+     *
+     * @param position the index of the helper item to return
+     * @return Object at that index, may be a ParentWrapper or child Object
+     */
+    protected Object getHelperItem(int position) {
         return mHelperItemList.get(position);
     }
 
