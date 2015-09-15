@@ -102,7 +102,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      * in response to a click in your custom view or {@link #collapseView()} to
      * toggle a collapse.
      *
-     * @return {@value true} to set a click listener on the item view that toggles expansion
+     * @return true to set a click listener on the item view that toggles expansion
      */
     public boolean shouldItemViewClickToggleExpansion() {
         return true;
