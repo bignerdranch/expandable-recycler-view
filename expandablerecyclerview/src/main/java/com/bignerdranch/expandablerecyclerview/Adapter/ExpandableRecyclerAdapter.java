@@ -512,7 +512,6 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @return The index of the parent in the list of all views in the adapter
      */
     private int getParentWrapperIndex(int parentIndex) {
-        int parentWrapperIndex = -1;
         int parentCount = 0;
         int numHelperItems = mHelperItemList.size();
         for (int i = 0; i < numHelperItems; i++) {
@@ -520,13 +519,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 parentCount++;
 
                 if (parentCount > parentIndex) {
-                    parentWrapperIndex = i;
-                    break;
+                    return i;
                 }
             }
         }
 
-        return parentWrapperIndex;
+        return -1;
     }
 
     /**
@@ -538,18 +536,16 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *         Otherwise, returns {@value null}.
      */
     private ParentWrapper getParentWrapper(ParentObject parentObject) {
-        ParentWrapper parentWrapper = null;
         int numHelperItems = mHelperItemList.size();
         for (int i = 0; i < numHelperItems; i++) {
             Object helperItem = mHelperItemList.get(i);
             if (helperItem instanceof ParentWrapper) {
                 if (((ParentWrapper) helperItem).getParentObject().equals(parentObject)) {
-                    parentWrapper = (ParentWrapper) helperItem;
-                    break;
+                    return (ParentWrapper) helperItem;
                 }
             }
         }
 
-        return parentWrapper;
+        return null;
     }
 }
