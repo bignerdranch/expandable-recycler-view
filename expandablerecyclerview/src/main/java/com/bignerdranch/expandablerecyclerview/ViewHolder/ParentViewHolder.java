@@ -89,41 +89,31 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      */
     @Override
     public void onClick(View v) {
-        toggleViewExpansion();
+        if (mIsExpanded) {
+            collapseView();
+        } else {
+            expandView();
+        }
     }
 
     /**
      * Used to determine whether the entire row should trigger row expansion,
-     * if you return false, call {@link #toggleViewExpansion()} to toggle an expansion in response to
-     * a click in your custom view.
-     * @return true to set a click listener on the item view that toggle expansion
+     * if you return false, call {@link #expandView()} to toggle an expansion
+     * in response to a click in your custom view or {@link #collapseView()} to
+     * toggle a collapse.
+     *
+     * @return {@value true} to set a click listener on the item view that toggles expansion
      */
     public boolean shouldItemViewClickToggleExpansion() {
         return true;
     }
 
     /**
-     * Toggles expansion of the parent list item.
-     */
-    protected void toggleViewExpansion() {
-        setExpanded(!mIsExpanded);
-        onExpansionToggled(mIsExpanded);
-        if (mParentItemExpandCollapseListener != null) {
-            if (mIsExpanded) {
-                mParentItemExpandCollapseListener.onParentItemExpanded(getAdapterPosition());
-            } else {
-                mParentItemExpandCollapseListener.onParentItemCollapsed(getAdapterPosition());
-            }
-        }
-    }
-
-    /**
      * Triggers expansion of the parent list item.
      */
-    public void expandView() {
-        if (mIsExpanded) {
-            return;
-        }
+    protected void expandView() {
+        setExpanded(true);
+        onExpansionToggled(false);
 
         if (mParentItemExpandCollapseListener != null) {
             mParentItemExpandCollapseListener.onParentItemExpanded(getAdapterPosition());
@@ -133,10 +123,9 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     /**
      * Triggers collapse of the parent list item.
      */
-    public void collapseView() {
-        if (!mIsExpanded) {
-            return;
-        }
+    protected void collapseView() {
+        setExpanded(false);
+        onExpansionToggled(true);
 
         if (mParentItemExpandCollapseListener != null) {
             mParentItemExpandCollapseListener.onParentItemCollapsed(getAdapterPosition());

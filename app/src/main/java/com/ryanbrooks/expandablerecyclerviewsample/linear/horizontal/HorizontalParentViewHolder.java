@@ -45,7 +45,11 @@ public class HorizontalParentViewHolder extends ParentViewHolder {
         mArrowExpandImageView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleViewExpansion();
+                if (isExpanded()) {
+                    collapseView();
+                } else {
+                    expandView();
+                }
             }
         });
 
