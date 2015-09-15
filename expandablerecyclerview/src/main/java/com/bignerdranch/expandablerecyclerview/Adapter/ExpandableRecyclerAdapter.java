@@ -545,6 +545,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             if (helperItem instanceof ParentWrapper) {
                 if (((ParentWrapper) helperItem).getParentObject().equals(parentObject)) {
                     parentWrapper = (ParentWrapper) helperItem;
+                    break;
                 }
             }
         }
