@@ -34,7 +34,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     private static final int TYPE_CHILD = 1;
 
     protected List<Object> mItemList;
-    protected List<? extends ParentListItem> mParentItemList;
+    protected List<ParentListItem> mParentItemList;
     private ExpandCollapseListener mExpandCollapseListener;
     private List<RecyclerView> mAttachedRecyclerViewPool;
 
@@ -43,7 +43,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *
      * @param parentItemList List of all parent objects that make up the recyclerview
      */
-    public ExpandableRecyclerAdapter(@NonNull List<? extends ParentListItem> parentItemList) {
+    public ExpandableRecyclerAdapter(@NonNull List<ParentListItem> parentItemList) {
         super();
         mParentItemList = parentItemList;
         mItemList = ExpandableRecyclerAdapterHelper.generateParentChildItemList(parentItemList);
@@ -201,6 +201,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public void setExpandCollapseListener(ExpandCollapseListener expandCollapseListener) {
         mExpandCollapseListener = expandCollapseListener;
     }
+
+    // region Programmatic Expansion/Collapsing
 
     /**
      * Expands the parent with the specified index in the list of parents.
@@ -411,6 +413,30 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
         return expandedCount;
     }
+
+    // endregion
+
+    // region Data Manipulation
+
+    public void addParentObject(ParentListItem parentObject) {
+        mParentItemList.add(parentObject);
+
+        int sizeChanged = 1;
+        ParentWrapper parentWrapper = new ParentWrapper(parentObject);
+        mItemList.add(parentWrapper);
+        if (parentObject.isInitiallyExpanded()) {
+            parentWrapper.setExpanded(true);
+            List<Object> childObjectList = parentObject.getChildItemList();
+            for (int i = 0; i < childObjectList.size(); i++) {
+                mItemList.add(childObjectList.get(i));
+                sizeChanged++;
+            }
+        }
+        notifyItemRangeInserted(mItemList.size() - sizeChanged, sizeChanged);
+    }
+
+
+    // endregion
 
     /**
      * Generates a HashMap for storing expanded state when activity is rotated or onResume() is called.

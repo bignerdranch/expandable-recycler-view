@@ -52,4 +52,24 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_medium">
+
+        <Button
+            android:id="@+id/activity_horizontal_linear_recycler_view_add_to_end_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_item_to_end"/>
+
+        <Button
+            android:id="@+id/activity_horizontal_linear_recycler_view_remove_from_end_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/remove_item_from_end"/>
+
+    </LinearLayout>
+
 </LinearLayout>

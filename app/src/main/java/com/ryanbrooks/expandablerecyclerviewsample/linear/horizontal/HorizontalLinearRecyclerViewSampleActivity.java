@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
     private HorizontalExpandableAdapter mExpandableAdapter;
 
+
     public static Intent newIntent(Context context) {
         return new Intent(context, HorizontalLinearRecyclerViewSampleActivity.class);
     }
@@ -61,6 +63,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
         mCollapseAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_all_button);
         mCollapseAllButton.setOnClickListener(mCollapseAllClickListener);
+
+        Button addToEndButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_add_to_end_button);
+        addToEndButton.setOnClickListener(mAddToEndClickListener);
 
         // Create a new adapter with 20 test data items
         mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
@@ -132,6 +137,38 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         @Override
         public void onClick(View v) {
             mExpandableAdapter.collapseAllParents();
+        }
+    };
+
+    private OnClickListener mAddToEndClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            ArrayList<Object> childList = new ArrayList<>();
+            int parentNumber = mTestDataItemList.size();
+
+            HorizontalChild horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.child_text, parentNumber));
+            childList.add(horizontalChild);
+
+            horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.second_child_text, parentNumber));
+            childList.add(horizontalChild);
+
+            horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.third_child_text, parentNumber));
+            childList.add(horizontalChild);
+
+            HorizontalParent horizontalParent = new HorizontalParent();
+            horizontalParent.setChildItemList(childList);
+            horizontalParent.setParentNumber(parentNumber);
+            horizontalParent.setParentText(getString(R.string.parent_text, parentNumber));
+            if (parentNumber % 2 == 0) {
+                horizontalParent.setInitiallyExpanded(true);
+            }
+
+
+            mExpandableAdapter.addParentObject(horizontalParent);
         }
     };
 
