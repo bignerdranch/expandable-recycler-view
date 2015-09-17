@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/list_item_parent_horizontal_width"
+    android:layout_width="wrap_content"
     android:layout_height="@dimen/list_item_horizontal_height"
+    android:minWidth="160dp"
     android:layout_margin="@dimen/margin_medium"
     android:background="@drawable/background_list_item_parent"
     android:orientation="horizontal">

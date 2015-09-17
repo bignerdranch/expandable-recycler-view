@@ -70,6 +70,12 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         Button removeFromEndButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_remove_from_end_button);
         removeFromEndButton.setOnClickListener(mRemoveFromEndClickListener);
 
+        Button addToSecondButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_add_to_second_button);
+        addToSecondButton.setOnClickListener(mAddToSecondClickListener);
+
+        Button removeSecondbutton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_remove_second_button);
+        removeSecondbutton.setOnClickListener(mRemoveSecondClickListener);
+
         // Create a new adapter with 20 test data items
         mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
         mExpandableAdapter = new HorizontalExpandableAdapter(this, mTestDataItemList);
@@ -172,6 +178,43 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
 
             mExpandableAdapter.addParent(horizontalParent);
+        }
+    };
+
+    private OnClickListener mAddToSecondClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ArrayList<Object> childList = new ArrayList<>();
+            int parentNumber = mTestDataItemList.size();
+
+            HorizontalChild horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.child_insert_text, 1));
+            childList.add(horizontalChild);
+
+            horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.second_child_text, 2));
+            childList.add(horizontalChild);
+
+            HorizontalParent horizontalParent = new HorizontalParent();
+            horizontalParent.setChildItemList(childList);
+            horizontalParent.setParentNumber(parentNumber);
+            horizontalParent.setParentText(getString(R.string.inserted_parent_text));
+            if (parentNumber % 2 == 0) {
+                horizontalParent.setInitiallyExpanded(true);
+            }
+
+            mExpandableAdapter.addParent(1, horizontalParent);
+        }
+    };
+
+    private OnClickListener mRemoveSecondClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mTestDataItemList.size() < 2) {
+                return;
+            }
+
+            mExpandableAdapter.removeParent(mTestDataItemList.get(1));
         }
     };
 
