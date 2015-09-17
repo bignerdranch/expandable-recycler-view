@@ -17,7 +17,7 @@ import com.bignerdranch.expandablerecyclerview.Listener.ParentItemExpandCollapse
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private ParentItemExpandCollapseListener mParentItemExpandCollapseListener;
-    private boolean mIsExpanded;
+    private boolean mExpanded;
 
     /**
      * Default constructor
@@ -25,7 +25,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      */
     public ParentViewHolder(View itemView) {
         super(itemView);
-        mIsExpanded = false;
+        mExpanded = false;
     }
 
     /**
@@ -41,25 +41,25 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      * @return true if expanded, false if not
      */
     public boolean isExpanded() {
-        return mIsExpanded;
+        return mExpanded;
     }
 
     /**
      * Setter method for expanded state, used for initialization of expanded state.
      * changes to the state are given in {@link #onExpansionToggled(boolean)}
      *
-     * @param isExpanded
+     * @param expanded
      */
-    public void setExpanded(boolean isExpanded) {
-        mIsExpanded = isExpanded;
+    public void setExpanded(boolean expanded) {
+        mExpanded = expanded;
     }
 
     /**
      * Called when expansion is changed, does not get called during the initial binding
      * Useful for implementing parent view animations for expansion
-     * @param isExpanded
+     * @param expanded
      */
-    public void onExpansionToggled(boolean isExpanded) {
+    public void onExpansionToggled(boolean expanded) {
 
     }
 
@@ -89,7 +89,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      */
     @Override
     public void onClick(View v) {
-        if (mIsExpanded) {
+        if (mExpanded) {
             collapseView();
         } else {
             expandView();

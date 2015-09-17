@@ -4,12 +4,13 @@ package com.bignerdranch.expandablerecyclerview.Model;
  * Created by Ryan Brooks on 6/11/15.
  */
 public class ParentWrapper {
-    private boolean mIsExpanded;
+
+    private boolean mExpanded;
     private ParentObject mParentObject;
 
     public ParentWrapper(ParentObject parentObject) {
         mParentObject = parentObject;
-        mIsExpanded = false;
+        mExpanded = false;
     }
 
     public ParentObject getParentObject() {
@@ -21,10 +22,10 @@ public class ParentWrapper {
     }
 
     public boolean isExpanded() {
-        return mIsExpanded;
+        return mExpanded;
     }
 
-    public void setExpanded(boolean isExpanded) {
-        mIsExpanded = isExpanded;
+    public void setExpanded(boolean expanded) {
+        mExpanded = expanded;
     }
 }

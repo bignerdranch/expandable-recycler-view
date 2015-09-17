@@ -52,7 +52,7 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity 
         mExpandableAdapter = new VerticalExpandableAdapter(this, setUpTestData(NUM_TEST_DATA_ITEMS));
 
         // Attach this activity to the Adapter as the ExpandCollapseListener
-        mExpandableAdapter.addExpandCollapseListener(this);
+        mExpandableAdapter.setExpandCollapseListener(this);
 
         // Set the RecyclerView's adapter to the ExpandableAdapter we just created
         mRecyclerView.setAdapter(mExpandableAdapter);

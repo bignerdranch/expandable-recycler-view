@@ -25,13 +25,13 @@ public class CrimeParentViewHolder extends ParentViewHolder {
 
     @SuppressLint("NewApi")
     @Override
-    public void setExpanded(boolean isExpanded) {
-        super.setExpanded(isExpanded);
+    public void setExpanded(boolean expanded) {
+        super.setExpanded(expanded);
         if (!HONEYCOMB_AND_ABOVE) {
             return;
         }
 
-        if (isExpanded) {
+        if (expanded) {
             mParentDropDownArrow.setRotation(ROTATED_POSITION);
         } else {
             mParentDropDownArrow.setRotation(INITIAL_POSITION);

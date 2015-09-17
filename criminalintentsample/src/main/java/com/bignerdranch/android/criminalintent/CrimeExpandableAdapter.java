@@ -16,7 +16,7 @@ public class CrimeExpandableAdapter extends ExpandableRecyclerAdapter<CrimeParen
     private LayoutInflater mInflater;
 
     public CrimeExpandableAdapter(Context context, List<ParentObject> itemList) {
-        super(context, itemList);
+        super(itemList);
         mInflater = LayoutInflater.from(context);
     }
 

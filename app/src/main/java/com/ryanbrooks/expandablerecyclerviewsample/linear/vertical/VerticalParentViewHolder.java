@@ -53,13 +53,13 @@ public class VerticalParentViewHolder extends ParentViewHolder {
 
     @SuppressLint("NewApi")
     @Override
-    public void setExpanded(boolean isExpanded) {
-        super.setExpanded(isExpanded);
+    public void setExpanded(boolean expanded) {
+        super.setExpanded(expanded);
         if (!HONEYCOMB_AND_ABOVE) {
             return;
         }
 
-        if (isExpanded) {
+        if (expanded) {
             mArrowExpandImageView.setRotation(ROTATED_POSITION);
         } else {
             mArrowExpandImageView.setRotation(INITIAL_POSITION);
@@ -67,8 +67,8 @@ public class VerticalParentViewHolder extends ParentViewHolder {
     }
 
     @Override
-    public void onExpansionToggled(boolean isExpanded) {
-        super.onExpansionToggled(isExpanded);
+    public void onExpansionToggled(boolean expanded) {
+        super.onExpansionToggled(expanded);
         if (!HONEYCOMB_AND_ABOVE) {
             return;
         }

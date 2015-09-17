@@ -25,11 +25,10 @@ public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<Vertica
     /**
      * Public primary constructor.
      *
-     * @param context for inflating views
      * @param parentItemList the list of parent items to be displayed in the RecyclerView
      */
     public VerticalExpandableAdapter(Context context, List<ParentObject> parentItemList) {
-        super(context, parentItemList);
+        super(parentItemList);
         mInflater = LayoutInflater.from(context);
     }
 
