@@ -13,10 +13,10 @@ public interface ExpandCollapseListener {
     /**
      * Method called when an item in the ExpandableRecycleView is expanded
      */
-    void onRecyclerViewItemExpanded(int position);
+    void onListItemExpanded(int position);
 
     /**
      * Method called when an item in the ExpandableRecyclerView is collapsed
      */
-    void onRecyclerViewItemCollapsed(int position);
+    void onListItemCollapsed(int position);
 }

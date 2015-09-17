@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.Listener.ExpandCollapseListener;
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private Button mExpandAllButton;
     private Button mCollapseAllButton;
 
-    private List<ParentObject> mTestDataObjectList;
+    private List<ParentListItem> mTestDataItemList;
 
     private HorizontalExpandableAdapter mExpandableAdapter;
 
@@ -63,8 +63,8 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         mCollapseAllButton.setOnClickListener(mCollapseAllClickListener);
 
         // Create a new adapter with 20 test data items
-        mTestDataObjectList = setUpTestData(NUM_TEST_DATA_ITEMS);
-        mExpandableAdapter = new HorizontalExpandableAdapter(this, mTestDataObjectList);
+        mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
+        mExpandableAdapter = new HorizontalExpandableAdapter(this, mTestDataItemList);
 
         // Attach this activity to the Adapter as the ExpandCollapseListener
         mExpandableAdapter.setExpandCollapseListener(this);
@@ -96,13 +96,13 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     }
 
     @Override
-    public void onRecyclerViewItemExpanded(int position) {
+    public void onListItemExpanded(int position) {
         String toastMessage = getString(R.string.item_expanded, position);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onRecyclerViewItemCollapsed(int position) {
+    public void onListItemCollapsed(int position) {
         String toastMessage = getString(R.string.item_collapsed, position);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
@@ -154,31 +154,33 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
      *
      * @return an ArrayList of Objects that contains all parent items. Expansion of children are handled in the adapter
      */
-    private ArrayList<ParentObject> setUpTestData(int numItems) {
-        ArrayList<ParentObject> parentObjectList = new ArrayList<>();
-        for (int i = 0; i < numItems; i++) {
-            ArrayList<Object> childObjectList = new ArrayList<>();
+    private List<ParentListItem> setUpTestData(int numItems) {
+        List<ParentListItem> parentListItemList = new ArrayList<>();
 
-            HorizontalChildObject horizontalChildObject = new HorizontalChildObject();
-            horizontalChildObject.setChildText(getString(R.string.child_text, i));
-            childObjectList.add(horizontalChildObject);
+        for (int i = 0; i < numItems; i++) {
+            List<Object> childItemList = new ArrayList<>();
+
+            HorizontalChildListItem horizontalChildListItem = new HorizontalChildListItem();
+            horizontalChildListItem.setChildText(getString(R.string.child_text, i));
+            childItemList.add(horizontalChildListItem);
 
             // Evens get 2 children, odds get 1
             if (i % 2 == 0) {
-                HorizontalChildObject horizontalChildObject2 = new HorizontalChildObject();
-                horizontalChildObject2.setChildText(getString(R.string.second_child_text, i));
-                childObjectList.add(horizontalChildObject2);
+                HorizontalChildListItem horizontalChildListItem2 = new HorizontalChildListItem();
+                horizontalChildListItem2.setChildText(getString(R.string.second_child_text, i));
+                childItemList.add(horizontalChildListItem2);
             }
 
-            HorizontalParentObject horizontalParentObject = new HorizontalParentObject();
-            horizontalParentObject.setChildObjectList(childObjectList);
-            horizontalParentObject.setParentNumber(i);
-            horizontalParentObject.setParentText(getString(R.string.parent_text, i));
+            HorizontalParentListItem horizontalParentListItem = new HorizontalParentListItem();
+            horizontalParentListItem.setChildItemList(childItemList);
+            horizontalParentListItem.setParentNumber(i);
+            horizontalParentListItem.setParentText(getString(R.string.parent_text, i));
             if (i == 0) {
-                horizontalParentObject.setInitiallyExpanded(true);
+                horizontalParentListItem.setInitiallyExpanded(true);
             }
-            parentObjectList.add(horizontalParentObject);
+            parentListItemList.add(horizontalParentListItem);
         }
-        return parentObjectList;
+
+        return parentListItemList;
     }
 }

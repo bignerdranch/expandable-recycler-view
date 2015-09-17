@@ -3,7 +3,7 @@ package com.bignerdranch.expandablerecyclerview.ViewHolder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.bignerdranch.expandablerecyclerview.Listener.ParentItemExpandCollapseListener;
+import com.bignerdranch.expandablerecyclerview.Listener.ParentListItemExpandCollapseListener;
 
 
 /**
@@ -16,7 +16,7 @@ import com.bignerdranch.expandablerecyclerview.Listener.ParentItemExpandCollapse
  */
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private ParentItemExpandCollapseListener mParentItemExpandCollapseListener;
+    private ParentListItemExpandCollapseListener mParentListItemExpandCollapseListener;
     private boolean mExpanded;
 
     /**
@@ -68,17 +68,17 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      *
      * @return the ViewHolder's set ParentItemClickListner
      */
-    public ParentItemExpandCollapseListener getParentItemExpandCollapseListener() {
-        return mParentItemExpandCollapseListener;
+    public ParentListItemExpandCollapseListener getParentListItemExpandCollapseListener() {
+        return mParentListItemExpandCollapseListener;
     }
 
     /**
      * Setter for the ParentItemClickListener implemented in ExpandableRecyclerAdapter
      *
-     * @param mParentItemExpandCollapseListener
+     * @param mParentListItemExpandCollapseListener
      */
-    public void setParentItemExpandCollapseListener(ParentItemExpandCollapseListener mParentItemExpandCollapseListener) {
-        this.mParentItemExpandCollapseListener = mParentItemExpandCollapseListener;
+    public void setParentListItemExpandCollapseListener(ParentListItemExpandCollapseListener mParentListItemExpandCollapseListener) {
+        this.mParentListItemExpandCollapseListener = mParentListItemExpandCollapseListener;
     }
 
     /**
@@ -115,8 +115,8 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         setExpanded(true);
         onExpansionToggled(false);
 
-        if (mParentItemExpandCollapseListener != null) {
-            mParentItemExpandCollapseListener.onParentItemExpanded(getAdapterPosition());
+        if (mParentListItemExpandCollapseListener != null) {
+            mParentListItemExpandCollapseListener.onParentListItemExpanded(getAdapterPosition());
         }
     }
 
@@ -127,8 +127,8 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         setExpanded(false);
         onExpansionToggled(true);
 
-        if (mParentItemExpandCollapseListener != null) {
-            mParentItemExpandCollapseListener.onParentItemCollapsed(getAdapterPosition());
+        if (mParentListItemExpandCollapseListener != null) {
+            mParentListItemExpandCollapseListener.onParentListItemCollapsed(getAdapterPosition());
         }
     }
 }

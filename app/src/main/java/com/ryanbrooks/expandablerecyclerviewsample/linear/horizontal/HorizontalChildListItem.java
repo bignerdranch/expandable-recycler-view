@@ -4,7 +4,7 @@ package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
  * Custom child object. This is for demo purposes, although it is recommended having a separate
  * child object from your parent object.
  */
-public class HorizontalChildObject {
+public class HorizontalChildListItem {
 
     private String mChildText;
 

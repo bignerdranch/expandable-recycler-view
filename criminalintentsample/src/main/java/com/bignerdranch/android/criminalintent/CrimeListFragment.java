@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,16 +38,16 @@ public class CrimeListFragment extends Fragment {
         ((CrimeExpandableAdapter) mCrimeRecyclerView.getAdapter()).onSaveInstanceState(outState);
     }
 
-    private ArrayList<ParentObject> generateCrimes() {
+    private List<ParentListItem> generateCrimes() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
-        ArrayList<ParentObject> parentObjects = new ArrayList<>();
+        List<ParentListItem> parentListItems = new ArrayList<>();
         for (Crime crime : crimes) {
-            ArrayList<Object> childList = new ArrayList<>();
-            childList.add(new CrimeChild(crime.getDate(), crime.isSolved()));
-            crime.setChildObjectList(childList);
-            parentObjects.add(crime);
+            List<Object> childItemList = new ArrayList<>();
+            childItemList.add(new CrimeChildListItem(crime.getDate(), crime.isSolved()));
+            crime.setChildItemList(childItemList);
+            parentListItems.add(crime);
         }
-        return parentObjects;
+        return parentListItems;
     }
 }

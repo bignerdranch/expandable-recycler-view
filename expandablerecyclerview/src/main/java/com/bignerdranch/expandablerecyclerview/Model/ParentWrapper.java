@@ -6,19 +6,19 @@ package com.bignerdranch.expandablerecyclerview.Model;
 public class ParentWrapper {
 
     private boolean mExpanded;
-    private ParentObject mParentObject;
+    private ParentListItem mParentListItem;
 
-    public ParentWrapper(ParentObject parentObject) {
-        mParentObject = parentObject;
+    public ParentWrapper(ParentListItem parentListItem) {
+        mParentListItem = parentListItem;
         mExpanded = false;
     }
 
-    public ParentObject getParentObject() {
-        return mParentObject;
+    public ParentListItem getParentListItem() {
+        return mParentListItem;
     }
 
-    public void setParentObject(ParentObject parentObject) {
-        mParentObject = parentObject;
+    public void setParentListItem(ParentListItem parentListItem) {
+        mParentListItem = parentListItem;
     }
 
     public boolean isExpanded() {

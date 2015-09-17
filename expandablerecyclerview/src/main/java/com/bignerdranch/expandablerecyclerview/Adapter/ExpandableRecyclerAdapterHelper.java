@@ -1,6 +1,6 @@
 package com.bignerdranch.expandablerecyclerview.Adapter;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
 
 import java.util.ArrayList;
@@ -11,23 +11,23 @@ import java.util.List;
  */
 public class ExpandableRecyclerAdapterHelper {
 
-    public static List<Object> generateParentChildItemList(List<? extends ParentObject> parentItemList) {
+    public static List<Object> generateParentChildItemList(List<? extends ParentListItem> parentItemList) {
         List<Object> parentWrapperList = new ArrayList<>();
-        ParentObject parentObject;
+        ParentListItem parentListItem;
         ParentWrapper parentWrapper;
 
         int numItems = parentItemList.size();
         for (int i = 0; i < numItems; i++) {
-            parentObject = parentItemList.get(i);
-            parentWrapper = new ParentWrapper(parentObject);
+            parentListItem = parentItemList.get(i);
+            parentWrapper = new ParentWrapper(parentListItem);
             parentWrapperList.add(parentWrapper);
 
-            if (parentObject.isInitiallyExpanded()) {
+            if (parentListItem.isInitiallyExpanded()) {
                 parentWrapper.setExpanded(true);
 
-                int numChildObjects = parentObject.getChildObjectList().size();
+                int numChildObjects = parentListItem.getChildItemList().size();
                 for (int j = 0; j < numChildObjects; j++) {
-                    parentWrapperList.add(parentObject.getChildObjectList().get(j));
+                    parentWrapperList.add(parentListItem.getChildItemList().get(j));
                 }
             }
         }

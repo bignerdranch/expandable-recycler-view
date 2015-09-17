@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      *
      * @param parentItemList the list of parent items to be displayed in the RecyclerView
      */
-    public HorizontalExpandableAdapter(Context context, List<ParentObject> parentItemList) {
+    public HorizontalExpandableAdapter(Context context, List<ParentListItem> parentItemList) {
         super(parentItemList);
         mInflater = LayoutInflater.from(context);
     }
@@ -62,9 +62,9 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * @param position the position in the RecyclerView of the item
      */
     @Override
-    public void onBindParentViewHolder(HorizontalParentViewHolder parentViewHolder, int position, Object parentObject) {
-        HorizontalParentObject horizontalParentObject = (HorizontalParentObject) parentObject;
-        parentViewHolder.bind(horizontalParentObject.getParentNumber(), horizontalParentObject.getParentText());
+    public void onBindParentViewHolder(HorizontalParentViewHolder parentViewHolder, int position, Object parentListItem) {
+        HorizontalParentListItem horizontalParentListItem = (HorizontalParentListItem) parentListItem;
+        parentViewHolder.bind(horizontalParentListItem.getParentNumber(), horizontalParentListItem.getParentText());
     }
 
     /**
@@ -75,8 +75,8 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * @param position the position in the RecyclerView of the item
      */
     @Override
-    public void onBindChildViewHolder(HorizontalChildViewHolder childViewHolder, int position, Object childObject) {
-        HorizontalChildObject horizontalChildObject = (HorizontalChildObject) childObject;
-        childViewHolder.bind(horizontalChildObject.getChildText());
+    public void onBindChildViewHolder(HorizontalChildViewHolder childViewHolder, int position, Object childListItem) {
+        HorizontalChildListItem horizontalChildListItem = (HorizontalChildListItem) childListItem;
+        childViewHolder.bind(horizontalChildListItem.getChildText());
     }
 }

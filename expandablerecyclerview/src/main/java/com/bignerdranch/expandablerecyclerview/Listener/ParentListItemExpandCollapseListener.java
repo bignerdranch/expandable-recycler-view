@@ -7,7 +7,9 @@ package com.bignerdranch.expandablerecyclerview.Listener;
  * @version 1.0
  * @since 5/27/2015
  */
-public interface ParentItemExpandCollapseListener {
-    void onParentItemExpanded(int position);
-    void onParentItemCollapsed(int position);
+public interface ParentListItemExpandCollapseListener {
+
+    void onParentListItemExpanded(int position);
+    void onParentListItemCollapsed(int position);
+
 }

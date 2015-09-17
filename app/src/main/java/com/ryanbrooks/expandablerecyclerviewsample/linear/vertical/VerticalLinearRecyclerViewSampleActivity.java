@@ -12,10 +12,11 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.Listener.ExpandCollapseListener;
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Sample Activity for the vertical linear RecyclerView sample.
@@ -81,13 +82,13 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity 
     }
 
     @Override
-    public void onRecyclerViewItemExpanded(int position) {
+    public void onListItemExpanded(int position) {
         String toastMessage = getString(R.string.item_expanded, position);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onRecyclerViewItemCollapsed(int position) {
+    public void onListItemCollapsed(int position) {
         String toastMessage = getString(R.string.item_collapsed, position);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
@@ -111,31 +112,33 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity 
      *
      * @return an ArrayList of Objects that contains all parent items. Expansion of children are handled in the adapter
      */
-    private ArrayList<ParentObject> setUpTestData(int numItems) {
-        ArrayList<ParentObject> parentObjectList = new ArrayList<>();
-        for (int i = 0; i < numItems; i++) {
-            ArrayList<Object> childObjectList = new ArrayList<>();
+    private List<ParentListItem> setUpTestData(int numItems) {
+        List<ParentListItem> parentListItemList = new ArrayList<>();
 
-            VerticalChildObject verticalChildObject = new VerticalChildObject();
-            verticalChildObject.setChildText(getString(R.string.child_text, i));
-            childObjectList.add(verticalChildObject);
+        for (int i = 0; i < numItems; i++) {
+            List<Object> childItemList = new ArrayList<>();
+
+            VerticalChildListItem verticalChildListItem = new VerticalChildListItem();
+            verticalChildListItem.setChildText(getString(R.string.child_text, i));
+            childItemList.add(verticalChildListItem);
 
             // Evens get 2 children, odds get 1
             if (i % 2 == 0) {
-                VerticalChildObject verticalChildObject2 = new VerticalChildObject();
-                verticalChildObject2.setChildText(getString(R.string.second_child_text, i));
-                childObjectList.add(verticalChildObject2);
+                VerticalChildListItem verticalChildListItem2 = new VerticalChildListItem();
+                verticalChildListItem2.setChildText(getString(R.string.second_child_text, i));
+                childItemList.add(verticalChildListItem2);
             }
 
-            VerticalParentObject verticalParentObject = new VerticalParentObject();
-            verticalParentObject.setChildObjectList(childObjectList);
-            verticalParentObject.setParentNumber(i);
-            verticalParentObject.setParentText(getString(R.string.parent_text, i));
+            VerticalParentListItem verticalParentListItem = new VerticalParentListItem();
+            verticalParentListItem.setChildItemList(childItemList);
+            verticalParentListItem.setParentNumber(i);
+            verticalParentListItem.setParentText(getString(R.string.parent_text, i));
             if (i == 0) {
-                verticalParentObject.setInitiallyExpanded(true);
+                verticalParentListItem.setInitiallyExpanded(true);
             }
-            parentObjectList.add(verticalParentObject);
+            parentListItemList.add(verticalParentListItem);
         }
-        return parentObjectList;
+
+        return parentListItemList;
     }
 }

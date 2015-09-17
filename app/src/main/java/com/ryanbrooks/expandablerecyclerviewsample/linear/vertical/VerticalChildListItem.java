@@ -8,7 +8,7 @@ package com.ryanbrooks.expandablerecyclerviewsample.linear.vertical;
  * @version 1.0
  * @since 5/27/2015
  */
-public class VerticalChildObject {
+public class VerticalChildListItem {
 
     private String mChildText;
 
