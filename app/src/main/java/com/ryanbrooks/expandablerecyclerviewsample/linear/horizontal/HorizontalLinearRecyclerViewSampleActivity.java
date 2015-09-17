@@ -67,6 +67,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         Button addToEndButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_add_to_end_button);
         addToEndButton.setOnClickListener(mAddToEndClickListener);
 
+        Button removeFromEndButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_remove_from_end_button);
+        removeFromEndButton.setOnClickListener(mRemoveFromEndClickListener);
+
         // Create a new adapter with 20 test data items
         mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
         mExpandableAdapter = new HorizontalExpandableAdapter(this, mTestDataItemList);
@@ -168,7 +171,14 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             }
 
 
-            mExpandableAdapter.addParentObject(horizontalParent);
+            mExpandableAdapter.addParent(horizontalParent);
+        }
+    };
+
+    private OnClickListener mRemoveFromEndClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.removeParent(mTestDataItemList.size() - 1);
         }
     };
 

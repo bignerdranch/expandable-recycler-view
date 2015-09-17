@@ -418,7 +418,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     // region Data Manipulation
 
-    public void addParentObject(ParentListItem parentObject) {
+    public void addParent(ParentListItem parentObject) {
         mParentItemList.add(parentObject);
 
         int sizeChanged = 1;
@@ -433,6 +433,40 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             }
         }
         notifyItemRangeInserted(mItemList.size() - sizeChanged, sizeChanged);
+    }
+
+    public boolean removeParent(ParentListItem parentObject) {
+
+        int index = mParentItemList.indexOf(parentObject);
+        if (index == -1) {
+            return false;
+        }
+
+        removeParent(index);
+        return true;
+    }
+
+    public ParentListItem removeParent(int parentPosition) {
+        ParentListItem parentObject = mParentItemList.remove(parentPosition);
+
+        int sizeChanged = 1;
+        int wrapperIndex = getParentWrapperIndex(parentPosition);
+        if (wrapperIndex == -1) {
+            throw new IllegalStateException("Parent not found");
+        }
+
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.remove(wrapperIndex);
+        if (parentWrapper.isExpanded()) {
+            for (int i = 0; i < parentObject.getChildItemList().size(); i++) {
+                mItemList.remove(wrapperIndex);
+                sizeChanged++;
+            }
+        }
+
+        notifyItemRangeRemoved(wrapperIndex, sizeChanged);
+
+
+        return parentObject;
     }
 
 
