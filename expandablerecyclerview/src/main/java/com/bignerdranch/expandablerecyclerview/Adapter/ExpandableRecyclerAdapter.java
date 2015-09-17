@@ -418,45 +418,34 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     // region Data Manipulation
 
-    public void addParent(ParentListItem parentObject) {
-        mParentItemList.add(parentObject);
-
-        int sizeChanged = 1;
-        ParentWrapper parentWrapper = new ParentWrapper(parentObject);
-        mItemList.add(parentWrapper);
-        if (parentObject.isInitiallyExpanded()) {
-            parentWrapper.setExpanded(true);
-            List<Object> childObjectList = parentObject.getChildItemList();
-            for (int i = 0; i < childObjectList.size(); i++) {
-                mItemList.add(childObjectList.get(i));
-                sizeChanged++;
-            }
-        }
-        notifyItemRangeInserted(mItemList.size() - sizeChanged, sizeChanged);
+    public void addParent(ParentListItem parentListItem) {
+        mParentItemList.add(parentListItem);
+        addParentWrapper(mItemList.size(), parentListItem);
     }
 
-    public void addParent(int location, ParentListItem parentObject) {
-        mParentItemList.add(location, parentObject);
+    public void addParent(int location, ParentListItem parentListItem) {
+        mParentItemList.add(location, parentListItem);
 
-        int sizeChanged = 1;
         int wrapperIndex = getParentWrapperIndex(location);
-        ParentWrapper parentWrapper = new ParentWrapper(parentObject);
+        addParentWrapper(wrapperIndex, parentListItem);
+    }
+
+    private void addParentWrapper(int wrapperIndex, ParentListItem parentListItem) {
+        int sizeChanged = 1;
+        ParentWrapper parentWrapper = new ParentWrapper(parentListItem);
         mItemList.add(wrapperIndex, parentWrapper);
-        if (parentObject.isInitiallyExpanded()) {
+        if (parentListItem.isInitiallyExpanded()) {
             parentWrapper.setExpanded(true);
-            List<Object> childObjectList = parentObject.getChildItemList();
-            for (int i = 0; i < childObjectList.size(); i++) {
-                mItemList.add(wrapperIndex + sizeChanged, childObjectList.get(i));
-                sizeChanged++;
-            }
+            List<Object> childObjectList = parentListItem.getChildItemList();
+            mItemList.addAll(wrapperIndex + sizeChanged, childObjectList);
+            sizeChanged += childObjectList.size();
         }
         notifyItemRangeInserted(wrapperIndex, sizeChanged);
-
     }
 
-    public boolean removeParent(ParentListItem parentObject) {
+    public boolean removeParent(ParentListItem parentListItem) {
 
-        int index = mParentItemList.indexOf(parentObject);
+        int index = mParentItemList.indexOf(parentListItem);
         if (index == -1) {
             return false;
         }

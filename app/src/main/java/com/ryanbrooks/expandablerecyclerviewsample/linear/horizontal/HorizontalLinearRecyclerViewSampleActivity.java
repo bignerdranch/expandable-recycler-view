@@ -192,7 +192,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             childList.add(horizontalChild);
 
             horizontalChild = new HorizontalChild();
-            horizontalChild.setChildText(getString(R.string.second_child_text, 2));
+            horizontalChild.setChildText(getString(R.string.child_insert_text, 2));
             childList.add(horizontalChild);
 
             HorizontalParent horizontalParent = new HorizontalParent();
