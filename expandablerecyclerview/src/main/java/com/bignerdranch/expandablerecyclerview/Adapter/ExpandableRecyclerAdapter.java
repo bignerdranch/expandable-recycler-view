@@ -354,8 +354,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
             List<Object> childItemList = parentWrapper.getParentListItem().getChildItemList();
             if (childItemList != null) {
-                int numChildObjects = childItemList.size();
-                for (int i = 0; i < numChildObjects; i++) {
+                int childListItemCount = childItemList.size();
+                for (int i = 0; i < childListItemCount; i++) {
                     mItemList.add(parentIndex + i + 1, childItemList.get(i));
                     notifyItemInserted(parentIndex + i + 1);
                 }
@@ -489,8 +489,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                         childItemList = parentWrapper.getParentListItem().getChildItemList();
 
                         if (childItemList != null) {
-                            int childItemCount = childItemList.size();
-                            for (int j = 0; j < childItemCount; j++) {
+                            int childListItemCount = childItemList.size();
+                            for (int j = 0; j < childListItemCount; j++) {
                                 fullCount++;
                                 childCount++;
                                 mItemList.add(fullCount, childItemList.get(j));
@@ -498,8 +498,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                         }
                     } else if (!parentWrapper.isExpanded() && parentWrapper.getParentListItem().isInitiallyExpanded()) {
                         childItemList = parentWrapper.getParentListItem().getChildItemList();
-                        int childItemCount = childItemList.size();
-                        for (int j = 0; j < childItemCount; j++) {
+                        int childListItemCount = childItemList.size();
+                        for (int j = 0; j < childListItemCount; j++) {
                             mItemList.remove(fullCount + 1);
                         }
                     }

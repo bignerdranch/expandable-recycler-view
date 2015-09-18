@@ -16,8 +16,8 @@ public class ExpandableRecyclerAdapterHelper {
         ParentListItem parentListItem;
         ParentWrapper parentWrapper;
 
-        int numItems = parentItemList.size();
-        for (int i = 0; i < numItems; i++) {
+        int parentListItemCount = parentItemList.size();
+        for (int i = 0; i < parentListItemCount; i++) {
             parentListItem = parentItemList.get(i);
             parentWrapper = new ParentWrapper(parentListItem);
             parentWrapperList.add(parentWrapper);
@@ -25,8 +25,8 @@ public class ExpandableRecyclerAdapterHelper {
             if (parentListItem.isInitiallyExpanded()) {
                 parentWrapper.setExpanded(true);
 
-                int numChildObjects = parentListItem.getChildItemList().size();
-                for (int j = 0; j < numChildObjects; j++) {
+                int childListItemCount = parentListItem.getChildItemList().size();
+                for (int j = 0; j < childListItemCount; j++) {
                     parentWrapperList.add(parentListItem.getChildItemList().get(j));
                 }
             }
