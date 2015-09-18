@@ -174,7 +174,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public void onParentListItemExpanded(int position) {
         Object listItem = getListItem(position);
         if (listItem instanceof ParentWrapper) {
-            expandParentListItem((ParentWrapper) listItem, position, false);
+            expandParentListItem((ParentWrapper) listItem, position, true);
         }
     }
 
@@ -182,7 +182,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public void onParentListItemCollapsed(int position) {
         Object listItem = getListItem(position);
         if (listItem instanceof ParentWrapper) {
-            collapseParentListItem((ParentWrapper) listItem, position, false);
+            collapseParentListItem((ParentWrapper) listItem, position, true);
         }
     }
 
@@ -308,7 +308,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 viewHolder.onExpansionToggled(false);
             }
 
-            expandParentListItem(parentWrapper, parentIndex, true);
+            expandParentListItem(parentWrapper, parentIndex, false);
         }
     }
 
@@ -330,7 +330,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 viewHolder.onExpansionToggled(true);
             }
 
-            collapseParentListItem(parentWrapper, parentIndex, true);
+            collapseParentListItem(parentWrapper, parentIndex, false);
         }
     }
 
@@ -340,14 +340,14 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *
      * @param parentWrapper The {@link ParentWrapper} of the parent to expand
      * @param parentIndex The index of the parent to expand
-     * @param expansionTriggeredProgrammatically {@value false} if expansion was triggered by a
+     * @param expansionTriggeredByListItemClick {@value true} if expansion was triggered by a
      *                                                         click event, {@value false} otherwise.
      */
-    private void expandParentListItem(ParentWrapper parentWrapper, int parentIndex, boolean expansionTriggeredProgrammatically) {
+    private void expandParentListItem(ParentWrapper parentWrapper, int parentIndex, boolean expansionTriggeredByListItemClick) {
         if (!parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(true);
 
-            if (!expansionTriggeredProgrammatically && mExpandCollapseListener != null) {
+            if (expansionTriggeredByListItemClick && mExpandCollapseListener != null) {
                 int expandedCountBeforePosition = getExpandedItemCount(parentIndex);
                 mExpandCollapseListener.onListItemExpanded(parentIndex - expandedCountBeforePosition);
             }
@@ -369,14 +369,14 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *
      * @param parentWrapper The {@link ParentWrapper} of the parent to collapse
      * @param parentIndex The index of the parent to collapse
-     * @param collapseTriggeredProgrammatically {@value false} if expansion was triggered by a
+     * @param collapseTriggeredByListItemClick {@value true} if expansion was triggered by a
      *                                                         click event, {@value false} otherwise.
      */
-    private void collapseParentListItem(ParentWrapper parentWrapper, int parentIndex, boolean collapseTriggeredProgrammatically) {
+    private void collapseParentListItem(ParentWrapper parentWrapper, int parentIndex, boolean collapseTriggeredByListItemClick) {
         if (parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(false);
 
-            if (!collapseTriggeredProgrammatically && mExpandCollapseListener != null) {
+            if (collapseTriggeredByListItemClick && mExpandCollapseListener != null) {
                 int expandedCountBeforePosition = getExpandedItemCount(parentIndex);
                 mExpandCollapseListener.onListItemCollapsed(parentIndex - expandedCountBeforePosition);
             }
