@@ -33,14 +33,14 @@ public class CrimeExpandableAdapter extends ExpandableRecyclerAdapter<CrimeParen
     }
 
     @Override
-    public void onBindParentViewHolder(CrimeParentViewHolder crimeParentViewHolder, int i, Object o) {
-        Crime crime = (Crime) o;
+    public void onBindParentViewHolder(CrimeParentViewHolder crimeParentViewHolder, int i, ParentListItem parentListItem) {
+        Crime crime = (Crime) parentListItem;
         crimeParentViewHolder.mCrimeTitleTextView.setText(crime.getTitle());
     }
 
     @Override
-    public void onBindChildViewHolder(CrimeChildViewHolder crimeChildViewHolder, int i, Object o) {
-        CrimeChildListItem crimeChildListItem = (CrimeChildListItem) o;
+    public void onBindChildViewHolder(CrimeChildViewHolder crimeChildViewHolder, int i, Object childListItem) {
+        CrimeChildListItem crimeChildListItem = (CrimeChildListItem) childListItem;
         crimeChildViewHolder.mCrimeDateText.setText(crimeChildListItem.getDate().toString());
         crimeChildViewHolder.mCrimeSolvedCheckBox.setChecked(crimeChildListItem.isSolved());
     }

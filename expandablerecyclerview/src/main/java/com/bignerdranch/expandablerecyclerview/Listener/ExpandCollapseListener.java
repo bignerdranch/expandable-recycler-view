@@ -1,8 +1,11 @@
 package com.bignerdranch.expandablerecyclerview.Listener;
 
 /**
- * Interface callback allowing objects to register themselves as expand/collapse listeners to be
+ * Allows objects to register themselves as expand/collapse listeners to be
  * notified of change events.
+ * <p/>
+ * Implement this in your {@link android.app.Activity} or {@link android.app.Fragment}
+ * to receive these callbacks.
  *
  * @author Evan Baker
  * @version 1.0
@@ -11,12 +14,16 @@ package com.bignerdranch.expandablerecyclerview.Listener;
 public interface ExpandCollapseListener {
 
     /**
-     * Method called when an item in the ExpandableRecycleView is expanded
+     * Called when a list item is expanded.
+     *
+     * @param position The index of the item in the list being expanded
      */
     void onListItemExpanded(int position);
 
     /**
-     * Method called when an item in the ExpandableRecyclerView is collapsed
+     * Called when a list item is collapsed.
+     *
+     * @param position The index of the item in the list being collapsed
      */
     void onListItemCollapsed(int position);
 }
