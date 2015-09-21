@@ -160,25 +160,25 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         for (int i = 0; i < numItems; i++) {
             List<Object> childItemList = new ArrayList<>();
 
-            HorizontalChildListItem horizontalChildListItem = new HorizontalChildListItem();
-            horizontalChildListItem.setChildText(getString(R.string.child_text, i));
-            childItemList.add(horizontalChildListItem);
+            HorizontalChild horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.child_text, i));
+            childItemList.add(horizontalChild);
 
             // Evens get 2 children, odds get 1
             if (i % 2 == 0) {
-                HorizontalChildListItem horizontalChildListItem2 = new HorizontalChildListItem();
-                horizontalChildListItem2.setChildText(getString(R.string.second_child_text, i));
-                childItemList.add(horizontalChildListItem2);
+                HorizontalChild horizontalChild2 = new HorizontalChild();
+                horizontalChild2.setChildText(getString(R.string.second_child_text, i));
+                childItemList.add(horizontalChild2);
             }
 
-            HorizontalParentListItem horizontalParentListItem = new HorizontalParentListItem();
-            horizontalParentListItem.setChildItemList(childItemList);
-            horizontalParentListItem.setParentNumber(i);
-            horizontalParentListItem.setParentText(getString(R.string.parent_text, i));
+            HorizontalParent horizontalParent = new HorizontalParent();
+            horizontalParent.setChildItemList(childItemList);
+            horizontalParent.setParentNumber(i);
+            horizontalParent.setParentText(getString(R.string.parent_text, i));
             if (i == 0) {
-                horizontalParentListItem.setInitiallyExpanded(true);
+                horizontalParent.setInitiallyExpanded(true);
             }
-            parentListItemList.add(horizontalParentListItem);
+            parentListItemList.add(horizontalParent);
         }
 
         return parentListItemList;

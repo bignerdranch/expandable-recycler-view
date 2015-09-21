@@ -118,25 +118,25 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity 
         for (int i = 0; i < numItems; i++) {
             List<Object> childItemList = new ArrayList<>();
 
-            VerticalChildListItem verticalChildListItem = new VerticalChildListItem();
-            verticalChildListItem.setChildText(getString(R.string.child_text, i));
-            childItemList.add(verticalChildListItem);
+            VerticalChild verticalChild = new VerticalChild();
+            verticalChild.setChildText(getString(R.string.child_text, i));
+            childItemList.add(verticalChild);
 
             // Evens get 2 children, odds get 1
             if (i % 2 == 0) {
-                VerticalChildListItem verticalChildListItem2 = new VerticalChildListItem();
-                verticalChildListItem2.setChildText(getString(R.string.second_child_text, i));
-                childItemList.add(verticalChildListItem2);
+                VerticalChild verticalChild2 = new VerticalChild();
+                verticalChild2.setChildText(getString(R.string.second_child_text, i));
+                childItemList.add(verticalChild2);
             }
 
-            VerticalParentListItem verticalParentListItem = new VerticalParentListItem();
-            verticalParentListItem.setChildItemList(childItemList);
-            verticalParentListItem.setParentNumber(i);
-            verticalParentListItem.setParentText(getString(R.string.parent_text, i));
+            VerticalParent verticalParent = new VerticalParent();
+            verticalParent.setChildItemList(childItemList);
+            verticalParent.setParentNumber(i);
+            verticalParent.setParentText(getString(R.string.parent_text, i));
             if (i == 0) {
-                verticalParentListItem.setInitiallyExpanded(true);
+                verticalParent.setInitiallyExpanded(true);
             }
-            parentListItemList.add(verticalParentListItem);
+            parentListItemList.add(verticalParent);
         }
 
         return parentListItemList;

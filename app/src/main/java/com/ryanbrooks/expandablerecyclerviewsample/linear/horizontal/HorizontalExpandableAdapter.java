@@ -63,8 +63,8 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      */
     @Override
     public void onBindParentViewHolder(HorizontalParentViewHolder parentViewHolder, int position, ParentListItem parentListItem) {
-        HorizontalParentListItem horizontalParentListItem = (HorizontalParentListItem) parentListItem;
-        parentViewHolder.bind(horizontalParentListItem.getParentNumber(), horizontalParentListItem.getParentText());
+        HorizontalParent horizontalParent = (HorizontalParent) parentListItem;
+        parentViewHolder.bind(horizontalParent.getParentNumber(), horizontalParent.getParentText());
     }
 
     /**
@@ -76,7 +76,7 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      */
     @Override
     public void onBindChildViewHolder(HorizontalChildViewHolder childViewHolder, int position, Object childListItem) {
-        HorizontalChildListItem horizontalChildListItem = (HorizontalChildListItem) childListItem;
-        childViewHolder.bind(horizontalChildListItem.getChildText());
+        HorizontalChild horizontalChild = (HorizontalChild) childListItem;
+        childViewHolder.bind(horizontalChild.getChildText());
     }
 }
