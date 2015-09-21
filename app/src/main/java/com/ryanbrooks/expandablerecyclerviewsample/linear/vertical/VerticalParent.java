@@ -6,8 +6,8 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import java.util.List;
 
 /**
- * Custom parent object that holds a string and an int for displaying data in the parent item. You
- * can use any Object here as long as it implements ParentObject and sets the list to a private
+ * Custom parent list item that holds a string and an int for displaying data in the parent item. You
+ * can use any Object here as long as it implements ParentListItem and sets the list to a private
  * variable.
  *
  * @author Ryan Brooks
@@ -39,9 +39,9 @@ public class VerticalParent implements ParentListItem {
     }
 
     /**
-     * Getter method for the list of children associated with this parent object
+     * Getter method for the list of children associated with this parent list item
      *
-     * @return list of all children associated with this specific parent object
+     * @return list of all children associated with this specific parent list item
      */
     @Override
     public List<Object> getChildItemList() {
@@ -49,9 +49,9 @@ public class VerticalParent implements ParentListItem {
     }
 
     /**
-     * Setter method for the list of children associated with this parent object
+     * Setter method for the list of children associated with this parent list item
      *
-     * @param childItemList the list of all children associated with this parent object
+     * @param childItemList the list of all children associated with this parent list item
      */
     public void setChildItemList(List<Object> childItemList) {
         mChildItemList = childItemList;

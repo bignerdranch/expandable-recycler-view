@@ -16,7 +16,7 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
 /**
  * Custom parent ViewHolder. Any views should be found and set to public variables here to be
  * referenced in your custom ExpandableAdapter later.
- * <p>
+ *
  * Must extend ParentViewHolder.
  */
 public class HorizontalParentViewHolder extends ParentViewHolder {

@@ -8,7 +8,7 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 /**
  * Custom child ViewHolder. Any views should be found and set to public variables here to be
- * referenced in your custom ExpandableAdapter later.
+ * referenced in your custom ExpandableRecyclerAdapter later.
  *
  * Must extend ChildViewHolder.
  */

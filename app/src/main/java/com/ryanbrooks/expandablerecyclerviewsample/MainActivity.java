@@ -1,6 +1,5 @@
 package com.ryanbrooks.expandablerecyclerviewsample;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,7 +12,6 @@ import com.ryanbrooks.expandablerecyclerviewsample.linear.vertical.VerticalLinea
 
 /**
  * Main Activity that contains navigation for sample application.
- * Uses ButterKnife to inject view resources.
  *
  * @author Ryan Brooks
  * @version 1.0

@@ -145,14 +145,14 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
     /**
      * Method to set up test data used in the RecyclerView.
-     * <p/>
-     * Each child object contains a string.
-     * Each parent object contains a number corresponding to the number of the parent and a string
+     *
+     * Each child list item contains a string.
+     * Each parent list item contains a number corresponding to the number of the parent and a string
      * that contains a message.
      * Each parent also contains a list of children which is generated in this. Every odd numbered
      * parent gets one child and every even numbered parent gets two children.
      *
-     * @return an ArrayList of Objects that contains all parent items. Expansion of children are handled in the adapter
+     * @return A List of Objects that contains all parent items. Expansion of children are handled in the adapter
      */
     private List<ParentListItem> setUpTestData(int numItems) {
         List<ParentListItem> parentListItemList = new ArrayList<>();
