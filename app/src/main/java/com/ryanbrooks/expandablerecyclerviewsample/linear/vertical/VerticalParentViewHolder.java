@@ -22,12 +22,12 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
  * @since 5/27/2015
  */
 public class VerticalParentViewHolder extends ParentViewHolder {
+
     private static final float INITIAL_POSITION = 0.0f;
     private static final float ROTATED_POSITION = 180f;
     private static final float PIVOT_VALUE = 0.5f;
     private static final long DEFAULT_ROTATE_DURATION_MS = 200;
     private static final boolean HONEYCOMB_AND_ABOVE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
-
 
     public TextView mNumberTextView;
     public TextView mDataTextView;
@@ -53,13 +53,13 @@ public class VerticalParentViewHolder extends ParentViewHolder {
 
     @SuppressLint("NewApi")
     @Override
-    public void setExpanded(boolean isExpanded) {
-        super.setExpanded(isExpanded);
+    public void setExpanded(boolean expanded) {
+        super.setExpanded(expanded);
         if (!HONEYCOMB_AND_ABOVE) {
             return;
         }
 
-        if (isExpanded) {
+        if (expanded) {
             mArrowExpandImageView.setRotation(ROTATED_POSITION);
         } else {
             mArrowExpandImageView.setRotation(INITIAL_POSITION);
@@ -67,8 +67,8 @@ public class VerticalParentViewHolder extends ParentViewHolder {
     }
 
     @Override
-    public void onExpansionToggled(boolean isExpanded) {
-        super.onExpansionToggled(isExpanded);
+    public void onExpansionToggled(boolean expanded) {
+        super.onExpansionToggled(expanded);
         if (!HONEYCOMB_AND_ABOVE) {
             return;
         }

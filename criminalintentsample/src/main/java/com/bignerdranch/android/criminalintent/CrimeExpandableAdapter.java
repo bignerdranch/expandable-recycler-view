@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ public class CrimeExpandableAdapter extends ExpandableRecyclerAdapter<CrimeParen
 
     private LayoutInflater mInflater;
 
-    public CrimeExpandableAdapter(Context context, List<ParentObject> itemList) {
-        super(context, itemList);
+    public CrimeExpandableAdapter(Context context, List<ParentListItem> itemList) {
+        super(itemList);
         mInflater = LayoutInflater.from(context);
     }
 
@@ -40,8 +40,8 @@ public class CrimeExpandableAdapter extends ExpandableRecyclerAdapter<CrimeParen
 
     @Override
     public void onBindChildViewHolder(CrimeChildViewHolder crimeChildViewHolder, int i, Object o) {
-        CrimeChild crimeChild = (CrimeChild) o;
-        crimeChildViewHolder.mCrimeDateText.setText(crimeChild.getDate().toString());
-        crimeChildViewHolder.mCrimeSolvedCheckBox.setChecked(crimeChild.isSolved());
+        CrimeChildListItem crimeChildListItem = (CrimeChildListItem) o;
+        crimeChildViewHolder.mCrimeDateText.setText(crimeChildListItem.getDate().toString());
+        crimeChildViewHolder.mCrimeSolvedCheckBox.setChecked(crimeChildListItem.isSolved());
     }
 }

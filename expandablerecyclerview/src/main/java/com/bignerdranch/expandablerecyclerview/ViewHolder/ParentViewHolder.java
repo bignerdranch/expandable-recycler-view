@@ -3,7 +3,7 @@ package com.bignerdranch.expandablerecyclerview.ViewHolder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.bignerdranch.expandablerecyclerview.Listener.ParentItemExpandCollapseListener;
+import com.bignerdranch.expandablerecyclerview.Listener.ParentListItemExpandCollapseListener;
 
 
 /**
@@ -16,8 +16,8 @@ import com.bignerdranch.expandablerecyclerview.Listener.ParentItemExpandCollapse
  */
 public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    private ParentItemExpandCollapseListener mParentItemExpandCollapseListener;
-    private boolean mIsExpanded;
+    private ParentListItemExpandCollapseListener mParentListItemExpandCollapseListener;
+    private boolean mExpanded;
 
     /**
      * Default constructor
@@ -25,7 +25,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      */
     public ParentViewHolder(View itemView) {
         super(itemView);
-        mIsExpanded = false;
+        mExpanded = false;
     }
 
     /**
@@ -41,25 +41,25 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      * @return true if expanded, false if not
      */
     public boolean isExpanded() {
-        return mIsExpanded;
+        return mExpanded;
     }
 
     /**
      * Setter method for expanded state, used for initialization of expanded state.
      * changes to the state are given in {@link #onExpansionToggled(boolean)}
      *
-     * @param isExpanded
+     * @param expanded
      */
-    public void setExpanded(boolean isExpanded) {
-        mIsExpanded = isExpanded;
+    public void setExpanded(boolean expanded) {
+        mExpanded = expanded;
     }
 
     /**
      * Called when expansion is changed, does not get called during the initial binding
      * Useful for implementing parent view animations for expansion
-     * @param isExpanded
+     * @param expanded
      */
-    public void onExpansionToggled(boolean isExpanded) {
+    public void onExpansionToggled(boolean expanded) {
 
     }
 
@@ -68,17 +68,17 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      *
      * @return the ViewHolder's set ParentItemClickListner
      */
-    public ParentItemExpandCollapseListener getParentItemExpandCollapseListener() {
-        return mParentItemExpandCollapseListener;
+    public ParentListItemExpandCollapseListener getParentListItemExpandCollapseListener() {
+        return mParentListItemExpandCollapseListener;
     }
 
     /**
      * Setter for the ParentItemClickListener implemented in ExpandableRecyclerAdapter
      *
-     * @param mParentItemExpandCollapseListener
+     * @param mParentListItemExpandCollapseListener
      */
-    public void setParentItemExpandCollapseListener(ParentItemExpandCollapseListener mParentItemExpandCollapseListener) {
-        this.mParentItemExpandCollapseListener = mParentItemExpandCollapseListener;
+    public void setParentListItemExpandCollapseListener(ParentListItemExpandCollapseListener mParentListItemExpandCollapseListener) {
+        this.mParentListItemExpandCollapseListener = mParentListItemExpandCollapseListener;
     }
 
     /**
@@ -89,7 +89,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      */
     @Override
     public void onClick(View v) {
-        if (mIsExpanded) {
+        if (mExpanded) {
             collapseView();
         } else {
             expandView();
@@ -115,8 +115,8 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         setExpanded(true);
         onExpansionToggled(false);
 
-        if (mParentItemExpandCollapseListener != null) {
-            mParentItemExpandCollapseListener.onParentItemExpanded(getAdapterPosition());
+        if (mParentListItemExpandCollapseListener != null) {
+            mParentListItemExpandCollapseListener.onParentListItemExpanded(getAdapterPosition());
         }
     }
 
@@ -127,8 +127,8 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
         setExpanded(false);
         onExpansionToggled(true);
 
-        if (mParentItemExpandCollapseListener != null) {
-            mParentItemExpandCollapseListener.onParentItemCollapsed(getAdapterPosition());
+        if (mParentListItemExpandCollapseListener != null) {
+            mParentListItemExpandCollapseListener.onParentListItemCollapsed(getAdapterPosition());
         }
     }
 }

@@ -1,10 +1,14 @@
-package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
+package com.ryanbrooks.expandablerecyclerviewsample.linear.vertical;
 
 /**
  * Custom child object. This is for demo purposes, although it is recommended having a separate
  * child object from your parent object.
+ *
+ * @author Ryan Brooks
+ * @version 1.0
+ * @since 5/27/2015
  */
-public class HorizontalChildObject {
+public class VerticalChild {
 
     private String mChildText;
 

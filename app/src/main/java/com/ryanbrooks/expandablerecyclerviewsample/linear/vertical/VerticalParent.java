@@ -1,7 +1,7 @@
 package com.ryanbrooks.expandablerecyclerviewsample.linear.vertical;
 
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 
 import java.util.List;
 
@@ -14,10 +14,10 @@ import java.util.List;
  * @version 1.0
  * @since 5/27/2015
  */
-public class VerticalParentObject implements ParentObject {
+public class VerticalParent implements ParentListItem {
 
     // A List<Object> or subclass of List must be added for the object to work correctly
-    private List<Object> mChildObjectList;
+    private List<Object> mChildItemList;
     private String mParentText;
     private int mParentNumber;
     private boolean mInitiallyExpanded;
@@ -44,17 +44,17 @@ public class VerticalParentObject implements ParentObject {
      * @return list of all children associated with this specific parent object
      */
     @Override
-    public List<Object> getChildObjectList() {
-        return mChildObjectList;
+    public List<Object> getChildItemList() {
+        return mChildItemList;
     }
 
     /**
      * Setter method for the list of children associated with this parent object
      *
-     * @param childObjectList the list of all children associated with this parent object
+     * @param childItemList the list of all children associated with this parent object
      */
-    public void setChildObjectList(List<Object> childObjectList) {
-        mChildObjectList = childObjectList;
+    public void setChildItemList(List<Object> childItemList) {
+        mChildItemList = childItemList;
     }
 
     @Override

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.List;
@@ -25,11 +25,10 @@ public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<Vertica
     /**
      * Public primary constructor.
      *
-     * @param context for inflating views
      * @param parentItemList the list of parent items to be displayed in the RecyclerView
      */
-    public VerticalExpandableAdapter(Context context, List<ParentObject> parentItemList) {
-        super(context, parentItemList);
+    public VerticalExpandableAdapter(Context context, List<ParentListItem> parentItemList) {
+        super(parentItemList);
         mInflater = LayoutInflater.from(context);
     }
 
@@ -67,9 +66,9 @@ public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<Vertica
      * @param position the position in the RecyclerView of the item
      */
     @Override
-    public void onBindParentViewHolder(VerticalParentViewHolder parentViewHolder, int position, Object parentObject) {
-        VerticalParentObject verticalParentObject = (VerticalParentObject) parentObject;
-        parentViewHolder.bind(verticalParentObject.getParentNumber(), verticalParentObject.getParentText());
+    public void onBindParentViewHolder(VerticalParentViewHolder parentViewHolder, int position, Object parentListItem) {
+        VerticalParent verticalParent = (VerticalParent) parentListItem;
+        parentViewHolder.bind(verticalParent.getParentNumber(), verticalParent.getParentText());
     }
 
     /**
@@ -80,8 +79,8 @@ public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<Vertica
      * @param position the position in the RecyclerView of the item
      */
     @Override
-    public void onBindChildViewHolder(VerticalChildViewHolder childViewHolder, int position, Object childObject) {
-        VerticalChildObject verticalChildObject = (VerticalChildObject) childObject;
-        childViewHolder.bind(verticalChildObject.getChildText());
+    public void onBindChildViewHolder(VerticalChildViewHolder childViewHolder, int position, Object childListItem) {
+        VerticalChild verticalChild = (VerticalChild) childListItem;
+        childViewHolder.bind(verticalChild.getChildText());
     }
 }

@@ -1,18 +1,18 @@
 package com.bignerdranch.android.criminalintent;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class Crime implements ParentObject {
+public class Crime implements ParentListItem {
 
     private UUID mId;
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
-    private List<Object> mChildrenList;
+    private List<Object> mChildItemList;
 
     public Crime() {
         mId = UUID.randomUUID();
@@ -48,12 +48,12 @@ public class Crime implements ParentObject {
     }
 
     @Override
-    public List<Object> getChildObjectList() {
-        return mChildrenList;
+    public List<Object> getChildItemList() {
+        return mChildItemList;
     }
 
-    public void setChildObjectList(List<Object> list) {
-        mChildrenList = list;
+    public void setChildItemList(List<Object> list) {
+        mChildItemList = list;
     }
 
     @Override

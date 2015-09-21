@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Interface for implementing required methods in a ParentObject
  */
-public interface ParentObject {
+public interface ParentListItem {
 
     /**
      * Getter method object to the reference to this ParentObject's child list. The list should
@@ -13,7 +13,7 @@ public interface ParentObject {
      *
      * @return this Parent's child object
      */
-    List<Object> getChildObjectList();
+    List<Object> getChildItemList();
 
     /**
      * Used to determine whether parent view should show up initially as expanded.
