@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
+package com.ryanbrooks.expandablerecyclerviewsample.linear.vertical;
 
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
@@ -9,12 +9,15 @@ import java.util.List;
  * Custom parent object that holds a string and an int for displaying data in the parent item. You
  * can use any Object here as long as it implements ParentObject and sets the list to a private
  * variable.
+ *
+ * @author Ryan Brooks
+ * @version 1.0
+ * @since 5/27/2015
  */
-public class HorizontalParentListItem implements ParentListItem {
+public class VerticalParent implements ParentListItem {
 
     // A List<Object> or subclass of List must be added for the object to work correctly
     private List<Object> mChildItemList;
-
     private String mParentText;
     private int mParentNumber;
     private boolean mInitiallyExpanded;

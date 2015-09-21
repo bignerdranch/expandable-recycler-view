@@ -67,8 +67,8 @@ public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<Vertica
      */
     @Override
     public void onBindParentViewHolder(VerticalParentViewHolder parentViewHolder, int position, Object parentListItem) {
-        VerticalParentListItem verticalParentListItem = (VerticalParentListItem) parentListItem;
-        parentViewHolder.bind(verticalParentListItem.getParentNumber(), verticalParentListItem.getParentText());
+        VerticalParent verticalParent = (VerticalParent) parentListItem;
+        parentViewHolder.bind(verticalParent.getParentNumber(), verticalParent.getParentText());
     }
 
     /**
@@ -80,7 +80,7 @@ public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<Vertica
      */
     @Override
     public void onBindChildViewHolder(VerticalChildViewHolder childViewHolder, int position, Object childListItem) {
-        VerticalChildListItem verticalChildListItem = (VerticalChildListItem) childListItem;
-        childViewHolder.bind(verticalChildListItem.getChildText());
+        VerticalChild verticalChild = (VerticalChild) childListItem;
+        childViewHolder.bind(verticalChild.getChildText());
     }
 }
