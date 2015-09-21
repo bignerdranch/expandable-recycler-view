@@ -1,6 +1,6 @@
 sudo: false
 language: android
-jdk: oraclejdk8
+jdk: oraclejdk7
 script: ./gradlew clean build
 
 android:
