@@ -43,7 +43,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      * Returns expanded state for the {@link com.bignerdranch.expandablerecyclerview.Model.ParentListItem}
      * corresponding to this {@link ParentViewHolder}.
      *
-     * @return {@value true} if expanded, {@value false} if not
+     * @return true if expanded, false if not
      */
     public boolean isExpanded() {
         return mExpanded;
@@ -53,7 +53,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      * Setter method for expanded state, used for initialization of expanded state.
      * changes to the state are given in {@link #onExpansionToggled(boolean)}
      *
-     * @param expanded {@value true} if expanded, {@value false} if not
+     * @param expanded true if expanded, false if not
      */
     public void setExpanded(boolean expanded) {
         mExpanded = expanded;
@@ -62,10 +62,10 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     /**
      * Callback triggered when expansion state is changed, but not during
      * initialization.
-     * <p/>
+     * <p>
      * Useful for implementing animations on expansion.
      *
-     * @param expanded {@value true} if expanded, {@value false} if not
+     * @param expanded true if expanded, false if not
      */
     public void onExpansionToggled(boolean expanded) {
 
@@ -94,7 +94,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     /**
      * {@link android.view.View.OnClickListener} to listen for click events on
      * the entire parent {@link View}.
-     * <p/>
+     * <p>
      * Only registered if {@link #shouldItemViewClickToggleExpansion()} is true.
      *
      * @param v The {@link View} that is the trigger for expansion
@@ -111,12 +111,12 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     /**
      * Used to determine whether a click in the entire parent {@link View}
      * should trigger row expansion.
-     * <p/>
-     * If you return {@value false}, you can call {@link #expandView()} to
-     * trigger an expansion in response to a another event or
-     * {@link #collapseView()} to trigger a collapse.
+     * <p>
+     * If you return false, you can call {@link #expandView()} to trigger an
+     * expansion in response to a another event or {@link #collapseView()} to
+     * trigger a collapse.
      *
-     * @return {@value true} to set an {@link android.view.View.OnClickListener} on the item view
+     * @return true to set an {@link android.view.View.OnClickListener} on the item view
      */
     public boolean shouldItemViewClickToggleExpansion() {
         return true;

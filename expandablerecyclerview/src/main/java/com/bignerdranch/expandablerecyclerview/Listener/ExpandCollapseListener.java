@@ -3,7 +3,7 @@ package com.bignerdranch.expandablerecyclerview.Listener;
 /**
  * Allows objects to register themselves as expand/collapse listeners to be
  * notified of change events.
- * <p/>
+ * <p>
  * Implement this in your {@link android.app.Activity} or {@link android.app.Fragment}
  * to receive these callbacks.
  *

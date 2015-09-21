@@ -9,7 +9,7 @@ public interface ParentListItem {
 
     /**
      * Getter for the list of this parent list item's child list items.
-     * <p/>
+     * <p>
      * If list is empty, the parent list item has no children.
      *
      * @return A {@link List} of the children of this {@link ParentListItem}
@@ -20,7 +20,7 @@ public interface ParentListItem {
      * Getter used to determine if this {@link ParentListItem}'s
      * {@link android.view.View} should show up initially as expanded.
      *
-     * @return {@value true} if expanded, {@value false} if not
+     * @return true if expanded, false if not
      */
     boolean isInitiallyExpanded();
 }

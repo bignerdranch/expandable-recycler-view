@@ -6,7 +6,7 @@ import android.view.View;
 /**
  * {@link android.support.v7.widget.RecyclerView.ViewHolder} for a child list
  * item.
- * <p/>
+ * <p>
  * The user should extend this class and implement as they wish for their
  * child list item.
  *

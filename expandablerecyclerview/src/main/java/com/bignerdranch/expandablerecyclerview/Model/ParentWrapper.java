@@ -43,7 +43,7 @@ public class ParentWrapper {
     /**
      * Gets the expanded state associated with the {@link ParentListItem}.
      *
-     * @return {@value true} if expanded, {@value false} if not
+     * @return true if expanded, false if not
      */
     public boolean isExpanded() {
         return mExpanded;
@@ -52,7 +52,7 @@ public class ParentWrapper {
     /**
      * Sets the expanded state associated with the {@link ParentListItem}.
      *
-     * @param expanded {@value true} if expanded, {@value false} if not
+     * @param expanded true if expanded, false if not
      */
     public void setExpanded(boolean expanded) {
         mExpanded = expanded;

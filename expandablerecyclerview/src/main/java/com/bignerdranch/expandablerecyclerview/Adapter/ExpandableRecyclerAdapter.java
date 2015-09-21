@@ -94,8 +94,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param holder The {@link android.support.v7.widget.RecyclerView.ViewHolder}
      *               to bind data to
      * @param position The index in the list at which to bind
-     * @throws IllegalStateException if the item in the list is either {@value null}
-     *         or not of type {@link ParentListItem}
+     * @throws IllegalStateException if the item in the list is either null or
+     *         not of type {@link ParentListItem}
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -142,7 +142,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     /**
      * Callback called from {@link #onBindViewHolder(RecyclerView.ViewHolder, int)}
      * when the list item bound to is a parent.
-     * <p/>
+     * <p>
      * Bind data to the {@link PVH} here.
      *
      * @param parentViewHolder The {@code PVH} to bind data to
@@ -155,7 +155,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     /**
      * Callback called from {@link #onBindViewHolder(RecyclerView.ViewHolder, int)}
      * when the list item bound to is a child.
-     * <p/>
+     * <p>
      * Bind data to the {@link CVH} here.
      *
      * @param childViewHolder The {@code CVH} to bind data to
@@ -343,11 +343,11 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * Stores the expanded state map across state loss.
-     * <p/>
+     * <p>
      * Should be called from {@link Activity#onSaveInstanceState(Bundle)} in
      * the {@link Activity} that hosts the {@link RecyclerView} that this
      * {@link ExpandableRecyclerAdapter} is attached to.
-     * <p/>
+     * <p>
      * This will make sure to add the expanded state map as an extra to the
      * instance state bundle to be used in {@link #onRestoreInstanceState(Bundle)}.
      *
@@ -364,11 +364,11 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     /**
      * Fetches the expandable state map from the saved instance state {@link Bundle}
      * and restores the expanded states of all of the list items.
-     * <p/>
+     * <p>
      * Should be called from {@link Activity#onRestoreInstanceState(Bundle)} in
      * the {@link Activity} that hosts the {@link RecyclerView} that this
      * {@link ExpandableRecyclerAdapter} is attached to.
-     * <p/>
+     * <p>
      * Assumes that the list of parent list items is the same as when the saved
      * instance state was stored.
      *
