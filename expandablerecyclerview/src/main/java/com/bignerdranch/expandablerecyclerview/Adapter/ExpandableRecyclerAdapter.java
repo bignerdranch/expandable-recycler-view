@@ -418,11 +418,30 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     // region Data Manipulation
 
+    /**
+     * Adds the specified ParentListItem at the end of the list
+     *
+     * @param parentListItem the ParentListItem to add
+     */
     public void addParent(ParentListItem parentListItem) {
         mParentItemList.add(parentListItem);
         addParentWrapper(mItemList.size(), parentListItem);
     }
 
+    /**
+     * Inserts the specified ParentListItem into this Adapter at the specified location.
+     * The ParentListItem is inserted before the current element at the specified
+     * location. If the location is equal to the size of the ParentList, the object
+     * is added at the end. If the location is smaller than the size of this
+     * Adapter, then all elements beyond the specified location are moved by one
+     * position towards the end of the Adapter.
+     *
+     * @param location the index at which to insert.
+     * @param parentListItem the object to add.
+     *
+     * @throws IndexOutOfBoundsException
+     *                if {@code location < 0 || location > size()}
+     */
     public void addParent(int location, ParentListItem parentListItem) {
         mParentItemList.add(location, parentListItem);
 
@@ -443,6 +462,13 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         notifyItemRangeInserted(wrapperIndex, sizeChanged);
     }
 
+    /**
+     * Removes the first occurrence of the specified ParentListItem from this Adapter.
+     *
+     * @param parentListItem the ParentListItem to remove
+     * @return true if this adapter was modified by this operation, false
+     *         otherwise.
+     */
     public boolean removeParent(ParentListItem parentListItem) {
 
         int index = mParentItemList.indexOf(parentListItem);
@@ -454,6 +480,14 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         return true;
     }
 
+    /**
+     * Removes the ParentListItem at the specified location from this Adapter.
+     *
+     * @param parentPosition the index of the object to remove.
+     * @return the removed ParentListItem.
+     * @throws IndexOutOfBoundsException
+     *                if {@code location < 0 || location >= size()}
+     */
     public ParentListItem removeParent(int parentPosition) {
         ParentListItem parentListItem = mParentItemList.remove(parentPosition);
 
@@ -465,7 +499,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
         ParentWrapper parentWrapper = (ParentWrapper) mItemList.remove(wrapperIndex);
         if (parentWrapper.isExpanded()) {
-            for (int i = 0; i < parentListItem.getChildItemList().size(); i++) {
+            int childListSize = parentListItem.getChildItemList().size();
+            for (int i = 0; i < childListSize; i++) {
                 mItemList.remove(wrapperIndex);
                 sizeChanged++;
             }
