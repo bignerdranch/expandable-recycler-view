@@ -75,9 +75,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *                       displayed in the {@link RecyclerView} that this
      *                       adapter is linked to
      */
-    public ExpandableRecyclerAdapter(@NonNull List<ParentListItem> parentItemList) {
+    public ExpandableRecyclerAdapter(@NonNull List<? extends ParentListItem> parentItemList) {
         super();
-        mParentItemList = parentItemList;
+        mParentItemList = new ArrayList<>(parentItemList);
         mItemList = ExpandableRecyclerAdapterHelper.generateParentChildItemList(parentItemList);
         mAttachedRecyclerViewPool = new ArrayList<>();
     }

@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private Button mExpandAllButton;
     private Button mCollapseAllButton;
 
-    private List<ParentListItem> mTestDataItemList;
+    private List<HorizontalParent> mTestDataItemList;
 
     private HorizontalExpandableAdapter mExpandableAdapter;
 
@@ -178,6 +177,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
 
             mExpandableAdapter.addParent(horizontalParent);
+            mTestDataItemList.add(horizontalParent);
         }
     };
 
@@ -204,6 +204,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             }
 
             mExpandableAdapter.addParent(1, horizontalParent);
+            mTestDataItemList.add(1, horizontalParent);
         }
     };
 
@@ -214,7 +215,10 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
                 return;
             }
 
-            mExpandableAdapter.removeParent(mTestDataItemList.get(1));
+            HorizontalParent horizontalParent = mTestDataItemList.get(1);
+            mExpandableAdapter.removeParent(horizontalParent);
+            mTestDataItemList.remove(horizontalParent);
+
         }
     };
 
@@ -222,6 +226,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         @Override
         public void onClick(View v) {
             mExpandableAdapter.removeParent(mTestDataItemList.size() - 1);
+            mTestDataItemList.remove(mTestDataItemList.size() - 1);
         }
     };
 
@@ -244,8 +249,8 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
      *
      * @return A List of Objects that contains all parent items. Expansion of children are handled in the adapter
      */
-    private List<ParentListItem> setUpTestData(int numItems) {
-        List<ParentListItem> parentListItemList = new ArrayList<>();
+    private List<HorizontalParent> setUpTestData(int numItems) {
+        List<HorizontalParent> horizontalParentList = new ArrayList<>();
 
         for (int i = 0; i < numItems; i++) {
             List<Object> childItemList = new ArrayList<>();
@@ -268,9 +273,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             if (i == 0) {
                 horizontalParent.setInitiallyExpanded(true);
             }
-            parentListItemList.add(horizontalParent);
+            horizontalParentList.add(horizontalParent);
         }
 
-        return parentListItemList;
+        return horizontalParentList;
     }
 }

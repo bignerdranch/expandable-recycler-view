@@ -27,7 +27,7 @@ public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<Vertica
      *
      * @param parentItemList the list of parent items to be displayed in the RecyclerView
      */
-    public VerticalExpandableAdapter(Context context, List<ParentListItem> parentItemList) {
+    public VerticalExpandableAdapter(Context context, List<? extends ParentListItem> parentItemList) {
         super(parentItemList);
         mInflater = LayoutInflater.from(context);
     }

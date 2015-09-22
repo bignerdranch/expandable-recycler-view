@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
@@ -112,8 +111,8 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity 
      *
      * @return A List of Objects that contains all parent items. Expansion of children are handled in the adapter
      */
-    private List<ParentListItem> setUpTestData(int numItems) {
-        List<ParentListItem> parentListItemList = new ArrayList<>();
+    private List<VerticalParent> setUpTestData(int numItems) {
+        List<VerticalParent> verticalParentList = new ArrayList<>();
 
         for (int i = 0; i < numItems; i++) {
             List<Object> childItemList = new ArrayList<>();
@@ -136,9 +135,9 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity 
             if (i == 0) {
                 verticalParent.setInitiallyExpanded(true);
             }
-            parentListItemList.add(verticalParent);
+            verticalParentList.add(verticalParent);
         }
 
-        return parentListItemList;
+        return verticalParentList;
     }
 }
