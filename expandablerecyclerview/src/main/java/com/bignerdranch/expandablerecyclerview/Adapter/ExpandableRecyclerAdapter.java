@@ -6,8 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.bignerdranch.expandablerecyclerview.Listener.ExpandCollapseListener;
-import com.bignerdranch.expandablerecyclerview.Listener.ParentListItemExpandCollapseListener;
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
@@ -26,7 +24,7 @@ import java.util.List;
  * @since 5/27/2015
  */
 public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CVH extends ChildViewHolder>
-        extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentListItemExpandCollapseListener {
+        extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentViewHolder.ParentListItemExpandCollapseListener {
 
     private static final String EXPANDED_STATE_MAP = "ExpandableRecyclerAdapter.ExpandedStateMap";
     private static final int TYPE_PARENT = 0;
@@ -45,6 +43,30 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     private ExpandCollapseListener mExpandCollapseListener;
     private List<RecyclerView> mAttachedRecyclerViewPool;
+
+    /**
+     * Allows objects to register themselves as expand/collapse listeners to be
+     * notified of change events.
+     * <p>
+     * Implement this in your {@link android.app.Activity} or {@link android.app.Fragment}
+     * to receive these callbacks.
+     */
+    public interface ExpandCollapseListener {
+
+        /**
+         * Called when a list item is expanded.
+         *
+         * @param position The index of the item in the list being expanded
+         */
+        void onListItemExpanded(int position);
+
+        /**
+         * Called when a list item is collapsed.
+         *
+         * @param position The index of the item in the list being collapsed
+         */
+        void onListItemCollapsed(int position);
+    }
 
     /**
      * Primary constructor. Sets up {@link #mParentItemList} and {@link #mItemList}.
@@ -196,7 +218,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Implementation of {@link ParentListItemExpandCollapseListener#onParentListItemExpanded(int)}.
+     * Implementation of {@link com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemExpanded(int)}.
+     * <p>
      * Called when a {@link ParentListItem} is triggered to expand.
      *
      * @param position The index of the item in the list being expanded
@@ -210,7 +233,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Implementation of {@link ParentListItemExpandCollapseListener#onParentListItemCollapsed(int)}.
+     * Implementation of {@link com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemCollapsed(int)}.
+     * <p>
      * Called when a {@link ParentListItem} is triggered to collapse.
      *
      * @param position The index of the item in the list being collapsed
@@ -225,6 +249,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * Implementation of {@link android.support.v7.widget.RecyclerView.Adapter#onAttachedToRecyclerView(RecyclerView)}.
+     * <p>
      * Called when this {@link ExpandableRecyclerAdapter} is attached to a {@link RecyclerView}.
      *
      * @param recyclerView The {@code RecyclerView} this {@code ExpandableRecyclerAdapter}
@@ -238,7 +263,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * Implementation of {@link android.support.v7.widget.RecyclerView.Adapter#onDetachedFromRecyclerView(RecyclerView)}.
-     * Called when this {@link ExpandableRecyclerAdapter} is detached from a {@link RecyclerView}
+     * <p>
+     * Called when this {@link ExpandableRecyclerAdapter} is detached from a {@link RecyclerView}.
      *
      * @param recyclerView The {@code RecyclerView} this {@code ExpandableRecyclerAdapter}
      *                     is being detached from

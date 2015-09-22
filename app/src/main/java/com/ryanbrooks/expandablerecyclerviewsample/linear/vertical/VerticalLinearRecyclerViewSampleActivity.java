@@ -11,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
-import com.bignerdranch.expandablerecyclerview.Listener.ExpandCollapseListener;
+import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
@@ -26,7 +26,7 @@ import java.util.List;
  * @version 1.0
  * @since 5/27/2015
  */
-public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity implements ExpandCollapseListener{
+public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity implements ExpandableRecyclerAdapter.ExpandCollapseListener {
 
     private static final int NUM_TEST_DATA_ITEMS = 20;
 
