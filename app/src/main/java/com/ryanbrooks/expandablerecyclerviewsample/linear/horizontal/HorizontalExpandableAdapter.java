@@ -23,7 +23,7 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      *
      * @param parentItemList the list of parent items to be displayed in the RecyclerView
      */
-    public HorizontalExpandableAdapter(Context context, List<ParentListItem> parentItemList) {
+    public HorizontalExpandableAdapter(Context context, List<? extends ParentListItem> parentItemList) {
         super(parentItemList);
         mInflater = LayoutInflater.from(context);
     }
