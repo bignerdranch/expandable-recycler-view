@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
     private HorizontalExpandableAdapter mExpandableAdapter;
 
+
     public static Intent newIntent(Context context) {
         return new Intent(context, HorizontalLinearRecyclerViewSampleActivity.class);
     }
@@ -61,6 +63,18 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
         mCollapseAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_all_button);
         mCollapseAllButton.setOnClickListener(mCollapseAllClickListener);
+
+        Button addToEndButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_add_to_end_button);
+        addToEndButton.setOnClickListener(mAddToEndClickListener);
+
+        Button removeFromEndButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_remove_from_end_button);
+        removeFromEndButton.setOnClickListener(mRemoveFromEndClickListener);
+
+        Button addToSecondButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_add_to_second_button);
+        addToSecondButton.setOnClickListener(mAddToSecondClickListener);
+
+        Button removeSecondbutton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_remove_second_button);
+        removeSecondbutton.setOnClickListener(mRemoveSecondClickListener);
 
         // Create a new adapter with 20 test data items
         mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
@@ -132,6 +146,82 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         @Override
         public void onClick(View v) {
             mExpandableAdapter.collapseAllParents();
+        }
+    };
+
+    private OnClickListener mAddToEndClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            ArrayList<Object> childList = new ArrayList<>();
+            int parentNumber = mTestDataItemList.size();
+
+            HorizontalChild horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.child_text, parentNumber));
+            childList.add(horizontalChild);
+
+            horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.second_child_text, parentNumber));
+            childList.add(horizontalChild);
+
+            horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.third_child_text, parentNumber));
+            childList.add(horizontalChild);
+
+            HorizontalParent horizontalParent = new HorizontalParent();
+            horizontalParent.setChildItemList(childList);
+            horizontalParent.setParentNumber(parentNumber);
+            horizontalParent.setParentText(getString(R.string.parent_text, parentNumber));
+            if (parentNumber % 2 == 0) {
+                horizontalParent.setInitiallyExpanded(true);
+            }
+
+
+            mExpandableAdapter.addParent(horizontalParent);
+        }
+    };
+
+    private OnClickListener mAddToSecondClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ArrayList<Object> childList = new ArrayList<>();
+            int parentNumber = mTestDataItemList.size();
+
+            HorizontalChild horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.child_insert_text, 1));
+            childList.add(horizontalChild);
+
+            horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.child_insert_text, 2));
+            childList.add(horizontalChild);
+
+            HorizontalParent horizontalParent = new HorizontalParent();
+            horizontalParent.setChildItemList(childList);
+            horizontalParent.setParentNumber(parentNumber);
+            horizontalParent.setParentText(getString(R.string.inserted_parent_text));
+            if (parentNumber % 2 == 0) {
+                horizontalParent.setInitiallyExpanded(true);
+            }
+
+            mExpandableAdapter.addParent(1, horizontalParent);
+        }
+    };
+
+    private OnClickListener mRemoveSecondClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mTestDataItemList.size() < 2) {
+                return;
+            }
+
+            mExpandableAdapter.removeParent(mTestDataItemList.get(1));
+        }
+    };
+
+    private OnClickListener mRemoveFromEndClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.removeParent(mTestDataItemList.size() - 1);
         }
     };
 

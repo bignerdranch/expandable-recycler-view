@@ -14,7 +14,10 @@
     <string name="toolbar_sample_checkBox">Custom Expand Button</string>
     <string name="child_text">Child %1$d</string>
     <string name="second_child_text">Child %1$d_2</string>
+    <string name="third_child_text">Child %1$d_3</string>
+    <string name="child_insert_text">Child of inserted #%1$d</string>
     <string name="parent_text">Parent %1$d</string>
+    <string name="inserted_parent_text">Inserted Parent</string>
     <string name="arrow_contentDescription">Expand list item arrow</string>
     <string name="item_expanded">Item %1$d expanded</string>
     <string name="item_collapsed">Item %1$d collapsed</string>
@@ -22,6 +25,10 @@
     <string name="collapse_parent_two">Collapse parent 2</string>
     <string name="expand_all">Expand all parents</string>
     <string name="collapse_all">Collapse all parents</string>
+    <string name="add_item_to_end">Add parent to end</string>
+    <string name="remove_item_from_end">Remove parent from end</string>
+    <string name="add_item_at_pos_two">Add parent @ pos 1</string>
+    <string name="remove_second_pos">Remove parent @ pos 1</string>
 
     <!-- Sample Toolbar -->
     <string name="no_animation">No animation</string>

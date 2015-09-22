@@ -41,7 +41,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     /**
      * A {@link List} of all {@link ParentListItem} objects.
      */
-    protected List<? extends ParentListItem> mParentItemList;
+    protected List<ParentListItem> mParentItemList;
 
     private ExpandCollapseListener mExpandCollapseListener;
     private List<RecyclerView> mAttachedRecyclerViewPool;
@@ -53,7 +53,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *                       displayed in the {@link RecyclerView} that this
      *                       adapter is linked to
      */
-    public ExpandableRecyclerAdapter(@NonNull List<? extends ParentListItem> parentItemList) {
+    public ExpandableRecyclerAdapter(@NonNull List<ParentListItem> parentItemList) {
         super();
         mParentItemList = parentItemList;
         mItemList = ExpandableRecyclerAdapterHelper.generateParentChildItemList(parentItemList);
@@ -252,6 +252,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public void setExpandCollapseListener(ExpandCollapseListener expandCollapseListener) {
         mExpandCollapseListener = expandCollapseListener;
     }
+
+    // region Programmatic Expansion/Collapsing
 
     /**
      * Expands the parent with the specified index in the list of parents.
@@ -561,6 +563,111 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
         return expandedCount;
     }
+
+    // endregion
+
+    // region Data Manipulation
+
+    /**
+     * Adds the specified {@link ParentListItem} at the end of the list.
+     *
+     * @param parentListItem The {@code ParentListItem} to add
+     */
+    public void addParent(ParentListItem parentListItem) {
+        mParentItemList.add(parentListItem);
+        addParentWrapper(mItemList.size(), parentListItem);
+    }
+
+    /**
+     * Inserts the specified {@link ParentListItem} into this adapter at the
+     * specified position.
+     * <p>
+     * The {@code ParentListItem} is inserted before the current element at the
+     * specified position. If the position is equal to the size of the parent
+     * list, the object is added at the end. If the position is smaller than the
+     * size of this adapter, then all elements beyond the specified position are
+     * moved by one position towards the end of the adapter.
+     *
+     * @param position The index at which to insert
+     * @param parentListItem The {@code ParentListItem} to add
+     *
+     * @throws IndexOutOfBoundsException
+     *                if {@code position < 0 || position > size()}
+     */
+    public void addParent(int position, ParentListItem parentListItem) {
+        mParentItemList.add(position, parentListItem);
+
+        int wrapperIndex = getParentWrapperIndex(position);
+        addParentWrapper(wrapperIndex, parentListItem);
+    }
+
+    private void addParentWrapper(int wrapperIndex, ParentListItem parentListItem) {
+        int sizeChanged = 1;
+        ParentWrapper parentWrapper = new ParentWrapper(parentListItem);
+        mItemList.add(wrapperIndex, parentWrapper);
+        if (parentListItem.isInitiallyExpanded()) {
+            parentWrapper.setExpanded(true);
+            List<Object> childItemList = parentListItem.getChildItemList();
+            mItemList.addAll(wrapperIndex + sizeChanged, childItemList);
+            sizeChanged += childItemList.size();
+        }
+        notifyItemRangeInserted(wrapperIndex, sizeChanged);
+    }
+
+    /**
+     * Removes the first occurrence of the specified {@link ParentListItem}
+     * from this adapter.
+     *
+     * @param parentListItem The {@code ParentListItem} to remove
+     * @return true if this adapter was modified by this operation, false
+     *         otherwise
+     */
+    public boolean removeParent(ParentListItem parentListItem) {
+
+        int index = mParentItemList.indexOf(parentListItem);
+        if (index == -1) {
+            return false;
+        }
+
+        removeParent(index);
+        return true;
+    }
+
+    /**
+     * Removes the {@link ParentListItem} at the specified location from this
+     * adapter.
+     *
+     * @param parentPosition The index of the object to remove
+     * @return The removed {@code ParentListItem}
+     * @throws IndexOutOfBoundsException
+     *                if {@code location < 0 || location >= size()}
+     */
+    public ParentListItem removeParent(int parentPosition) {
+        ParentListItem parentListItem = mParentItemList.remove(parentPosition);
+
+        int sizeChanged = 1;
+        int wrapperIndex = getParentWrapperIndex(parentPosition);
+        if (wrapperIndex == -1) {
+            throw new IllegalStateException("Parent not found");
+        }
+
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.remove(wrapperIndex);
+        if (parentWrapper.isExpanded()) {
+            int childListSize = parentListItem.getChildItemList().size();
+            for (int i = 0; i < childListSize; i++) {
+                mItemList.remove(wrapperIndex);
+                sizeChanged++;
+            }
+        }
+
+        notifyItemRangeRemoved(wrapperIndex, sizeChanged);
+
+
+        return parentListItem;
+    }
+
+
+    // endregion
 
     /**
      * Generates a HashMap used to store expanded state for items in the list
