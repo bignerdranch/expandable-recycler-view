@@ -66,7 +66,7 @@ public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<Vertica
      * @param position the position in the RecyclerView of the item
      */
     @Override
-    public void onBindParentViewHolder(VerticalParentViewHolder parentViewHolder, int position, Object parentListItem) {
+    public void onBindParentViewHolder(VerticalParentViewHolder parentViewHolder, int position, ParentListItem parentListItem) {
         VerticalParent verticalParent = (VerticalParent) parentListItem;
         parentViewHolder.bind(verticalParent.getParentNumber(), verticalParent.getParentText());
     }

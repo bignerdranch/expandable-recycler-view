@@ -1,8 +1,10 @@
 package com.ryanbrooks.expandablerecyclerviewsample.linear.vertical;
 
 /**
- * Custom child object. This is for demo purposes, although it is recommended having a separate
- * child object from your parent object.
+ * Custom child list item.
+ *
+ * This is for demo purposes, although it is recommended having a separate
+ * child list item from your parent list item.
  *
  * @author Ryan Brooks
  * @version 1.0

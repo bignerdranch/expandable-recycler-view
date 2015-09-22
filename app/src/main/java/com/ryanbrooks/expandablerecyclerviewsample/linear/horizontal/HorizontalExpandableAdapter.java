@@ -62,7 +62,7 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * @param position the position in the RecyclerView of the item
      */
     @Override
-    public void onBindParentViewHolder(HorizontalParentViewHolder parentViewHolder, int position, Object parentListItem) {
+    public void onBindParentViewHolder(HorizontalParentViewHolder parentViewHolder, int position, ParentListItem parentListItem) {
         HorizontalParent horizontalParent = (HorizontalParent) parentListItem;
         parentViewHolder.bind(horizontalParent.getParentNumber(), horizontalParent.getParentText());
     }

@@ -7,10 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Helper for {@link ExpandableRecyclerAdapter}.
+ *
  * Created by Ryan Brooks on 6/11/15.
  */
 public class ExpandableRecyclerAdapterHelper {
 
+    /**
+     * Generates a full list of all {@link ParentListItem} objects and their
+     * children, in order.
+     *
+     * @param parentItemList A list of the {@code ParentListItem} objects from
+     *                       the {@link ExpandableRecyclerAdapter}
+     * @return A list of all {@code ParentListItem} objects and their children, expanded
+     */
     public static List<Object> generateParentChildItemList(List<? extends ParentListItem> parentItemList) {
         List<Object> parentWrapperList = new ArrayList<>();
         ParentListItem parentListItem;

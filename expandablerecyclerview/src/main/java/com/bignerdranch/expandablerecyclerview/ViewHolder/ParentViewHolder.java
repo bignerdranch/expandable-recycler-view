@@ -7,8 +7,10 @@ import com.bignerdranch.expandablerecyclerview.Listener.ParentListItemExpandColl
 
 
 /**
- * ParentViewHolder that extends the Base RecyclerView ViewHolder. Keeps track of expansion and
- * offers the ability to animate in response to a triggered expansion
+ * {@link android.support.v7.widget.RecyclerView.ViewHolder} for a
+ * {@link com.bignerdranch.expandablerecyclerview.Model.ParentListItem}.
+ * Keeps track of expanded state and holds callbacks which can be used to
+ * trigger expansion-based events.
  *
  * @author Ryan Brooks
  * @version 1.0
@@ -20,8 +22,9 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     private boolean mExpanded;
 
     /**
-     * Default constructor
-     * @param itemView view that will be shown for this ViewHolder
+     * Default constructor.
+     *
+     * @param itemView The {@link View} being hosted in this {@link android.support.v7.widget.RecyclerView.ViewHolder}
      */
     public ParentViewHolder(View itemView) {
         super(itemView);
@@ -29,14 +32,16 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     /**
-     * Sets the Parent only as the trigger to expand the item.
+     * Sets a {@link android.view.View.OnClickListener} on the entire parent
+     * view to trigger expansion.
      */
     public void setMainItemClickToExpand() {
         itemView.setOnClickListener(this);
     }
 
     /**
-     * Returns if the item is currently expanded.
+     * Returns expanded state for the {@link com.bignerdranch.expandablerecyclerview.Model.ParentListItem}
+     * corresponding to this {@link ParentViewHolder}.
      *
      * @return true if expanded, false if not
      */
@@ -48,44 +53,51 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      * Setter method for expanded state, used for initialization of expanded state.
      * changes to the state are given in {@link #onExpansionToggled(boolean)}
      *
-     * @param expanded
+     * @param expanded true if expanded, false if not
      */
     public void setExpanded(boolean expanded) {
         mExpanded = expanded;
     }
 
     /**
-     * Called when expansion is changed, does not get called during the initial binding
-     * Useful for implementing parent view animations for expansion
-     * @param expanded
+     * Callback triggered when expansion state is changed, but not during
+     * initialization.
+     * <p>
+     * Useful for implementing animations on expansion.
+     *
+     * @param expanded true if expanded, false if not
      */
     public void onExpansionToggled(boolean expanded) {
 
     }
 
     /**
-     * Getter for the ParentItemClickListener passed from the ExpandableRecyclerAdapter
+     * Getter for the {@link ParentListItemExpandCollapseListener} implemented in
+     * {@link com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter}.
      *
-     * @return the ViewHolder's set ParentItemClickListner
+     * @return The {@link ParentListItemExpandCollapseListener} set in the {@link ParentViewHolder}
      */
     public ParentListItemExpandCollapseListener getParentListItemExpandCollapseListener() {
         return mParentListItemExpandCollapseListener;
     }
 
     /**
-     * Setter for the ParentItemClickListener implemented in ExpandableRecyclerAdapter
+     * Setter for the {@link ParentListItemExpandCollapseListener} implemented in
+     * {@link com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter}.
      *
-     * @param mParentListItemExpandCollapseListener
+     * @param parentListItemExpandCollapseListener The {@link ParentListItemExpandCollapseListener} to set on the {@link ParentViewHolder}
      */
-    public void setParentListItemExpandCollapseListener(ParentListItemExpandCollapseListener mParentListItemExpandCollapseListener) {
-        this.mParentListItemExpandCollapseListener = mParentListItemExpandCollapseListener;
+    public void setParentListItemExpandCollapseListener(ParentListItemExpandCollapseListener parentListItemExpandCollapseListener) {
+        mParentListItemExpandCollapseListener = parentListItemExpandCollapseListener;
     }
 
     /**
-     * Implementation of View.onClick to listen for the clicks on the entire row.
-     * Only registered if {@link #shouldItemViewClickToggleExpansion()} is true
+     * {@link android.view.View.OnClickListener} to listen for click events on
+     * the entire parent {@link View}.
+     * <p>
+     * Only registered if {@link #shouldItemViewClickToggleExpansion()} is true.
      *
-     * @param v the view that is the trigger for expansion
+     * @param v The {@link View} that is the trigger for expansion
      */
     @Override
     public void onClick(View v) {
@@ -97,19 +109,21 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     /**
-     * Used to determine whether the entire row should trigger row expansion,
-     * if you return false, call {@link #expandView()} to toggle an expansion
-     * in response to a click in your custom view or {@link #collapseView()} to
-     * toggle a collapse.
+     * Used to determine whether a click in the entire parent {@link View}
+     * should trigger row expansion.
+     * <p>
+     * If you return false, you can call {@link #expandView()} to trigger an
+     * expansion in response to a another event or {@link #collapseView()} to
+     * trigger a collapse.
      *
-     * @return true to set a click listener on the item view that toggles expansion
+     * @return true to set an {@link android.view.View.OnClickListener} on the item view
      */
     public boolean shouldItemViewClickToggleExpansion() {
         return true;
     }
 
     /**
-     * Triggers expansion of the parent list item.
+     * Triggers expansion of the parent.
      */
     protected void expandView() {
         setExpanded(true);
@@ -121,7 +135,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     /**
-     * Triggers collapse of the parent list item.
+     * Triggers collapse of the parent.
      */
     protected void collapseView() {
         setExpanded(false);

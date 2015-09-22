@@ -3,22 +3,24 @@ package com.bignerdranch.expandablerecyclerview.Model;
 import java.util.List;
 
 /**
- * Interface for implementing required methods in a ParentObject
+ * Interface for implementing required methods in a parent list item.
  */
 public interface ParentListItem {
 
     /**
-     * Getter method object to the reference to this ParentObject's child list. The list should
-     * contain all children to be displayed. If list is empty, no children will be added.
+     * Getter for the list of this parent list item's child list items.
+     * <p>
+     * If list is empty, the parent list item has no children.
      *
-     * @return this Parent's child object
+     * @return A {@link List} of the children of this {@link ParentListItem}
      */
     List<Object> getChildItemList();
 
     /**
-     * Used to determine whether parent view should show up initially as expanded.
+     * Getter used to determine if this {@link ParentListItem}'s
+     * {@link android.view.View} should show up initially as expanded.
      *
-     * @return true if parent should be expanded
+     * @return true if expanded, false if not
      */
     boolean isInitiallyExpanded();
 }

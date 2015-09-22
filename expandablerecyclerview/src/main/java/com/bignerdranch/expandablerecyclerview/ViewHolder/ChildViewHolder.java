@@ -4,8 +4,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * ViewHolder for a ChildView that extends the base RecyclerView ViewHolder. The user should extend
- * this and implement as they wish for their ChildObject.
+ * {@link android.support.v7.widget.RecyclerView.ViewHolder} for a child list
+ * item.
+ * <p>
+ * The user should extend this class and implement as they wish for their
+ * child list item.
  *
  * @author Ryan Brooks
  * @version 1.0
@@ -16,7 +19,7 @@ public class ChildViewHolder extends RecyclerView.ViewHolder {
     /**
      * Default constructor.
      *
-     * @param itemView
+     * @param itemView The {@link View} being hosted in this {@link android.support.v7.widget.RecyclerView.ViewHolder}
      */
     public ChildViewHolder(View itemView) {
         super(itemView);

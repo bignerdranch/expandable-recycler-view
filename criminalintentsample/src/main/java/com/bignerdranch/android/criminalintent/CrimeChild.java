@@ -5,12 +5,12 @@ import java.util.Date;
 /**
  * Created by ryanbrooks on 6/17/15.
  */
-public class CrimeChildListItem {
+public class CrimeChild {
 
     private Date mDate;
     private boolean mSolved;
 
-    public CrimeChildListItem(Date date, boolean solved) {
+    public CrimeChild(Date date, boolean solved) {
         mDate = date;
         mSolved = solved;
     }

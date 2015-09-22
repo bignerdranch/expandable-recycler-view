@@ -27,8 +27,8 @@
     <string name="collapse_all">Collapse all parents</string>
     <string name="add_item_to_end">Add parent to end</string>
     <string name="remove_item_from_end">Remove parent from end</string>
-    <string name="add_item_at_pos_two">Add parent @ 2nd pos</string>
-    <string name="remove_second_pos">remove @ 2nd pos</string>
+    <string name="add_item_at_pos_two">Add parent @ pos 1</string>
+    <string name="remove_second_pos">Remove parent @ pos 1</string>
 
     <!-- Sample Toolbar -->
     <string name="no_animation">No animation</string>
