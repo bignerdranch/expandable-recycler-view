@@ -14,14 +14,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.bignerdranch.expandablerecyclerview.Listener.ExpandCollapseListener;
+import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivity implements ExpandCollapseListener {
+public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivity implements ExpandableRecyclerAdapter.ExpandCollapseListener {
 
     private static final int NUM_TEST_DATA_ITEMS = 20;
     private static final int EXPAND_COLLAPSE_SINGLE_PARENT_INDEX = 2;
