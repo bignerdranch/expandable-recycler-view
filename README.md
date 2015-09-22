@@ -4,7 +4,7 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Expandable%20RecyclerView-green.svg?style=flat)](https://android-arsenal.com/details/1/2119)
 
 ## About
-The **Expandable RecyclerView** is a library written to allow for an expanded view to be attached to each `ViewHolder`. To allow for full functionality of a normal `RecyclerView`, the `RecyclerView` has been modified to use two types of ViewHolders, a child and a parent with the ability to customize each separately.
+**Expandable RecyclerView** is a library written to allow for an expanded view to be attached to each `ViewHolder`. To allow for full functionality of a normal `RecyclerView`, the `RecyclerView` has been modified to use two types of ViewHolders, a child and a parent with the ability to customize each separately.
 
 ##Project Setup
 **Gradle**
