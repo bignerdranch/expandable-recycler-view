@@ -4,7 +4,7 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Expandable%20RecyclerView-green.svg?style=flat)](https://android-arsenal.com/details/1/2119)
 
 ## About
-The Expandable RecyclerView is a library written to allow for an expanded view to be attached to each ViewHolder. To allow for full functionality of a normal RecyclerView in both the parent ViewHolder and the expanded child ViewHolder, the recyclerview has been modified to use two types of ViewHolders, a child and a parent with the ability to customize each separately.
+The Expandable RecyclerView is a library written to allow for an expanded view to be attached to each `ViewHolder`. To allow for full functionality of a normal `RecyclerView`, the `RecyclerView` has been modified to use two types of ViewHolders, a child and a parent with the ability to customize each separately.
 
 ##Project Setup
 **Gradle**
@@ -29,73 +29,76 @@ allprojects {
 You can also clone the project and add it as a module to your project.
 
 ## Overview
-Expandable RecyclerView can be used with any stock Android RecyclerView.
+Expandable RecyclerView can be used with any stock Android `RecyclerView`.
 
 **What you need to implement:**
-- A custom adapter that extends ```ExpandableRecyclerAdapter```
-- Two custom ViewHolders: a parent ViewHolder that extends ```ParentViewHolder``` and a child ViewHolder that extends ```ChildViewHolder```
-- The list of objects you wish to display in your RecyclerView must extend ```ParentObject```.
+- A custom adapter that extends `ExpandableRecyclerAdapter`
+- Two custom ViewHolders: a parent `ViewHolder` that extends `ParentViewHolder` and a child `ViewHolder` that extends `ChildViewHolder`
+- The list of objects you wish to display in your RecyclerView must extend `ParentListItem`.
   - It is best practice to separate your child data into its own Object, although it is not required.
 - A parent layout and a child layout
 
 ## Tutorial
 
-A more in depth tutorial can be found [here](https://www.bignerdranch.com/blog/expand-a-recyclerview-in-four-steps/)
+A more in depth tutorial can be found [here](https://www.bignerdranch.com/blog/expand-a-recyclerview-in-four-steps/).
+Note that the above blog post was written during the 1.0.0 release, so some implementation details may differ from their current state.
 
 Javadocs for the library and sample are available [here](http://bignerdranch.github.io/expandable-recycler-view/).
 
 ## Usage
- First, create a stock RecyclerView in your layout file and inflate it in your activity/fragment as you would usually do.
+First, create a stock `RecyclerView` in your layout file and inflate it in your `Activity`/`Fragment` as you would usually do.
  
- Next, create an adapter class that extends ```ExpandableRecyclerAdapter```. Implement the required methods.
+Next, create an adapter that extends `ExpandableRecyclerAdapter`. Implement the required methods.
  
- Then, create two ViewHolders and their respective layouts. One ViewHolder must extend ```ParentViewHolder``` and the other must extend ```ChildViewHolder```. Create their respective views and create variables in these ViewHolders to access those views.
+Then, create two ViewHolders and their respective layouts. One `ViewHolder` must extend `ParentViewHolder` and the other must extend `ChildViewHolder`. Create their respective views and create variables in these ViewHolders to access those views.
  
- Next, the Object that contains the data to be displayed in your RecyclerView must extend ```ParentObject```. When you implement ```ParentObject``` there are three methods that you must implement, shown in the example below:
- ```java
- public class MyCustomParentObject implements ParentObject {
-     private List<Object> mChildObjectList;
+Next, the `Object` that contains the data to be displayed in your RecyclerView must extend `ParentListItem`. When you implement `ParentListItem` there are three methods that you must implement, shown in the example below:
 
-     /**
-      * Your constructors, variables, data and methods for your Object go here
-      */
+```java
+public class CustomParent implements ParentListItem {
+    
+    private List<Object> mChildItemList;
 
-     @Override
-     public List<Object> getChildObjectList() {
-         /**
-          * You can either return a newly created list of children here or attach them later
-          */
+    /* Your constructors, variables, data and methods for your Object go here */
 
-         return mChildObjectList;
-     }
+    /**
+     * You can either return a newly created list of children here or attach them later
+     */
+    @Override
+    public List<Object> getChildItemList() {
+        return mChildObjectList;
+    }
 
-     @Override
-     public boolean isInitiallyExpanded() {
-         // Allows you to specify if the row should be expanded when first shown to the user
-         return false;
-     }
- }
- ```
- When generating the list of parent objects, you should attach all children to them there. If the children share data with your ```ParentObject```, you can simply create a list of children in the constructor for your parent object or in the getter method for the list.
+    /**
+     * Allows you to specify if the list item should be expanded when first shown to the user
+     */
+    @Override
+    public boolean isInitiallyExpanded() {
+        return false;
+    }
+}
+```
+When generating the list of parent list items, you should attach all children to them there. If the children share data with your `ParentListItem`, you can simply create a list of children in the constructor for your parent list item or in the getter method for the list.
 
- In onCreate or onCreateView of your activity or fragment, create and attach your custom expandable adapter like so:
+In `onCreate` or `onCreateView` of your `Activity` or `Fragment`, create and attach your custom expandable adapter like so:
  
 ```java
 RecyclerView mRecyclerView = (RecyclerView) findViewById(YOUR RECYCLERVIEW ID);
-MyExpandable mExpandableAdapter = new MyExpandableAdapter(getActivity(), YOUR_ParentObject_LIST);
+MyExpandable mExpandableAdapter = new MyExpandableAdapter(getActivity(), YOUR_PARENT_ITEM_LIST);
 mRecyclerView.setAdapter(mExpandableAdapter);
 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 ```
 
- Inside your ExpandableRecyclerAdapter, you can create and bind your Parent and Child ViewHolders just as you would create and bind ViewHolders in a normal RecyclerView.
-
+Inside your `ExpandableRecyclerAdapter`, you can create and bind your parent and child ViewHolders just as you would create and bind ViewHolders in a normal `RecyclerView`.
  
-#### View Behaviours
- You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, your ParentViewHolder implementation should override `shouldItemViewClickToggleExpansion()` to return false. Then in your implementation set an onClickListener to your custom view and call `toggleExpansion()` to trigger the expansion.
+#### View Behaviors
+You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, your `ParentViewHolder` implementation should override `shouldItemViewClickToggleExpansion()` to return false. Then in your implementation set an click listener on your custom view and call `toggleExpansion()` to trigger the expansion.
  
- You can also create your own animations for expansion by overriding `onExpansionToggled(boolean isExpanded)` which will be called for you when the itemView is expanded or collapsed.
+You can also create your own animations for expansion by overriding `onExpansionToggled(boolean isExpanded)` which will be called for you when the itemView is expanded or collapsed.
 
- The `VerticalLinearRecyclerViewSampleActivity` sample shows a rotation animation in response to expansion changing. `HorizontalLinearRecyclerViewSampleActivity` sample shows defining your own click target for expansion.
+The `VerticalLinearRecyclerViewSampleActivity` sample shows a rotation animation in response to expansion changing. `HorizontalLinearRecyclerViewSampleActivity` sample shows defining your own click target for expansion.
+
+You can even trigger expansion/collapse without ever clicking a list item. `ExpandableRecyclerAdapter` features a
  
 #### Listening for Expansion and Collapsing
 
