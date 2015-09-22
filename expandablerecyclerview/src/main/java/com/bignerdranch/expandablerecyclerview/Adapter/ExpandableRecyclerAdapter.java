@@ -32,7 +32,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * A {@link List} of all currently expanded {@link ParentListItem} objects
-     * and their children, in order.
+     * and their children, in order. Changes to this list should be made through the add/remove methods
+     * available in {@link ExpandableRecyclerAdapter}
      */
     protected List<Object> mItemList;
 
@@ -70,6 +71,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * Primary constructor. Sets up {@link #mParentItemList} and {@link #mItemList}.
+     *
+     * Changes to {@link #mParentItemList} should be made through add/remove methods in
+     * {@link ExpandableRecyclerAdapter}
      *
      * @param parentItemList List of all {@link ParentListItem} objects to be
      *                       displayed in the {@link RecyclerView} that this
