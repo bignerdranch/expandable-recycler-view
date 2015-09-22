@@ -4,7 +4,7 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Expandable%20RecyclerView-green.svg?style=flat)](https://android-arsenal.com/details/1/2119)
 
 ## About
-The Expandable RecyclerView is a library written to allow for an expanded view to be attached to each `ViewHolder`. To allow for full functionality of a normal `RecyclerView`, the `RecyclerView` has been modified to use two types of ViewHolders, a child and a parent with the ability to customize each separately.
+The **Expandable RecyclerView** is a library written to allow for an expanded view to be attached to each `ViewHolder`. To allow for full functionality of a normal `RecyclerView`, the `RecyclerView` has been modified to use two types of ViewHolders, a child and a parent with the ability to customize each separately.
 
 ##Project Setup
 **Gradle**
@@ -30,13 +30,13 @@ allprojects {
 You can also clone the project and add it as a module to your project.
 
 ## Overview
-Expandable RecyclerView can be used with any stock Android `RecyclerView`.
+**Expandable RecyclerView** can be used with any stock Android `RecyclerView`.
 
 **What you need to implement:**
 - A custom adapter that extends `ExpandableRecyclerAdapter`
 - Two custom ViewHolders: a parent `ViewHolder` that extends `ParentViewHolder` and a child `ViewHolder` that extends `ChildViewHolder`
 - The list of objects you wish to display in your RecyclerView must extend `ParentListItem`.
-  - It is best practice to separate your child data into its own Object, although it is not required.
+  - It is best practice to separate your child data into its own `Object`, although it is not required.
 - A parent layout and a child layout
 
 ## Tutorial
@@ -52,7 +52,7 @@ Next, create an adapter that extends `ExpandableRecyclerAdapter`. Implement the 
  
 Then, create two ViewHolders and their respective layouts. One `ViewHolder` must extend `ParentViewHolder` and the other must extend `ChildViewHolder`. Create their respective views and create variables in these ViewHolders to access those views.
  
-Next, the `Object` that contains the data to be displayed in your RecyclerView must extend `ParentListItem`. When you implement `ParentListItem` there are three methods that you must implement, shown in the example below:
+Next, the `Object` that contains the data to be displayed in your `RecyclerView` must extend `ParentListItem`. When you implement `ParentListItem`, there are three methods that you must implement, shown in the example below:
 
 ```java
 public class CustomParent implements ParentListItem {
@@ -66,7 +66,7 @@ public class CustomParent implements ParentListItem {
      */
     @Override
     public List<Object> getChildItemList() {
-        return mChildObjectList;
+        return mChildItemList;
     }
 
     /**
@@ -106,11 +106,11 @@ To expand or collapse all items in the list at once, we've provided `ExpandableR
 #### Listening for Expansion and Collapsing
 `ParentViewHolder#onExpansionToggled(boolean)` is useful for view changes, but if there are controller level changes (database persistence, web requests, etc.) you can listen for expansion and collapse events by implementing `ExpandableRecyclerAdapter.ExpandCollapseListener` in the `Activity` or `Fragment` hosting your `RecyclerView`. The interface contains two methods, `onListItemExpanded(int)` and `onListItemCollapsed(int)`. This will allow you to listen for expansion and collapse of list items. The position passed into these methods is the position of the item in the `ParentListItem` list. Any expanded children before the item are not included in that position index.
 
-As an example, let's say we implemented ```ExpandCollapseListener``` in an activity. For this to work, after creating the adapter and before setting the RecyclerView's adapter, we must call ```addExpandCollapseListener(ExpandCollapseListener yourExpandCollapseListener``` on the adapter:
+As an example, let's say we implemented `ExpandCollapseListener` in an activity. For this to work, after creating the adapter and before setting the RecyclerView's adapter, we must call `ExpandableRecyclerAdapter#setExpandCollapseListener(ExpandCollapseListener)` on the adapter:
 
 ```java
 MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, objectList);
-myCustomExpandingAdapter.addExpandCollapseListener(this);
+myCustomExpandingAdapter.setExpandCollapseListener(this);
 mRecyclerView.setAdapter(myCustomExpandingAdapter);
 ```
  
