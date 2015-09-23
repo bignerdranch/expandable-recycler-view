@@ -78,6 +78,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         Button addChild = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_add_child);
         addChild.setOnClickListener(mAddChildClickListener);
 
+        Button removeChild = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_remove_child);
+        removeChild.setOnClickListener(mRemoveChildClickListener);
+
         // Create a new adapter with 20 test data items
         mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
         mExpandableAdapter = new HorizontalExpandableAdapter(this, mTestDataItemList);
@@ -245,6 +248,24 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             horizontalChild.setChildText(getString(R.string.added_child, horizontalParent.getChildItemList().size()));
             horizontalParent.getChildItemList().add(horizontalChild);
             mExpandableAdapter.addChild(1, 1, horizontalParent, horizontalChild);
+        }
+    };
+
+    private OnClickListener mRemoveChildClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mTestDataItemList.size() < 2) {
+                return;
+            }
+
+            HorizontalParent horizontalParent = mTestDataItemList.get(1);
+            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            if (childList.size() < 2) {
+                return;
+            }
+
+            childList.remove(1);
+            mExpandableAdapter.removeChild(1, 1, horizontalParent);
         }
     };
 
