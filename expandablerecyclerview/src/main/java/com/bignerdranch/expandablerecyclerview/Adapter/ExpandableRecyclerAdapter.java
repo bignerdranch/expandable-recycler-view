@@ -696,6 +696,16 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         return parentListItem;
     }
 
+    /**
+     * Adds a child to the adapter at the given positions.
+     *
+     * @param parentPosition The index of the parent which will have a child added to
+     * @param childPosition The position which the child will be added relative to the child list for
+     *                      the parent specified in parentPosition
+     * @param updatedParentListItem The newly updated {@link ParentListItem} which already has the
+     *                              changed childList
+     * @param child The child object to be inserted into the adapter
+     */
     public void addChild(int parentPosition, int childPosition, ParentListItem updatedParentListItem, Object child) {
         int parentWrapperIndex = getParentWrapperIndex(parentPosition);
         ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
@@ -707,6 +717,15 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
     }
 
+    /**
+     * Removes a child from the adapter at the given positions.
+     *
+     * @param parentPosition The position of the parent which will have a child removed from
+     * @param childPosition The position of the
+     * @param updatedParentListItem The newly updated {@link ParentListItem} which already has the
+     *                              changed childList
+     * @return The child removed from the adapter, null if the child is not found
+     */
     public Object removeChild(int parentPosition, int childPosition, ParentListItem updatedParentListItem) {
         int parentWrapperIndex = getParentWrapperIndex(parentPosition);
         if (parentWrapperIndex == -1) {
