@@ -43,7 +43,7 @@ public class CrimeListFragment extends Fragment {
         List<Crime> crimes = crimeLab.getCrimes();
         List<ParentListItem> parentListItems = new ArrayList<>();
         for (Crime crime : crimes) {
-            List<Object> childItemList = new ArrayList<>();
+            List<CrimeChild> childItemList = new ArrayList<>();
             childItemList.add(new CrimeChild(crime.getDate(), crime.isSolved()));
             crime.setChildItemList(childItemList);
             parentListItems.add(crime);

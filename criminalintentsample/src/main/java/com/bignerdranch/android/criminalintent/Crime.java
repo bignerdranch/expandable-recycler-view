@@ -12,7 +12,7 @@ public class Crime implements ParentListItem {
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
-    private List<Object> mChildItemList;
+    private List<CrimeChild> mChildItemList;
 
     public Crime() {
         mId = UUID.randomUUID();
@@ -48,11 +48,11 @@ public class Crime implements ParentListItem {
     }
 
     @Override
-    public List<Object> getChildItemList() {
+    public List<CrimeChild> getChildItemList() {
         return mChildItemList;
     }
 
-    public void setChildItemList(List<Object> list) {
+    public void setChildItemList(List<CrimeChild> list) {
         mChildItemList = list;
     }
 

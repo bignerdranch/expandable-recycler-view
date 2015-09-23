@@ -152,7 +152,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         @Override
         public void onClick(View v) {
 
-            ArrayList<Object> childList = new ArrayList<>();
+            ArrayList<HorizontalChild> childList = new ArrayList<>();
             int parentNumber = mTestDataItemList.size();
 
             HorizontalChild horizontalChild = new HorizontalChild();
@@ -184,7 +184,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private OnClickListener mAddToSecondClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            ArrayList<Object> childList = new ArrayList<>();
+            ArrayList<HorizontalChild> childList = new ArrayList<>();
             int parentNumber = mTestDataItemList.size();
 
             HorizontalChild horizontalChild = new HorizontalChild();
@@ -253,7 +253,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         List<HorizontalParent> horizontalParentList = new ArrayList<>();
 
         for (int i = 0; i < numItems; i++) {
-            List<Object> childItemList = new ArrayList<>();
+            List<HorizontalChild> childItemList = new ArrayList<>();
 
             HorizontalChild horizontalChild = new HorizontalChild();
             horizontalChild.setChildText(getString(R.string.child_text, i));

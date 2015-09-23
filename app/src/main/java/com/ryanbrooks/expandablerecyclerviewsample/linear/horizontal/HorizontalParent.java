@@ -12,9 +12,7 @@ import java.util.List;
  */
 public class HorizontalParent implements ParentListItem {
 
-    // A List<Object> or subclass of List must be added for the object to work correctly
-    private List<Object> mChildItemList;
-
+    private List<HorizontalChild> mChildItemList;
     private String mParentText;
     private int mParentNumber;
     private boolean mInitiallyExpanded;
@@ -41,7 +39,7 @@ public class HorizontalParent implements ParentListItem {
      * @return list of all children associated with this specific parent list item
      */
     @Override
-    public List<Object> getChildItemList() {
+    public List<HorizontalChild> getChildItemList() {
         return mChildItemList;
     }
 
@@ -50,7 +48,7 @@ public class HorizontalParent implements ParentListItem {
      *
      * @param childItemList the list of all children associated with this parent list item
      */
-    public void setChildItemList(List<Object> childItemList) {
+    public void setChildItemList(List<HorizontalChild> childItemList) {
         mChildItemList = childItemList;
     }
 
