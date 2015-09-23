@@ -385,12 +385,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *
      * @param savedInstanceState The {@code Bundle} into which to store the
      *                           expanded state map
-     * @return The saved instance state {@code Bundle} with the expanded state
-     *         map added
      */
-    public Bundle onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putSerializable(EXPANDED_STATE_MAP, generateExpandedStateMap());
-        return savedInstanceState;
     }
 
     /**
