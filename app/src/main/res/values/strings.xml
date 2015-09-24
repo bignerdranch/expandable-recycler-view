@@ -29,6 +29,10 @@
     <string name="remove_item_from_end">Remove parent from end</string>
     <string name="add_item_at_pos_two">Add parent @ pos 1</string>
     <string name="remove_second_pos">Remove parent @ pos 1</string>
+    <string name="add_child">Add child to end of 2nd parent</string>
+    <string name="remove_child">Remove child on 2nd parent from pos 1</string>
+    <string name="added_child">Child Addition %1$d</string>
+    <string name="add_multiple_parents">Add 2 Parents @ pos 1</string>
 
     <!-- Sample Toolbar -->
     <string name="no_animation">No animation</string>

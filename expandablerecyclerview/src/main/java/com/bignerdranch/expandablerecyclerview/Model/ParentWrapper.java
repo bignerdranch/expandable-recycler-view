@@ -1,5 +1,7 @@
 package com.bignerdranch.expandablerecyclerview.Model;
 
+import java.util.List;
+
 /**
  * Wrapper used to link expanded state with a {@link ParentListItem}.
  *
@@ -56,5 +58,13 @@ public class ParentWrapper {
      */
     public void setExpanded(boolean expanded) {
         mExpanded = expanded;
+    }
+
+    public boolean isInitiallyExpanded() {
+        return mParentListItem.isInitiallyExpanded();
+    }
+
+    public List<?> getChildItemList() {
+        return mParentListItem.getChildItemList();
     }
 }

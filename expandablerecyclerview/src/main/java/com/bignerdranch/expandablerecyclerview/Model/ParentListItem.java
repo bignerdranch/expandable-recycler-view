@@ -14,7 +14,7 @@ public interface ParentListItem {
      *
      * @return A {@link List} of the children of this {@link ParentListItem}
      */
-    List<Object> getChildItemList();
+    List<?> getChildItemList();
 
     /**
      * Getter used to determine if this {@link ParentListItem}'s

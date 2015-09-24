@@ -115,7 +115,7 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity 
         List<VerticalParent> verticalParentList = new ArrayList<>();
 
         for (int i = 0; i < numItems; i++) {
-            List<Object> childItemList = new ArrayList<>();
+            List<VerticalChild> childItemList = new ArrayList<>();
 
             VerticalChild verticalChild = new VerticalChild();
             verticalChild.setChildText(getString(R.string.child_text, i));
