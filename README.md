@@ -9,14 +9,9 @@
 ##Project Setup
 **Gradle**
 
-The [latest release](https://github.com/bignerdranch/expandable-recycler-view/releases/tag/v1.0.3) can be used by adding this to your app's build.gradle:
+The [latest release](https://github.com/bignerdranch/expandable-recycler-view/releases/tag/v2.0.0) can be used by adding the following to your app's build.gradle:
 ```gradle
-compile 'com.bignerdranch.android:expandablerecyclerview:1.0.3'
-```
-
-Current development can be found at the following snapshot:
-```gradle
-compile 'com.bignerdranch.android:expandablerecyclerview:2.0.0-SNAPSHOT'
+compile 'com.bignerdranch.android:expandablerecyclerview:2.0.0'
 ```
 
 Add Sonatype's snapshots to your repositories closure in the root `build.gradle`:
