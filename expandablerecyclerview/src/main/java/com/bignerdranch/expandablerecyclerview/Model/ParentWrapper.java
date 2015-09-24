@@ -1,6 +1,5 @@
 package com.bignerdranch.expandablerecyclerview.Model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,8 +13,6 @@ public class ParentWrapper {
 
     private boolean mExpanded;
     private ParentListItem mParentListItem;
-    private boolean mInitiallyExpanded;
-    private List<Object> mChildItemList;
 
     /**
      * Default constructor.
@@ -24,8 +21,6 @@ public class ParentWrapper {
      */
     public ParentWrapper(ParentListItem parentListItem) {
         mParentListItem = parentListItem;
-        mInitiallyExpanded = parentListItem.isInitiallyExpanded();
-        mChildItemList = new ArrayList<>(parentListItem.getChildItemList());
         mExpanded = false;
     }
 
@@ -66,10 +61,10 @@ public class ParentWrapper {
     }
 
     public boolean isInitiallyExpanded() {
-        return mInitiallyExpanded;
+        return mParentListItem.isInitiallyExpanded();
     }
 
-    public List<Object> getChildItemList() {
-        return mChildItemList;
+    public List<?> getChildItemList() {
+        return mParentListItem.getChildItemList();
     }
 }
