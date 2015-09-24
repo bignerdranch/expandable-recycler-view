@@ -39,6 +39,8 @@ You can also clone the project and add it as a module to your project.
   - It is best practice to separate your child data into its own `Object`, although it is not required.
 - A parent layout and a child layout
 
+You can also check out the two sample applications for a full working demo of the features.
+
 ## Usage
 First, create a stock `RecyclerView` in your layout file and inflate it in your `Activity`/`Fragment` as you would usually do.
  
@@ -124,8 +126,25 @@ To save expanded/collapsed states, inside `#onSaveInstanceState(Bundle)` of your
       mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
   }
  ```
- 
-You can also check out the two sample applications for a full working demo.
+
+#### Data Manipulation
+
+ During the life of your `RecyclerView` you may need to add or remove items from the list. Please note that the traditional `notifyDataSetChanged()` of `RecyclerView.Adapter` do not work as intended.
+
+ Instead we provide a set of notify methods to give you the ability to inform the adapter of changes to your list of `ParentListItem`s. They are:
+ ```java
+ // Parent Changes
+ notifyParentItemInserted(int parentPosition)}
+ notifyParentItemRemoved(int parentPosition)}
+ notifyParentItemChanged(int parentPosition)}
+ notifyParentItemRangeInserted(int parentPositionStart, int itemCount)}
+ // Child Changes
+ notifyChildItemInserted(int parentPosition, int childPosition)}
+ notifyChildItemRemoved(int parentPosition, int childPosition)}
+ notifyChildItemChanged(int parentPosition, int childPosition)}
+ ```
+
+ `HorizontalLinearRecyclerViewSampleActivity` has examples of these methods in action.
 
 License
 -------
