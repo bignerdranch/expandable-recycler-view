@@ -1,5 +1,5 @@
 # Expandable RecyclerView
-[![Build Status](https://travis-ci.org/bignerdranch/expandable-recycler-view.svg)](https://travis-ci.org/bignerdranch/expandable-recycler-view)
+[![Build Status](https://travis-ci.org/bignerdranch/expandable-recycler-view.svg?branch=master)](https://travis-ci.org/bignerdranch/expandable-recycler-view)
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Expandable%20RecyclerView-green.svg?style=flat)](https://android-arsenal.com/details/1/2119)
 
