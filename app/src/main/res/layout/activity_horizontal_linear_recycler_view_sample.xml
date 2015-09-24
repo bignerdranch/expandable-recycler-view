@@ -20,14 +20,16 @@
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_expand_parent_two_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/expand_parent_two"/>
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_collapse_parent_two_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/collapse_parent_two"/>
 
     </LinearLayout>
@@ -40,14 +42,16 @@
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_expand_all_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/expand_all"/>
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_collapse_all_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/collapse_all"/>
 
     </LinearLayout>
@@ -60,14 +64,16 @@
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_add_to_end_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/add_item_to_end"/>
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_remove_from_end_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/remove_item_from_end"/>
 
     </LinearLayout>
@@ -80,14 +86,16 @@
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_add_to_second_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/add_item_at_pos_two"/>
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_remove_second_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/remove_second_pos"/>
 
     </LinearLayout>
@@ -100,14 +108,16 @@
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_add_child"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/add_child"/>
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_remove_child"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/remove_child"/>
 
     </LinearLayout>
@@ -120,8 +130,9 @@
 
         <Button
             android:id="@+id/activity_horizontal_linear_recycler_view_add_multiple_parents"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/add_multiple_parents"/>
 
     </LinearLayout>
