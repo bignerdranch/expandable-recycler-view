@@ -40,7 +40,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     /**
      * A {@link List} of all {@link ParentListItem} objects.
      */
-    protected List<ParentListItem> mParentItemList;
+    protected List<? extends ParentListItem> mParentItemList;
 
     private ExpandCollapseListener mExpandCollapseListener;
     private List<RecyclerView> mAttachedRecyclerViewPool;
@@ -81,7 +81,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      */
     public ExpandableRecyclerAdapter(@NonNull List<? extends ParentListItem> parentItemList) {
         super();
-        mParentItemList = new ArrayList<>(parentItemList);
+        mParentItemList = parentItemList;
         mItemList = ExpandableRecyclerAdapterHelper.generateParentChildItemList(parentItemList);
         mAttachedRecyclerViewPool = new ArrayList<>();
     }
@@ -598,36 +598,16 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     // region Data Manipulation
 
-    /**
-     * Adds the specified {@link ParentListItem} at the end of the list.
-     *
-     * @param parentListItem The {@code ParentListItem} to add
-     */
-    public void addParent(ParentListItem parentListItem) {
-        mParentItemList.add(parentListItem);
-        addParentWrapper(mItemList.size(), parentListItem);
-    }
+    public void notifyParentItemInserted(int position) {
+        ParentListItem parentListItem = mParentItemList.get(position);
 
-    /**
-     * Inserts the specified {@link ParentListItem} into this adapter at the
-     * specified position.
-     * <p>
-     * The {@code ParentListItem} is inserted before the current element at the
-     * specified position. If the position is equal to the size of the parent
-     * list, the object is added at the end. If the position is smaller than the
-     * size of this adapter, then all elements beyond the specified position are
-     * moved by one position towards the end of the adapter.
-     *
-     * @param position The index at which to insert
-     * @param parentListItem The {@code ParentListItem} to add
-     *
-     * @throws IndexOutOfBoundsException
-     *                if {@code position < 0 || position > size()}
-     */
-    public void addParent(int position, ParentListItem parentListItem) {
-        mParentItemList.add(position, parentListItem);
+        int wrapperIndex;
+        if (position < mParentItemList.size() - 1) {
+            wrapperIndex = getParentWrapperIndex(position);
+        } else {
+            wrapperIndex = mItemList.size();
+        }
 
-        int wrapperIndex = getParentWrapperIndex(position);
         addParentWrapper(wrapperIndex, parentListItem);
     }
 

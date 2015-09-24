@@ -182,8 +182,8 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             }
 
 
-            mExpandableAdapter.addParent(horizontalParent);
             mTestDataItemList.add(horizontalParent);
+            mExpandableAdapter.notifyParentItemInserted(mTestDataItemList.size() - 1);
         }
     };
 
@@ -209,8 +209,8 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
                 horizontalParent.setInitiallyExpanded(true);
             }
 
-            mExpandableAdapter.addParent(1, horizontalParent);
             mTestDataItemList.add(1, horizontalParent);
+            mExpandableAdapter.notifyParentItemInserted(1);
         }
     };
 
