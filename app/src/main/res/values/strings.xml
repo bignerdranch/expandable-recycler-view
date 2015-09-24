@@ -32,6 +32,7 @@
     <string name="add_child">Add child to 2nd parent</string>
     <string name="remove_child">Rem child on 2nd parent</string>
     <string name="added_child">Child Addition %1$d</string>
+    <string name="add_multiple_parents">Add 2 Parents @ pos 1</string>
 
     <!-- Sample Toolbar -->
     <string name="no_animation">No animation</string>

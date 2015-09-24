@@ -81,6 +81,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         Button removeChild = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_remove_child);
         removeChild.setOnClickListener(mRemoveChildClickListener);
 
+        Button addMultipleParents = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_add_multiple_parents);
+        addMultipleParents.setOnClickListener(mAddMultipleParentsClickListener);
+
         // Create a new adapter with 20 test data items
         mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
         mExpandableAdapter = new HorizontalExpandableAdapter(this, mTestDataItemList);
@@ -268,6 +271,57 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
             childList.remove(1);
             mExpandableAdapter.notifyChildItemRemoved(1, 1);
+        }
+    };
+
+    private OnClickListener mAddMultipleParentsClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // Adds first parent
+            ArrayList<HorizontalChild> childList = new ArrayList<>();
+            int parentNumber = mTestDataItemList.size();
+
+            HorizontalChild horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.child_insert_text, 1));
+            childList.add(horizontalChild);
+
+            horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.child_insert_text, 2));
+            childList.add(horizontalChild);
+
+            HorizontalParent horizontalParent = new HorizontalParent();
+            horizontalParent.setChildItemList(childList);
+            horizontalParent.setParentNumber(parentNumber);
+            horizontalParent.setParentText(getString(R.string.inserted_parent_text));
+            if (parentNumber % 2 == 0) {
+                horizontalParent.setInitiallyExpanded(true);
+            }
+
+
+            mTestDataItemList.add(1, horizontalParent);
+
+            childList = new ArrayList<>();
+            parentNumber = mTestDataItemList.size();
+
+            horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.child_insert_text, 1));
+            childList.add(horizontalChild);
+
+            horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.child_insert_text, 2));
+            childList.add(horizontalChild);
+
+            horizontalParent = new HorizontalParent();
+            horizontalParent.setChildItemList(childList);
+            horizontalParent.setParentNumber(parentNumber);
+            horizontalParent.setParentText(getString(R.string.inserted_parent_text));
+            if (parentNumber % 2 == 0) {
+                horizontalParent.setInitiallyExpanded(true);
+            }
+
+            mTestDataItemList.add(2, horizontalParent);
+
+            mExpandableAdapter.notifyParentItemRangeInserted(1, 2);
         }
     };
 
