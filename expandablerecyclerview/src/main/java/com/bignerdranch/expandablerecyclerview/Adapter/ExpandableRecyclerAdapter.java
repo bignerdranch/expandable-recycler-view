@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * {@link android.support.v7.widget.RecyclerView.Adapter} implementation that
+ * RecyclerView.Adapter implementation that
  * adds the ability to expand and collapse list items.
  *
  * Changes should be notified through:
@@ -82,7 +82,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * {@link ExpandableRecyclerAdapter}
      *
      * @param parentItemList List of all {@link ParentListItem} objects to be
-     *                       displayed in the {@link RecyclerView} that this
+     *                       displayed in the RecyclerView that this
      *                       adapter is linked to
      */
     public ExpandableRecyclerAdapter(@NonNull List<? extends ParentListItem> parentItemList) {
@@ -93,7 +93,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Implementation of {@link android.support.v7.widget.RecyclerView.Adapter#onCreateViewHolder(ViewGroup, int)}
+     * Implementation of Adapter.onCreateViewHolder(ViewGroup, int)
      * that determines if the list item is a parent or a child and calls through
      * to the appropriate implementation of either {@link #onCreateParentViewHolder(ViewGroup)}
      * or {@link #onCreateChildViewHolder(ViewGroup)}.
@@ -101,7 +101,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param viewGroup The {@link ViewGroup} into which the new {@link android.view.View}
      *                  will be added after it is bound to an adapter position.
      * @param viewType The view type of the new {@code android.view.View}.
-     * @return A new {@link android.support.v7.widget.RecyclerView.ViewHolder}
+     * @return A new RecyclerView.ViewHolder
      *         that holds a {@code android.view.View} of the given view type.
      */
     @Override
@@ -118,13 +118,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Implementation of {@link android.support.v7.widget.RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder, int)}
+     * Implementation of Adapter.onBindViewHolder(RecyclerView.ViewHolder, int)
      * that determines if the list item is a parent or a child and calls through
      * to the appropriate implementation of either {@link #onBindParentViewHolder(ParentViewHolder, int, ParentListItem)}
      * or {@link #onBindChildViewHolder(ChildViewHolder, int, Object)}.
      *
-     * @param holder The {@link android.support.v7.widget.RecyclerView.ViewHolder}
-     *               to bind data to
+     * @param holder The RecyclerView.ViewHolder to bind data to
      * @param position The index in the list at which to bind
      * @throws IllegalStateException if the item in the list is either null or
      *         not of type {@link ParentListItem}
@@ -172,7 +171,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public abstract CVH onCreateChildViewHolder(ViewGroup childViewGroup);
 
     /**
-     * Callback called from {@link #onBindViewHolder(RecyclerView.ViewHolder, int)}
+     * Callback called from onBindViewHolder(RecyclerView.ViewHolder, int)
      * when the list item bound to is a parent.
      * <p>
      * Bind data to the {@link PVH} here.
@@ -185,7 +184,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public abstract void onBindParentViewHolder(PVH parentViewHolder, int position, ParentListItem parentListItem);
 
     /**
-     * Callback called from {@link #onBindViewHolder(RecyclerView.ViewHolder, int)}
+     * Callback called from onBindViewHolder(RecyclerView.ViewHolder, int)
      * when the list item bound to is a child.
      * <p>
      * Bind data to the {@link CVH} here.
@@ -277,9 +276,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Implementation of {@link android.support.v7.widget.RecyclerView.Adapter#onAttachedToRecyclerView(RecyclerView)}.
+     * Implementation of Adapter#onAttachedToRecyclerView(RecyclerView).
      * <p>
-     * Called when this {@link ExpandableRecyclerAdapter} is attached to a {@link RecyclerView}.
+     * Called when this {@link ExpandableRecyclerAdapter} is attached to a RecyclerView.
      *
      * @param recyclerView The {@code RecyclerView} this {@code ExpandableRecyclerAdapter}
      *                     is being attached to
@@ -291,9 +290,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Implementation of {@link android.support.v7.widget.RecyclerView.Adapter#onDetachedFromRecyclerView(RecyclerView)}.
+     * Implementation of Adapter.onDetachedFromRecyclerView(RecyclerView)
      * <p>
-     * Called when this {@link ExpandableRecyclerAdapter} is detached from a {@link RecyclerView}.
+     * Called when this ExpandableRecyclerAdapter is detached from a RecyclerView.
      *
      * @param recyclerView The {@code RecyclerView} this {@code ExpandableRecyclerAdapter}
      *                     is being detached from
@@ -402,7 +401,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * Stores the expanded state map across state loss.
      * <p>
      * Should be called from {@link Activity#onSaveInstanceState(Bundle)} in
-     * the {@link Activity} that hosts the {@link RecyclerView} that this
+     * the {@link Activity} that hosts the RecyclerView that this
      * {@link ExpandableRecyclerAdapter} is attached to.
      * <p>
      * This will make sure to add the expanded state map as an extra to the
@@ -410,12 +409,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *
      * @param savedInstanceState The {@code Bundle} into which to store the
      *                           expanded state map
-     * @return The saved instance state {@code Bundle} with the expanded state
-     *         map added
      */
-    public Bundle onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putSerializable(EXPANDED_STATE_MAP, generateExpandedStateMap());
-        return savedInstanceState;
     }
 
     /**
@@ -423,7 +419,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * and restores the expanded states of all of the list items.
      * <p>
      * Should be called from {@link Activity#onRestoreInstanceState(Bundle)} in
-     * the {@link Activity} that hosts the {@link RecyclerView} that this
+     * the {@link Activity} that hosts the RecyclerView that this
      * {@link ExpandableRecyclerAdapter} is attached to.
      * <p>
      * Assumes that the list of parent list items is the same as when the saved

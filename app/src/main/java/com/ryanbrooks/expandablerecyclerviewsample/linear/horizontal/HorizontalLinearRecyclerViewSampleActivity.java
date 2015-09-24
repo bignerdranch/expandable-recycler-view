@@ -109,7 +109,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState = mExpandableAdapter.onSaveInstanceState(outState);
+        mExpandableAdapter.onSaveInstanceState(outState);
         outState.putSerializable(SAVED_TEST_DATA_ITEM_LIST, mTestDataItemList);
     }
 
