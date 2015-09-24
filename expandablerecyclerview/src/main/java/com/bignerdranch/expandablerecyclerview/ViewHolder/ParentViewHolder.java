@@ -5,8 +5,7 @@ import android.view.View;
 
 
 /**
- * {@link android.support.v7.widget.RecyclerView.ViewHolder} for a
- * {@link com.bignerdranch.expandablerecyclerview.Model.ParentListItem}.
+ * ViewHolder for a {@link com.bignerdranch.expandablerecyclerview.Model.ParentListItem}
  * Keeps track of expanded state and holds callbacks which can be used to
  * trigger expansion-based events.
  *
@@ -43,7 +42,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     /**
      * Default constructor.
      *
-     * @param itemView The {@link View} being hosted in this {@link android.support.v7.widget.RecyclerView.ViewHolder}
+     * @param itemView The {@link View} being hosted in this ViewHolder
      */
     public ParentViewHolder(View itemView) {
         super(itemView);
