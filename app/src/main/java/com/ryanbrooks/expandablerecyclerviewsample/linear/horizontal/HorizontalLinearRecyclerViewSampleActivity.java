@@ -24,6 +24,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
     private static final int NUM_TEST_DATA_ITEMS = 20;
     private static final int EXPAND_COLLAPSE_SINGLE_PARENT_INDEX = 2;
+    private static final String SAVED_TEST_DATA_ITEM_LIST = "HorizontalLinearRecyclerViewSampleActivity.SavedTestDataItemList";
 
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
@@ -32,7 +33,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private Button mExpandAllButton;
     private Button mCollapseAllButton;
 
-    private List<HorizontalParent> mTestDataItemList;
+    private ArrayList<HorizontalParent> mTestDataItemList;
 
     private HorizontalExpandableAdapter mExpandableAdapter;
 
@@ -85,7 +86,11 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         addMultipleParents.setOnClickListener(mAddMultipleParentsClickListener);
 
         // Create a new adapter with 20 test data items
-        mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
+        if (savedInstanceState == null) {
+            mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
+        } else {
+            mTestDataItemList = (ArrayList<HorizontalParent>) savedInstanceState.getSerializable(SAVED_TEST_DATA_ITEM_LIST);
+        }
         mExpandableAdapter = new HorizontalExpandableAdapter(this, mTestDataItemList);
 
         // Attach this activity to the Adapter as the ExpandCollapseListener
@@ -105,6 +110,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState = mExpandableAdapter.onSaveInstanceState(outState);
+        outState.putSerializable(SAVED_TEST_DATA_ITEM_LIST, mTestDataItemList);
     }
 
     /**
@@ -344,8 +350,8 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
      *
      * @return A List of Objects that contains all parent items. Expansion of children are handled in the adapter
      */
-    private List<HorizontalParent> setUpTestData(int numItems) {
-        List<HorizontalParent> horizontalParentList = new ArrayList<>();
+    private ArrayList<HorizontalParent> setUpTestData(int numItems) {
+        ArrayList<HorizontalParent> horizontalParentList = new ArrayList<>();
 
         for (int i = 0; i < numItems; i++) {
             List<HorizontalChild> childItemList = new ArrayList<>();
