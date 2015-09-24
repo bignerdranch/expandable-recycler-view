@@ -246,9 +246,10 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
             HorizontalParent horizontalParent = mTestDataItemList.get(1);
             HorizontalChild horizontalChild = new HorizontalChild();
-            horizontalChild.setChildText(getString(R.string.added_child, horizontalParent.getChildItemList().size()));
-            horizontalParent.getChildItemList().add(horizontalChild);
-            mExpandableAdapter.addChild(1, 1, horizontalParent, horizontalChild);
+            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            horizontalChild.setChildText(getString(R.string.added_child, childList.size()));
+            childList.add(horizontalChild);
+            mExpandableAdapter.notifyChildItemInserted(1, childList.size() - 1);
         }
     };
 
@@ -266,7 +267,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             }
 
             childList.remove(1);
-            mExpandableAdapter.removeChild(1, 1, horizontalParent);
+            mExpandableAdapter.notifyChildItemRemoved(1, 1);
         }
     };
 

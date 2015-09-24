@@ -653,55 +653,36 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         notifyItemRangeChanged(wrapperIndex, sizeChanged);
     }
 
-    /**
-     * Adds a child to the adapter at the given positions.
-     *
-     * @param parentPosition The index of the parent which will have a child added to
-     * @param childPosition The position which the child will be added relative to the child list for
-     *                      the parent specified in parentPosition
-     * @param updatedParentListItem The newly updated {@link ParentListItem} which already has the
-     *                              changed childList
-     * @param child The child object to be inserted into the adapter
-     */
-    public void addChild(int parentPosition, int childPosition, ParentListItem updatedParentListItem, Object child) {
+    public void notifyChildItemInserted(int parentPosition, int childPosition) {
+        ParentListItem parentListItem = mParentItemList.get(parentPosition);
+        Object child =  parentListItem.getChildItemList().get(childPosition);
+
         int parentWrapperIndex = getParentWrapperIndex(parentPosition);
         ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
-        parentWrapper.setParentListItem(updatedParentListItem);
-//        parentWrapper.getChildItemList().add(childPosition, child);
         if (parentWrapper.isExpanded()) {
             mItemList.add(parentWrapperIndex + childPosition + 1, child);
             notifyItemInserted(parentWrapperIndex + childPosition + 1);
         }
     }
 
-    /**
-     * Removes a child from the adapter at the given positions.
-     *
-     * @param parentPosition The position of the parent which will have a child removed from
-     * @param childPosition The position of the
-     * @param updatedParentListItem The newly updated {@link ParentListItem} which already has the
-     *                              changed childList
-     * @return The child removed from the adapter, null if the child is not found
-     */
-    public Object removeChild(int parentPosition, int childPosition, ParentListItem updatedParentListItem) {
+    public void notifyChildItemRemoved(int parentPosition, int childPosition) {
         int parentWrapperIndex = getParentWrapperIndex(parentPosition);
-        if (parentWrapperIndex == -1) {
-            return null;
-        }
         ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
-        List<?> childItems = parentWrapper.getChildItemList();
-        if (childPosition >= childItems.size()) {
-            return null;
-        }
 
-        Object removedChild = childItems.remove(childPosition);
         if (parentWrapper.isExpanded()) {
             mItemList.remove(parentWrapperIndex + childPosition + 1);
             notifyItemRemoved(parentWrapperIndex + childPosition + 1);
         }
-        parentWrapper.setParentListItem(updatedParentListItem);
-        return removedChild;
     }
+
+    public void notifyChildItemChanged(int parentPosition, int childPosition) {
+        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+        if (parentWrapper.isExpanded()) {
+            notifyItemChanged(parentWrapperIndex + childPosition + 1);
+        }
+    }
+
 
 
     // endregion
