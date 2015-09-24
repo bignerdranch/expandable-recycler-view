@@ -1,5 +1,7 @@
-Version 2.0.0
+Version 2.0.0 (09/24/15)
 ----------------------------
+For a migration guide from 1.0.3 to 2.0.0, see [here](MIGRATION.md).
+
 - Significant renaming/reorganizing of library
     - `ParentObject` is now named `ParentListItem`.
     - `ExpandableRecyclerAdapter#mHelperItemList` now has `protected` visibility and is named `mItemList`. This `List` can be used to gain access to all expanded list items.
@@ -22,6 +24,6 @@ Version 2.0.0
 - Bug fixes: [#42](https://github.com/bignerdranch/expandable-recycler-view/pull/42), [#46](https://github.com/bignerdranch/expandable-recycler-view/pull/46), [#47](https://github.com/bignerdranch/expandable-recycler-view/pull/47)
 
 
-Version 1.0.3 *06/19/15*
+Version 1.0.3 (06/19/15)
 ----------------------------
 - Initial Version
