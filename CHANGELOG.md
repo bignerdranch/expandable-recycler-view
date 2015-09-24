@@ -9,8 +9,8 @@ Version 2.0.0
 - Added ability to expand and collapse list items programmatically (without relying on a click event).
 - Added `ExpandableRecyclerAdapter.ExpandCollapseListener`.
 - Added horizontal linear sample project, demoing many of the new features in 2.0.0.
-- Added ability to add and remove parent list items to the adapter.
-    - Note that adding/removing these list items does not affect the list passed into the adapter.
+- Added ability to notify the adapter of changes to the parent list items and child items. Methods begin with `notifyParentItem` or `notifyChildItem`
+    - Note: RecyclerView.Adapter's notify methods will not work correctly with this adapter.
 - Reorganized sample project.
 - Removed `setChildObjectList` from `ParentListItem` interface.
 - Removed inaccurate "stable" id map.
