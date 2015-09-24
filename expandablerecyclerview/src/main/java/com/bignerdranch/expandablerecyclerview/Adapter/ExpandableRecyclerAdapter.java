@@ -678,7 +678,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         int sizeChanged = 0;
         int wrapperIndex = initialWrapperIndex;
         int changed;
-        for (int i = parentPositionStart; i < parentPositionStart + itemCount; i++) {
+        int parentPositionEnd = parentPositionStart + itemCount;
+        for (int i = parentPositionStart; i < parentPositionEnd; i++) {
             ParentListItem parentListItem = mParentItemList.get(i);
             changed = addParentWrapper(wrapperIndex, parentListItem);
             wrapperIndex += changed;
