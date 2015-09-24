@@ -30,7 +30,7 @@
     <string name="add_item_at_pos_two">Add parent @ pos 1</string>
     <string name="remove_second_pos">Remove parent @ pos 1</string>
     <string name="add_child">Add child to 2nd parent</string>
-    <string name="remove_child">Rem child on 2nd parent</string>
+    <string name="remove_child">Remove child on 2nd parent</string>
     <string name="added_child">Child Addition %1$d</string>
     <string name="add_multiple_parents">Add 2 Parents @ pos 1</string>
 
