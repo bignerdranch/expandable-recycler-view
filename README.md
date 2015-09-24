@@ -74,7 +74,7 @@ public class CustomParent implements ParentListItem {
 ```
 When generating the list of parent list items, you should attach all children to them there. If the children share data with your `ParentListItem`, you can simply create a list of children in the constructor for your parent list item or in the getter method for the list.
 
-In `#onCreate()` or `#onCreateView()` of your `Activity` or `Fragment`, create and attach your custom expandable adapter like so:
+In `onCreate()` or `onCreateView()` of your `Activity` or `Fragment`, create and attach your custom expandable adapter like so:
  
 ```java
 RecyclerView mRecyclerView = (RecyclerView) findViewById(YOUR RECYCLERVIEW ID);
@@ -86,7 +86,7 @@ mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 Inside your `ExpandableRecyclerAdapter`, you can create and bind your parent and child ViewHolders just as you would create and bind ViewHolders in a normal `RecyclerView`.
  
 #### View Behaviors
-You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, your `ParentViewHolder` implementation should override `ParentViewHolder#shouldItemViewClickToggleExpansion()` to return false. Then in your implementation set a click listener on your custom view and call `ParentViewHolder#expandView()` to trigger the expansion or `ParentViewHolder#collapseView()` to trigger a collapse.
+You can define a custom button, image or view to trigger the expansion rather than clicking the whole item (default). To do this, your `ParentViewHolder` implementation should override `shouldItemViewClickToggleExpansion()` to return false. Then in your implementation set a click listener on your custom view and call `expandView()` to trigger the expansion or `collapseView()` to trigger a collapse.
  
 You can also create your own animations for expansion by overriding `ParentViewHolder#onExpansionToggled(boolean)`, which will be called for you when the itemView is expanded or collapsed.
 
@@ -109,7 +109,7 @@ mRecyclerView.setAdapter(myCustomExpandingAdapter);
 ```
  
 #### Saving Expanded States onResume() or on Rotation
-To save expanded/collapsed states, inside `#onSaveInstanceState(Bundle)` of your `Activity` or `Fragment`, call `myCustomExpandingAdapter.onSaveInstanceState(outState)`. In `#onRestoreInstanceState(Bundle)`, call `myCustomExpandingAdapter.onRestoreInstanceState(savedInstanceState)`. Here is an example of how to override in your `Activity` or `Fragment`:
+To save expanded/collapsed states, inside `#onSaveInstanceState(Bundle)` of your `Activity` or `Fragment`, call `myCustomExpandingAdapter.onSaveInstanceState(outState)`. In `onRestoreInstanceState(Bundle)`, call `myCustomExpandingAdapter.onRestoreInstanceState(savedInstanceState)`. Here is an example of how to override in your `Activity` or `Fragment`:
  
  ```java
   @Override
