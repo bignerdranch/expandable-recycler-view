@@ -27,7 +27,7 @@ import java.util.List;
  * {@link #notifyChildItemInserted(int, int)}
  * {@link #notifyChildItemRemoved(int, int)}
  * {@link #notifyChildItemChanged(int, int)}
- * methods and not the notify methods of {@link android.support.v7.widget.RecyclerView.Adapter}.
+ * methods and not the notify methods of RecyclerView.Adapter.
  *
  * @author Ryan Brooks
  * @version 1.0
