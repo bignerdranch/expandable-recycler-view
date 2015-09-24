@@ -598,12 +598,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     // region Data Manipulation
 
-    public void notifyParentItemInserted(int position) {
-        ParentListItem parentListItem = mParentItemList.get(position);
+    public void notifyParentItemInserted(int parentPosition) {
+        ParentListItem parentListItem = mParentItemList.get(parentPosition);
 
         int wrapperIndex;
-        if (position < mParentItemList.size() - 1) {
-            wrapperIndex = getParentWrapperIndex(position);
+        if (parentPosition < mParentItemList.size() - 1) {
+            wrapperIndex = getParentWrapperIndex(parentPosition);
         } else {
             wrapperIndex = mItemList.size();
         }
@@ -624,46 +624,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         notifyItemRangeInserted(wrapperIndex, sizeChanged);
     }
 
-    /**
-     * Removes the first occurrence of the specified {@link ParentListItem}
-     * from this adapter.
-     *
-     * @param parentListItem The {@code ParentListItem} to remove
-     * @return true if this adapter was modified by this operation, false
-     *         otherwise
-     */
-    public boolean removeParent(ParentListItem parentListItem) {
-
-        int index = mParentItemList.indexOf(parentListItem);
-        if (index == -1) {
-            return false;
-        }
-
-        removeParent(index);
-        return true;
-    }
-
-    /**
-     * Removes the {@link ParentListItem} at the specified location from this
-     * adapter.
-     *
-     * @param parentPosition The index of the object to remove
-     * @return The removed {@code ParentListItem}
-     * @throws IndexOutOfBoundsException
-     *                if {@code location < 0 || location >= size()}
-     */
-    public ParentListItem removeParent(int parentPosition) {
-        ParentListItem parentListItem = mParentItemList.remove(parentPosition);
-
+    public void notifyParentItemRemoved(int parentPosition) {
         int sizeChanged = 1;
         int wrapperIndex = getParentWrapperIndex(parentPosition);
-        if (wrapperIndex == -1) {
-            throw new IllegalStateException("Parent not found");
-        }
-
         ParentWrapper parentWrapper = (ParentWrapper) mItemList.remove(wrapperIndex);
         if (parentWrapper.isExpanded()) {
-            int childListSize = parentListItem.getChildItemList().size();
+            int childListSize = parentWrapper.getChildItemList().size();
             for (int i = 0; i < childListSize; i++) {
                 mItemList.remove(wrapperIndex);
                 sizeChanged++;
@@ -671,9 +637,6 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
 
         notifyItemRangeRemoved(wrapperIndex, sizeChanged);
-
-
-        return parentListItem;
     }
 
     /**

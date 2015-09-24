@@ -222,8 +222,8 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             }
 
             HorizontalParent horizontalParent = mTestDataItemList.get(1);
-            mExpandableAdapter.removeParent(horizontalParent);
             mTestDataItemList.remove(horizontalParent);
+            mExpandableAdapter.notifyParentItemRemoved(1);
 
         }
     };
@@ -231,8 +231,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private OnClickListener mRemoveFromEndClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            mExpandableAdapter.removeParent(mTestDataItemList.size() - 1);
-            mTestDataItemList.remove(mTestDataItemList.size() - 1);
+            int removeIndex = mTestDataItemList.size() - 1;
+            mTestDataItemList.remove(removeIndex);
+            mExpandableAdapter.notifyParentItemRemoved(removeIndex);
         }
     };
 
