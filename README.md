@@ -51,7 +51,7 @@ Next, the `Object` that contains the data to be displayed in your `RecyclerView`
 ```java
 public class CustomParent implements ParentListItem {
     
-    private List<Object> mChildItemList;
+    private List<CustomChild> mChildItemList;
 
     /* Your constructors, variables, data and methods for your Object go here */
 
@@ -59,7 +59,7 @@ public class CustomParent implements ParentListItem {
      * You can either return a newly created list of children here or attach them later
      */
     @Override
-    public List<Object> getChildItemList() {
+    public List<CustomChild> getChildItemList() {
         return mChildItemList;
     }
 
@@ -103,7 +103,7 @@ To expand or collapse all items in the list at once, we've provided `ExpandableR
 As an example, let's say we implemented `ExpandCollapseListener` in an activity. For this to work, after creating the adapter and before setting the RecyclerView's adapter, we must call `ExpandableRecyclerAdapter#setExpandCollapseListener(ExpandCollapseListener)` on the adapter:
 
 ```java
-MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, objectList);
+MyCustomExpandingAdapter myCustomExpandingAdapter = new MyCustomExpandingAdapter(this, parentList);
 myCustomExpandingAdapter.setExpandCollapseListener(this);
 mRecyclerView.setAdapter(myCustomExpandingAdapter);
 ```
