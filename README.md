@@ -30,7 +30,7 @@ allprojects {
 You can also clone the project and add it as a module to your project.
 
 ## Overview
-**Expandable RecyclerView** can be used with any stock Android `RecyclerView`.
+**Expandable RecyclerView** can be used with any stock Android `RecyclerView`. Javadocs can be found [here](http://bignerdranch.github.io/expandable-recycler-view/).
 
 **What you need to implement:**
 - A custom adapter that extends `ExpandableRecyclerAdapter`
@@ -38,12 +38,6 @@ You can also clone the project and add it as a module to your project.
 - The list of objects you wish to display in your RecyclerView must extend `ParentListItem`.
   - It is best practice to separate your child data into its own `Object`, although it is not required.
 - A parent layout and a child layout
-
-## Tutorial
-A more in depth tutorial can be found [here](https://www.bignerdranch.com/blog/expand-a-recyclerview-in-four-steps/).
-Note that the above blog post was written during the 1.0.0 release, so some implementation details may differ from their current state.
-
-Javadocs for the library and sample are available [here](http://bignerdranch.github.io/expandable-recycler-view/).
 
 ## Usage
 First, create a stock `RecyclerView` in your layout file and inflate it in your `Activity`/`Fragment` as you would usually do.
