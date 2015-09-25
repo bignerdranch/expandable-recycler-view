@@ -14,16 +14,6 @@ The [latest release](https://github.com/bignerdranch/expandable-recycler-view/re
 compile 'com.bignerdranch.android:expandablerecyclerview:2.0.0'
 ```
 
-Add Sonatype's snapshots to your repositories closure in the root `build.gradle`:
-```gradle
-allprojects {
-    repositories {
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-    }
-}
-```
-You can also clone the project and add it as a module to your project.
-
 ## Overview
 **Expandable RecyclerView** can be used with any stock Android `RecyclerView`. Javadocs can be found [here](http://bignerdranch.github.io/expandable-recycler-view/).
 
