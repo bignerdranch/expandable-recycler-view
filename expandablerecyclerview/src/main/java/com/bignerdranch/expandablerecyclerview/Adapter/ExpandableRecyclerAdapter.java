@@ -665,7 +665,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      */
     public void notifyParentItemRangeInserted(int parentPositionStart, int itemCount) {
         int initialWrapperIndex;
-        if (parentPositionStart < mParentItemList.size() - 1) {
+        if (parentPositionStart < mParentItemList.size() - itemCount) {
             initialWrapperIndex = getParentWrapperIndex(parentPositionStart);
         } else {
             initialWrapperIndex = mItemList.size();
