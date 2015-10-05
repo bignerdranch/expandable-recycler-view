@@ -1,3 +1,7 @@
+Version 2.0.1 (10/05/15)
+----------------------------
+- Fix crash occurring when using notifyParentItemRangeInserted to add a group of items at the end of the list
+
 Version 2.0.0 (09/24/15)
 ----------------------------
 For a migration guide from 1.0.3 to 2.0.0, see [here](MIGRATION.md).
