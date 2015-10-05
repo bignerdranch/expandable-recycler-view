@@ -1,8 +1,3 @@
-com.bignerdranch.android.criminalintent
 com.bignerdranch.expandablerecyclerview.Adapter
-com.bignerdranch.expandablerecyclerview.ClickListeners
 com.bignerdranch.expandablerecyclerview.Model
 com.bignerdranch.expandablerecyclerview.ViewHolder
-com.ryanbrooks.expandablerecyclerview
-com.ryanbrooks.expandablerecyclerviewsample
-com.ryanbrooks.expandablerecyclerviewsample.VerticalLinearRecyclerViewSample
