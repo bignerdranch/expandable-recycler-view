@@ -33,6 +33,10 @@
     <string name="remove_child">Remove child on 2nd parent from pos 1</string>
     <string name="added_child">Child Addition %1$d</string>
     <string name="add_multiple_parents">Add 2 Parents @ pos 1</string>
+    <string name="modify_last_parent">Modify last Parent</string>
+    <string name="modify_last_child">Modify last Child</string>
+    <string name="modified_parent_text">modified %1$d</string>
+    <string name="modified_child_text">modified Child %1$d</string>
 
     <!-- Sample Toolbar -->
     <string name="no_animation">No animation</string>
