@@ -1,3 +1,7 @@
+Version 2.0.2 (10/13/15)
+----------------------------
+- Fix `notifyChildItemChanged` and `notifyParentItemChanged`, previously child objects were not being replaced
+
 Version 2.0.1 (10/05/15)
 ----------------------------
 - Fix crash occurring when using notifyParentItemRangeInserted to add a group of items at the end of the list
