@@ -88,6 +88,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         Button modifyLastParent = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_modify_last_parent);
         modifyLastParent.setOnClickListener(mModifyLastParentClickListener);
 
+        Button modifyLastChild = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_modify_last_child);
+        modifyLastChild.setOnClickListener(mModifyLastChildClickListener);
+
         // Create a new adapter with 20 test data items
         if (savedInstanceState == null) {
             mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
@@ -352,6 +355,20 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             newHorizontalParent.setChildItemList(childItemList);
             mTestDataItemList.set(parentNumber, newHorizontalParent);
             mExpandableAdapter.notifyParentItemChanged(parentNumber);
+        }
+    };
+
+    private OnClickListener mModifyLastChildClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int parentNumber = mTestDataItemList.size() - 1;
+            HorizontalParent horizontalParent = mTestDataItemList.get(parentNumber);
+            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            int childNumber = horizontalParent.getChildItemList().size() - 1;
+            HorizontalChild horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.modified_child_text, childNumber));
+            childList.set(childNumber, horizontalChild);
+            mExpandableAdapter.notifyChildItemChanged(parentNumber, childNumber);
         }
     };
 
