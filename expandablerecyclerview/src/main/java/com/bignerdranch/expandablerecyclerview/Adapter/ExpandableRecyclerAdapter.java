@@ -540,8 +540,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 int childListItemCount = childItemList.size();
                 for (int i = 0; i < childListItemCount; i++) {
                     mItemList.add(parentIndex + i + 1, childItemList.get(i));
-                    notifyItemInserted(parentIndex + i + 1);
                 }
+
+                notifyItemRangeInserted(parentIndex + 1, childListItemCount);
             }
 
             if (expansionTriggeredByListItemClick && mExpandCollapseListener != null) {
@@ -567,10 +568,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
             List<?> childItemList = parentWrapper.getChildItemList();
             if (childItemList != null) {
-                for (int i = childItemList.size() - 1; i >= 0; i--) {
+                int childListItemCount = childItemList.size();
+                for (int i = childListItemCount - 1; i >= 0; i--) {
                     mItemList.remove(parentIndex + i + 1);
-                    notifyItemRemoved(parentIndex + i + 1);
                 }
+
+                notifyItemRangeRemoved(parentIndex + 1, childListItemCount);
             }
 
             if (collapseTriggeredByListItemClick && mExpandCollapseListener != null) {
