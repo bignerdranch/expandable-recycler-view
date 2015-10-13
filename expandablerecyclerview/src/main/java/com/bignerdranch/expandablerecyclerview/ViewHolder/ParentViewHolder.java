@@ -83,7 +83,8 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
      * <p>
      * Useful for implementing animations on expansion.
      *
-     * @param expanded true if expanded, false if not
+     * @param expanded true if view is expanded before expansion is toggled,
+     *                 false if not
      */
     public void onExpansionToggled(boolean expanded) {
 
