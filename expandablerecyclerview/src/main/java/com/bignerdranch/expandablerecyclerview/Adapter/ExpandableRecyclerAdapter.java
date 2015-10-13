@@ -731,7 +731,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * <p>
      * This is an item change event, not a structural change event. It indicates that any
      * reflection of the data at {@code parentPosition} is out of date and should be updated.
-     * The ParentListItem at {@code parentPosition} retains the same identity.
+     * The ParentListItem at {@code parentPosition} retains the same identity. This means
+     * the number of children must stay the same.
      *
      * @param parentPosition Position of the item that has changed
      */
@@ -742,8 +743,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         parentWrapper.setParentListItem(parentListItem);
         int sizeChanged = 1;
         if (parentWrapper.isExpanded()) {
-            int childListSize = parentWrapper.getChildItemList().size();
+            List<?> childItems = parentWrapper.getChildItemList();
+            int childListSize = childItems.size();
+            Object child;
             for (int i = 0; i < childListSize; i++) {
+                child = childItems.get(i);
+                mItemList.set(wrapperIndex + i + 1, child);
                 sizeChanged++;
             }
         }
@@ -821,7 +826,10 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
         parentWrapper.setParentListItem(parentListItem);
         if (parentWrapper.isExpanded()) {
-            notifyItemChanged(parentWrapperIndex + childPosition + 1);
+            int listChildPosition = parentWrapperIndex + childPosition + 1;
+            Object child = parentWrapper.getChildItemList().get(childPosition);
+            mItemList.set(listChildPosition, child);
+            notifyItemChanged(listChildPosition);
         }
     }
 
