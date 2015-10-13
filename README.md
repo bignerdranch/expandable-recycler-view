@@ -9,9 +9,9 @@
 ##Project Setup
 **Gradle**
 
-The [latest release](https://github.com/bignerdranch/expandable-recycler-view/releases/tag/v2.0.0) can be used by adding the following to your app's build.gradle:
+The [latest release](https://github.com/bignerdranch/expandable-recycler-view/releases/tag/v2.0.1) can be used by adding the following to your app's build.gradle:
 ```gradle
-compile 'com.bignerdranch.android:expandablerecyclerview:2.0.0'
+compile 'com.bignerdranch.android:expandablerecyclerview:2.0.1'
 ```
 
 ## Overview
