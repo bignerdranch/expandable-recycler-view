@@ -1,160 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
-
-    <include layout="@layout/toolbar_sample"
-             android:id="@+id/activity_horizontal_linear_recycler_view_toolbar"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/activity_horizontal_linear_recycler_view_sample_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_horizontal_height"/>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_expand_parent_two_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/expand_parent_two"/>
+        <include layout="@layout/toolbar_sample"
+                 android:id="@+id/activity_horizontal_linear_recycler_view_toolbar"/>
 
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_collapse_parent_two_button"
-            android:layout_width="0dp"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/activity_horizontal_linear_recycler_view_sample_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_item_horizontal_height"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/collapse_parent_two"/>
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_expand_parent_two_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/expand_parent_two"/>
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_collapse_parent_two_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/collapse_parent_two"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_expand_all_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/expand_all"/>
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_collapse_all_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/collapse_all"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_add_to_end_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/add_item_to_end"/>
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_remove_from_end_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/remove_item_from_end"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_add_to_second_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/add_item_at_pos_two"/>
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_remove_second_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/remove_second_pos"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_add_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/add_child"/>
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_remove_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/remove_child"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_add_multiple_parents"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/add_multiple_parents"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_modify_last_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/modify_last_parent"/>
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_modify_last_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/modify_last_child"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin_medium">
-
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_expand_all_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/expand_all"/>
-
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_collapse_all_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/collapse_all"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin_medium">
-
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_add_to_end_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/add_item_to_end"/>
-
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_remove_from_end_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/remove_item_from_end"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin_medium">
-
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_add_to_second_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/add_item_at_pos_two"/>
-
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_remove_second_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/remove_second_pos"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin_medium">
-
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_add_child"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/add_child"/>
-
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_remove_child"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/remove_child"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin_medium">
-
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_add_multiple_parents"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/add_multiple_parents"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/margin_medium">
-
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_modify_last_parent"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/modify_last_parent"/>
-        <Button
-            android:id="@+id/activity_horizontal_linear_recycler_view_modify_last_child"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/modify_last_child"/>
-
-    </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
