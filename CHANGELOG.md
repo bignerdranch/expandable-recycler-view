@@ -1,3 +1,7 @@
+Version 2.0.3 (10/14/15)
+----------------------------
+- Change `onListItemExpanded` and `onListItemCollapsed` to be called after list is updated, fixes bug in issue #112
+
 Version 2.0.2 (10/13/15)
 ----------------------------
 - Fix `notifyChildItemChanged` and `notifyParentItemChanged`, previously child objects were not being replaced
