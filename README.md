@@ -131,6 +131,13 @@ To save expanded/collapsed states, inside `#onSaveInstanceState(Bundle)` of your
 
  `HorizontalLinearRecyclerViewSampleActivity` has examples of these methods in action.
 
+## Contributing
+If you have an idea for a feature enhancement or a bug fix, we'd love to know! 
+We handle issue tracking using GitHub's issue system, so feel free to add your comment there. We also welcome all pull requests.
+
+The `dev` branch is used for future 2.X releases, so if you're adding a feature, we ask that you target the `dev` branch.
+If you have a bug fix, targetting `master` is your best bet. This way, we're flexible to pull in bug fixes as soon as possible.
+
 License
 -------
 
