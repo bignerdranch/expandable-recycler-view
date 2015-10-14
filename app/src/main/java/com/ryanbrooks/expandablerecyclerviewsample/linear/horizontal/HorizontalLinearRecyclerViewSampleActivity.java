@@ -27,11 +27,6 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private static final String SAVED_TEST_DATA_ITEM_LIST = "HorizontalLinearRecyclerViewSampleActivity.SavedTestDataItemList";
 
     private Toolbar mToolbar;
-    private RecyclerView mRecyclerView;
-    private Button mExpandParentTwoButton;
-    private Button mCollapseParentTwoButton;
-    private Button mExpandAllButton;
-    private Button mCollapseAllButton;
 
     private ArrayList<HorizontalParent> mTestDataItemList;
 
@@ -50,19 +45,19 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         mToolbar = (Toolbar) findViewById(R.id.activity_horizontal_linear_recycler_view_toolbar);
         setupToolbar();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.activity_horizontal_linear_recycler_view_sample_recyclerView);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.activity_horizontal_linear_recycler_view_sample_recyclerView);
 
-        mExpandParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_parent_two_button);
-        mExpandParentTwoButton.setOnClickListener(mExpandParentTwoClickListener);
+        Button expandParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_parent_two_button);
+        expandParentTwoButton.setOnClickListener(mExpandParentTwoClickListener);
 
-        mCollapseParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_parent_two_button);
-        mCollapseParentTwoButton.setOnClickListener(mCollapseParentTwoClickListener);
+        Button collapseParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_parent_two_button);
+        collapseParentTwoButton.setOnClickListener(mCollapseParentTwoClickListener);
 
-        mExpandAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_all_button);
-        mExpandAllButton.setOnClickListener(mExpandAllClickListener);
+        Button expandAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_all_button);
+        expandAllButton.setOnClickListener(mExpandAllClickListener);
 
-        mCollapseAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_all_button);
-        mCollapseAllButton.setOnClickListener(mCollapseAllClickListener);
+        Button collapseAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_all_button);
+        collapseAllButton.setOnClickListener(mCollapseAllClickListener);
 
         Button addToEndButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_add_to_end_button);
         addToEndButton.setOnClickListener(mAddToEndClickListener);
@@ -91,6 +86,12 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         Button modifyLastChild = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_modify_last_child);
         modifyLastChild.setOnClickListener(mModifyLastChildClickListener);
 
+        Button expandRangeButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_range);
+        expandRangeButton.setOnClickListener(mExpandRangeClickListener);
+
+        Button collapseRangeButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_range);
+        collapseRangeButton.setOnClickListener(mCollapseRangeClickListener);
+
         // Create a new adapter with 20 test data items
         if (savedInstanceState == null) {
             mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
@@ -103,9 +104,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         mExpandableAdapter.setExpandCollapseListener(this);
 
         // Set the RecyclerView's adapter to the ExpandableAdapter we just created
-        mRecyclerView.setAdapter(mExpandableAdapter);
+        recyclerView.setAdapter(mExpandableAdapter);
         // Set the layout manager to a LinearLayout manager for vertical list
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
     /**
@@ -369,6 +370,20 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             horizontalChild.setChildText(getString(R.string.modified_child_text, childNumber));
             childList.set(childNumber, horizontalChild);
             mExpandableAdapter.notifyChildItemChanged(parentNumber, childNumber);
+        }
+    };
+
+    private OnClickListener mExpandRangeClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.expandParentRange(4, 3);
+        }
+    };
+
+    private OnClickListener mCollapseRangeClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.collapseParentRange(2, 4);
         }
     };
 

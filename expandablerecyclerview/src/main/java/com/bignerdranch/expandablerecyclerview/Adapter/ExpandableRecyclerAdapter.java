@@ -345,6 +345,19 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
+     * Expands all parents in a range of indices in the list of parents.
+     *
+     * @param startParentIndex The index at which to to start expanding parents
+     * @param parentCount The number of parents to expand
+     */
+    public void expandParentRange(int startParentIndex, int parentCount) {
+        int endParentIndex = startParentIndex + parentCount;
+        for (int i = startParentIndex; i < endParentIndex; i++) {
+            expandParent(i);
+        }
+    }
+
+    /**
      * Expands all parents in the list.
      */
     public void expandAllParents() {
@@ -386,6 +399,19 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
 
         collapseViews(parentWrapper, parentWrapperIndex);
+    }
+
+    /**
+     * Collapses all parents in a range of indices in the list of parents.
+     *
+     * @param startParentIndex The index at which to to start collapsing parents
+     * @param parentCount The number of parents to collapse
+     */
+    public void collapseParentRange(int startParentIndex, int parentCount) {
+        int endParentIndex = startParentIndex + parentCount;
+        for (int i = startParentIndex; i < endParentIndex; i++) {
+            collapseParent(i);
+        }
     }
 
     /**

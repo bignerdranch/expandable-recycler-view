@@ -37,6 +37,8 @@
     <string name="modify_last_child">Modify last Child</string>
     <string name="modified_parent_text">modified %1$d</string>
     <string name="modified_child_text">modified Child %1$d</string>
+    <string name="expand_range">Expand parents 4–6</string>
+    <string name="collapse_range">Collapse parents 2–5</string>
 
     <!-- Sample Toolbar -->
     <string name="no_animation">No animation</string>
