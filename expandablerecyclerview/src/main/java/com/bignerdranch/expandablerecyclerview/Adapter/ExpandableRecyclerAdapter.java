@@ -548,11 +548,6 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         if (!parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(true);
 
-            if (expansionTriggeredByListItemClick && mExpandCollapseListener != null) {
-                int expandedCountBeforePosition = getExpandedItemCount(parentIndex);
-                mExpandCollapseListener.onListItemExpanded(parentIndex - expandedCountBeforePosition);
-            }
-
             List<?> childItemList = parentWrapper.getChildItemList();
             if (childItemList != null) {
                 int childListItemCount = childItemList.size();
@@ -560,6 +555,11 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                     mItemList.add(parentIndex + i + 1, childItemList.get(i));
                     notifyItemInserted(parentIndex + i + 1);
                 }
+            }
+
+            if (expansionTriggeredByListItemClick && mExpandCollapseListener != null) {
+                int expandedCountBeforePosition = getExpandedItemCount(parentIndex);
+                mExpandCollapseListener.onListItemExpanded(parentIndex - expandedCountBeforePosition);
             }
         }
     }
@@ -578,17 +578,17 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         if (parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(false);
 
-            if (collapseTriggeredByListItemClick && mExpandCollapseListener != null) {
-                int expandedCountBeforePosition = getExpandedItemCount(parentIndex);
-                mExpandCollapseListener.onListItemCollapsed(parentIndex - expandedCountBeforePosition);
-            }
-
             List<?> childItemList = parentWrapper.getChildItemList();
             if (childItemList != null) {
                 for (int i = childItemList.size() - 1; i >= 0; i--) {
                     mItemList.remove(parentIndex + i + 1);
                     notifyItemRemoved(parentIndex + i + 1);
                 }
+            }
+
+            if (collapseTriggeredByListItemClick && mExpandCollapseListener != null) {
+                int expandedCountBeforePosition = getExpandedItemCount(parentIndex);
+                mExpandCollapseListener.onListItemCollapsed(parentIndex - expandedCountBeforePosition);
             }
         }
     }
