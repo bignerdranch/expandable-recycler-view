@@ -500,7 +500,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @return The list item at the specified position
      */
     protected Object getListItem(int position) {
-        return mItemList.get(position);
+        boolean indexInRange = position >= 0 && position < mItemList.size();
+        if (indexInRange) {
+            return mItemList.get(position);
+        } else {
+            return null;
+        }
     }
 
     /**
