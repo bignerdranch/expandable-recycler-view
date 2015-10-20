@@ -732,18 +732,33 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *                       to list of ParentListItems only.
      */
     public void notifyParentItemRemoved(int parentPosition) {
-        int sizeChanged = 1;
         int wrapperIndex = getParentWrapperIndex(parentPosition);
-        ParentWrapper parentWrapper = (ParentWrapper) mItemList.remove(wrapperIndex);
-        if (parentWrapper.isExpanded()) {
-            int childListSize = parentWrapper.getChildItemList().size();
-            for (int i = 0; i < childListSize; i++) {
-                mItemList.remove(wrapperIndex);
-                sizeChanged++;
-            }
+        int sizeChanged = removeParentWrapper(wrapperIndex);
+
+        notifyItemRangeRemoved(wrapperIndex, sizeChanged);
+    }
+
+    public void notifyParentItemRangeRemoved(int parentPosition, int itemCount) {
+        int sizeChanged = 0;
+        int wrapperIndex = getParentWrapperIndex(parentPosition);
+        for (int i = 0; i < itemCount; i++) {
+            sizeChanged += removeParentWrapper(wrapperIndex);
         }
 
         notifyItemRangeRemoved(wrapperIndex, sizeChanged);
+    }
+
+    private int removeParentWrapper(int parentWrapperIndex) {
+        int sizeChanged = 1;
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.remove(parentWrapperIndex);
+        if (parentWrapper.isExpanded()) {
+            int childListSize = parentWrapper.getChildItemList().size();
+            for (int i = 0; i < childListSize; i++) {
+                mItemList.remove(parentWrapperIndex);
+                sizeChanged++;
+            }
+        }
+        return sizeChanged;
     }
 
     /**

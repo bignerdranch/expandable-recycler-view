@@ -213,6 +213,23 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_remove_two_parents"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/remove_two_parents"/>
+
+        </LinearLayout>
+
     </LinearLayout>
+
+
 
 </ScrollView>
