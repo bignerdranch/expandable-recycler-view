@@ -184,6 +184,21 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_add_two_children"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/add_two_children"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </ScrollView>

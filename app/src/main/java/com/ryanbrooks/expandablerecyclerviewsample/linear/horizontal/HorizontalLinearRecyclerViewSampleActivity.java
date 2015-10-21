@@ -92,6 +92,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         Button collapseRangeButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_range);
         collapseRangeButton.setOnClickListener(mCollapseRangeClickListener);
 
+        Button addTwoChildren = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_add_two_children);
+        addTwoChildren.setOnClickListener(mAddTwoChildrenClickListener);
+
         // Create a new adapter with 20 test data items
         if (savedInstanceState == null) {
             mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
@@ -384,6 +387,23 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         @Override
         public void onClick(View v) {
             mExpandableAdapter.collapseParentRange(2, 4);
+        }
+    };
+
+    private OnClickListener mAddTwoChildrenClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            HorizontalParent horizontalParent = mTestDataItemList.get(mTestDataItemList.size() - 1);
+            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+
+            HorizontalChild horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.added_child, childList.size()));
+            childList.add(horizontalChild);
+
+            horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.added_child, childList.size()));
+            childList.add(horizontalChild);
+            mExpandableAdapter.notifyChildItemRangeInserted(mTestDataItemList.size() - 1, childList.size() - 2, 2);
         }
     };
 

@@ -794,14 +794,47 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *
      */
     public void notifyChildItemInserted(int parentPosition, int childPosition) {
-        ParentListItem parentListItem = mParentItemList.get(parentPosition);
-        Object child =  parentListItem.getChildItemList().get(childPosition);
-
         int parentWrapperIndex = getParentWrapperIndex(parentPosition);
         ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+
         if (parentWrapper.isExpanded()) {
+            ParentListItem parentListItem = mParentItemList.get(parentPosition);
+            Object child = parentListItem.getChildItemList().get(childPosition);
             mItemList.add(parentWrapperIndex + childPosition + 1, child);
             notifyItemInserted(parentWrapperIndex + childPosition + 1);
+        }
+    }
+
+    /**
+     * Notify any registered observers that the ParentListItem reflected at {@code parentPosition}
+     * has {@code itemCount} ChildItems that have been newly inserted at {@code childPositionStart}.
+     * The ChildItem previously at {@code childPositionStart} and beyond are now at
+     * position {@code childPositionStart + itemCount}.
+     * <p>
+     * This is a structural change event. Representations of other existing items in the
+     * data set are still considered up to date and will not be rebound, though their
+     * positions may be altered.
+     *
+     * @param parentPosition Position of the ParentListItem which has been added a child, relative
+     *                       to list of ParentListItems only.
+     * @param childPositionStart Position of the child object that has been inserted, relative to children
+     *                      of the ParentListItem specified by {@code parentPosition} only.
+     * @param itemCount number of children inserted
+     *
+     */
+    public void notifyChildItemRangeInserted(int parentPosition, int childPositionStart, int itemCount) {
+        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+
+        if (parentWrapper.isExpanded()) {
+            ParentListItem parentListItem = mParentItemList.get(parentPosition);
+            List<?> childList = parentListItem.getChildItemList();
+            Object child;
+            for (int i = 0; i < itemCount; i++) {
+                child = childList.get(childPositionStart + i);
+                mItemList.add(parentWrapperIndex + childPositionStart + i + 1, child);
+            }
+            notifyItemRangeInserted(parentWrapperIndex + childPositionStart + 1, itemCount);
         }
     }
 
