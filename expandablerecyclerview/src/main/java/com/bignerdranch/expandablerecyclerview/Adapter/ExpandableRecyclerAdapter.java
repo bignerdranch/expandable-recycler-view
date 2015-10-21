@@ -738,9 +738,23 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         notifyItemRangeRemoved(wrapperIndex, sizeChanged);
     }
 
-    public void notifyParentItemRangeRemoved(int parentPosition, int itemCount) {
+    /**
+     * Notify any registered observers that the {@code itemCount} ParentListItems previously located
+     * at {@code parentPositionStart} have been removed from the data set. The ParentListItems
+     * previously located at and after {@code parentPositionStart + itemCount} may now be found at
+     * {@code oldPosition - itemCount}.
+     * <p>
+     * This is a structural change event. Representations of other existing items in the
+     * data set are still considered up to date and will not be rebound, though their positions
+     * may be altered.
+     *
+     * @param parentPositionStart The previous position of the first ParentListItem that was
+     *                            removed, relative to list of ParentListItems only.
+     * @param itemCount Number of ParentListItems removed from the data set
+     */
+    public void notifyParentItemRangeRemoved(int parentPositionStart, int itemCount) {
         int sizeChanged = 0;
-        int wrapperIndex = getParentWrapperIndex(parentPosition);
+        int wrapperIndex = getParentWrapperIndex(parentPositionStart);
         for (int i = 0; i < itemCount; i++) {
             sizeChanged += removeParentWrapper(wrapperIndex);
         }
@@ -780,19 +794,31 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         notifyItemRangeChanged(wrapperIndex, sizeChanged);
     }
 
-    public void notifyParentItemRangeChanged(int parentPosition, int itemCount) {
-        int initialWrapperIndex = getParentWrapperIndex(parentPosition);
+    /**
+     * Notify any registered observers that the {@code itemCount} ParentListItems starting
+     * at {@code parentPositionStart} have changed. This will also trigger an item changed
+     * for children of the ParentList specified.
+     * <p>
+     * This is an item change event, not a structural change event. It indicates that any
+     * reflection of the data in the given position range is out of date and should be updated.
+     * The ParentListItems in the given range retain the same identity. This means
+     * the number of children must stay the same.
+     *
+     * @param parentPositionStart Position of the item that has changed
+     */
+    public void notifyParentItemRangeChanged(int parentPositionStart, int itemCount) {
+        int initialWrapperIndex = getParentWrapperIndex(parentPositionStart);
 
         int wrapperIndex = initialWrapperIndex;
         int sizeChanged = 0;
         int changed;
         ParentListItem parentListItem;
         for (int j = 0; j < itemCount; j++) {
-            parentListItem = mParentItemList.get(parentPosition);
+            parentListItem = mParentItemList.get(parentPositionStart);
             changed = changeParentWrapper(wrapperIndex, parentListItem);
             sizeChanged += changed;
             wrapperIndex += changed;
-            parentPosition++;
+            parentPositionStart++;
         }
         notifyItemRangeChanged(initialWrapperIndex, sizeChanged);
     }
