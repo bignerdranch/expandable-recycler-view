@@ -42,7 +42,8 @@
     <string name="add_two_children">Add two children to last parent</string>
     <string name="remove_two_children">Remove two children from last parent</string>
     <string name="modify_two_children">Modify two children from last parent</string>
-    <string name="remove_two_parents">Remove two Parents from end</string>
+    <string name="remove_two_parents">Remove last two Parents</string>
+    <string name="modify_two_parents">Modify last two Parents</string>
 
     <!-- Sample Toolbar -->
     <string name="no_animation">No animation</string>

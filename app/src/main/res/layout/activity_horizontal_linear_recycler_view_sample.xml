@@ -226,6 +226,13 @@
                 android:layout_weight="1"
                 android:text="@string/remove_two_parents"/>
 
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_modify_two_parents"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/modify_two_parents"/>
+
         </LinearLayout>
 
     </LinearLayout>

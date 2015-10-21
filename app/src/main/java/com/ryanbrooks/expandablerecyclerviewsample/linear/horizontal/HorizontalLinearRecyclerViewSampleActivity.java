@@ -104,6 +104,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         Button removeTwoParents = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_remove_two_parents);
         removeTwoParents.setOnClickListener(mRemoveTwoParentsClickListener);
 
+        Button modifyTwoParents = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_modify_two_parents);
+        modifyTwoParents.setOnClickListener(mModifyTwoParentsClickListener);
+
         // Create a new adapter with 20 test data items
         if (savedInstanceState == null) {
             mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
@@ -476,6 +479,43 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             mTestDataItemList.remove(mTestDataItemList.size() - 1);
 
             mExpandableAdapter.notifyParentItemRangeRemoved(mTestDataItemList.size(), 2);
+        }
+    };
+
+    private OnClickListener mModifyTwoParentsClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int parentNumber = mTestDataItemList.size() - 1;
+            HorizontalParent horizontalParent = mTestDataItemList.get(parentNumber);
+            HorizontalParent newHorizontalParent = new HorizontalParent();
+            newHorizontalParent.setParentText(getString(R.string.modified_parent_text, parentNumber));
+            newHorizontalParent.setParentNumber(parentNumber);
+            int childSize = horizontalParent.getChildItemList().size();
+            List<HorizontalChild> childItemList = new ArrayList<>();
+            for (int i = 0; i < childSize; i++) {
+                HorizontalChild horizontalChild = new HorizontalChild();
+                horizontalChild.setChildText(getString(R.string.modified_child_text, i));
+                childItemList.add(horizontalChild);
+            }
+            newHorizontalParent.setChildItemList(childItemList);
+            mTestDataItemList.set(parentNumber, newHorizontalParent);
+
+
+            parentNumber = mTestDataItemList.size() - 2;
+            horizontalParent = mTestDataItemList.get(parentNumber);
+            newHorizontalParent = new HorizontalParent();
+            newHorizontalParent.setParentText(getString(R.string.modified_parent_text, parentNumber));
+            newHorizontalParent.setParentNumber(parentNumber);
+            childSize = horizontalParent.getChildItemList().size();
+            childItemList = new ArrayList<>();
+            for (int i = 0; i < childSize; i++) {
+                HorizontalChild horizontalChild = new HorizontalChild();
+                horizontalChild.setChildText(getString(R.string.modified_child_text, i));
+                childItemList.add(horizontalChild);
+            }
+            newHorizontalParent.setChildItemList(childItemList);
+            mTestDataItemList.set(parentNumber, newHorizontalParent);
+            mExpandableAdapter.notifyParentItemRangeChanged(parentNumber, 2);
         }
     };
 
