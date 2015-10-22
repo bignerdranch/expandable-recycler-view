@@ -917,6 +917,35 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
     }
 
+    /**
+     * Notify any registered observers that the ParentListItem at {@code parentPosition} has
+     * @{code itemCount} child Objects starting at {@code childPositionStart} that have changed.
+     * <p>
+     * This is an item change event, not a structural change event. It indicates that any
+     * The ParentListItem at {@code childPositionStart} retains the same identity.
+     * reflection of the set of {@code itemCount} child objects starting at {@code childPositionStart}
+     * are out of date and should be updated.
+     *
+     * @param parentPosition Position of the ParentListItem who has a child that has changed
+     * @param childPositionStart Position of the first child object that has changed
+     * @param itemCount number of child objects changed
+     */
+    public void notifyChildItemRangeChanged(int parentPosition, int childPositionStart, int itemCount) {
+        ParentListItem parentListItem = mParentItemList.get(parentPosition);
+        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+        parentWrapper.setParentListItem(parentListItem);
+        if (parentWrapper.isExpanded()) {
+            int listChildPosition = parentWrapperIndex + childPositionStart + 1;
+            for (int i = 0; i < itemCount; i++) {
+                Object child = parentWrapper.getChildItemList().get(childPositionStart + i);
+                mItemList.set(listChildPosition + i, child);
+
+            }
+            notifyItemRangeChanged(listChildPosition, itemCount);
+        }
+    }
+
 
 
     // endregion
