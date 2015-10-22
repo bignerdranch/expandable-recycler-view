@@ -95,6 +95,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         Button addTwoChildren = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_add_two_children);
         addTwoChildren.setOnClickListener(mAddTwoChildrenClickListener);
 
+        Button removeTwoChildren = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_remove_two_children);
+        removeTwoChildren.setOnClickListener(mRemoveTwoChildrenClickListener);
+
         // Create a new adapter with 20 test data items
         if (savedInstanceState == null) {
             mTestDataItemList = setUpTestData(NUM_TEST_DATA_ITEMS);
@@ -404,6 +407,22 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             horizontalChild.setChildText(getString(R.string.added_child, childList.size()));
             childList.add(horizontalChild);
             mExpandableAdapter.notifyChildItemRangeInserted(mTestDataItemList.size() - 1, childList.size() - 2, 2);
+        }
+    };
+
+    private OnClickListener mRemoveTwoChildrenClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            HorizontalParent horizontalParent = mTestDataItemList.get(mTestDataItemList.size() - 1);
+            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            int childSize = childList.size();
+            if (childSize < 2) {
+                return;
+            }
+
+            childList.remove(childSize - 1);
+            childList.remove(childSize - 2);
+            mExpandableAdapter.notifyChildItemRangeRemoved(mTestDataItemList.size() - 1, childSize - 2, 2);
         }
     };
 

@@ -197,6 +197,13 @@
                 android:layout_weight="1"
                 android:text="@string/add_two_children"/>
 
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_remove_two_children"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/remove_two_children"/>
+
         </LinearLayout>
 
     </LinearLayout>

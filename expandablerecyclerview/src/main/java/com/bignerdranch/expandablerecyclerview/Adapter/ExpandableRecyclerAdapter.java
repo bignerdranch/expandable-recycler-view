@@ -817,8 +817,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *
      * @param parentPosition Position of the ParentListItem which has been added a child, relative
      *                       to list of ParentListItems only.
-     * @param childPositionStart Position of the child object that has been inserted, relative to children
-     *                      of the ParentListItem specified by {@code parentPosition} only.
+     * @param childPositionStart Position of the first child object that has been inserted,
+     *                           relative to children of the ParentListItem specified by
+     *                           {@code parentPosition} only.
      * @param itemCount number of children inserted
      *
      */
@@ -860,6 +861,35 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         if (parentWrapper.isExpanded()) {
             mItemList.remove(parentWrapperIndex + childPosition + 1);
             notifyItemRemoved(parentWrapperIndex + childPosition + 1);
+        }
+    }
+
+    /**
+     * Notify any registered observers that the ParentListItem located at {@code parentPosition}
+     * has {@code itemCount} ChildItems that have been removed from the data set, previously
+     * located at {@code childPositionStart} onwards. The ChildItem previously located at and after {@code childPositionStart} may
+     * now be found at {@code childPositionStart - itemCount}.
+     * <p>
+     * This is a structural change event. Representations of other existing items in the
+     * data set are still considered up to date and will not be rebound, though their positions
+     * may be altered.
+     *
+     * @param parentPosition Position of the ParentListItem which has a child removed from, relative
+     *                       to list of ParentListItems only.
+     * @param childPositionStart Position of the first child object that has been removed, relative
+     *                           to children of the ParentListItem specified by
+     *                           {@code parentPosition} only.
+     * @param itemCount number of children removed
+     */
+    public void notifyChildItemRangeRemoved(int parentPosition, int childPositionStart, int itemCount) {
+        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+
+        if (parentWrapper.isExpanded()) {
+            for (int i = 0; i < itemCount; i++) {
+                mItemList.remove(parentWrapperIndex + childPositionStart + 1);
+            }
+            notifyItemRangeRemoved(parentWrapperIndex + childPositionStart + 1, itemCount);
         }
     }
 

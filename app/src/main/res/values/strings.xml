@@ -40,6 +40,7 @@
     <string name="expand_range">Expand parents 4–6</string>
     <string name="collapse_range">Collapse parents 2–5</string>
     <string name="add_two_children">Add two children to last parent</string>
+    <string name="remove_two_children">Remove two children from last parent</string>
 
     <!-- Sample Toolbar -->
     <string name="no_animation">No animation</string>
