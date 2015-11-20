@@ -467,6 +467,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                         int childListItemCount = childItemList.size();
                         for (int j = 0; j < childListItemCount; j++) {
                             mItemList.remove(fullCount + 1);
+                            listItemCount--;
                         }
                     }
                 }
