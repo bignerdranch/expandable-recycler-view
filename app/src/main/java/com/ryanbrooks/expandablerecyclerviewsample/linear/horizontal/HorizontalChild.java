@@ -7,6 +7,10 @@ import java.io.Serializable;
  *
  * This is for demo purposes, although it is recommended having a separate
  * child from your parent.
+ *
+ * You do not need to implement Serializable in order to use ExpandableRecyclerView. We are doing so
+ * here in order to store away our list of items (which you usually will have in a singleton or
+ * database)
  */
 public class HorizontalChild implements Serializable {
 

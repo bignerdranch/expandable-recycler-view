@@ -10,6 +10,10 @@ import java.util.List;
  * Custom parent list item that holds a string and an int for displaying data in the parent item. You
  * can use any Object here as long as it implements ParentListItem and sets the list to a private
  * variable.
+ *
+ * You do not need to implement Serializable in order to use ExpandableRecyclerView. We are doing so
+ * here in order to store away our list of items (which you usually will have in a singleton or
+ * database)
  */
 public class HorizontalParent implements ParentListItem, Serializable {
 
