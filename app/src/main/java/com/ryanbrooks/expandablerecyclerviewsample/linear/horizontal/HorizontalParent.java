@@ -3,6 +3,7 @@ package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * can use any Object here as long as it implements ParentListItem and sets the list to a private
  * variable.
  */
-public class HorizontalParent implements ParentListItem {
+public class HorizontalParent implements ParentListItem, Serializable {
 
     private List<HorizontalChild> mChildItemList;
     private String mParentText;
