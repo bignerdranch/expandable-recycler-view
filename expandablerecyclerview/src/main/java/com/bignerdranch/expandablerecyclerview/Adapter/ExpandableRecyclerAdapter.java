@@ -435,47 +435,34 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
 
         HashMap<Integer, Boolean> expandedStateMap = (HashMap<Integer, Boolean>) savedInstanceState.getSerializable(EXPANDED_STATE_MAP);
-        int fullCount = 0;
-        int childCount = 0;
-        Object listItem;
+        if (expandedStateMap == null) {
+            return;
+        }
+
+        List<Object> parentWrapperList = new ArrayList<>();
+        ParentListItem parentListItem;
         ParentWrapper parentWrapper;
-        List<?> childItemList;
-        int listItemCount = mItemList.size();
-        while (fullCount < listItemCount) {
-            listItem = getListItem(fullCount);
 
-            if (listItem instanceof ParentWrapper) {
-                parentWrapper = (ParentWrapper) listItem;
+        int parentListItemCount = mParentItemList.size();
+        for (int i = 0; i < parentListItemCount; i++) {
+            parentListItem = mParentItemList.get(i);
+            parentWrapper = new ParentWrapper(parentListItem);
+            parentWrapperList.add(parentWrapper);
 
-                if (expandedStateMap.containsKey(fullCount - childCount)) {
-                    parentWrapper.setExpanded(expandedStateMap.get(fullCount - childCount));
+            if (expandedStateMap.containsKey(i)) {
+                boolean expanded = expandedStateMap.get(i);
+                if (expanded) {
+                    parentWrapper.setExpanded(true);
 
-
-                    if (parentWrapper.isExpanded() && !parentWrapper.isInitiallyExpanded()) {
-                        childItemList = parentWrapper.getChildItemList();
-
-                        if (childItemList != null) {
-                            int childListItemCount = childItemList.size();
-                            for (int j = 0; j < childListItemCount; j++) {
-                                fullCount++;
-                                childCount++;
-                                mItemList.add(fullCount, childItemList.get(j));
-                            }
-                        }
-                    } else if (!parentWrapper.isExpanded() && parentWrapper.isInitiallyExpanded()) {
-                        childItemList = parentWrapper.getChildItemList();
-                        int childListItemCount = childItemList.size();
-                        for (int j = 0; j < childListItemCount; j++) {
-                            mItemList.remove(fullCount + 1);
-                        }
+                    int childListItemCount = parentWrapper.getChildItemList().size();
+                    for (int j = 0; j < childListItemCount; j++) {
+                        parentWrapperList.add(parentWrapper.getChildItemList().get(j));
                     }
                 }
-            } else {
-                childCount++;
             }
-
-            fullCount++;
         }
+
+        mItemList = parentWrapperList;
 
         notifyDataSetChanged();
     }

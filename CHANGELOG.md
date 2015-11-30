@@ -1,3 +1,7 @@
+Version 2.0.4 (11/20/15)
+----------------------------
+- Fix crash when restoring state when an initially expanded row has been collapsed
+
 Version 2.0.3 (10/14/15)
 ----------------------------
 - Change `onListItemExpanded` and `onListItemCollapsed` to be called after list is updated, fixes bug in issue #112
