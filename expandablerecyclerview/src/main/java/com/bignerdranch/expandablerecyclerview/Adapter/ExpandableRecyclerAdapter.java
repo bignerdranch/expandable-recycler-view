@@ -779,8 +779,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * Notify any registered observers that the ParentListItem reflected at {@code parentPosition}
-     * has a ChildItem that has been newly inserted at {@code childPosition}.
-     * The ChildItem previously at {@code childPosition} is now at
+     * has a child list item that has been newly inserted at {@code childPosition}.
+     * The child list item previously at {@code childPosition} is now at
      * position {@code childPosition + 1}.
      * <p>
      * This is a structural change event. Representations of other existing items in the
@@ -807,8 +807,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * Notify any registered observers that the ParentListItem reflected at {@code parentPosition}
-     * has {@code itemCount} ChildItems that have been newly inserted at {@code childPositionStart}.
-     * The ChildItem previously at {@code childPositionStart} and beyond are now at
+     * has {@code itemCount} child list items that have been newly inserted at {@code childPositionStart}.
+     * The child list item previously at {@code childPositionStart} and beyond are now at
      * position {@code childPositionStart + itemCount}.
      * <p>
      * This is a structural change event. Representations of other existing items in the
@@ -841,8 +841,8 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * Notify any registered observers that the ParentListItem located at {@code parentPosition}
-     * has a ChildItem that has been removed from the data set, previously located at {@code childPosition}.
-     * The ChildItem previously located at and after {@code childPosition} may
+     * has a child list item that has been removed from the data set, previously located at {@code childPosition}.
+     * The child list item previously located at and after {@code childPosition} may
      * now be found at {@code childPosition - 1}.
      * <p>
      * This is a structural change event. Representations of other existing items in the
@@ -866,9 +866,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * Notify any registered observers that the ParentListItem located at {@code parentPosition}
-     * has {@code itemCount} ChildItems that have been removed from the data set, previously
-     * located at {@code childPositionStart} onwards. The ChildItem previously located at and after {@code childPositionStart} may
-     * now be found at {@code childPositionStart - itemCount}.
+     * has {@code itemCount} child list items that have been removed from the data set, previously
+     * located at {@code childPositionStart} onwards. The child list item previously located at and
+     * after {@code childPositionStart} may now be found at {@code childPositionStart - itemCount}.
      * <p>
      * This is a structural change event. Representations of other existing items in the
      * data set are still considered up to date and will not be rebound, though their positions
