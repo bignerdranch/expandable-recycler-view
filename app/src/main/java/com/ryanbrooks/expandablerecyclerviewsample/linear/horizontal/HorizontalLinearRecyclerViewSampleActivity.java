@@ -475,7 +475,15 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private OnClickListener mRemoveTwoParentsClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (mTestDataItemList.size() < 1) {
+                return;
+            }
+
             mTestDataItemList.remove(mTestDataItemList.size() - 1);
+            if (mTestDataItemList.size() < 1) {
+                mExpandableAdapter.notifyParentItemRemoved(mTestDataItemList.size());
+                return;
+            }
             mTestDataItemList.remove(mTestDataItemList.size() - 1);
 
             mExpandableAdapter.notifyParentItemRangeRemoved(mTestDataItemList.size(), 2);
@@ -485,6 +493,10 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private OnClickListener mModifyTwoParentsClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (mTestDataItemList.size() < 1) {
+                return;
+            }
+
             int parentNumber = mTestDataItemList.size() - 1;
             HorizontalParent horizontalParent = mTestDataItemList.get(parentNumber);
             HorizontalParent newHorizontalParent = new HorizontalParent();
@@ -499,6 +511,10 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             }
             newHorizontalParent.setChildItemList(childItemList);
             mTestDataItemList.set(parentNumber, newHorizontalParent);
+            if (mTestDataItemList.size() < 2) {
+                mExpandableAdapter.notifyParentItemChanged(parentNumber);
+                return;
+            }
 
 
             parentNumber = mTestDataItemList.size() - 2;
