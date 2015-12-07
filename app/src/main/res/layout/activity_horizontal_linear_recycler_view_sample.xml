@@ -133,21 +133,6 @@
             android:layout_marginTop="@dimen/margin_medium">
 
             <Button
-                android:id="@+id/activity_horizontal_linear_recycler_view_add_multiple_parents"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/add_multiple_parents"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
-
-            <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_modify_last_parent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -211,6 +196,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_add_multiple_parents"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/add_multiple_parents"/>
 
             <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_modify_two_children"
