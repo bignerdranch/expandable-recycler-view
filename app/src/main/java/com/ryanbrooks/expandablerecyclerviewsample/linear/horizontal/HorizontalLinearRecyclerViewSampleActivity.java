@@ -419,11 +419,15 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             HorizontalParent horizontalParent = mTestDataItemList.get(mTestDataItemList.size() - 1);
             List<HorizontalChild> childList = horizontalParent.getChildItemList();
             int childSize = childList.size();
-            if (childSize < 2) {
+            if (childSize < 1) {
                 return;
             }
 
             childList.remove(childSize - 1);
+            if (childSize < 2) {
+                mExpandableAdapter.notifyChildItemRemoved(mTestDataItemList.size() - 1, childSize - 1);
+                return;
+            }
             childList.remove(childSize - 2);
             mExpandableAdapter.notifyChildItemRangeRemoved(mTestDataItemList.size() - 1, childSize - 2, 2);
         }
@@ -432,14 +436,26 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private OnClickListener mModifyTwoChildrenClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (mTestDataItemList.size() < 1) {
+                return;
+            }
+
             int parentNumber = mTestDataItemList.size() - 1;
             HorizontalParent horizontalParent = mTestDataItemList.get(parentNumber);
             List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            if (childList.size() == 0) {
+                return;
+            }
 
             int childNumber = horizontalParent.getChildItemList().size() - 1;
             HorizontalChild horizontalChild = new HorizontalChild();
             horizontalChild.setChildText(getString(R.string.modified_child_text, childNumber));
             childList.set(childNumber, horizontalChild);
+
+            if (childList.size() == 1) {
+                mExpandableAdapter.notifyChildItemChanged(parentNumber, childNumber);
+                return;
+            }
 
             childNumber = horizontalParent.getChildItemList().size() - 2;
             horizontalChild = new HorizontalChild();
