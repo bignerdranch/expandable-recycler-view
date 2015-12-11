@@ -844,7 +844,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * Notify any registered observers that the ParentListItem and it's child list items reflected at
-     * <code>fromParentPosition</code> has been moved to <code>toParentPosition</code>.
+     * {@code fromParentPosition} has been moved to {@code toParentPosition}.
      *
      * <p>This is a structural change event. Representations of other existing items in the
      * data set are still considered up to date and will not be rebound, though their
@@ -1068,6 +1068,30 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
             }
             notifyItemRangeChanged(listChildPosition, itemCount);
+        }
+    }
+
+    /**
+     * Notify any registered observers that the child list item contained within the ParentListItem
+     * at {@code parentPosition} has moved from {@code fromChildPosition} to {@code toChildPosition}.
+     *
+     * <p>This is a structural change event. Representations of other existing items in the
+     * data set are still considered up to date and will not be rebound, though their
+     * positions may be altered.</p>
+     *
+     * @param parentPosition Position of the ParentListItem who has a child that has moved
+     * @param fromChildPosition Previous position of the child list item
+     * @param toChildPosition New position of the child list item
+     */
+    public void notifyChildItemMoved(int parentPosition, int fromChildPosition, int toChildPosition) {
+        ParentListItem parentListItem = mParentItemList.get(parentPosition);
+        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+        parentWrapper.setParentListItem(parentListItem);
+        if (parentWrapper.isExpanded()) {
+            Object fromChild = mItemList.remove(parentWrapperIndex + 1 + fromChildPosition);
+            mItemList.add(parentWrapperIndex + 1 + toChildPosition, fromChild);
+            notifyItemMoved(parentWrapperIndex + 1 + fromChildPosition, parentWrapperIndex + 1 + toChildPosition);
         }
     }
 
