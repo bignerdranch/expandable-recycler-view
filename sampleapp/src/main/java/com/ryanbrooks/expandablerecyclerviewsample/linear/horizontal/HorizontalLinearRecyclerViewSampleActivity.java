@@ -26,7 +26,11 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private static final int EXPAND_COLLAPSE_SINGLE_PARENT_INDEX = 2;
     private static final String SAVED_TEST_DATA_ITEM_LIST = "HorizontalLinearRecyclerViewSampleActivity.SavedTestDataItemList";
 
-    private Toolbar mToolbar;
+    private RecyclerView mRecyclerView;
+    private Button mExpandParentTwoButton;
+    private Button mCollapseParentTwoButton;
+    private Button mExpandAllButton;
+    private Button mCollapseAllButton;
 
     private ArrayList<HorizontalParent> mTestDataItemList;
 
@@ -42,10 +46,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_horizontal_linear_recycler_view_sample);
 
-        mToolbar = (Toolbar) findViewById(R.id.activity_horizontal_linear_recycler_view_toolbar);
-        setupToolbar();
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.activity_horizontal_linear_recycler_view_sample_recyclerView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.activity_horizontal_linear_recycler_view_sample_recyclerView);
 
         Button expandParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_parent_two_button);
         expandParentTwoButton.setOnClickListener(mExpandParentTwoClickListener);
@@ -125,9 +126,9 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         mExpandableAdapter.setExpandCollapseListener(this);
 
         // Set the RecyclerView's adapter to the ExpandableAdapter we just created
-        recyclerView.setAdapter(mExpandableAdapter);
+        mRecyclerView.setAdapter(mExpandableAdapter);
         // Set the layout manager to a LinearLayout manager for vertical list
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
     /**

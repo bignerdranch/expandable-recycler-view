@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_vertical_linear_recycler_view_sample_toolbar"
-    android:layout_height="?attr/actionBarSize"
-    android:layout_width="match_parent"
-    android:background="@color/primary_green" />

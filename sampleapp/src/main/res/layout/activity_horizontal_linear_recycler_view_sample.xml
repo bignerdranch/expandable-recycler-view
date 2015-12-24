@@ -8,9 +8,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar_sample"
-                 android:id="@+id/activity_horizontal_linear_recycler_view_toolbar"/>
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/activity_horizontal_linear_recycler_view_sample_recyclerView"
             android:layout_width="match_parent"
@@ -41,8 +38,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_expand_all_button"
@@ -63,8 +60,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_add_to_end_button"
@@ -85,8 +82,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_add_to_second_button"
@@ -107,8 +104,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_add_child"
@@ -129,8 +126,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_modify_last_parent"
@@ -216,8 +213,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_remove_two_parents"
