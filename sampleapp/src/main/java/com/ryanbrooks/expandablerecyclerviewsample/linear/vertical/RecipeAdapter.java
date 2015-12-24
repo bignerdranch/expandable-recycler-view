@@ -12,11 +12,11 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 import java.util.List;
 
-public class VerticalExpandableAdapter extends ExpandableRecyclerAdapter<RecipeViewHolder, IngredientViewHolder> {
+public class RecipeAdapter extends ExpandableRecyclerAdapter<RecipeViewHolder, IngredientViewHolder> {
 
     private LayoutInflater mInflator;
 
-    public VerticalExpandableAdapter(Context context, @NonNull List<? extends ParentListItem> parentItemList) {
+    public RecipeAdapter(Context context, @NonNull List<? extends ParentListItem> parentItemList) {
         super(parentItemList);
         mInflator = LayoutInflater.from(context);
     }

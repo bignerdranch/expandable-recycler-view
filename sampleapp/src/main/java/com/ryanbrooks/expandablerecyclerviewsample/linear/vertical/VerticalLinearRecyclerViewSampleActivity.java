@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
 
-    private VerticalExpandableAdapter mAdapter;
+    private RecipeAdapter mAdapter;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, VerticalLinearRecyclerViewSampleActivity.class);
@@ -46,7 +46,7 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
         final List<Recipe> recipes = Arrays.asList(taco, quesadilla);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        mAdapter = new VerticalExpandableAdapter(this, recipes);
+        mAdapter = new RecipeAdapter(this, recipes);
         mAdapter.setExpandCollapseListener(new ExpandableRecyclerAdapter.ExpandCollapseListener() {
             @Override
             public void onListItemExpanded(int position) {
