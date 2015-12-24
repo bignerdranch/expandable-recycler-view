@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
@@ -41,8 +42,8 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
         Ingredient tortilla = new Ingredient("tortilla");
 
         Recipe taco = new Recipe("taco", Arrays.asList(beef, cheese, salsa, tortilla));
-        Recipe quesidilla = new Recipe("quesidilla", Arrays.asList(cheese, tortilla));
-        final List<Recipe> recipes = Arrays.asList(taco, quesidilla);
+        Recipe quesadilla = new Recipe("quesadilla", Arrays.asList(cheese, tortilla));
+        final List<Recipe> recipes = Arrays.asList(taco, quesadilla);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mAdapter = new VerticalExpandableAdapter(this, recipes);
@@ -50,13 +51,19 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
             @Override
             public void onListItemExpanded(int position) {
                 Recipe expandedRecipe = recipes.get(position);
-                // ...
+                Toast.makeText(VerticalLinearRecyclerViewSampleActivity.this,
+                        "expanded: " + expandedRecipe.getName(),
+                        Toast.LENGTH_SHORT)
+                        .show();
             }
 
             @Override
             public void onListItemCollapsed(int position) {
                 Recipe collapsedRecipe = recipes.get(position);
-                // ...
+                Toast.makeText(VerticalLinearRecyclerViewSampleActivity.this,
+                        "collapsed: " + collapsedRecipe.getName(),
+                        Toast.LENGTH_SHORT)
+                        .show();
             }
         });
 
