@@ -889,10 +889,14 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
             // Add the parent and children at new position
             int toWrapperIndex = getParentWrapperIndex(toParentPosition);
-            ParentWrapper toParentWrapper = (ParentWrapper) mItemList.get(toWrapperIndex);
             int childOffset = 0;
-            if (toParentWrapper.isExpanded()) {
-                childOffset = toParentWrapper.getChildItemList().size();
+            if (toWrapperIndex != -1) {
+                ParentWrapper toParentWrapper = (ParentWrapper) mItemList.get(toWrapperIndex);
+                if (toParentWrapper.isExpanded()) {
+                    childOffset = toParentWrapper.getChildItemList().size();
+                }
+            } else {
+                toWrapperIndex = mItemList.size();
             }
             mItemList.add(toWrapperIndex + childOffset, fromParentWrapper);
             List<?> childItemList = fromParentWrapper.getChildItemList();

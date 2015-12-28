@@ -44,8 +44,8 @@
     <string name="modify_two_children">Modify two children from last parent</string>
     <string name="remove_two_parents">Remove last two Parents</string>
     <string name="modify_two_parents">Modify last two Parents</string>
-    <string name="parent_move">Move parent 1 to pos 3</string>
-    <string name="child_move">Move 1st child on 2nd parent to end</string>
+    <string name="parent_move">Move parent @ pos 1 to pos 3</string>
+    <string name="child_move">On Parent @ pos 1, move child from pos 0 to end</string>
 
     <!-- Sample Toolbar -->
     <string name="no_animation">No animation</string>
