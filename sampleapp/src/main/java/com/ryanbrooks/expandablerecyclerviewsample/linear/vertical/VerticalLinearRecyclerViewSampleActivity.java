@@ -40,10 +40,13 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
         Ingredient cheese = new Ingredient("cheese");
         Ingredient salsa = new Ingredient("salsa");
         Ingredient tortilla = new Ingredient("tortilla");
+        Ingredient ketchup = new Ingredient("ketchup");
+        Ingredient bun = new Ingredient("bun");
 
         Recipe taco = new Recipe("taco", Arrays.asList(beef, cheese, salsa, tortilla));
         Recipe quesadilla = new Recipe("quesadilla", Arrays.asList(cheese, tortilla));
-        final List<Recipe> recipes = Arrays.asList(taco, quesadilla);
+        Recipe burger = new Recipe("burger", Arrays.asList(beef, cheese, ketchup, bun));
+        final List<Recipe> recipes = Arrays.asList(taco, quesadilla, burger);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mAdapter = new RecipeAdapter(this, recipes);
