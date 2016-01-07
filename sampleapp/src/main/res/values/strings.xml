@@ -47,6 +47,11 @@
     <string name="parent_move">Move parent @ pos 1 to pos 3</string>
     <string name="child_move">On Parent @ pos 1, move child from pos 0 to end</string>
 
+
+    <string name="collapsed">collapsed: %s</string>
+    <string name="expanded">expanded: %s</string>
+
+
     <!-- Sample Toolbar -->
     <string name="no_animation">No animation</string>
     <string name="spinner_adapter_time_s">1 s</string>

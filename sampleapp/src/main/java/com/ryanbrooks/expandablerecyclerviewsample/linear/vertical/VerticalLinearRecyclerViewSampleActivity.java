@@ -51,8 +51,10 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
             @Override
             public void onListItemExpanded(int position) {
                 Recipe expandedRecipe = recipes.get(position);
+
+                String toastMsg = getResources().getString(R.string.expanded, expandedRecipe.getName());
                 Toast.makeText(VerticalLinearRecyclerViewSampleActivity.this,
-                        "expanded: " + expandedRecipe.getName(),
+                        toastMsg,
                         Toast.LENGTH_SHORT)
                         .show();
             }
@@ -60,8 +62,10 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
             @Override
             public void onListItemCollapsed(int position) {
                 Recipe collapsedRecipe = recipes.get(position);
+
+                String toastMsg = getResources().getString(R.string.collapsed, collapsedRecipe.getName());
                 Toast.makeText(VerticalLinearRecyclerViewSampleActivity.this,
-                        "collapsed: " + collapsedRecipe.getName(),
+                        toastMsg,
                         Toast.LENGTH_SHORT)
                         .show();
             }
