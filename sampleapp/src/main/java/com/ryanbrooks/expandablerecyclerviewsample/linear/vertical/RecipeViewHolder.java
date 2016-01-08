@@ -23,16 +23,6 @@ public class RecipeViewHolder extends ParentViewHolder {
         mRecipeTextView = (TextView) itemView.findViewById(R.id.recipe_textview);
 
         mArrowExpandImageView = (ImageView) itemView.findViewById(R.id.arrow_expand_imageview);
-        mArrowExpandImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isExpanded()) {
-                    collapseView();
-                } else {
-                    expandView();
-                }
-            }
-        });
     }
 
     public void bind(Recipe recipe) {
@@ -50,11 +40,6 @@ public class RecipeViewHolder extends ParentViewHolder {
                 mArrowExpandImageView.setRotation(INITIAL_POSITION);
             }
         }
-    }
-
-    @Override
-    public boolean shouldItemViewClickToggleExpansion() {
-        return false;
     }
 
     @Override
