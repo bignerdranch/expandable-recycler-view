@@ -805,6 +805,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * the number of children must stay the same.
      *
      * @param parentPositionStart Position of the item that has changed
+     * @param itemCount Number of ParentListItems changed in the dataset
      */
     public void notifyParentItemRangeChanged(int parentPositionStart, int itemCount) {
         int initialWrapperIndex = getParentWrapperIndex(parentPositionStart);
@@ -1048,7 +1049,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
     /**
      * Notify any registered observers that the ParentListItem at {@code parentPosition} has
-     * @{code itemCount} child Objects starting at {@code childPositionStart} that have changed.
+     * {@code itemCount} child Objects starting at {@code childPositionStart} that have changed.
      * <p>
      * This is an item change event, not a structural change event. It indicates that any
      * The ParentListItem at {@code childPositionStart} retains the same identity.
