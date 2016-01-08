@@ -37,6 +37,20 @@
     <string name="modify_last_child">Modify last Child</string>
     <string name="modified_parent_text">modified %1$d</string>
     <string name="modified_child_text">modified Child %1$d</string>
+    <string name="expand_range">Expand parents 4–6</string>
+    <string name="collapse_range">Collapse parents 2–5</string>
+    <string name="add_two_children">Add two children to last parent</string>
+    <string name="remove_two_children">Remove two children from last parent</string>
+    <string name="modify_two_children">Modify two children from last parent</string>
+    <string name="remove_two_parents">Remove last two Parents</string>
+    <string name="modify_two_parents">Modify last two Parents</string>
+    <string name="parent_move">Move parent @ pos 1 to pos 3</string>
+    <string name="child_move">On Parent @ pos 1, move child from pos 0 to end</string>
+
+
+    <string name="collapsed">collapsed: %s</string>
+    <string name="expanded">expanded: %s</string>
+
 
     <!-- Sample Toolbar -->
     <string name="no_animation">No animation</string>

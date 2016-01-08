@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,7 +24,6 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private static final int EXPAND_COLLAPSE_SINGLE_PARENT_INDEX = 2;
     private static final String SAVED_TEST_DATA_ITEM_LIST = "HorizontalLinearRecyclerViewSampleActivity.SavedTestDataItemList";
 
-    private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private Button mExpandParentTwoButton;
     private Button mCollapseParentTwoButton;
@@ -47,22 +44,19 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_horizontal_linear_recycler_view_sample);
 
-        mToolbar = (Toolbar) findViewById(R.id.activity_horizontal_linear_recycler_view_toolbar);
-        setupToolbar();
-
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_horizontal_linear_recycler_view_sample_recyclerView);
 
-        mExpandParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_parent_two_button);
-        mExpandParentTwoButton.setOnClickListener(mExpandParentTwoClickListener);
+        Button expandParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_parent_two_button);
+        expandParentTwoButton.setOnClickListener(mExpandParentTwoClickListener);
 
-        mCollapseParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_parent_two_button);
-        mCollapseParentTwoButton.setOnClickListener(mCollapseParentTwoClickListener);
+        Button collapseParentTwoButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_parent_two_button);
+        collapseParentTwoButton.setOnClickListener(mCollapseParentTwoClickListener);
 
-        mExpandAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_all_button);
-        mExpandAllButton.setOnClickListener(mExpandAllClickListener);
+        Button expandAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_all_button);
+        expandAllButton.setOnClickListener(mExpandAllClickListener);
 
-        mCollapseAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_all_button);
-        mCollapseAllButton.setOnClickListener(mCollapseAllClickListener);
+        Button collapseAllButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_all_button);
+        collapseAllButton.setOnClickListener(mCollapseAllClickListener);
 
         Button addToEndButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_add_to_end_button);
         addToEndButton.setOnClickListener(mAddToEndClickListener);
@@ -90,6 +84,33 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
         Button modifyLastChild = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_modify_last_child);
         modifyLastChild.setOnClickListener(mModifyLastChildClickListener);
+
+        Button expandRangeButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_expand_range);
+        expandRangeButton.setOnClickListener(mExpandRangeClickListener);
+
+        Button collapseRangeButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_collapse_range);
+        collapseRangeButton.setOnClickListener(mCollapseRangeClickListener);
+
+        Button addTwoChildren = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_add_two_children);
+        addTwoChildren.setOnClickListener(mAddTwoChildrenClickListener);
+
+        Button removeTwoChildren = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_remove_two_children);
+        removeTwoChildren.setOnClickListener(mRemoveTwoChildrenClickListener);
+
+        Button modifyTwoChildren = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_modify_two_children);
+        modifyTwoChildren.setOnClickListener(mModifyTwoChildrenClickListener);
+
+        Button removeTwoParents = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_remove_two_parents);
+        removeTwoParents.setOnClickListener(mRemoveTwoParentsClickListener);
+
+        Button modifyTwoParents = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_modify_two_parents);
+        modifyTwoParents.setOnClickListener(mModifyTwoParentsClickListener);
+
+        Button parentMoveButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_parent_move);
+        parentMoveButton.setOnClickListener(mParentMoveClickListener);
+
+        Button childMoveButton = (Button) findViewById(R.id.activity_horizontal_linear_recycler_view_child_move);
+        childMoveButton.setOnClickListener(mChildMoveClickListener);
 
         // Create a new adapter with 20 test data items
         if (savedInstanceState == null) {
@@ -372,13 +393,185 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
-    private void setupToolbar() {
-        setSupportActionBar(mToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+    private OnClickListener mExpandRangeClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.expandParentRange(4, 3);
         }
-    }
+    };
+
+    private OnClickListener mCollapseRangeClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mExpandableAdapter.collapseParentRange(2, 4);
+        }
+    };
+
+    private OnClickListener mAddTwoChildrenClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            HorizontalParent horizontalParent = mTestDataItemList.get(mTestDataItemList.size() - 1);
+            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+
+            HorizontalChild horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.added_child, childList.size()));
+            childList.add(horizontalChild);
+
+            horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.added_child, childList.size()));
+            childList.add(horizontalChild);
+            mExpandableAdapter.notifyChildItemRangeInserted(mTestDataItemList.size() - 1, childList.size() - 2, 2);
+        }
+    };
+
+    private OnClickListener mRemoveTwoChildrenClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            HorizontalParent horizontalParent = mTestDataItemList.get(mTestDataItemList.size() - 1);
+            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            int childSize = childList.size();
+            if (childSize < 1) {
+                return;
+            }
+
+            childList.remove(childSize - 1);
+            if (childSize < 2) {
+                mExpandableAdapter.notifyChildItemRemoved(mTestDataItemList.size() - 1, childSize - 1);
+                return;
+            }
+            childList.remove(childSize - 2);
+            mExpandableAdapter.notifyChildItemRangeRemoved(mTestDataItemList.size() - 1, childSize - 2, 2);
+        }
+    };
+
+    private OnClickListener mModifyTwoChildrenClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mTestDataItemList.size() < 1) {
+                return;
+            }
+
+            int parentNumber = mTestDataItemList.size() - 1;
+            HorizontalParent horizontalParent = mTestDataItemList.get(parentNumber);
+            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            if (childList.size() == 0) {
+                return;
+            }
+
+            int childNumber = horizontalParent.getChildItemList().size() - 1;
+            HorizontalChild horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.modified_child_text, childNumber));
+            childList.set(childNumber, horizontalChild);
+
+            if (childList.size() == 1) {
+                mExpandableAdapter.notifyChildItemChanged(parentNumber, childNumber);
+                return;
+            }
+
+            childNumber = horizontalParent.getChildItemList().size() - 2;
+            horizontalChild = new HorizontalChild();
+            horizontalChild.setChildText(getString(R.string.modified_child_text, childNumber));
+            childList.set(childNumber, horizontalChild);
+
+            mExpandableAdapter.notifyChildItemRangeChanged(parentNumber, childNumber, 2);
+        }
+    };
+
+    private OnClickListener mRemoveTwoParentsClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mTestDataItemList.size() < 1) {
+                return;
+            }
+
+            mTestDataItemList.remove(mTestDataItemList.size() - 1);
+            if (mTestDataItemList.size() < 1) {
+                mExpandableAdapter.notifyParentItemRemoved(mTestDataItemList.size());
+                return;
+            }
+            mTestDataItemList.remove(mTestDataItemList.size() - 1);
+
+            mExpandableAdapter.notifyParentItemRangeRemoved(mTestDataItemList.size(), 2);
+        }
+    };
+
+    private OnClickListener mModifyTwoParentsClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mTestDataItemList.size() < 1) {
+                return;
+            }
+
+            int parentNumber = mTestDataItemList.size() - 1;
+            HorizontalParent horizontalParent = mTestDataItemList.get(parentNumber);
+            HorizontalParent newHorizontalParent = new HorizontalParent();
+            newHorizontalParent.setParentText(getString(R.string.modified_parent_text, parentNumber));
+            newHorizontalParent.setParentNumber(parentNumber);
+            int childSize = horizontalParent.getChildItemList().size();
+            List<HorizontalChild> childItemList = new ArrayList<>();
+            for (int i = 0; i < childSize; i++) {
+                HorizontalChild horizontalChild = new HorizontalChild();
+                horizontalChild.setChildText(getString(R.string.modified_child_text, i));
+                childItemList.add(horizontalChild);
+            }
+            newHorizontalParent.setChildItemList(childItemList);
+            mTestDataItemList.set(parentNumber, newHorizontalParent);
+            if (mTestDataItemList.size() < 2) {
+                mExpandableAdapter.notifyParentItemChanged(parentNumber);
+                return;
+            }
+
+
+            parentNumber = mTestDataItemList.size() - 2;
+            horizontalParent = mTestDataItemList.get(parentNumber);
+            newHorizontalParent = new HorizontalParent();
+            newHorizontalParent.setParentText(getString(R.string.modified_parent_text, parentNumber));
+            newHorizontalParent.setParentNumber(parentNumber);
+            childSize = horizontalParent.getChildItemList().size();
+            childItemList = new ArrayList<>();
+            for (int i = 0; i < childSize; i++) {
+                HorizontalChild horizontalChild = new HorizontalChild();
+                horizontalChild.setChildText(getString(R.string.modified_child_text, i));
+                childItemList.add(horizontalChild);
+            }
+            newHorizontalParent.setChildItemList(childItemList);
+            mTestDataItemList.set(parentNumber, newHorizontalParent);
+            mExpandableAdapter.notifyParentItemRangeChanged(parentNumber, 2);
+        }
+    };
+
+    private OnClickListener mParentMoveClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mTestDataItemList.size() < 4) {
+                return;
+            }
+
+            HorizontalParent horizontalParent = mTestDataItemList.remove(1);
+            mTestDataItemList.add(3, horizontalParent);
+            mExpandableAdapter.notifyParentItemMoved(1, 3);
+        }
+    };
+
+    private OnClickListener mChildMoveClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mTestDataItemList.size() < 2) {
+                return;
+            }
+
+            HorizontalParent horizontalParent = mTestDataItemList.get(1);
+            if (horizontalParent.getChildItemList().size() < 2) {
+                return;
+            }
+            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            HorizontalChild child = childList.remove(0);
+            childList.add(childList.size(), child);
+            mExpandableAdapter.notifyChildItemMoved(1, 0, childList.size() - 1);
+
+        }
+    };
+
 
     /**
      * Method to set up test data used in the RecyclerView.

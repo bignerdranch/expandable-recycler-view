@@ -9,9 +9,9 @@
 ##Project Setup
 **Gradle**
 
-The [latest release](https://github.com/bignerdranch/expandable-recycler-view/releases/tag/v2.0.4) can be used by adding the following to your app's build.gradle:
+The [latest release](https://github.com/bignerdranch/expandable-recycler-view/releases/tag/v2.1.0) can be used by adding the following to your app's build.gradle:
 ```gradle
-compile 'com.bignerdranch.android:expandablerecyclerview:2.0.4'
+compile 'com.bignerdranch.android:expandablerecyclerview:2.1.0'
 ```
 
 ## Overview
@@ -119,14 +119,21 @@ To save expanded/collapsed states, inside `#onSaveInstanceState(Bundle)` of your
  Instead we provide a set of notify methods to give you the ability to inform the adapter of changes to your list of `ParentListItem`s. They are:
  ```java
  // Parent Changes
- notifyParentItemInserted(int parentPosition)}
- notifyParentItemRemoved(int parentPosition)}
- notifyParentItemChanged(int parentPosition)}
- notifyParentItemRangeInserted(int parentPositionStart, int itemCount)}
+ notifyParentItemInserted(int parentPosition)
+ notifyParentItemRemoved(int parentPosition)
+ notifyParentItemChanged(int parentPosition)
+ notifyParentItemMoved(int fromParentPosition, int toParentPosition)
+ notifyParentItemRangeInserted(int parentPositionStart, int itemCount)
+ notifyParentItemRangeRemoved(int parentPositionStart, int itemCount)
+ notifyParentItemRangeChanged(int parentPositionStart, int itemCount)
  // Child Changes
- notifyChildItemInserted(int parentPosition, int childPosition)}
- notifyChildItemRemoved(int parentPosition, int childPosition)}
- notifyChildItemChanged(int parentPosition, int childPosition)}
+ notifyChildItemInserted(int parentPosition, int childPosition)
+ notifyChildItemRemoved(int parentPosition, int childPosition)
+ notifyChildItemChanged(int parentPosition, int childPosition)
+ notifyChildItemMoved(int parentPosition, int fromChildPosition, int toChildPosition)
+ notifyChildItemRangeInserted(int parentPosition, int childPositionStart, int itemCount)
+ notifyChildItemRangeRemoved(int parentPosition, int childPositionStart, int itemCount)
+ notifyChildItemRangeChanged(int parentPosition, int childPositionStart, int itemCount)
  ```
 
  `HorizontalLinearRecyclerViewSampleActivity` has examples of these methods in action.

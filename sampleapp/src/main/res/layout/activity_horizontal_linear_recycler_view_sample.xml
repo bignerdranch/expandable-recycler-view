@@ -8,9 +8,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar_sample"
-                 android:id="@+id/activity_horizontal_linear_recycler_view_toolbar"/>
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/activity_horizontal_linear_recycler_view_sample_recyclerView"
             android:layout_width="match_parent"
@@ -41,8 +38,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_expand_all_button"
@@ -63,8 +60,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_add_to_end_button"
@@ -85,8 +82,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_add_to_second_button"
@@ -107,8 +104,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_add_child"
@@ -129,23 +126,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
-
-            <Button
-                android:id="@+id/activity_horizontal_linear_recycler_view_add_multiple_parents"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/add_multiple_parents"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/margin_medium">
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/activity_horizontal_linear_recycler_view_modify_last_parent"
@@ -161,7 +143,119 @@
                 android:text="@string/modify_last_child"/>
 
         </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_expand_range"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/expand_range"/>
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_collapse_range"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/collapse_range"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_add_two_children"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/add_two_children"/>
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_remove_two_children"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/remove_two_children"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_add_multiple_parents"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/add_multiple_parents"/>
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_modify_two_children"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/modify_two_children"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_remove_two_parents"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/remove_two_parents"/>
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_modify_two_parents"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/modify_two_parents"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_medium">
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_parent_move"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/parent_move"/>
+
+            <Button
+                android:id="@+id/activity_horizontal_linear_recycler_view_child_move"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/child_move"/>
+
+        </LinearLayout>
 
     </LinearLayout>
+
+
 
 </ScrollView>

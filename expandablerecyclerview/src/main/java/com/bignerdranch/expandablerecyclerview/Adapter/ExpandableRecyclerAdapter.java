@@ -345,6 +345,19 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
+     * Expands all parents in a range of indices in the list of parents.
+     *
+     * @param startParentIndex The index at which to to start expanding parents
+     * @param parentCount The number of parents to expand
+     */
+    public void expandParentRange(int startParentIndex, int parentCount) {
+        int endParentIndex = startParentIndex + parentCount;
+        for (int i = startParentIndex; i < endParentIndex; i++) {
+            expandParent(i);
+        }
+    }
+
+    /**
      * Expands all parents in the list.
      */
     public void expandAllParents() {
@@ -386,6 +399,19 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
 
         collapseViews(parentWrapper, parentWrapperIndex);
+    }
+
+    /**
+     * Collapses all parents in a range of indices in the list of parents.
+     *
+     * @param startParentIndex The index at which to to start collapsing parents
+     * @param parentCount The number of parents to collapse
+     */
+    public void collapseParentRange(int startParentIndex, int parentCount) {
+        int endParentIndex = startParentIndex + parentCount;
+        for (int i = startParentIndex; i < endParentIndex; i++) {
+            collapseParent(i);
+        }
     }
 
     /**
@@ -474,7 +500,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @return The list item at the specified position
      */
     protected Object getListItem(int position) {
-        return mItemList.get(position);
+        boolean indexInRange = position >= 0 && position < mItemList.size();
+        if (indexInRange) {
+            return mItemList.get(position);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -540,8 +571,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 int childListItemCount = childItemList.size();
                 for (int i = 0; i < childListItemCount; i++) {
                     mItemList.add(parentIndex + i + 1, childItemList.get(i));
-                    notifyItemInserted(parentIndex + i + 1);
                 }
+
+                notifyItemRangeInserted(parentIndex + 1, childListItemCount);
             }
 
             if (expansionTriggeredByListItemClick && mExpandCollapseListener != null) {
@@ -567,10 +599,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
             List<?> childItemList = parentWrapper.getChildItemList();
             if (childItemList != null) {
-                for (int i = childItemList.size() - 1; i >= 0; i--) {
+                int childListItemCount = childItemList.size();
+                for (int i = childListItemCount - 1; i >= 0; i--) {
                     mItemList.remove(parentIndex + i + 1);
-                    notifyItemRemoved(parentIndex + i + 1);
                 }
+
+                notifyItemRangeRemoved(parentIndex + 1, childListItemCount);
             }
 
             if (collapseTriggeredByListItemClick && mExpandCollapseListener != null) {
@@ -698,18 +732,47 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *                       to list of ParentListItems only.
      */
     public void notifyParentItemRemoved(int parentPosition) {
-        int sizeChanged = 1;
         int wrapperIndex = getParentWrapperIndex(parentPosition);
-        ParentWrapper parentWrapper = (ParentWrapper) mItemList.remove(wrapperIndex);
-        if (parentWrapper.isExpanded()) {
-            int childListSize = parentWrapper.getChildItemList().size();
-            for (int i = 0; i < childListSize; i++) {
-                mItemList.remove(wrapperIndex);
-                sizeChanged++;
-            }
+        int sizeChanged = removeParentWrapper(wrapperIndex);
+
+        notifyItemRangeRemoved(wrapperIndex, sizeChanged);
+    }
+
+    /**
+     * Notify any registered observers that the {@code itemCount} ParentListItems previously located
+     * at {@code parentPositionStart} have been removed from the data set. The ParentListItems
+     * previously located at and after {@code parentPositionStart + itemCount} may now be found at
+     * {@code oldPosition - itemCount}.
+     * <p>
+     * This is a structural change event. Representations of other existing items in the
+     * data set are still considered up to date and will not be rebound, though their positions
+     * may be altered.
+     *
+     * @param parentPositionStart The previous position of the first ParentListItem that was
+     *                            removed, relative to list of ParentListItems only.
+     * @param itemCount Number of ParentListItems removed from the data set
+     */
+    public void notifyParentItemRangeRemoved(int parentPositionStart, int itemCount) {
+        int sizeChanged = 0;
+        int wrapperIndex = getParentWrapperIndex(parentPositionStart);
+        for (int i = 0; i < itemCount; i++) {
+            sizeChanged += removeParentWrapper(wrapperIndex);
         }
 
         notifyItemRangeRemoved(wrapperIndex, sizeChanged);
+    }
+
+    private int removeParentWrapper(int parentWrapperIndex) {
+        int sizeChanged = 1;
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.remove(parentWrapperIndex);
+        if (parentWrapper.isExpanded()) {
+            int childListSize = parentWrapper.getChildItemList().size();
+            for (int i = 0; i < childListSize; i++) {
+                mItemList.remove(parentWrapperIndex);
+                sizeChanged++;
+            }
+        }
+        return sizeChanged;
     }
 
     /**
@@ -726,6 +789,41 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public void notifyParentItemChanged(int parentPosition) {
         ParentListItem parentListItem = mParentItemList.get(parentPosition);
         int wrapperIndex = getParentWrapperIndex(parentPosition);
+        int sizeChanged = changeParentWrapper(wrapperIndex, parentListItem);
+
+        notifyItemRangeChanged(wrapperIndex, sizeChanged);
+    }
+
+    /**
+     * Notify any registered observers that the {@code itemCount} ParentListItems starting
+     * at {@code parentPositionStart} have changed. This will also trigger an item changed
+     * for children of the ParentList specified.
+     * <p>
+     * This is an item change event, not a structural change event. It indicates that any
+     * reflection of the data in the given position range is out of date and should be updated.
+     * The ParentListItems in the given range retain the same identity. This means
+     * the number of children must stay the same.
+     *
+     * @param parentPositionStart Position of the item that has changed
+     */
+    public void notifyParentItemRangeChanged(int parentPositionStart, int itemCount) {
+        int initialWrapperIndex = getParentWrapperIndex(parentPositionStart);
+
+        int wrapperIndex = initialWrapperIndex;
+        int sizeChanged = 0;
+        int changed;
+        ParentListItem parentListItem;
+        for (int j = 0; j < itemCount; j++) {
+            parentListItem = mParentItemList.get(parentPositionStart);
+            changed = changeParentWrapper(wrapperIndex, parentListItem);
+            sizeChanged += changed;
+            wrapperIndex += changed;
+            parentPositionStart++;
+        }
+        notifyItemRangeChanged(initialWrapperIndex, sizeChanged);
+    }
+
+    private int changeParentWrapper(int wrapperIndex, ParentListItem parentListItem) {
         ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(wrapperIndex);
         parentWrapper.setParentListItem(parentListItem);
         int sizeChanged = 1;
@@ -740,13 +838,78 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             }
         }
 
-        notifyItemRangeChanged(wrapperIndex, sizeChanged);
+        return sizeChanged;
+
+    }
+
+    /**
+     * Notify any registered observers that the ParentListItem and it's child list items reflected at
+     * {@code fromParentPosition} has been moved to {@code toParentPosition}.
+     *
+     * <p>This is a structural change event. Representations of other existing items in the
+     * data set are still considered up to date and will not be rebound, though their
+     * positions may be altered.</p>
+     *
+     * @param fromParentPosition Previous position of the ParentListItem, relative to list of
+     *                           ParentListItems only.
+     * @param toParentPosition New position of the ParentListItem, relative to list of
+     *                         ParentListItems only.
+     */
+    public void notifyParentItemMoved(int fromParentPosition, int toParentPosition) {
+
+        int fromWrapperIndex = getParentWrapperIndex(fromParentPosition);
+        ParentWrapper fromParentWrapper = (ParentWrapper) mItemList.get(fromWrapperIndex);
+
+        // If the parent is collapsed we can take advantage of notifyItemMoved otherwise
+        // we are forced to do a "manual" move by removing and then adding the parent + children
+        // (no notifyItemRangeMovedAvailable)
+        boolean isCollapsed = !fromParentWrapper.isExpanded();
+        boolean isExpandedNoChildren = !isCollapsed && (fromParentWrapper.getChildItemList().size() == 0);
+        if (isCollapsed || isExpandedNoChildren) {
+            int toWrapperIndex = getParentWrapperIndex(toParentPosition);
+            ParentWrapper toParentWrapper = (ParentWrapper) mItemList.get(toWrapperIndex);
+            mItemList.remove(fromWrapperIndex);
+            int childOffset = 0;
+            if (toParentWrapper.isExpanded()) {
+                childOffset = toParentWrapper.getChildItemList().size();
+            }
+            mItemList.add(toWrapperIndex + childOffset, fromParentWrapper);
+
+            notifyItemMoved(fromWrapperIndex, toWrapperIndex + childOffset);
+        } else {
+            // Remove the parent and children
+            int sizeChanged = 0;
+            int childListSize = fromParentWrapper.getChildItemList().size();
+            for (int i = 0; i < childListSize + 1; i++) {
+                mItemList.remove(fromWrapperIndex);
+                sizeChanged++;
+            }
+            notifyItemRangeRemoved(fromWrapperIndex, sizeChanged);
+
+
+            // Add the parent and children at new position
+            int toWrapperIndex = getParentWrapperIndex(toParentPosition);
+            int childOffset = 0;
+            if (toWrapperIndex != -1) {
+                ParentWrapper toParentWrapper = (ParentWrapper) mItemList.get(toWrapperIndex);
+                if (toParentWrapper.isExpanded()) {
+                    childOffset = toParentWrapper.getChildItemList().size();
+                }
+            } else {
+                toWrapperIndex = mItemList.size();
+            }
+            mItemList.add(toWrapperIndex + childOffset, fromParentWrapper);
+            List<?> childItemList = fromParentWrapper.getChildItemList();
+            sizeChanged = childItemList.size() + 1;
+            mItemList.addAll(toWrapperIndex + childOffset + 1, childItemList);
+            notifyItemRangeInserted(toWrapperIndex + childOffset, sizeChanged);
+        }
     }
 
     /**
      * Notify any registered observers that the ParentListItem reflected at {@code parentPosition}
-     * has a ChildItem that has been newly inserted at {@code childPosition}.
-     * The ChildItem previously at {@code childPosition} is now at
+     * has a child list item that has been newly inserted at {@code childPosition}.
+     * The child list item previously at {@code childPosition} is now at
      * position {@code childPosition + 1}.
      * <p>
      * This is a structural change event. Representations of other existing items in the
@@ -760,21 +923,55 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      *
      */
     public void notifyChildItemInserted(int parentPosition, int childPosition) {
-        ParentListItem parentListItem = mParentItemList.get(parentPosition);
-        Object child =  parentListItem.getChildItemList().get(childPosition);
-
         int parentWrapperIndex = getParentWrapperIndex(parentPosition);
         ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+
         if (parentWrapper.isExpanded()) {
+            ParentListItem parentListItem = mParentItemList.get(parentPosition);
+            Object child = parentListItem.getChildItemList().get(childPosition);
             mItemList.add(parentWrapperIndex + childPosition + 1, child);
             notifyItemInserted(parentWrapperIndex + childPosition + 1);
         }
     }
 
     /**
+     * Notify any registered observers that the ParentListItem reflected at {@code parentPosition}
+     * has {@code itemCount} child list items that have been newly inserted at {@code childPositionStart}.
+     * The child list item previously at {@code childPositionStart} and beyond are now at
+     * position {@code childPositionStart + itemCount}.
+     * <p>
+     * This is a structural change event. Representations of other existing items in the
+     * data set are still considered up to date and will not be rebound, though their
+     * positions may be altered.
+     *
+     * @param parentPosition Position of the ParentListItem which has been added a child, relative
+     *                       to list of ParentListItems only.
+     * @param childPositionStart Position of the first child object that has been inserted,
+     *                           relative to children of the ParentListItem specified by
+     *                           {@code parentPosition} only.
+     * @param itemCount number of children inserted
+     *
+     */
+    public void notifyChildItemRangeInserted(int parentPosition, int childPositionStart, int itemCount) {
+        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+
+        if (parentWrapper.isExpanded()) {
+            ParentListItem parentListItem = mParentItemList.get(parentPosition);
+            List<?> childList = parentListItem.getChildItemList();
+            Object child;
+            for (int i = 0; i < itemCount; i++) {
+                child = childList.get(childPositionStart + i);
+                mItemList.add(parentWrapperIndex + childPositionStart + i + 1, child);
+            }
+            notifyItemRangeInserted(parentWrapperIndex + childPositionStart + 1, itemCount);
+        }
+    }
+
+    /**
      * Notify any registered observers that the ParentListItem located at {@code parentPosition}
-     * has a ChildItem that has been removed from the data set, previously located at {@code childPosition}.
-     * The ChildItem previously located at and after {@code childPosition} may
+     * has a child list item that has been removed from the data set, previously located at {@code childPosition}.
+     * The child list item previously located at and after {@code childPosition} may
      * now be found at {@code childPosition - 1}.
      * <p>
      * This is a structural change event. Representations of other existing items in the
@@ -793,6 +990,35 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         if (parentWrapper.isExpanded()) {
             mItemList.remove(parentWrapperIndex + childPosition + 1);
             notifyItemRemoved(parentWrapperIndex + childPosition + 1);
+        }
+    }
+
+    /**
+     * Notify any registered observers that the ParentListItem located at {@code parentPosition}
+     * has {@code itemCount} child list items that have been removed from the data set, previously
+     * located at {@code childPositionStart} onwards. The child list item previously located at and
+     * after {@code childPositionStart} may now be found at {@code childPositionStart - itemCount}.
+     * <p>
+     * This is a structural change event. Representations of other existing items in the
+     * data set are still considered up to date and will not be rebound, though their positions
+     * may be altered.
+     *
+     * @param parentPosition Position of the ParentListItem which has a child removed from, relative
+     *                       to list of ParentListItems only.
+     * @param childPositionStart Position of the first child object that has been removed, relative
+     *                           to children of the ParentListItem specified by
+     *                           {@code parentPosition} only.
+     * @param itemCount number of children removed
+     */
+    public void notifyChildItemRangeRemoved(int parentPosition, int childPositionStart, int itemCount) {
+        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+
+        if (parentWrapper.isExpanded()) {
+            for (int i = 0; i < itemCount; i++) {
+                mItemList.remove(parentWrapperIndex + childPositionStart + 1);
+            }
+            notifyItemRangeRemoved(parentWrapperIndex + childPositionStart + 1, itemCount);
         }
     }
 
@@ -817,6 +1043,59 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             Object child = parentWrapper.getChildItemList().get(childPosition);
             mItemList.set(listChildPosition, child);
             notifyItemChanged(listChildPosition);
+        }
+    }
+
+    /**
+     * Notify any registered observers that the ParentListItem at {@code parentPosition} has
+     * @{code itemCount} child Objects starting at {@code childPositionStart} that have changed.
+     * <p>
+     * This is an item change event, not a structural change event. It indicates that any
+     * The ParentListItem at {@code childPositionStart} retains the same identity.
+     * reflection of the set of {@code itemCount} child objects starting at {@code childPositionStart}
+     * are out of date and should be updated.
+     *
+     * @param parentPosition Position of the ParentListItem who has a child that has changed
+     * @param childPositionStart Position of the first child object that has changed
+     * @param itemCount number of child objects changed
+     */
+    public void notifyChildItemRangeChanged(int parentPosition, int childPositionStart, int itemCount) {
+        ParentListItem parentListItem = mParentItemList.get(parentPosition);
+        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+        parentWrapper.setParentListItem(parentListItem);
+        if (parentWrapper.isExpanded()) {
+            int listChildPosition = parentWrapperIndex + childPositionStart + 1;
+            for (int i = 0; i < itemCount; i++) {
+                Object child = parentWrapper.getChildItemList().get(childPositionStart + i);
+                mItemList.set(listChildPosition + i, child);
+
+            }
+            notifyItemRangeChanged(listChildPosition, itemCount);
+        }
+    }
+
+    /**
+     * Notify any registered observers that the child list item contained within the ParentListItem
+     * at {@code parentPosition} has moved from {@code fromChildPosition} to {@code toChildPosition}.
+     *
+     * <p>This is a structural change event. Representations of other existing items in the
+     * data set are still considered up to date and will not be rebound, though their
+     * positions may be altered.</p>
+     *
+     * @param parentPosition Position of the ParentListItem who has a child that has moved
+     * @param fromChildPosition Previous position of the child list item
+     * @param toChildPosition New position of the child list item
+     */
+    public void notifyChildItemMoved(int parentPosition, int fromChildPosition, int toChildPosition) {
+        ParentListItem parentListItem = mParentItemList.get(parentPosition);
+        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
+        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+        parentWrapper.setParentListItem(parentListItem);
+        if (parentWrapper.isExpanded()) {
+            Object fromChild = mItemList.remove(parentWrapperIndex + 1 + fromChildPosition);
+            mItemList.add(parentWrapperIndex + 1 + toChildPosition, fromChild);
+            notifyItemMoved(parentWrapperIndex + 1 + fromChildPosition, parentWrapperIndex + 1 + toChildPosition);
         }
     }
 
