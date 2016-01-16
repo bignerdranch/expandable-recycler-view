@@ -214,6 +214,8 @@ mRecyclerView.setAdapter(adapter);
 #### Saving and Restoring Collapsed and Expanded States
 It's possible to save the expanded/collapsed state of the items in the RecyclerView across device configuration changes, low memory, or any time onSavedInstance state would be called.
 
+![rotation sample](rotation_sample.gif)
+
 To save expanded/collapsed states call `        ExpandableRecyclerAdapter.onSaveInstanceState(Bundle savedInstanceState)`. To restore that state call `ExpandableRecyclerAdapter.onRestoreInstanceState(Bundle savedInstanceState)`. 
 
  
