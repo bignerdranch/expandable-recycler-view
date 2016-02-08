@@ -208,8 +208,6 @@ adapter.setExpandCollapseListener(new ExpandableRecyclerAdapter.ExpandCollapseLi
 mRecyclerView.setAdapter(adapter);
 ```
 
-**TODO what does this mean? "Any expanded children before the item are not included in that position index."**
-
  
 #### Saving and Restoring Collapsed and Expanded States
 It's possible to save the expanded/collapsed state of the items in the RecyclerView across device configuration changes, low memory, or any time onSavedInstance state would be called.
