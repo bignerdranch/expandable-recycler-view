@@ -238,9 +238,6 @@ protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
     mAdapter.onRestoreInstanceState(savedInstanceState);
 }</code></pre>
 
-
-
-
                 <h3></h3>
                 
                 <p>During the life of the RecyclerView items may be added and removed from the list. Please note that the traditional notifyDataSetChanged() of RecyclerView.Adapter does not work as intended.</p>
@@ -274,8 +271,7 @@ notifyChildItemChanged(int parentPosition, int childPosition)</code></pre>
     &lt;version&gt;2.0.4&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
                 
-                <h2>
-                    <a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation</h2>
+                <h2><a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation</h2>
                 
                 <p>visit the <a href="/expandable-recycler-view/javadocs">JavaDocs</a></p>
                 
@@ -285,10 +281,14 @@ notifyChildItemChanged(int parentPosition, int childPosition)</code></pre>
                 
                 <p>If you have an idea for a feature enhancement or a bug fix, we'd love to know! We handle issue tracking using GitHub's issue system, so feel free to add your comment there. </p>
                 
-                <h3>
-                    <a id="updates-and-fixes" class="anchor" href="#updates-and-fixes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Updates and Fixes</h3>
+                <h3><a id="updates-and-fixes" class="anchor" href="#updates-and-fixes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Updates and Fixes</h3>
                 
-                <p>We also welcome all pull requests. Please open your pull request against master. We really love <a href="http://chris.beams.io/posts/git-commit/">good commit messages</a> and atomic commits.</p>
+                <p>We also welcome all pull requests. We really love <a href="http://chris.beams.io/posts/git-commit/">good commit messages</a> and atomic commits.</p>
+                
+                <p>The <i>dev</i> branch is used for future 2.X releases, so if you're adding a feature, we ask that you target the <i>dev</i> branch. If you have a bug fix, targeting <i>master</i> is your best bet. This way, we're flexible to pull in bug fixes as soon as possible.</p>
+                
+                
+                
                 
                 <h2>
                     <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
