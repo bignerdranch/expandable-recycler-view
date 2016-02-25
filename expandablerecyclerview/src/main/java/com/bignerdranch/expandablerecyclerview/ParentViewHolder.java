@@ -1,4 +1,4 @@
-package com.bignerdranch.expandablerecyclerview.ViewHolder;
+package com.bignerdranch.expandablerecyclerview;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,7 +19,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     private boolean mExpanded;
 
     /**
-     * Empowers {@link com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter}
+     * Empowers {@link com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter}
      * implementations to be notified of expand/collapse state change events.
      */
     public interface ParentListItemExpandCollapseListener {
@@ -92,7 +92,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
 
     /**
      * Getter for the {@link ParentListItemExpandCollapseListener} implemented in
-     * {@link com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter}.
+     * {@link com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter}.
      *
      * @return The {@link ParentListItemExpandCollapseListener} set in the {@link ParentViewHolder}
      */
@@ -102,7 +102,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
 
     /**
      * Setter for the {@link ParentListItemExpandCollapseListener} implemented in
-     * {@link com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter}.
+     * {@link com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter}.
      *
      * @param parentListItemExpandCollapseListener The {@link ParentListItemExpandCollapseListener} to set on the {@link ParentViewHolder}
      */

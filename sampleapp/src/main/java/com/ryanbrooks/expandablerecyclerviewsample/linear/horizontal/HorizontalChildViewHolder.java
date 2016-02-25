@@ -3,7 +3,7 @@ package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
+import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 /**

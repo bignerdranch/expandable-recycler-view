@@ -1,4 +1,4 @@
-package com.bignerdranch.expandablerecyclerview.Adapter;
+package com.bignerdranch.expandablerecyclerview;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;

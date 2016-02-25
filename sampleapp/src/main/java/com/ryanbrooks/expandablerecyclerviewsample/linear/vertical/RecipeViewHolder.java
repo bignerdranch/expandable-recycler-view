@@ -7,7 +7,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
+import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 public class RecipeViewHolder extends ParentViewHolder {
