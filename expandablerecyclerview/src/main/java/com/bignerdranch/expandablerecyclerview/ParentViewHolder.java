@@ -3,6 +3,9 @@ package com.bignerdranch.expandablerecyclerview;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
+
 
 /**
  * ViewHolder for a {@link com.bignerdranch.expandablerecyclerview.Model.ParentListItem}
@@ -17,6 +20,8 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
 
     private ParentListItemExpandCollapseListener mParentListItemExpandCollapseListener;
     private boolean mExpanded;
+    ParentWrapper mParentWrapper;
+    ExpandableRecyclerAdapter mExpandableAdapter;
 
     /**
      * Empowers {@link com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter}
@@ -47,6 +52,35 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     public ParentViewHolder(View itemView) {
         super(itemView);
         mExpanded = false;
+    }
+
+    /**
+     * @return the ParentListItem associated with this ViewHolder
+     */
+    public ParentListItem getParentListItem() {
+        if (mParentWrapper == null) {
+            return null;
+        }
+
+        return mParentWrapper.getParentListItem();
+    }
+
+    /**
+     *
+     * Returns the adapter position of the Parent associated with this ParentViewHolder
+     *
+     * @return The adapter position of the Parent if it still exists in the adapter.
+     * RecyclerView.NO_POSITION if item has been removed from the adapter,
+     * RecyclerView.Adapter.notifyDataSetChanged() has been called after the last
+     * layout pass or the ViewHolder has already been recycled.
+     */
+    public int getParentAdapterPosition() {
+        int adapterPosition = getAdapterPosition();
+        if (adapterPosition == RecyclerView.NO_POSITION) {
+            return adapterPosition;
+        }
+
+        return mExpandableAdapter.getNearestParentPosition(adapterPosition);
     }
 
     /**
