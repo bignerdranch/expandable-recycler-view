@@ -3,6 +3,7 @@ package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.RotateAnimation;
@@ -26,6 +27,7 @@ public class HorizontalParentViewHolder extends ParentViewHolder {
     private static final float PIVOT_VALUE = 0.5f;
     private static final long DEFAULT_ROTATE_DURATION_MS = 200;
     private static final boolean HONEYCOMB_AND_ABOVE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    private static final String TAG = "HorizontalParentVH";
 
     public TextView mNumberTextView;
     public TextView mDataTextView;
@@ -57,6 +59,7 @@ public class HorizontalParentViewHolder extends ParentViewHolder {
         itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Parent at " + getParentAdapterPosition() + " clicked, parent item is \"" + getParentListItem() + "\"");
                 Toast.makeText(context, "This sample shows how to make a row only expand upon clicking our custom arrow view", Toast.LENGTH_SHORT).show();
             }
         });
