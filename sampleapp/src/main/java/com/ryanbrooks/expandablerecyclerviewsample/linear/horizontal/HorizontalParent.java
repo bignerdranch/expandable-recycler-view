@@ -65,4 +65,9 @@ public class HorizontalParent implements ParentListItem, Serializable {
     public void setInitiallyExpanded(boolean initiallyExpanded) {
         mInitiallyExpanded = initiallyExpanded;
     }
+
+    @Override
+    public String toString() {
+        return mParentText;
+    }
 }

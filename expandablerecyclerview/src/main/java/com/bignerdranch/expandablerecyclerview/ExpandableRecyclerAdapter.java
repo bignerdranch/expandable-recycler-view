@@ -1,4 +1,4 @@
-package com.bignerdranch.expandablerecyclerview.Adapter;
+package com.bignerdranch.expandablerecyclerview;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,9 +107,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         if (viewType == TYPE_PARENT) {
             PVH pvh = onCreateParentViewHolder(viewGroup);
             pvh.setParentListItemExpandCollapseListener(this);
+            pvh.mExpandableAdapter = this;
             return pvh;
         } else if (viewType == TYPE_CHILD) {
-            return onCreateChildViewHolder(viewGroup);
+            CVH cvh = onCreateChildViewHolder(viewGroup);
+            cvh.mExpandableAdapter = this;
+            return cvh;
         } else {
             throw new IllegalStateException("Incorrect ViewType found");
         }
@@ -140,11 +141,14 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
             ParentWrapper parentWrapper = (ParentWrapper) listItem;
             parentViewHolder.setExpanded(parentWrapper.isExpanded());
+            parentViewHolder.mParentWrapper = parentWrapper;
             onBindParentViewHolder(parentViewHolder, position, parentWrapper.getParentListItem());
         } else if (listItem == null) {
             throw new IllegalStateException("Incorrect ViewHolder found");
         } else {
-            onBindChildViewHolder((CVH) holder, position, listItem);
+            CVH childViewHolder = (CVH) holder;
+            childViewHolder.mChildListItem = listItem;
+            onBindChildViewHolder(childViewHolder, position, listItem);
         }
     }
 
@@ -246,7 +250,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Implementation of {@link com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemExpanded(int)}.
+     * Implementation of {@link com.bignerdranch.expandablerecyclerview.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemExpanded(int)}.
      * <p>
      * Called when a {@link ParentListItem} is triggered to expand.
      *
@@ -261,7 +265,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Implementation of {@link com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemCollapsed(int)}.
+     * Implementation of {@link com.bignerdranch.expandablerecyclerview.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemCollapsed(int)}.
      * <p>
      * Called when a {@link ParentListItem} is triggered to collapse.
      *
@@ -577,8 +581,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             }
 
             if (expansionTriggeredByListItemClick && mExpandCollapseListener != null) {
-                int expandedCountBeforePosition = getExpandedItemCount(parentIndex);
-                mExpandCollapseListener.onListItemExpanded(parentIndex - expandedCountBeforePosition);
+                mExpandCollapseListener.onListItemExpanded(getNearestParentPosition(parentIndex));
             }
         }
     }
@@ -608,32 +611,52 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             }
 
             if (collapseTriggeredByListItemClick && mExpandCollapseListener != null) {
-                int expandedCountBeforePosition = getExpandedItemCount(parentIndex);
-                mExpandCollapseListener.onListItemCollapsed(parentIndex - expandedCountBeforePosition);
+                mExpandCollapseListener.onListItemCollapsed(getNearestParentPosition(parentIndex));
             }
         }
     }
 
     /**
-     * Gets the number of expanded child list items before the specified position.
+     * Given the index relative to the entire RecyclerView, returns the nearest
+     * ParentPosition without going past the given index.
      *
-     * @param position The index before which to return the number of expanded
-     *                 child list items
-     * @return The number of expanded child list items before the specified position
+     * If it is the index of a parent item, will return the corresponding parent position.
+     * If it is the index of a child item within the RV, will return the position of that childs parent.
      */
-    private int getExpandedItemCount(int position) {
-        if (position == 0) {
+    int getNearestParentPosition(int fullPosition) {
+        if (fullPosition == 0) {
             return 0;
         }
 
-        int expandedCount = 0;
-        for (int i = 0; i < position; i++) {
+        int parentCount = -1;
+        for (int i = 0; i <= fullPosition; i++) {
             Object listItem = getListItem(i);
-            if (!(listItem instanceof ParentWrapper)) {
-                expandedCount++;
+            if (listItem instanceof ParentWrapper) {
+                parentCount++;
             }
         }
-        return expandedCount;
+        return parentCount;
+    }
+
+    /**
+     * Given the index relative to the entire RecyclerView for a child item,
+     * returns the child position within the child list of the parent.
+     */
+    int getChildPosition(int fullPosition) {
+        if (fullPosition == 0) {
+            return 0;
+        }
+
+        int childCount = 0;
+        for (int i = 0; i < fullPosition; i++) {
+            Object listItem = getListItem(i);
+            if (listItem instanceof ParentWrapper) {
+                childCount = 0;
+            } else {
+                childCount++;
+            }
+        }
+        return childCount;
     }
 
     // endregion

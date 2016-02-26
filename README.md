@@ -8,25 +8,21 @@ A custom RecyclerView which allows for an expandable view to be attached to each
 
 For more information please see [the website](http://bignerdranch.github.io/expandable-recycler-view/).
 
-##Download
-
-[v2.1.1 AAR](http://repo1.maven.org/maven2/com/bignerdranch/android/expandablerecyclerview/2.1.1/expandablerecyclerview-2.1.1.aar)
-
 **Gradle**
+This version is still in development, feel free to test it out by adding the following to your app's `build.gradle`:
 
 ```
-compile 'com.bignerdranch.android:expandablerecyclerview:2.1.1'
+compile 'com.bignerdranch.android:expandablerecyclerview:3.0.0-SNAPSHOT'
 ```
 
-**Maven**
-
-```
-<dependency>
-  <groupId>com.bignerdranch.android</groupId>
-  <artifactId>expandablerecyclerview</artifactId>
-  <version>2.1.1</version>
-</dependency>
-```
+Add Sonatype's snapshots to your repositories closure in the root `build.gradle`:
+ ```gradle
+ allprojects {
+     repositories {
+         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+     }
+ }
+ ```
 
 ##License
 

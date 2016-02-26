@@ -23,4 +23,9 @@ public class HorizontalChild implements Serializable {
     public void setChildText(String childText) {
         mChildText = childText;
     }
+
+    @Override
+    public String toString() {
+        return mChildText;
+    }
 }

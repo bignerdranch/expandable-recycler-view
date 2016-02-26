@@ -1,3 +1,13 @@
+Version 3.0.0 SNAPSHOT
+----------------------------
+- Added ParentViewHolder methods:
+    - `getParentListItem()`
+    - `getParentAdapterPosition()`
+- Added ChildViewHolder methods:
+    - `getChildListItem()`
+    - `getParentAdapterPosition()`
+    - `getChildAdapterPosition()`
+
 Version 2.1.1 (2/26/16)
 ----------------------------
 - Updated Support Library dependencies

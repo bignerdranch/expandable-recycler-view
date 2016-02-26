@@ -1,9 +1,10 @@
 package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
+import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
 /**
@@ -13,6 +14,8 @@ import com.ryanbrooks.expandablerecyclerviewsample.R;
  * Must extend ChildViewHolder.
  */
 public class HorizontalChildViewHolder extends ChildViewHolder {
+
+    private static final String TAG = "HorizontalChildVH";
 
     public TextView mDataTextView;
 
@@ -25,6 +28,13 @@ public class HorizontalChildViewHolder extends ChildViewHolder {
         super(itemView);
 
         mDataTextView = (TextView) itemView.findViewById(R.id.list_item_horizontal_child_textView);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Child at " + getChildAdapterPosition() + ", with parent at " + getParentAdapterPosition()
+                        + " clicked, child item is \"" + getChildListItem() + "\"");
+            }
+        });
     }
 
     public void bind(String childText) {
