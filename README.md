@@ -10,12 +10,12 @@ For more information please see [the website](http://bignerdranch.github.io/expa
 
 ##Download
 
-[v2.0.4 AAR](http://repo1.maven.org/maven2/com/bignerdranch/android/expandablerecyclerview/2.0.4/expandablerecyclerview-2.0.4.aar)
+[v2.1.1 AAR](http://repo1.maven.org/maven2/com/bignerdranch/android/expandablerecyclerview/2.1.1/expandablerecyclerview-2.1.1.aar)
 
 **Gradle**
 
 ```
-compile 'com.bignerdranch.android:expandablerecyclerview:2.0.4'
+compile 'com.bignerdranch.android:expandablerecyclerview:2.1.1'
 ```
 
 **Maven**
@@ -24,7 +24,7 @@ compile 'com.bignerdranch.android:expandablerecyclerview:2.0.4'
 <dependency>
   <groupId>com.bignerdranch.android</groupId>
   <artifactId>expandablerecyclerview</artifactId>
-  <version>2.0.4</version>
+  <version>2.1.1</version>
 </dependency>
 ```
 
