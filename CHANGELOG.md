@@ -1,5 +1,7 @@
 Version 3.0.0 SNAPSHOT
 ----------------------------
+- `ParentViewHolder` package location modified from `com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter` to `com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter`
+- `ChildViewHolder` package location modified from `com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter` to `com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter`
 - Added ParentViewHolder methods:
     - `getParentListItem()`
     - `getParentAdapterPosition()`
