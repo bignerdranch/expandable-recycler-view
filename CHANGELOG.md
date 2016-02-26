@@ -1,3 +1,7 @@
+Version 2.1.1 (2/26/16)
+----------------------------
+- Updated Support Library dependencies
+
 Version 2.1.0 (1/8/16)
 ----------------------------
 - Improved expand/collapse performance
