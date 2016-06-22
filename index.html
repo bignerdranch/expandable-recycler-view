@@ -130,7 +130,7 @@
 }</code></pre>
                 
                 
-                <p>Finally, instantiate this adapter, passing in data, and hand to RecyclerView.</p>
+                <p>Finally, instantiate this adapter while passing in data, and hand it to RecyclerView. Make sure you give RecyclerView a LayoutManager:</p>
                 
 <pre></code>Ingredient beef = new Ingredient("beef");
 Ingredient cheese = new Ingredient("cheese");
@@ -143,7 +143,8 @@ List&lt;Recipe&gt; recipes = Arrays.asList(taco, quesadilla);
                     
 mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
 MyAdapter adapter = new MyAdapter(this, recipes);
-mRecyclerView.setAdapter(adapter);</code></pre>
+mRecyclerView.setAdapter(adapter);
+mRecyclerView.setLayoutManager(new LinearLayoutManager(this));</code></pre>
                 
                 <h3>Custom Expand/Collapse Button</h3>
                 
