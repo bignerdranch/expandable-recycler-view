@@ -5,7 +5,8 @@ script: ./gradlew clean build
 
 android:
   components:
-    - build-tools-23.0.1
+    - tools
+    - build-tools-23.0.3
     - android-23
     - extra-android-support
     - extra-google-m2repository
