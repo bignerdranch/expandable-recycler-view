@@ -1,6 +1,6 @@
 package com.ryanbrooks.expandablerecyclerviewsample.linear.vertical;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
 
 import java.util.List;
 

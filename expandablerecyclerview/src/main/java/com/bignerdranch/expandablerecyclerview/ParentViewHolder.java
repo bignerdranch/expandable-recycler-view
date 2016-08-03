@@ -3,12 +3,12 @@ package com.bignerdranch.expandablerecyclerview;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
-import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
+import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.model.ParentWrapper;
 
 
 /**
- * ViewHolder for a {@link com.bignerdranch.expandablerecyclerview.Model.ParentListItem}
+ * ViewHolder for a {@link com.bignerdranch.expandablerecyclerview.model.ParentListItem}
  * Keeps track of expanded state and holds callbacks which can be used to
  * trigger expansion-based events.
  *
@@ -92,7 +92,7 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     /**
-     * Returns expanded state for the {@link com.bignerdranch.expandablerecyclerview.Model.ParentListItem}
+     * Returns expanded state for the {@link com.bignerdranch.expandablerecyclerview.model.ParentListItem}
      * corresponding to this {@link ParentViewHolder}.
      *
      * @return true if expanded, false if not

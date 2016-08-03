@@ -1,4 +1,4 @@
-package com.bignerdranch.expandablerecyclerview.Model;
+package com.bignerdranch.expandablerecyclerview.model;
 
 import java.util.List;
 

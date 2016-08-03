@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
-import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
+import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.model.ParentWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

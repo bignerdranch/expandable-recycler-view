@@ -1,6 +1,6 @@
 package com.bignerdranch.android.criminalintent;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
 
 import java.util.Date;
 import java.util.List;
