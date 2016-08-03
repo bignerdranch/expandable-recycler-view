@@ -59,10 +59,10 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * parent view should be performed here.
      *
      * @param parentViewHolder the ViewHolder of the parent item created in OnCreateParentViewHolder
-     * @param position the position in the RecyclerView of the item
+     * @param parentPosition the position in the RecyclerView of the item
      */
     @Override
-    public void onBindParentViewHolder(HorizontalParentViewHolder parentViewHolder, int position, ParentListItem parentListItem) {
+    public void onBindParentViewHolder(HorizontalParentViewHolder parentViewHolder, int parentPosition, ParentListItem parentListItem) {
         HorizontalParent horizontalParent = (HorizontalParent) parentListItem;
         parentViewHolder.bind(horizontalParent.getParentNumber(), horizontalParent.getParentText());
     }
@@ -72,11 +72,27 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * child view should be performed here.
      *
      * @param childViewHolder the ViewHolder of the child item created in OnCreateChildViewHolder
-     * @param position the position in the RecyclerView of the item
+     * @param childPosition the position in the RecyclerView of the item
      */
     @Override
-    public void onBindChildViewHolder(HorizontalChildViewHolder childViewHolder, int position, Object childListItem) {
+    public void onBindChildViewHolder(HorizontalChildViewHolder childViewHolder, int parentPosition, int childPosition, Object childListItem) {
         HorizontalChild horizontalChild = (HorizontalChild) childListItem;
         childViewHolder.bind(horizontalChild.getChildText());
+    }
+
+
+    @Override
+    public int getChildItemViewType(int parentPosition, int childPosition) {
+        return 1;
+    }
+
+    @Override
+    public int getParentItemViewType(int parentPosition) {
+        return 2;
+    }
+
+    @Override
+    public boolean isParentViewType(int viewType) {
+        return viewType == 2;
     }
 }

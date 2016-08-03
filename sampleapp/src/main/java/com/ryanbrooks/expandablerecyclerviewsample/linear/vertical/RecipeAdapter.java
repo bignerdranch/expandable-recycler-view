@@ -34,14 +34,30 @@ public class RecipeAdapter extends ExpandableRecyclerAdapter<RecipeViewHolder, I
     }
 
     @Override
-    public void onBindParentViewHolder(RecipeViewHolder recipeViewHolder, int position, ParentListItem parentListItem) {
+    public void onBindParentViewHolder(RecipeViewHolder recipeViewHolder, int parentPosition, ParentListItem parentListItem) {
         Recipe recipe = (Recipe) parentListItem;
         recipeViewHolder.bind(recipe);
     }
 
     @Override
-    public void onBindChildViewHolder(IngredientViewHolder ingredientViewHolder, int position, Object childListItem) {
+    public void onBindChildViewHolder(IngredientViewHolder ingredientViewHolder, int parentPosition, int childPosition, Object childListItem) {
         Ingredient ingredient = (Ingredient) childListItem;
         ingredientViewHolder.bind(ingredient);
     }
+
+    @Override
+    public int getChildItemViewType(int parentPosition, int childPosition) {
+        return 1;
+    }
+
+    @Override
+    public int getParentItemViewType(int parentPosition) {
+        return 2;
+    }
+
+    @Override
+    public boolean isParentViewType(int viewType) {
+        return viewType == 2;
+    }
+
 }
