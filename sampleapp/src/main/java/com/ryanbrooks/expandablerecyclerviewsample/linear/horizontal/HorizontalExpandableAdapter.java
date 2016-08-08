@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bignerdranch.expandablerecyclerview.SimpleExpandableRecyclerAdapter;
+import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * An example custom implementation of the ExpandableRecyclerAdapter.
  */
-public class HorizontalExpandableAdapter extends SimpleExpandableRecyclerAdapter<HorizontalParentViewHolder, HorizontalChildViewHolder> {
+public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<HorizontalParentViewHolder, HorizontalChildViewHolder> {
 
     private LayoutInflater mInflater;
 

@@ -5,13 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bignerdranch.expandablerecyclerview.SimpleExpandableRecyclerAdapter;
+import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
 
 import java.util.List;
 
 
-public class CrimeExpandableAdapter extends SimpleExpandableRecyclerAdapter<CrimeParentViewHolder, CrimeChildViewHolder> {
+public class CrimeExpandableAdapter extends ExpandableRecyclerAdapter<CrimeParentViewHolder, CrimeChildViewHolder> {
 
     private LayoutInflater mInflater;
 

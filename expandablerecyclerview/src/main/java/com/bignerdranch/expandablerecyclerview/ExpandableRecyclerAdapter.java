@@ -35,7 +35,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentViewHolder.ParentListItemExpandCollapseListener {
 
     private static final String EXPANDED_STATE_MAP = "ExpandableRecyclerAdapter.ExpandedStateMap";
-
+    /** Default ViewType for parent rows */
+    public static final int TYPE_PARENT = 0;
+    /** Default ViewType for children rows */
+    public static final int TYPE_CHILD = 1;
+    /** Start of user-defined view types */
+    public static final int TYPE_FIRST_USER = 2;
 
     /**
      * A {@link List} of all currently expanded {@link ParentListItem} objects
@@ -209,11 +214,12 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Gets the view type of the item at the given position.
+     * For multiple view type support look at overriding {@link #getParentItemViewType(int)} and
+     * {@link #getChildItemViewType(int, int)}. Almost all cases should override those instead
+     * of this method.
      *
      * @param position The index in the list to get the view type of
-     * @return {@value #TYPE_PARENT} for {@link ParentListItem} and {@value #TYPE_CHILD}
-     *         for child list items
+     * @return Gets the view type of the item at the given position.
      * @throws IllegalStateException if the item at the given position in the list is null
      */
     @Override
@@ -228,9 +234,58 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         }
     }
 
-    public abstract int getChildItemViewType(int parentPosition, int childPosition);
-    public abstract int getParentItemViewType(int parentPosition);
-    public abstract boolean isParentViewType(int viewType);
+
+    /**
+     * Return the view type of the parent item at {@code parentPosition} for the purposes
+     * of view recycling.
+     * <p>
+     * The default implementation of this method returns {@link #TYPE_PARENT}, making the assumption of
+     * a single view type for the parent items in this adapter. Unlike ListView adapters, types need not
+     * be contiguous. Consider using id resources to uniquely identify item view types.
+     * <p>
+     * If you are overriding this method make sure to override {@link #isParentViewType(int)} as well.
+     * <p>
+     * Start your defined viewtypes at {@link #TYPE_FIRST_USER}
+     *
+     * @param parentPosition The index of the parent to query
+     * @return integer value identifying the type of the view needed to represent the item at
+     *                 {@code parentPosition}. Type codes need not be contiguous.
+     */
+    public int getParentItemViewType(int parentPosition) {
+        return TYPE_PARENT;
+    }
+
+
+    /**
+     * Return the view type of the child item at {@code parentPosition} contained within the parent
+     * at {@code parentPosition} for the purposes of view recycling.
+     * <p>
+     * The default implementation of this method returns {@link #TYPE_CHILD}, making the assumption of
+     * a single view type for the child items in this adapter. Unlike ListView adapters, types need not
+     * be contiguous. Consider using id resources to uniquely identify item view types.
+     * <p>
+     * Start your defined viewtypes at {@link #TYPE_FIRST_USER}
+     *
+     * @param parentPosition The index of the parent continaing the child to query
+     * @param childPosition The index of the child within the parent to query
+     * @return integer value identifying the type of the view needed to represent the item at
+     *                 {@code parentPosition}. Type codes need not be contiguous.
+     */
+    public int getChildItemViewType(int parentPosition, int childPosition) {
+        return TYPE_CHILD;
+    }
+
+    /**
+     * Used to determine whether a viewType is that of a parent or not, for ViewHolder creation purposes.
+     * <p>
+     * Only override if {@link #getParentItemViewType(int)} is being overriden
+     *
+     * @param viewType the viewType identifier in question
+     * @return whether the given viewType belongs to a parent view
+     */
+    public boolean isParentViewType(int viewType) {
+        return viewType == TYPE_PARENT;
+    }
 
     /**
      * Gets the list of ParentItems that is backing this adapter.
