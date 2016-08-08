@@ -14,22 +14,47 @@ import java.util.List;
 
 public class RecipeAdapter extends ExpandableRecyclerAdapter<RecipeViewHolder, IngredientViewHolder> {
 
-    private LayoutInflater mInflator;
+    private static final int PARENT_VEGETARIAN = 0;
+    private static final int PARENT_NORMAL = 1;
+    private static final int CHILD_VEGETARIAN = 2;
+    private static final int CHILD_NORMAL = 3;
 
-    public RecipeAdapter(Context context, @NonNull List<? extends ParentListItem> parentItemList) {
-        super(parentItemList);
+    private LayoutInflater mInflator;
+    private List<Recipe> mRecipeList;
+
+    public RecipeAdapter(Context context, @NonNull List<Recipe> recipeList) {
+        super(recipeList);
+        mRecipeList = recipeList;
         mInflator = LayoutInflater.from(context);
     }
 
     @Override
-    public RecipeViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup) {
-        View recipeView = mInflator.inflate(R.layout.recipe_view, parentViewGroup, false);
+    public RecipeViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup, int viewType) {
+        View recipeView;
+        switch (viewType) {
+            default:
+            case PARENT_NORMAL:
+                recipeView = mInflator.inflate(R.layout.recipe_view, parentViewGroup, false);
+                break;
+            case PARENT_VEGETARIAN:
+                recipeView = mInflator.inflate(R.layout.vegetarian_recipe_view, parentViewGroup, false);
+                break;
+        }
         return new RecipeViewHolder(recipeView);
     }
 
     @Override
-    public IngredientViewHolder onCreateChildViewHolder(ViewGroup childViewGroup) {
-        View ingredientView = mInflator.inflate(R.layout.ingredient_view, childViewGroup, false);
+    public IngredientViewHolder onCreateChildViewHolder(ViewGroup childViewGroup, int viewType) {
+        View ingredientView;
+        switch (viewType) {
+            default:
+            case CHILD_NORMAL:
+                ingredientView = mInflator.inflate(R.layout.ingredient_view, childViewGroup, false);
+                break;
+            case CHILD_VEGETARIAN:
+                ingredientView = mInflator.inflate(R.layout.vegetarian_ingredient_view, childViewGroup, false);
+                break;
+        }
         return new IngredientViewHolder(ingredientView);
     }
 
@@ -46,18 +71,27 @@ public class RecipeAdapter extends ExpandableRecyclerAdapter<RecipeViewHolder, I
     }
 
     @Override
-    public int getChildItemViewType(int parentPosition, int childPosition) {
-        return 1;
+    public int getParentItemViewType(int parentPosition) {
+        if (mRecipeList.get(parentPosition).isVegetarian()) {
+            return PARENT_VEGETARIAN;
+        } else {
+            return PARENT_NORMAL;
+        }
     }
 
     @Override
-    public int getParentItemViewType(int parentPosition) {
-        return 2;
+    public int getChildItemViewType(int parentPosition, int childPosition) {
+        Ingredient ingredient = mRecipeList.get(parentPosition).getIngredient(childPosition);
+        if (ingredient.isVegetarian()) {
+            return CHILD_VEGETARIAN;
+        } else {
+            return CHILD_NORMAL;
+        }
     }
 
     @Override
     public boolean isParentViewType(int viewType) {
-        return viewType == 2;
+        return viewType == PARENT_VEGETARIAN || viewType == PARENT_NORMAL;
     }
 
 }
