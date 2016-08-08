@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
+import com.bignerdranch.expandablerecyclerview.SimpleExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
 import com.ryanbrooks.expandablerecyclerviewsample.R;
 
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * An example custom implementation of the ExpandableRecyclerAdapter.
  */
-public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<HorizontalParentViewHolder, HorizontalChildViewHolder> {
+public class HorizontalExpandableAdapter extends SimpleExpandableRecyclerAdapter<HorizontalParentViewHolder, HorizontalChildViewHolder> {
 
     private LayoutInflater mInflater;
 
@@ -36,7 +36,7 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * @return the user's custom parent ViewHolder that must extend ParentViewHolder
      */
     @Override
-    public HorizontalParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
+    public HorizontalParentViewHolder onCreateParentViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.list_item_parent_horizontal, parent, false);
         return new HorizontalParentViewHolder(view);
     }
@@ -49,7 +49,7 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * @return the user's custom parent ViewHolder that must extend ParentViewHolder
      */
     @Override
-    public HorizontalChildViewHolder onCreateChildViewHolder(ViewGroup parent) {
+    public HorizontalChildViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.list_item_child_horizontal, parent, false);
         return new HorizontalChildViewHolder(view);
     }
@@ -78,21 +78,5 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
     public void onBindChildViewHolder(HorizontalChildViewHolder childViewHolder, int parentPosition, int childPosition, Object childListItem) {
         HorizontalChild horizontalChild = (HorizontalChild) childListItem;
         childViewHolder.bind(horizontalChild.getChildText());
-    }
-
-
-    @Override
-    public int getChildItemViewType(int parentPosition, int childPosition) {
-        return 1;
-    }
-
-    @Override
-    public int getParentItemViewType(int parentPosition) {
-        return 2;
-    }
-
-    @Override
-    public boolean isParentViewType(int viewType) {
-        return viewType == 2;
     }
 }
