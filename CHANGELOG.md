@@ -1,5 +1,8 @@
 Version 3.0.0 SNAPSHOT
 ----------------------------
+- Added support for multiple view types within recyclerview
+    - `getParentItemViewType()`, `getChildItemViewType()`, and `isParentViewType()` added with default implementation for single view type
+    - Modified signatures of `onCreateParentViewHolder()` and `onCreateChildViewHolder()` to pass view type being created
 - `ParentViewHolder` package location modified from `com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter` to `com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter`
 - `ChildViewHolder` package location modified from `com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter` to `com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter`
 - Added ParentViewHolder methods:
