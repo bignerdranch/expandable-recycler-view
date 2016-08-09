@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample.linear.vertical;
+package com.bignerdranch.expandablerecyclerviewsample.linear.vertical;
 
 import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
 

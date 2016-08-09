@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
+package com.bignerdranch.expandablerecyclerviewsample.linear.horizontal;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
-import com.ryanbrooks.expandablerecyclerviewsample.R;
+import com.bignerdranch.expandablerecyclerviewsample.R;
 
 import java.util.List;
 

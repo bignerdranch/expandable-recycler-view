@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
+package com.bignerdranch.expandablerecyclerviewsample.linear.horizontal;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
-import com.ryanbrooks.expandablerecyclerviewsample.R;
+import com.bignerdranch.expandablerecyclerviewsample.R;
 
 /**
  * Custom parent ViewHolder. Any views should be found and set to public variables here to be

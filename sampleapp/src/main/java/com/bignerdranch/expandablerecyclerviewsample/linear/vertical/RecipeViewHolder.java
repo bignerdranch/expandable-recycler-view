@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample.linear.vertical;
+package com.bignerdranch.expandablerecyclerviewsample.linear.vertical;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
-import com.ryanbrooks.expandablerecyclerviewsample.R;
+import com.bignerdranch.expandablerecyclerviewsample.R;
 
 public class RecipeViewHolder extends ParentViewHolder {
 

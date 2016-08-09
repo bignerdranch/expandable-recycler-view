@@ -1,10 +1,10 @@
-package com.ryanbrooks.expandablerecyclerviewsample.linear.vertical;
+package com.bignerdranch.expandablerecyclerviewsample.linear.vertical;
 
 import android.view.View;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
-import com.ryanbrooks.expandablerecyclerviewsample.R;
+import com.bignerdranch.expandablerecyclerviewsample.R;
 
 public class IngredientViewHolder extends ChildViewHolder {
 

@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample;
+package com.bignerdranch.expandablerecyclerviewsample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,8 +6,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-import com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal.HorizontalLinearRecyclerViewSampleActivity;
-import com.ryanbrooks.expandablerecyclerviewsample.linear.vertical.VerticalLinearRecyclerViewSampleActivity;
+import com.bignerdranch.expandablerecyclerviewsample.R;
+import com.bignerdranch.expandablerecyclerviewsample.linear.horizontal.HorizontalLinearRecyclerViewSampleActivity;
+import com.bignerdranch.expandablerecyclerviewsample.linear.vertical.VerticalLinearRecyclerViewSampleActivity;
 
 /**
  * Main Activity that contains navigation for sample application.

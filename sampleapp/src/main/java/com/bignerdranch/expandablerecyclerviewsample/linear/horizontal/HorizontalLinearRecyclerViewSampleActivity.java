@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerviewsample.linear.horizontal;
+package com.bignerdranch.expandablerecyclerviewsample.linear.horizontal;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
-import com.ryanbrooks.expandablerecyclerviewsample.R;
+import com.bignerdranch.expandablerecyclerviewsample.R;
 
 import java.util.ArrayList;
 import java.util.List;
