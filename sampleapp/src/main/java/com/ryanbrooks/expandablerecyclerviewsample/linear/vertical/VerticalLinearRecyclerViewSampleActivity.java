@@ -36,12 +36,12 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view_sample);
 
-        Ingredient beef = new Ingredient("beef");
-        Ingredient cheese = new Ingredient("cheese");
-        Ingredient salsa = new Ingredient("salsa");
-        Ingredient tortilla = new Ingredient("tortilla");
-        Ingredient ketchup = new Ingredient("ketchup");
-        Ingredient bun = new Ingredient("bun");
+        Ingredient beef = new Ingredient("beef", false);
+        Ingredient cheese = new Ingredient("cheese", true);
+        Ingredient salsa = new Ingredient("salsa", true);
+        Ingredient tortilla = new Ingredient("tortilla", true);
+        Ingredient ketchup = new Ingredient("ketchup", true);
+        Ingredient bun = new Ingredient("bun", true);
 
         Recipe taco = new Recipe("taco", Arrays.asList(beef, cheese, salsa, tortilla));
         Recipe quesadilla = new Recipe("quesadilla", Arrays.asList(cheese, tortilla));

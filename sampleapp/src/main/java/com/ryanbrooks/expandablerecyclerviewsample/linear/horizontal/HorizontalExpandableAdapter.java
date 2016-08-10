@@ -36,7 +36,7 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * @return the user's custom parent ViewHolder that must extend ParentViewHolder
      */
     @Override
-    public HorizontalParentViewHolder onCreateParentViewHolder(ViewGroup parent) {
+    public HorizontalParentViewHolder onCreateParentViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.list_item_parent_horizontal, parent, false);
         return new HorizontalParentViewHolder(view);
     }
@@ -49,7 +49,7 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * @return the user's custom parent ViewHolder that must extend ParentViewHolder
      */
     @Override
-    public HorizontalChildViewHolder onCreateChildViewHolder(ViewGroup parent) {
+    public HorizontalChildViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.list_item_child_horizontal, parent, false);
         return new HorizontalChildViewHolder(view);
     }
@@ -59,10 +59,10 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * parent view should be performed here.
      *
      * @param parentViewHolder the ViewHolder of the parent item created in OnCreateParentViewHolder
-     * @param position the position in the RecyclerView of the item
+     * @param parentPosition the position in the RecyclerView of the item
      */
     @Override
-    public void onBindParentViewHolder(HorizontalParentViewHolder parentViewHolder, int position, ParentListItem parentListItem) {
+    public void onBindParentViewHolder(HorizontalParentViewHolder parentViewHolder, int parentPosition, ParentListItem parentListItem) {
         HorizontalParent horizontalParent = (HorizontalParent) parentListItem;
         parentViewHolder.bind(horizontalParent.getParentNumber(), horizontalParent.getParentText());
     }
@@ -72,10 +72,10 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * child view should be performed here.
      *
      * @param childViewHolder the ViewHolder of the child item created in OnCreateChildViewHolder
-     * @param position the position in the RecyclerView of the item
+     * @param childPosition the position in the RecyclerView of the item
      */
     @Override
-    public void onBindChildViewHolder(HorizontalChildViewHolder childViewHolder, int position, Object childListItem) {
+    public void onBindChildViewHolder(HorizontalChildViewHolder childViewHolder, int parentPosition, int childPosition, Object childListItem) {
         HorizontalChild horizontalChild = (HorizontalChild) childListItem;
         childViewHolder.bind(horizontalChild.getChildText());
     }

@@ -27,4 +27,17 @@ public class Recipe implements ParentListItem {
     public boolean isInitiallyExpanded() {
         return false;
     }
+
+    public Ingredient getIngredient(int position) {
+        return mIngredients.get(position);
+    }
+
+    public boolean isVegetarian() {
+        for (Ingredient ingredient : mIngredients) {
+            if (!ingredient.isVegetarian()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
