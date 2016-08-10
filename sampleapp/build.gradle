@@ -5,7 +5,7 @@ android {
     buildToolsVersion "$BUILD_TOOLS_VERSION"
 
     defaultConfig {
-        applicationId "com.ryanbrooks.expandablerecyclerviewsample"
+        applicationId "com.bignerdranch.expandablerecyclerviewsample"
         minSdkVersion 7
         targetSdkVersion 23
         versionCode 1
