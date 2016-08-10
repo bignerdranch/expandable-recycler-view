@@ -1,1 +1,1 @@
-include ':sampleapp', ':expandablerecyclerview', ':criminalintentsample'
+include ':sampleapp', ':expandablerecyclerview'
