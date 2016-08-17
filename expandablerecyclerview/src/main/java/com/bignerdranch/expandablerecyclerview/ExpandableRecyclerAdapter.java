@@ -92,7 +92,7 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     public ExpandableRecyclerAdapter(@NonNull List<P> parentItemList) {
         super();
         mParentItemList = parentItemList;
-        mItemList = ExpandableRecyclerAdapterHelper.generateParentChildItemList(parentItemList); // TODO: Pull into this adapter, consider including only ParentWrappers here
+        mItemList = generateParentChildItemList(parentItemList);
         mAttachedRecyclerViewPool = new ArrayList<>();
     }
 
@@ -1183,6 +1183,37 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     }
 
     // endregion
+
+    /**
+     * Generates a full list of all {@link P} objects and their children, in order.
+     *
+     * @param parentItemList A list of the {@code P} objects from
+     *                       the {@link ExpandableRecyclerAdapter}
+     * @return A list of all {@code P} objects and their children, expanded
+     */
+    private List<Object> generateParentChildItemList(List<P> parentItemList) {
+        List<Object> parentWrapperList = new ArrayList<>();
+        P parentListItem;
+        ParentWrapper parentWrapper;
+
+        int parentListItemCount = parentItemList.size();
+        for (int i = 0; i < parentListItemCount; i++) {
+            parentListItem = parentItemList.get(i);
+            parentWrapper = new ParentWrapper(parentListItem);
+            parentWrapperList.add(parentWrapper);
+
+            if (parentWrapper.isInitiallyExpanded()) {
+                parentWrapper.setExpanded(true);
+
+                int childListItemCount = parentWrapper.getChildItemList().size();
+                for (int j = 0; j < childListItemCount; j++) {
+                    parentWrapperList.add(parentWrapper.getChildItemList().get(j));
+                }
+            }
+        }
+
+        return parentWrapperList;
+    }
 
     /**
      * Generates a HashMap used to store expanded state for items in the list
