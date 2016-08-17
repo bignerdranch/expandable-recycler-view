@@ -9,9 +9,9 @@ import android.view.View;
  * The user should extend this class and implement as they wish for their
  * child list item.
  */
-public class ChildViewHolder extends RecyclerView.ViewHolder {
+public class ChildViewHolder<C> extends RecyclerView.ViewHolder {
 
-    Object mChildListItem;
+    C mChildListItem;
     ExpandableRecyclerAdapter mExpandableAdapter;
 
     /**
@@ -26,7 +26,7 @@ public class ChildViewHolder extends RecyclerView.ViewHolder {
     /**
      * @return the childListItem associated with this view holder
      */
-    public Object getChildListItem() {
+    public C getChildListItem() {
         return mChildListItem;
     }
 

@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
-import com.bignerdranch.expandablerecyclerview.model.ParentWrapper;
 
 
 /**
@@ -16,11 +15,11 @@ import com.bignerdranch.expandablerecyclerview.model.ParentWrapper;
  * @version 1.0
  * @since 5/27/2015
  */
-public class ParentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class ParentViewHolder<P extends ParentListItem<C>, C> extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private ParentListItemExpandCollapseListener mParentListItemExpandCollapseListener;
     private boolean mExpanded;
-    ParentWrapper mParentWrapper;
+    P mParentListItem;
     ExpandableRecyclerAdapter mExpandableAdapter;
 
     /**
@@ -57,12 +56,8 @@ public class ParentViewHolder extends RecyclerView.ViewHolder implements View.On
     /**
      * @return the ParentListItem associated with this ViewHolder
      */
-    public ParentListItem getParentListItem() {
-        if (mParentWrapper == null) {
-            return null;
-        }
-
-        return mParentWrapper.getParentListItem();
+    public P getParentListItem() {
+        return mParentListItem;
     }
 
     /**
