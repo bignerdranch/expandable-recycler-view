@@ -34,7 +34,6 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
     private HorizontalExpandableAdapter mExpandableAdapter;
 
-
     public static Intent newIntent(Context context) {
         return new Intent(context, HorizontalLinearRecyclerViewSampleActivity.class);
     }

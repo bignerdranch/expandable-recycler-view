@@ -19,7 +19,7 @@ public class ParentWrapper {
      *
      * @param parentListItem The {@link ParentListItem} to wrap
      */
-    public ParentWrapper(ParentListItem parentListItem) {
+    public ParentWrapper(ParentListItem parentListItem) { // TODO: Figure this out
         mParentListItem = parentListItem;
         mExpanded = false;
     }
@@ -64,7 +64,7 @@ public class ParentWrapper {
         return mParentListItem.isInitiallyExpanded();
     }
 
-    public List<?> getChildItemList() {
+    public List<?> getChildItemList() { // TODO: Figure out this return type. It is ideally List<C>
         return mParentListItem.getChildItemList();
     }
 }
