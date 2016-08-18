@@ -2,10 +2,13 @@ package com.bignerdranch.expandablerecyclerview.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import java.util.ArrayList;
+import java.util.List;
+
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -26,7 +29,7 @@ public class ParentWrapperTest {
 
         when(mParentListItem.isInitiallyExpanded()).thenReturn(expected);
 
-        assertThat(mParentWrapper.isInitiallyExpanded(), is(equalTo(expected)));
+        assertEquals(expected, mParentWrapper.isInitiallyExpanded());
     }
 
     @Test
@@ -35,6 +38,39 @@ public class ParentWrapperTest {
 
         when(mParentListItem.isInitiallyExpanded()).thenReturn(expected);
 
-        assertThat(mParentWrapper.isInitiallyExpanded(), is(equalTo(expected)));
+        assertEquals(expected, mParentWrapper.isInitiallyExpanded());
+    }
+
+    @Test
+    public void getChildItemListReturnsChildItemListFromParentListItem() {
+        final List<Object> expected = new ArrayList<>();
+        expected.add(new Object());
+        expected.add(new Object());
+        expected.add(new Object());
+
+        when(mParentListItem.getChildItemList()).thenAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                return expected;
+            }
+        });
+
+        assertEquals(expected, mParentWrapper.getChildItemList());
+    }
+
+    @Test
+    public void getChildItemListReturnsEmptyListFromParentListItem() {
+        boolean expected = true;
+
+        final List<Object> childItemList = new ArrayList<>();
+
+        when(mParentListItem.getChildItemList()).thenAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                return childItemList;
+            }
+        });
+
+        assertEquals(expected, mParentWrapper.getChildItemList().isEmpty());
     }
 }
