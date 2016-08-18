@@ -1,8 +1,6 @@
 sudo: false
 language: android
 jdk: oraclejdk7
-script: ./gradlew clean build
-
 android:
   components:
     - tools
@@ -11,6 +9,12 @@ android:
     - extra-android-support
     - extra-google-m2repository
     - extra-android-m2repository
-
+branches:
+  only:
+    - master
+    - dev
+    - /^dev\-.*$/
+script:
+  - ./scripts/build.sh
 notifications:
-    email: false
+  email: false
