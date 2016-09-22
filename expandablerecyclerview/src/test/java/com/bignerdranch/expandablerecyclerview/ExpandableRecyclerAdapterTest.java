@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.model.ParentWrapper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +50,7 @@ public class ExpandableRecyclerAdapterTest {
     private List<ParentListItem> mParentListItems;
 
     @Before
-    public void setup() {
+    public void setup() throws NoSuchFieldException, IllegalAccessException {
         mParentListItems = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
@@ -64,13 +65,14 @@ public class ExpandableRecyclerAdapterTest {
 
             mParentListItems.add(parentListItem);
         }
+
+        mExpandableRecyclerAdapter = new TestExpandableRecyclerAdapter(mParentListItems);
+        TestUtils.fixAdapterForTesting(mExpandableRecyclerAdapter);
     }
 
     @Test
     public void adapterCorrectlyInitializesExpandedParents() {
-        mExpandableRecyclerAdapter = new TestExpandableRecyclerAdapter(mParentListItems);
-
-        assertEquals(mExpandableRecyclerAdapter.getItemCount(), 25);
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
     }
 
     @Test
@@ -80,7 +82,7 @@ public class ExpandableRecyclerAdapterTest {
         }
         mExpandableRecyclerAdapter = new TestExpandableRecyclerAdapter(mParentListItems);
 
-        assertEquals(mExpandableRecyclerAdapter.getItemCount(), 10);
+        assertEquals(10, mExpandableRecyclerAdapter.getItemCount());
     }
 
     @Test
@@ -90,6 +92,26 @@ public class ExpandableRecyclerAdapterTest {
         }
         mExpandableRecyclerAdapter = new TestExpandableRecyclerAdapter(mParentListItems);
 
-        assertEquals(mExpandableRecyclerAdapter.getItemCount(), 40);
+        assertEquals(40, mExpandableRecyclerAdapter.getItemCount());
+    }
+
+    @Test
+    public void collapsingExpandedParentReducesOverallItemCount() {
+        ParentListItem firstParentListItem = mParentListItems.get(0);
+        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        assertEquals(firstParentListItem, parentWrapper.getParentListItem());
+        assertEquals(firstParentListItem.getChildItemList().get(0), mExpandableRecyclerAdapter.getListItem(1));
+        assertEquals(firstParentListItem.getChildItemList().get(1), mExpandableRecyclerAdapter.getListItem(2));
+        assertEquals(firstParentListItem.getChildItemList().get(2), mExpandableRecyclerAdapter.getListItem(3));
+
+        mExpandableRecyclerAdapter.collapseParent(0);
+
+        assertEquals(22, mExpandableRecyclerAdapter.getItemCount());
+        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
+        assertEquals(mParentListItems.get(0), parentWrapper.getParentListItem());
+        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(1);
+        assertEquals(mParentListItems.get(1), parentWrapper.getParentListItem());
     }
 }
