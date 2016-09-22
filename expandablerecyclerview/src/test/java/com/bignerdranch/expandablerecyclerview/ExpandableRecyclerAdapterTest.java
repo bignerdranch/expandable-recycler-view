@@ -96,7 +96,7 @@ public class ExpandableRecyclerAdapterTest {
     }
 
     @Test
-    public void collapsingExpandedParentReducesOverallItemCount() {
+    public void collapsingExpandedParentRemovesChildren() {
         ParentListItem firstParentListItem = mParentListItems.get(0);
         ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
 
@@ -113,5 +113,23 @@ public class ExpandableRecyclerAdapterTest {
         assertEquals(mParentListItems.get(0), parentWrapper.getParentListItem());
         parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(1);
         assertEquals(mParentListItems.get(1), parentWrapper.getParentListItem());
+    }
+
+
+    @Test
+    public void collapsingCollapsedParentHasNoEffect() {
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(4);
+        assertEquals(mParentListItems.get(1), parentWrapper.getParentListItem());
+        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(5);
+        assertEquals(mParentListItems.get(2), parentWrapper.getParentListItem());
+
+        mExpandableRecyclerAdapter.collapseParent(1);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(4);
+        assertEquals(mParentListItems.get(1), parentWrapper.getParentListItem());
+        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(5);
+        assertEquals(mParentListItems.get(2), parentWrapper.getParentListItem());
     }
 }
