@@ -25,33 +25,6 @@ import static org.mockito.Mockito.when;
 
 public class ExpandableRecyclerAdapterTest {
 
-    private static class TestExpandableRecyclerAdapter extends ExpandableRecyclerAdapter<ParentViewHolder, ChildViewHolder> {
-
-        public TestExpandableRecyclerAdapter(@NonNull List<? extends ParentListItem> parentItemList) {
-            super(parentItemList);
-        }
-
-        @Override
-        public ParentViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup, int viewType) {
-            return null;
-        }
-
-        @Override
-        public ChildViewHolder onCreateChildViewHolder(ViewGroup childViewGroup, int viewType) {
-            return null;
-        }
-
-        @Override
-        public void onBindParentViewHolder(ParentViewHolder parentViewHolder, int parentPosition, ParentListItem parentListItem) {
-
-        }
-
-        @Override
-        public void onBindChildViewHolder(ChildViewHolder childViewHolder, int parentPosition, int childPosition, Object childListItem) {
-
-        }
-    }
-
     private TestExpandableRecyclerAdapter mExpandableRecyclerAdapter;
     private List<ParentListItem> mBaseParentItems;
     private AdapterDataObserver mDataObserver;
@@ -181,5 +154,36 @@ public class ExpandableRecyclerAdapterTest {
         assertEquals(firstParentListItem, parentWrapper.getParentListItem());
         assertEquals(firstParentListItem.getChildItemList().get(0), mExpandableRecyclerAdapter.getListItem(1));
         assertTrue(parentWrapper.isExpanded());
+    }
+
+
+
+
+
+    private static class TestExpandableRecyclerAdapter extends ExpandableRecyclerAdapter<ParentViewHolder, ChildViewHolder> {
+
+        public TestExpandableRecyclerAdapter(@NonNull List<? extends ParentListItem> parentItemList) {
+            super(parentItemList);
+        }
+
+        @Override
+        public ParentViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup, int viewType) {
+            return null;
+        }
+
+        @Override
+        public ChildViewHolder onCreateChildViewHolder(ViewGroup childViewGroup, int viewType) {
+            return null;
+        }
+
+        @Override
+        public void onBindParentViewHolder(ParentViewHolder parentViewHolder, int parentPosition, ParentListItem parentListItem) {
+
+        }
+
+        @Override
+        public void onBindChildViewHolder(ChildViewHolder childViewHolder, int parentPosition, int childPosition, Object childListItem) {
+
+        }
     }
 }
