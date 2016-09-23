@@ -586,9 +586,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 viewHolder.setExpanded(true);
                 viewHolder.onExpansionToggled(false);
             }
-
-            expandParentListItem(parentWrapper, parentIndex, false);
         }
+
+        expandParentListItem(parentWrapper, parentIndex, false);
     }
 
     /**
