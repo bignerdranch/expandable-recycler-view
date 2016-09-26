@@ -283,6 +283,40 @@ public class ExpandableRecyclerAdapterTest {
         assertEquals(childObjects.get(2), mExpandableRecyclerAdapter.getListItem(28));
     }
 
+    @Test
+    public void notifyParentItemRemovedOnExpandedItem() {
+        ParentListItem removedItem = mBaseParentItems.get(0);
+        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        assertEquals(removedItem, parentWrapper.getParentListItem());
+
+        mBaseParentItems.remove(0);
+        mExpandableRecyclerAdapter.notifyParentItemRemoved(0);
+        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
+
+        verify(mDataObserver).onItemRangeRemoved(0, 4);
+        assertEquals(21, mExpandableRecyclerAdapter.getItemCount());
+        assertEquals(mBaseParentItems.get(0), parentWrapper.getParentListItem());
+    }
+
+    @Test
+    public void notifyParentItemRemovedOnCollapsedItem() {
+        ParentListItem removedItem = mBaseParentItems.get(9);
+        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(24);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        assertEquals(removedItem, parentWrapper.getParentListItem());
+
+        mBaseParentItems.remove(9);
+        mExpandableRecyclerAdapter.notifyParentItemRemoved(9);
+        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(20);
+
+        verify(mDataObserver).onItemRangeRemoved(24, 1);
+        assertEquals(24, mExpandableRecyclerAdapter.getItemCount());
+        assertEquals(mBaseParentItems.get(8), parentWrapper.getParentListItem());
+    }
+
 
     private static class TestExpandableRecyclerAdapter extends ExpandableRecyclerAdapter<ParentViewHolder, ChildViewHolder> {
 
