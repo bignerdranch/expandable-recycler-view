@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView.AdapterDataObserver;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
-import com.bignerdranch.expandablerecyclerview.model.ParentWrapper;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class ExpandableRecyclerAdapterTest {
 
     private TestExpandableRecyclerAdapter mExpandableRecyclerAdapter;
-    private List<ParentListItem> mBaseParentItems;
+    private List<ParentListItem<Object>> mBaseParentItems;
     private AdapterDataObserver mDataObserver;
 
     @Before
@@ -39,8 +38,8 @@ public class ExpandableRecyclerAdapterTest {
             childObjects.add(new Object());
             childObjects.add(new Object());
 
-            ParentListItem parentListItem = mock(ParentListItem.class);
-            Mockito.<List<?>>when(parentListItem.getChildItemList()).thenReturn(childObjects);
+            ParentListItem<Object> parentListItem = (ParentListItem<Object>) mock(ParentListItem.class);
+            Mockito.when(parentListItem.getChildItemList()).thenReturn(childObjects);
             when(parentListItem.isInitiallyExpanded()).thenReturn(i % 2 == 0); // Every other parent will return true
 
             mBaseParentItems.add(parentListItem);
@@ -78,182 +77,161 @@ public class ExpandableRecyclerAdapterTest {
     @Test
     public void collapsingExpandedParentWithIndexRemovesChildren() {
         ParentListItem firstParentListItem = mBaseParentItems.get(0);
-        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
 
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(firstParentListItem, parentWrapper.getParentListItem());
+        assertEquals(firstParentListItem,mExpandableRecyclerAdapter.getListItem(0));
         assertEquals(firstParentListItem.getChildItemList().get(0), mExpandableRecyclerAdapter.getListItem(1));
         assertEquals(firstParentListItem.getChildItemList().get(1), mExpandableRecyclerAdapter.getListItem(2));
         assertEquals(firstParentListItem.getChildItemList().get(2), mExpandableRecyclerAdapter.getListItem(3));
-        assertTrue(parentWrapper.isExpanded());
+        assertTrue(mExpandableRecyclerAdapter.mItemList.get(0).isExpanded());
 
         mExpandableRecyclerAdapter.collapseParent(0);
-        ParentWrapper firstParentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
-        ParentWrapper secondParentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(1);
 
         verify(mDataObserver).onItemRangeRemoved(1, 3);
         assertEquals(22, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(mBaseParentItems.get(0), firstParentWrapper.getParentListItem());
-        assertEquals(mBaseParentItems.get(1), secondParentWrapper.getParentListItem());
-        assertFalse(parentWrapper.isExpanded());
+        assertEquals(mBaseParentItems.get(0), mExpandableRecyclerAdapter.getListItem(0));
+        assertEquals(mBaseParentItems.get(1), mExpandableRecyclerAdapter.getListItem(1));
+        assertFalse(mExpandableRecyclerAdapter.mItemList.get(0).isExpanded());
     }
 
     @Test
     public void collapsingExpandedParentWithObjectRemovesChildren() {
         ParentListItem firstParentListItem = mBaseParentItems.get(0);
-        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
 
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(firstParentListItem, parentWrapper.getParentListItem());
+        assertEquals(firstParentListItem, mExpandableRecyclerAdapter.getListItem(0));
         assertEquals(firstParentListItem.getChildItemList().get(0), mExpandableRecyclerAdapter.getListItem(1));
         assertEquals(firstParentListItem.getChildItemList().get(1), mExpandableRecyclerAdapter.getListItem(2));
         assertEquals(firstParentListItem.getChildItemList().get(2), mExpandableRecyclerAdapter.getListItem(3));
-        assertTrue(parentWrapper.isExpanded());
+        assertTrue(mExpandableRecyclerAdapter.mItemList.get(0).isExpanded());
 
         mExpandableRecyclerAdapter.collapseParent(firstParentListItem);
-        ParentWrapper firstParentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
-        ParentWrapper secondParentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(1);
 
         verify(mDataObserver).onItemRangeRemoved(1, 3);
         assertEquals(22, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(mBaseParentItems.get(0), firstParentWrapper.getParentListItem());
-        assertEquals(mBaseParentItems.get(1), secondParentWrapper.getParentListItem());
-        assertFalse(parentWrapper.isExpanded());
+        assertEquals(mBaseParentItems.get(0), mExpandableRecyclerAdapter.getListItem(0));
+        assertEquals(mBaseParentItems.get(1), mExpandableRecyclerAdapter.getListItem(1));
+        assertFalse(mExpandableRecyclerAdapter.mItemList.get(0).isExpanded());
     }
 
     @Test
     public void collapsingCollapsedParentWithIndexHasNoEffect() {
-        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(24);
 
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(mBaseParentItems.get(9), parentWrapper.getParentListItem());
-        assertFalse(parentWrapper.isExpanded());
+        assertEquals(mBaseParentItems.get(9), mExpandableRecyclerAdapter.getListItem(24));
+        assertFalse(mExpandableRecyclerAdapter.mItemList.get(24).isExpanded());
 
         mExpandableRecyclerAdapter.collapseParent(9);
-        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(24);
 
         verify(mDataObserver, never()).onItemRangeRemoved(anyInt(), anyInt());
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(mBaseParentItems.get(9), parentWrapper.getParentListItem());
-        assertFalse(parentWrapper.isExpanded());
+        assertEquals(mBaseParentItems.get(9), mExpandableRecyclerAdapter.getListItem(24));
+        assertFalse(mExpandableRecyclerAdapter.mItemList.get(24).isExpanded());
     }
 
     @Test
     public void collapsingCollapsedParentWithObjectHasNoEffect() {
-        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(24);
 
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(mBaseParentItems.get(9), parentWrapper.getParentListItem());
-        assertFalse(parentWrapper.isExpanded());
+        assertEquals(mBaseParentItems.get(9), mExpandableRecyclerAdapter.getListItem(24));
+        assertFalse(mExpandableRecyclerAdapter.mItemList.get(24).isExpanded());
 
         mExpandableRecyclerAdapter.collapseParent(mBaseParentItems.get(9));
-        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(24);
 
         verify(mDataObserver, never()).onItemRangeRemoved(anyInt(), anyInt());
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(mBaseParentItems.get(9), parentWrapper.getParentListItem());
-        assertFalse(parentWrapper.isExpanded());
+        assertEquals(mBaseParentItems.get(9), mExpandableRecyclerAdapter.getListItem(24));
+        assertFalse(mExpandableRecyclerAdapter.mItemList.get(24).isExpanded());
     }
 
     @Test
     public void expandingParentWithIndexAddsChildren() {
-        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(24);
-
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(mBaseParentItems.get(9), parentWrapper.getParentListItem());
-        assertFalse(parentWrapper.isExpanded());
+        assertEquals(mBaseParentItems.get(9), mExpandableRecyclerAdapter.getListItem(24));
+        assertFalse(mExpandableRecyclerAdapter.mItemList.get(24).isExpanded());
 
         mExpandableRecyclerAdapter.expandParent(9);
-        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(24);
         ParentListItem lastParentListItem = mBaseParentItems.get(9);
 
         verify(mDataObserver).onItemRangeInserted(25, 3);
         assertEquals(28, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(lastParentListItem, parentWrapper.getParentListItem());
+        assertEquals(lastParentListItem, mExpandableRecyclerAdapter.getListItem(24));
         assertEquals(lastParentListItem.getChildItemList().get(0), mExpandableRecyclerAdapter.getListItem(25));
         assertEquals(lastParentListItem.getChildItemList().get(1), mExpandableRecyclerAdapter.getListItem(26));
         assertEquals(lastParentListItem.getChildItemList().get(2), mExpandableRecyclerAdapter.getListItem(27));
-        assertTrue(parentWrapper.isExpanded());
+        assertTrue(mExpandableRecyclerAdapter.mItemList.get(24).isExpanded());
     }
 
     @Test
     public void expandingParentWithObjectAddsChildren() {
-        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(24);
 
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(mBaseParentItems.get(9), parentWrapper.getParentListItem());
-        assertFalse(parentWrapper.isExpanded());
+        assertEquals(mBaseParentItems.get(9), mExpandableRecyclerAdapter.getListItem(24));
+        assertFalse(mExpandableRecyclerAdapter.mItemList.get(24).isExpanded());
 
         mExpandableRecyclerAdapter.expandParent(mBaseParentItems.get(9));
-        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(24);
         ParentListItem lastParentListItem = mBaseParentItems.get(9);
 
         verify(mDataObserver).onItemRangeInserted(25, 3);
         assertEquals(28, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(lastParentListItem, parentWrapper.getParentListItem());
+        assertEquals(lastParentListItem, mExpandableRecyclerAdapter.getListItem(24));
         assertEquals(lastParentListItem.getChildItemList().get(0), mExpandableRecyclerAdapter.getListItem(25));
         assertEquals(lastParentListItem.getChildItemList().get(1), mExpandableRecyclerAdapter.getListItem(26));
         assertEquals(lastParentListItem.getChildItemList().get(2), mExpandableRecyclerAdapter.getListItem(27));
-        assertTrue(parentWrapper.isExpanded());
+        assertTrue(mExpandableRecyclerAdapter.mItemList.get(24).isExpanded());
     }
 
     @Test
     public void expandingExpandedWithIndexParentHasNoEffect() {
         ParentListItem firstParentListItem = mBaseParentItems.get(0);
-        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
 
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(firstParentListItem, parentWrapper.getParentListItem());
+        assertEquals(firstParentListItem, mExpandableRecyclerAdapter.getListItem(0));
         assertEquals(firstParentListItem.getChildItemList().get(0), mExpandableRecyclerAdapter.getListItem(1));
-        assertTrue(parentWrapper.isExpanded());
+        assertTrue(mExpandableRecyclerAdapter.mItemList.get(0).isExpanded());
 
         mExpandableRecyclerAdapter.expandParent(0);
-        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
 
         verify(mDataObserver, never()).onItemRangeInserted(anyInt(), anyInt());
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(firstParentListItem, parentWrapper.getParentListItem());
+        assertEquals(firstParentListItem, mExpandableRecyclerAdapter.getListItem(0));
         assertEquals(firstParentListItem.getChildItemList().get(0), mExpandableRecyclerAdapter.getListItem(1));
-        assertTrue(parentWrapper.isExpanded());
+        assertTrue(mExpandableRecyclerAdapter.mItemList.get(0).isExpanded());
     }
 
     @Test
     public void expandingExpandedWithObjectParentHasNoEffect() {
         ParentListItem firstParentListItem = mBaseParentItems.get(0);
-        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
 
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(firstParentListItem, parentWrapper.getParentListItem());
+        assertEquals(firstParentListItem, mExpandableRecyclerAdapter.getListItem(0));
         assertEquals(firstParentListItem.getChildItemList().get(0), mExpandableRecyclerAdapter.getListItem(1));
-        assertTrue(parentWrapper.isExpanded());
+        assertTrue(mExpandableRecyclerAdapter.mItemList.get(0).isExpanded());
 
         mExpandableRecyclerAdapter.expandParent(firstParentListItem);
-        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
 
         verify(mDataObserver, never()).onItemRangeInserted(anyInt(), anyInt());
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(firstParentListItem, parentWrapper.getParentListItem());
+        assertEquals(firstParentListItem, mExpandableRecyclerAdapter.getListItem(0));
         assertEquals(firstParentListItem.getChildItemList().get(0), mExpandableRecyclerAdapter.getListItem(1));
-        assertTrue(parentWrapper.isExpanded());
+        assertTrue(mExpandableRecyclerAdapter.mItemList.get(0).isExpanded());
     }
 
     @Test
     public void notifyParentItemInsertedWithInitiallyCollapsedItem() {
         ParentListItem firstParentListItem = mBaseParentItems.get(0);
-        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
 
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(firstParentListItem, parentWrapper.getParentListItem());
+        assertEquals(firstParentListItem, mExpandableRecyclerAdapter.getListItem(0));
 
         ParentListItem insertedItem = mock(ParentListItem.class);
         when(insertedItem.isInitiallyExpanded()).thenReturn(false);
         mBaseParentItems.add(0, insertedItem);
         mExpandableRecyclerAdapter.notifyParentItemInserted(0);
-        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
 
         verify(mDataObserver).onItemRangeInserted(0, 1);
         assertEquals(26, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(insertedItem, parentWrapper.getParentListItem());
+        assertEquals(insertedItem, mExpandableRecyclerAdapter.getListItem(0));
     }
 
     @Test
@@ -263,21 +241,19 @@ public class ExpandableRecyclerAdapterTest {
         childObjects.add(new Object());
         childObjects.add(new Object());
         ParentListItem lastParentListItem = mBaseParentItems.get(9);
-        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(24);
 
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(lastParentListItem, parentWrapper.getParentListItem());
+        assertEquals(lastParentListItem, mExpandableRecyclerAdapter.getListItem(24));
 
         ParentListItem insertedItem = mock(ParentListItem.class);
         Mockito.<List<?>>when(insertedItem.getChildItemList()).thenReturn(childObjects);
         when(insertedItem.isInitiallyExpanded()).thenReturn(true);
         mBaseParentItems.add(insertedItem);
         mExpandableRecyclerAdapter.notifyParentItemInserted(10);
-        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(25);
 
         verify(mDataObserver).onItemRangeInserted(25, 4);
         assertEquals(29, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(insertedItem, parentWrapper.getParentListItem());
+        assertEquals(insertedItem, mExpandableRecyclerAdapter.getListItem(25));
         assertEquals(childObjects.get(0), mExpandableRecyclerAdapter.getListItem(26));
         assertEquals(childObjects.get(1), mExpandableRecyclerAdapter.getListItem(27));
         assertEquals(childObjects.get(2), mExpandableRecyclerAdapter.getListItem(28));
@@ -286,41 +262,37 @@ public class ExpandableRecyclerAdapterTest {
     @Test
     public void notifyParentItemRemovedOnExpandedItem() {
         ParentListItem removedItem = mBaseParentItems.get(0);
-        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
 
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(removedItem, parentWrapper.getParentListItem());
+        assertEquals(removedItem, mExpandableRecyclerAdapter.getListItem(0));
 
         mBaseParentItems.remove(0);
         mExpandableRecyclerAdapter.notifyParentItemRemoved(0);
-        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(0);
 
         verify(mDataObserver).onItemRangeRemoved(0, 4);
         assertEquals(21, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(mBaseParentItems.get(0), parentWrapper.getParentListItem());
+        assertEquals(mBaseParentItems.get(0), mExpandableRecyclerAdapter.getListItem(0));
     }
 
     @Test
     public void notifyParentItemRemovedOnCollapsedItem() {
         ParentListItem removedItem = mBaseParentItems.get(9);
-        ParentWrapper parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(24);
 
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(removedItem, parentWrapper.getParentListItem());
+        assertEquals(removedItem, mExpandableRecyclerAdapter.getListItem(24));
 
         mBaseParentItems.remove(9);
         mExpandableRecyclerAdapter.notifyParentItemRemoved(9);
-        parentWrapper = (ParentWrapper) mExpandableRecyclerAdapter.getListItem(20);
 
         verify(mDataObserver).onItemRangeRemoved(24, 1);
         assertEquals(24, mExpandableRecyclerAdapter.getItemCount());
-        assertEquals(mBaseParentItems.get(8), parentWrapper.getParentListItem());
+        assertEquals(mBaseParentItems.get(8), mExpandableRecyclerAdapter.getListItem(20));
     }
 
 
-    private static class TestExpandableRecyclerAdapter extends ExpandableRecyclerAdapter<ParentViewHolder, ChildViewHolder> {
+    private static class TestExpandableRecyclerAdapter extends ExpandableRecyclerAdapter<ParentListItem<Object>, Object, ParentViewHolder, ChildViewHolder> {
 
-        public TestExpandableRecyclerAdapter(@NonNull List<? extends ParentListItem> parentItemList) {
+        public TestExpandableRecyclerAdapter(@NonNull List<ParentListItem<Object>> parentItemList) {
             super(parentItemList);
         }
 
@@ -335,7 +307,7 @@ public class ExpandableRecyclerAdapterTest {
         }
 
         @Override
-        public void onBindParentViewHolder(ParentViewHolder parentViewHolder, int parentPosition, ParentListItem parentListItem) {
+        public void onBindParentViewHolder(ParentViewHolder parentViewHolder, int parentPosition, ParentListItem<Object> parentListItem) {
 
         }
 
