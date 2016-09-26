@@ -393,7 +393,7 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
             return;
         }
 
-        expandViews(parentWrapper, parentWrapperIndex);
+        expandViews(mItemList.get(parentWrapperIndex), parentWrapperIndex);
     }
 
     /**
@@ -446,7 +446,7 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
             return;
         }
 
-        collapseViews(parentWrapper, parentWrapperIndex);
+        collapseViews(mItemList.get(parentWrapperIndex), parentWrapperIndex);
     }
 
     /**
@@ -553,7 +553,7 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
             if (listItem.isParent()) {
                 return listItem.getParentListItem();
             } else {
-                return listItem.getChildItemList();
+                return listItem.getChildListItem();
             }
         } else {
             return null;
