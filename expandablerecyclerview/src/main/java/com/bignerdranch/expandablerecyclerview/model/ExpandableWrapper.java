@@ -18,7 +18,7 @@ public class ExpandableWrapper<P extends ParentListItem<C>, C> {
     private boolean mParent;
     private boolean mExpanded;
 
-    private List<ExpandableWrapper<P, C>> mChildItemList;
+    private List<ExpandableWrapper<P, C>> mWrappedChildItemList;
 
     /**
      * Constructor to wrap a parent list item of type {@link P}.
@@ -30,7 +30,7 @@ public class ExpandableWrapper<P extends ParentListItem<C>, C> {
         mParent = true;
         mExpanded = false;
 
-        mChildItemList = generateChildItemList(parentListItem);
+        mWrappedChildItemList = generateChildItemList(parentListItem);
     }
 
     /**
@@ -50,6 +50,7 @@ public class ExpandableWrapper<P extends ParentListItem<C>, C> {
 
     public void setParentListItem(@NonNull P parentListItem) {
         mParentListItem = parentListItem;
+        mWrappedChildItemList = generateChildItemList(parentListItem);
     }
 
     public C getChildListItem() {
@@ -92,12 +93,12 @@ public class ExpandableWrapper<P extends ParentListItem<C>, C> {
      * @return The list of children of a parent list item
      * @throws IllegalStateException If a parent isn't being wrapped
      */
-    public List<ExpandableWrapper<P, C>> getChildItemList() {
+    public List<ExpandableWrapper<P, C>> getWrappedChildItemList() {
         if (!mParent) {
             throw new IllegalStateException("Parent not wrapped");
         }
 
-        return mChildItemList;
+        return mWrappedChildItemList;
     }
 
     private List<ExpandableWrapper<P, C>> generateChildItemList(P parentListItem) {
