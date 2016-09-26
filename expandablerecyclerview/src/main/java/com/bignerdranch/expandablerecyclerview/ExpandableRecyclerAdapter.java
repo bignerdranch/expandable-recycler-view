@@ -586,9 +586,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 viewHolder.setExpanded(true);
                 viewHolder.onExpansionToggled(false);
             }
-
-            expandParentListItem(parentWrapper, parentIndex, false);
         }
+
+        expandParentListItem(parentWrapper, parentIndex, false);
     }
 
     /**
@@ -608,9 +608,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
                 viewHolder.setExpanded(false);
                 viewHolder.onExpansionToggled(true);
             }
-
-            collapseParentListItem(parentWrapper, parentIndex, false);
         }
+
+        collapseParentListItem(parentWrapper, parentIndex, false);
     }
 
     /**
