@@ -57,10 +57,6 @@ public class ExpandableWrapper<P extends ParentListItem<C>, C> {
         return mChildListItem;
     }
 
-    public void setChildListItem(@NonNull C childListItem) {
-        mChildListItem = childListItem;
-    }
-
     public boolean isExpanded() {
         return mExpanded;
     }
