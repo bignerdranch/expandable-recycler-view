@@ -26,7 +26,7 @@ public class ParentViewHolder<P extends ParentListItem<C>, C> extends RecyclerVi
      * Empowers {@link com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter}
      * implementations to be notified of expand/collapse state change events.
      */
-    public interface ParentListItemExpandCollapseListener {
+    interface ParentListItemExpandCollapseListener {
 
         /**
          * Called when a list item is expanded.
@@ -120,22 +120,12 @@ public class ParentViewHolder<P extends ParentListItem<C>, C> extends RecyclerVi
     }
 
     /**
-     * Getter for the {@link ParentListItemExpandCollapseListener} implemented in
-     * {@link com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter}.
-     *
-     * @return The {@link ParentListItemExpandCollapseListener} set in the {@link ParentViewHolder}
-     */
-    public ParentListItemExpandCollapseListener getParentListItemExpandCollapseListener() {
-        return mParentListItemExpandCollapseListener;
-    }
-
-    /**
      * Setter for the {@link ParentListItemExpandCollapseListener} implemented in
      * {@link com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter}.
      *
      * @param parentListItemExpandCollapseListener The {@link ParentListItemExpandCollapseListener} to set on the {@link ParentViewHolder}
      */
-    public void setParentListItemExpandCollapseListener(ParentListItemExpandCollapseListener parentListItemExpandCollapseListener) {
+    void setParentListItemExpandCollapseListener(ParentListItemExpandCollapseListener parentListItemExpandCollapseListener) {
         mParentListItemExpandCollapseListener = parentListItemExpandCollapseListener;
     }
 

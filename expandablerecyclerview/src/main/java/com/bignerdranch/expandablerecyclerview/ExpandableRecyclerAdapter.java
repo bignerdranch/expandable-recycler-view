@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.bignerdranch.expandablerecyclerview.ParentViewHolder.ParentListItemExpandCollapseListener;
 import com.bignerdranch.expandablerecyclerview.model.ExpandableWrapper;
 import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
 
@@ -32,8 +33,7 @@ import java.util.List;
  * @since 5/27/2015
  */
 public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, PVH extends ParentViewHolder, CVH extends ChildViewHolder>
-        extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements ParentViewHolder.ParentListItemExpandCollapseListener {
+        extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String EXPANDED_STATE_MAP = "ExpandableRecyclerAdapter.ExpandedStateMap";
 
@@ -111,7 +111,7 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         if (isParentViewType(viewType)) {
             PVH pvh = onCreateParentViewHolder(viewGroup, viewType);
-            pvh.setParentListItemExpandCollapseListener(this);
+            pvh.setParentListItemExpandCollapseListener(mParentListItemExpandCollapseListener);
             pvh.mExpandableAdapter = this;
             return pvh;
         } else {
@@ -298,38 +298,6 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     }
 
     /**
-     * Implementation of {@link com.bignerdranch.expandablerecyclerview.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemExpanded(int)}.
-     * <p>
-     * Called when a {@link P} is triggered to expand.
-     * TODO: Clear up confusion about what index this refers to
-     *
-     * @param position The index of the item in the list being expanded
-     */
-    @Override
-    public void onParentListItemExpanded(int position) {
-        ExpandableWrapper<P, C> listItem = mItemList.get(position);
-        if (listItem.isParent()) {
-            expandParentListItem(listItem, position, true);
-        }
-    }
-
-    /**
-     * Implementation of {@link com.bignerdranch.expandablerecyclerview.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemCollapsed(int)}.
-     * <p>
-     * Called when a {@link P} is triggered to collapse.
-     * TODO: Clear up confusion about what index this refers to
-     *
-     * @param position The index of the item in the list being collapsed
-     */
-    @Override
-    public void onParentListItemCollapsed(int position) {
-        ExpandableWrapper<P, C> listItem = mItemList.get(position);
-        if (listItem.isParent()) {
-            collapseParentListItem(listItem, position, true);
-        }
-    }
-
-    /**
      * Implementation of Adapter#onAttachedToRecyclerView(RecyclerView).
      * <p>
      * Called when this {@link ExpandableRecyclerAdapter} is attached to a RecyclerView.
@@ -360,6 +328,53 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     public void setExpandCollapseListener(ExpandCollapseListener expandCollapseListener) {
         mExpandCollapseListener = expandCollapseListener;
     }
+
+    /**
+     * Called when a ParentViewHolder has triggered an expansion for it's parent item
+     *
+     * @param parentWrapperPosition the position of the parent item that is calling to be expanded
+     */
+    protected void parentListItemExpandedFromViewHolder(int parentWrapperPosition) {
+        ExpandableWrapper<P, C> listItem = mItemList.get(parentWrapperPosition);
+        expandParentListItem(listItem, parentWrapperPosition, true);
+    }
+
+    /**
+     * Called when a ParentViewHolder has triggered a collapse for it's parent item
+     *
+     * @param parentWrapperPosition the position of the parent item that is calling to be collapsed
+     */
+    protected void parentListItemCollapsedFromViewHolder(int parentWrapperPosition) {
+        ExpandableWrapper<P, C> listItem = mItemList.get(parentWrapperPosition);
+        collapseParentListItem(listItem, parentWrapperPosition, true);
+    }
+
+    private ParentListItemExpandCollapseListener mParentListItemExpandCollapseListener = new ParentListItemExpandCollapseListener() {
+
+        /**
+         * Implementation of {@link com.bignerdranch.expandablerecyclerview.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemExpanded(int)}.
+         * <p>
+         * Called when a {@link P} is triggered to expand.
+         *
+         * @param position The index of the item in the list being expanded, relative to the flattened list
+         */
+        @Override
+        public void onParentListItemExpanded(int position) {
+            parentListItemExpandedFromViewHolder(position);
+        }
+
+        /**
+         * Implementation of {@link com.bignerdranch.expandablerecyclerview.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemCollapsed(int)}.
+         * <p>
+         * Called when a {@link P} is triggered to collapse.
+         *
+         * @param position The index of the item in the list being collapsed, relative to the flattened list
+         */
+        @Override
+        public void onParentListItemCollapsed(int position) {
+            parentListItemCollapsedFromViewHolder(position);
+        }
+    };
 
     // region Programmatic Expansion/Collapsing
 
