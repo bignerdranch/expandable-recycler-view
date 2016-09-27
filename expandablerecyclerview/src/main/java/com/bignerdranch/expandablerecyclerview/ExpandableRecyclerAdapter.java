@@ -330,9 +330,9 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     }
 
     /**
-     * Called when a ParentViewHolder has triggered an expansion for it's parent item
+     * Called when a ParentViewHolder has triggered an expansion for it's parent
      *
-     * @param parentWrapperPosition the position of the parent item that is calling to be expanded
+     * @param parentWrapperPosition the position of the parent that is calling to be expanded
      */
     protected void parentListItemExpandedFromViewHolder(int parentWrapperPosition) {
         ExpandableWrapper<P, C> listItem = mItemList.get(parentWrapperPosition);
@@ -340,9 +340,9 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     }
 
     /**
-     * Called when a ParentViewHolder has triggered a collapse for it's parent item
+     * Called when a ParentViewHolder has triggered a collapse for it's parent
      *
-     * @param parentWrapperPosition the position of the parent item that is calling to be collapsed
+     * @param parentWrapperPosition the position of the parent that is calling to be collapsed
      */
     protected void parentListItemCollapsedFromViewHolder(int parentWrapperPosition) {
         ExpandableWrapper<P, C> listItem = mItemList.get(parentWrapperPosition);
