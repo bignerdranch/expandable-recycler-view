@@ -129,17 +129,17 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
      * {@link #onBindChildViewHolder(ChildViewHolder, int, int, C)}.
      *
      * @param holder The RecyclerView.ViewHolder to bind data to
-     * @param position The index in the list at which to bind
+     * @param flatPosition The index in the merged list of children and parents at which to bind
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position > mItemList.size()) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int flatPosition) {
+        if (flatPosition > mItemList.size()) {
             throw new IllegalStateException("Trying to bind item out of bounds, size " + mItemList.size()
-                    + " position " + position + ". Was the data changed without a call to notify...()?");
+                    + " flatPosition " + flatPosition + ". Was the data changed without a call to notify...()?");
         }
 
-        ExpandableWrapper<P, C> listItem = mItemList.get(position);
+        ExpandableWrapper<P, C> listItem = mItemList.get(flatPosition);
         if (listItem.isParent()) {
             PVH parentViewHolder = (PVH) holder;
 
@@ -149,11 +149,11 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
 
             parentViewHolder.setExpanded(listItem.isExpanded());
             parentViewHolder.mParentListItem = listItem.getParentListItem();
-            onBindParentViewHolder(parentViewHolder, getNearestParentPosition(position), listItem.getParentListItem());
+            onBindParentViewHolder(parentViewHolder, getNearestParentPosition(flatPosition), listItem.getParentListItem());
         } else {
             CVH childViewHolder = (CVH) holder;
             childViewHolder.mChildListItem = listItem.getChildListItem();
-            onBindChildViewHolder(childViewHolder, getNearestParentPosition(position), getChildPosition(position), listItem.getChildListItem());
+            onBindChildViewHolder(childViewHolder, getNearestParentPosition(flatPosition), getChildPosition(flatPosition), listItem.getChildListItem());
         }
     }
 
