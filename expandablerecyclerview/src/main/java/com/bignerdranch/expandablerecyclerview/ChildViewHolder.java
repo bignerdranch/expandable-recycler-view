@@ -40,12 +40,12 @@ public class ChildViewHolder<C> extends RecyclerView.ViewHolder {
      * layout pass or the ViewHolder has already been recycled.
      */
     public int getParentAdapterPosition() {
-        int adapterPosition = getAdapterPosition();
-        if (adapterPosition == RecyclerView.NO_POSITION) {
-            return adapterPosition;
+        int flatPosition = getAdapterPosition();
+        if (flatPosition == RecyclerView.NO_POSITION) {
+            return flatPosition;
         }
 
-        return mExpandableAdapter.getNearestParentPosition(adapterPosition);
+        return mExpandableAdapter.getNearestParentPosition(flatPosition);
     }
 
     /**
@@ -58,11 +58,11 @@ public class ChildViewHolder<C> extends RecyclerView.ViewHolder {
      * layout pass or the ViewHolder has already been recycled.
      */
     public int getChildAdapterPosition() {
-        int adapterPosition = getAdapterPosition();
-        if (adapterPosition == RecyclerView.NO_POSITION) {
-            return adapterPosition;
+        int flatPosition = getAdapterPosition();
+        if (flatPosition == RecyclerView.NO_POSITION) {
+            return flatPosition;
         }
 
-        return mExpandableAdapter.getChildPosition(adapterPosition);
+        return mExpandableAdapter.getChildPosition(flatPosition);
     }
 }

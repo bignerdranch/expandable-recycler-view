@@ -31,16 +31,16 @@ public class ParentViewHolder<P extends ParentListItem<C>, C> extends RecyclerVi
         /**
          * Called when a list item is expanded.
          *
-         * @param position The index of the item in the list being expanded
+         * @param flatParentPosition The index of the item in the list being expanded
          */
-        void onParentListItemExpanded(int position);
+        void onParentListItemExpanded(int flatParentPosition);
 
         /**
          * Called when a list item is collapsed.
          *
-         * @param position The index of the item in the list being collapsed
+         * @param flatParentPosition The index of the item in the list being collapsed
          */
-        void onParentListItemCollapsed(int position);
+        void onParentListItemCollapsed(int flatParentPosition);
     }
 
     /**
@@ -70,12 +70,12 @@ public class ParentViewHolder<P extends ParentListItem<C>, C> extends RecyclerVi
      * layout pass or the ViewHolder has already been recycled.
      */
     public int getParentAdapterPosition() {
-        int adapterPosition = getAdapterPosition();
-        if (adapterPosition == RecyclerView.NO_POSITION) {
-            return adapterPosition;
+        int flatPosition = getAdapterPosition();
+        if (flatPosition == RecyclerView.NO_POSITION) {
+            return flatPosition;
         }
 
-        return mExpandableAdapter.getNearestParentPosition(adapterPosition);
+        return mExpandableAdapter.getNearestParentPosition(flatPosition);
     }
 
     /**
