@@ -384,22 +384,6 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     // region Programmatic Expansion/Collapsing
 
     /**
-     * Expands the parent with the specified index in the list of parents.
-     *
-     * @param parentPosition The position of the parent to expand
-     */
-    public void expandParent(int parentPosition) {
-        int flatParentPosition = getFlatParentPosition(parentPosition);
-
-        ExpandableWrapper<P, C> listItem = mItemList.get(flatParentPosition);
-        if (!listItem.isParent()) {
-            return;
-        }
-
-        expandViews(listItem, flatParentPosition);
-    }
-
-    /**
      * Expands the parent associated with a specified {@link P} in the list of parents.
      *
      * @param parentListItem The {@code P} of the parent to expand
@@ -412,6 +396,15 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
         }
 
         expandViews(mItemList.get(flatParentPosition), flatParentPosition);
+    }
+
+    /**
+     * Expands the parent with the specified index in the list of parents.
+     *
+     * @param parentPosition The position of the parent to expand
+     */
+    public void expandParent(int parentPosition) {
+        expandParent(mParentItemList.get(parentPosition));
     }
 
     /**
@@ -437,22 +430,6 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     }
 
     /**
-     * Collapses the parent with the specified index in the list of parents.
-     *
-     * @param parentPosition The index of the parent to collapse
-     */
-    public void collapseParent(int parentPosition) {
-        int flatParentPosition = getFlatParentPosition(parentPosition);
-
-        ExpandableWrapper<P, C> listItem = mItemList.get(flatParentPosition);
-        if (!listItem.isParent()) {
-            return;
-        }
-
-        collapseViews(listItem, flatParentPosition);
-    }
-
-    /**
      * Collapses the parent associated with a specified {@link P} in the list of parents.
      *
      * @param parentListItem The {@code P} of the parent to collapse
@@ -465,6 +442,15 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
         }
 
         collapseViews(mItemList.get(flatParentPosition), flatParentPosition);
+    }
+
+    /**
+     * Collapses the parent with the specified index in the list of parents.
+     *
+     * @param parentPosition The index of the parent to collapse
+     */
+    public void collapseParent(int parentPosition) {
+        collapseParent(mParentItemList.get(parentPosition));
     }
 
     /**
