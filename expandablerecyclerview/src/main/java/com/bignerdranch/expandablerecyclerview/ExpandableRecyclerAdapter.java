@@ -134,6 +134,11 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     @Override
     @SuppressWarnings("unchecked")
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (position > mItemList.size()) {
+            throw new IllegalStateException("Trying to bind item out of bounds, size " + mItemList.size()
+                    + " position " + position + ". Was the data changed without a call to notify...()?");
+        }
+
         ExpandableWrapper<P, C> listItem = mItemList.get(position);
         if (listItem.isParent()) {
             PVH parentViewHolder = (PVH) holder;
