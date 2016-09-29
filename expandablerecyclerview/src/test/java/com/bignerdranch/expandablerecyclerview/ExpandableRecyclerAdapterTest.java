@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.AdapterDataObserver;
 import android.view.ViewGroup;
 
+import com.bignerdranch.expandablerecyclerview.model.ExpandableWrapper;
 import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
 
 import org.junit.Before;
@@ -248,16 +249,25 @@ public class ExpandableRecyclerAdapterTest {
     }
 
     private void verifyParentItemsMatch(ParentListItem<Object> expectedParentListItem, boolean expectedExpansion, int actualParentIndex) {
-        assertEquals(expectedParentListItem, mExpandableRecyclerAdapter.getListItem(actualParentIndex));
+        assertEquals(expectedParentListItem, getListItem(actualParentIndex));
         assertEquals(expectedExpansion, mExpandableRecyclerAdapter.mItemList.get(actualParentIndex).isExpanded());
 
         if (expectedExpansion) {
             List<Object> expectedChildList = expectedParentListItem.getChildItemList();
             int actualChildIndex = actualParentIndex + 1;
             for (int i = 0; i < expectedChildList.size(); i++) {
-                assertEquals(expectedChildList.get(i), mExpandableRecyclerAdapter.getListItem(actualChildIndex));
+                assertEquals(expectedChildList.get(i), getListItem(actualChildIndex));
                 actualChildIndex++;
             }
+        }
+    }
+
+    protected Object getListItem(int flatPosition) {
+        ExpandableWrapper<ParentListItem<Object>, Object> listItem = mExpandableRecyclerAdapter.mItemList.get(flatPosition);
+        if (listItem.isParent()) {
+            return listItem.getParentListItem();
+        } else {
+            return listItem.getChildListItem();
         }
     }
 

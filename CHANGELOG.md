@@ -7,6 +7,7 @@ Version 3.0.0 SNAPSHOT
         - A parent model object that must extend `ParentListItem` which includes the previous child type
     - As a result `onBindParentViewHolder` and `onBindChildViewHolder` now give the specific object type specified in the class
     - Cleaned up a lot of internal logic within `ExpandableRecyclerAdapter` to avoid casting to Object
+    - Removed protected method `getListItem`, with generics it is now more sane to access `mItemList` yourself if you need it in the subclass
 - Changed the name and visibility of `onParentListItemExpanded` and `onParentListItemCollapsed`
     - Now protected and named `parentListItemExpandedFromViewHolder` and `parentListItemCollapsedFromViewHolder`
     - Not meant to be called from outside the adapter and viewholder, can be overriden to give some custom behaviour for collapsing/expanding

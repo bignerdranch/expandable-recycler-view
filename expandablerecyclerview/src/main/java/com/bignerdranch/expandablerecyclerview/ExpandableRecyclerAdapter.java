@@ -526,9 +526,9 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
 
             if (expandedStateMap.containsKey(i)) {
                 boolean expanded = expandedStateMap.get(i);
-                if (expanded) {
-                    parentWrapper.setExpanded(true);
+                parentWrapper.setExpanded(expanded);
 
+                if (expanded) {
                     List<ExpandableWrapper<P, C>> wrappedChildItemList = parentWrapper.getWrappedChildItemList();
                     int childListItemCount = wrappedChildItemList.size();
                     for (int j = 0; j < childListItemCount; j++) {
@@ -542,26 +542,6 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
         mItemList = itemList;
 
         notifyDataSetChanged();
-    }
-
-    /**
-     * Gets the list item held at the specified adapter flatPosition.
-     *
-     * @param flatPosition The index, in the merged list of children and parents, of the list item to return
-     * @return The list item at the specified flatPosition
-     */
-    protected Object getListItem(int flatPosition) {
-        boolean positionInRange = flatPosition >= 0 && flatPosition < mItemList.size();
-        if (positionInRange) {
-            ExpandableWrapper<P, C> listItem = mItemList.get(flatPosition);
-            if (listItem.isParent()) {
-                return listItem.getParentListItem();
-            } else {
-                return listItem.getChildListItem();
-            }
-        } else {
-            return null;
-        }
     }
 
     /**
