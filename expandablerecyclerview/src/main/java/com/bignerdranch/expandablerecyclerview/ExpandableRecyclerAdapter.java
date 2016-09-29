@@ -43,6 +43,7 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     public static final int TYPE_CHILD = 1;
     /** Start of user-defined view types */
     public static final int TYPE_FIRST_USER = 2;
+    private static final int INVALID_FLAT_POSITION = -1;
 
     /**
      * A {@link List} of all currently expanded parents and their children, in order.
@@ -391,7 +392,7 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     public void expandParent(P parentListItem) {
         ExpandableWrapper<P, C> parentWrapper = new ExpandableWrapper<>(parentListItem);
         int flatParentPosition = mItemList.indexOf(parentWrapper);
-        if (flatParentPosition == -1) {
+        if (flatParentPosition == INVALID_FLAT_POSITION) {
             return;
         }
 
@@ -437,7 +438,7 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
     public void collapseParent(P parentListItem) {
         ExpandableWrapper<P, C> parentWrapper = new ExpandableWrapper<>(parentListItem);
         int flatParentPosition = mItemList.indexOf(parentWrapper);
-        if (flatParentPosition == -1) {
+        if (flatParentPosition == INVALID_FLAT_POSITION) {
             return;
         }
 
@@ -943,7 +944,7 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
             // Add the parent and children at new position
             int toFlatParentPosition = getFlatParentPosition(toParentPosition);
             int childOffset = 0;
-            if (toFlatParentPosition != -1) {
+            if (toFlatParentPosition != INVALID_FLAT_POSITION) {
                 ExpandableWrapper<P, C> toParentWrapper = mItemList.get(toFlatParentPosition);
                 if (toParentWrapper.isExpanded()) {
                     childOffset = toParentWrapper.getWrappedChildItemList().size();
@@ -1233,6 +1234,6 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
             }
         }
 
-        return -1;
+        return INVALID_FLAT_POSITION;
     }
 }
