@@ -23,6 +23,7 @@ Version 3.0.0 SNAPSHOT
     - `getChildListItem()`
     - `getParentAdapterPosition()`
     - `getChildAdapterPosition()`
+- Added `SimpleParentListItem` for quick implementation of ParentListItem interface (no need to override methods or subclass)
 
 Version 2.1.1 (2/26/16)
 ----------------------------
