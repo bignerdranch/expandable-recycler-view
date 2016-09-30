@@ -8,19 +8,24 @@ Version 3.0.0 SNAPSHOT
     - As a result `onBindParentViewHolder` and `onBindChildViewHolder` now give the specific object type specified in the class
     - Cleaned up a lot of internal logic within `ExpandableRecyclerAdapter` to avoid casting to Object
     - Removed protected method `getListItem`, with generics it is now more sane to access `mItemList` yourself if you need it in the subclass
+- Rename of `ParentListItem` and `ChildListItem`, this affects many getters and setters names to eliminate the item word. Some examples:
+    - `Parent` interface now has the method `getChildList()` instead of `getChildItemList()`
+    - `ExpandableRecyclerAdapter` renamed method from `getParentItemList()` to `getParentList()`
+    - All the notify methods now are name `notifyParent...` instead of of `notifyParentItem...` (Same for children)
+    - The `ExpandCollapseListener` has methods `onParentExpanded` and `onParentCollapsed` instead of `onListItemExpanded`
 - Changed the name and visibility of `onParentListItemExpanded` and `onParentListItemCollapsed`
-    - Now protected and named `parentListItemExpandedFromViewHolder` and `parentListItemCollapsedFromViewHolder`
+    - Now protected and named `parentExpandedFromViewHolder` and `parentCollapsedFromViewHolder`
     - Not meant to be called from outside the adapter and viewholder, can be overriden to give some custom behaviour for collapsing/expanding
 - Added support for multiple view types within recyclerview
-    - `getParentItemViewType()`, `getChildItemViewType()`, and `isParentViewType()` added with default implementation for single view type
+    - `getParentViewType()`, `getChildViewType()`, and `isParentViewType()` added with default implementation for single view type
     - Modified signatures of `onCreateParentViewHolder()` and `onCreateChildViewHolder()` to pass view type being created
 - `ParentViewHolder` package location modified from `com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter` to `com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter`
 - `ChildViewHolder` package location modified from `com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter` to `com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter`
 - Added ParentViewHolder methods:
-    - `getParentListItem()`
+    - `getParent()`
     - `getParentAdapterPosition()`
 - Added ChildViewHolder methods:
-    - `getChildListItem()`
+    - `getChild()`
     - `getParentAdapterPosition()`
     - `getChildAdapterPosition()`
 - Added `SimpleParentListItem` for quick implementation of ParentListItem interface (no need to override methods or subclass)

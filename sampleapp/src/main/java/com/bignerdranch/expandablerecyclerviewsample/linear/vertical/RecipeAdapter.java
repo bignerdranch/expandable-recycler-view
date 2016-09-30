@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
 import com.bignerdranch.expandablerecyclerviewsample.R;
 
 import java.util.List;
@@ -76,7 +75,7 @@ public class RecipeAdapter extends ExpandableRecyclerAdapter<Recipe, Ingredient,
     }
 
     @Override
-    public int getParentItemViewType(int parentPosition) {
+    public int getParentViewType(int parentPosition) {
         if (mRecipeList.get(parentPosition).isVegetarian()) {
             return PARENT_VEGETARIAN;
         } else {
@@ -85,7 +84,7 @@ public class RecipeAdapter extends ExpandableRecyclerAdapter<Recipe, Ingredient,
     }
 
     @Override
-    public int getChildItemViewType(int parentPosition, int childPosition) {
+    public int getChildViewType(int parentPosition, int childPosition) {
         Ingredient ingredient = mRecipeList.get(parentPosition).getIngredient(childPosition);
         if (ingredient.isVegetarian()) {
             return CHILD_VEGETARIAN;

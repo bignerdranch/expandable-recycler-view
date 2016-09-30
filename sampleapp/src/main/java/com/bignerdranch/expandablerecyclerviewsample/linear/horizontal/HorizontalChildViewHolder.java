@@ -33,7 +33,7 @@ public class HorizontalChildViewHolder extends ChildViewHolder {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Child at " + getChildAdapterPosition() + ", with parent at " + getParentAdapterPosition()
-                        + " clicked, child item is \"" + getChildListItem() + "\"");
+                        + " clicked, child item is \"" + getChild() + "\"");
             }
         });
     }

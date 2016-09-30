@@ -8,12 +8,12 @@ import java.util.List;
  *
  * @param <C> Type of the Child Items held by the Parent.
  */
-public class SimpleParentListItem<C> implements ParentListItem<C> {
+public class SimpleParent<C> implements Parent<C> {
 
-    private List<C> mChildItemList;
+    private List<C> mChildList;
 
-    protected SimpleParentListItem(List<C> childItemList) {
-        mChildItemList = childItemList;
+    protected SimpleParent(List<C> childItemList) {
+        mChildList = childItemList;
     }
 
     @Override
@@ -22,11 +22,11 @@ public class SimpleParentListItem<C> implements ParentListItem<C> {
     }
 
     @Override
-    public List<C> getChildItemList() {
-        return mChildItemList;
+    public List<C> getChildList() {
+        return mChildList;
     }
 
-    public void setChildItemList(List<C> childItemList) {
-        mChildItemList = childItemList;
+    public void setChildList(List<C> childList) {
+        mChildList = childList;
     }
 }

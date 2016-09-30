@@ -157,14 +157,14 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
     @UiThread
     @Override
-    public void onListItemExpanded(int parentPosition) {
+    public void onParentExpanded(int parentPosition) {
         String toastMessage = getString(R.string.item_expanded, parentPosition);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 
     @UiThread
     @Override
-    public void onListItemCollapsed(int parentPosition) {
+    public void onParentCollapsed(int parentPosition) {
         String toastMessage = getString(R.string.item_collapsed, parentPosition);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
@@ -231,7 +231,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
 
             mTestDataItemList.add(horizontalParent);
-            mExpandableAdapter.notifyParentItemInserted(mTestDataItemList.size() - 1);
+            mExpandableAdapter.notifyParentInserted(mTestDataItemList.size() - 1);
         }
     };
 
@@ -259,7 +259,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             }
 
             mTestDataItemList.add(1, horizontalParent);
-            mExpandableAdapter.notifyParentItemInserted(1);
+            mExpandableAdapter.notifyParentInserted(1);
         }
     };
 
@@ -273,7 +273,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
             HorizontalParent horizontalParent = mTestDataItemList.get(1);
             mTestDataItemList.remove(horizontalParent);
-            mExpandableAdapter.notifyParentItemRemoved(1);
+            mExpandableAdapter.notifyParentRemoved(1);
 
         }
     };
@@ -284,7 +284,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         public void onClick(View v) {
             int removeIndex = mTestDataItemList.size() - 1;
             mTestDataItemList.remove(removeIndex);
-            mExpandableAdapter.notifyParentItemRemoved(removeIndex);
+            mExpandableAdapter.notifyParentRemoved(removeIndex);
         }
     };
 
@@ -298,10 +298,10 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
             HorizontalParent horizontalParent = mTestDataItemList.get(1);
             HorizontalChild horizontalChild = new HorizontalChild();
-            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            List<HorizontalChild> childList = horizontalParent.getChildList();
             horizontalChild.setChildText(getString(R.string.added_child, childList.size()));
             childList.add(horizontalChild);
-            mExpandableAdapter.notifyChildItemInserted(1, childList.size() - 1);
+            mExpandableAdapter.notifyChildInserted(1, childList.size() - 1);
         }
     };
 
@@ -314,13 +314,13 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             }
 
             HorizontalParent horizontalParent = mTestDataItemList.get(1);
-            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            List<HorizontalChild> childList = horizontalParent.getChildList();
             if (childList.size() < 2) {
                 return;
             }
 
             childList.remove(1);
-            mExpandableAdapter.notifyChildItemRemoved(1, 1);
+            mExpandableAdapter.notifyChildRemoved(1, 1);
         }
     };
 
@@ -372,7 +372,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
             mTestDataItemList.add(2, horizontalParent);
 
-            mExpandableAdapter.notifyParentItemRangeInserted(1, 2);
+            mExpandableAdapter.notifyParentRangeInserted(1, 2);
         }
     };
 
@@ -385,7 +385,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             HorizontalParent newHorizontalParent = new HorizontalParent();
             newHorizontalParent.setParentText(getString(R.string.modified_parent_text, parentNumber));
             newHorizontalParent.setParentNumber(parentNumber);
-            int childSize = horizontalParent.getChildItemList().size();
+            int childSize = horizontalParent.getChildList().size();
             List<HorizontalChild> childItemList = new ArrayList<>();
             for (int i = 0; i < childSize; i++) {
                 HorizontalChild horizontalChild = new HorizontalChild();
@@ -394,7 +394,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             }
             newHorizontalParent.setChildItemList(childItemList);
             mTestDataItemList.set(parentNumber, newHorizontalParent);
-            mExpandableAdapter.notifyParentItemChanged(parentNumber);
+            mExpandableAdapter.notifyParentChanged(parentNumber);
         }
     };
 
@@ -404,12 +404,12 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         public void onClick(View v) {
             int parentNumber = mTestDataItemList.size() - 1;
             HorizontalParent horizontalParent = mTestDataItemList.get(parentNumber);
-            List<HorizontalChild> childList = horizontalParent.getChildItemList();
-            int childNumber = horizontalParent.getChildItemList().size() - 1;
+            List<HorizontalChild> childList = horizontalParent.getChildList();
+            int childNumber = horizontalParent.getChildList().size() - 1;
             HorizontalChild horizontalChild = new HorizontalChild();
             horizontalChild.setChildText(getString(R.string.modified_child_text, childNumber));
             childList.set(childNumber, horizontalChild);
-            mExpandableAdapter.notifyChildItemChanged(parentNumber, childNumber);
+            mExpandableAdapter.notifyChildChanged(parentNumber, childNumber);
         }
     };
 
@@ -434,7 +434,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         @Override
         public void onClick(View v) {
             HorizontalParent horizontalParent = mTestDataItemList.get(mTestDataItemList.size() - 1);
-            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            List<HorizontalChild> childList = horizontalParent.getChildList();
 
             HorizontalChild horizontalChild = new HorizontalChild();
             horizontalChild.setChildText(getString(R.string.added_child, childList.size()));
@@ -443,7 +443,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             horizontalChild = new HorizontalChild();
             horizontalChild.setChildText(getString(R.string.added_child, childList.size()));
             childList.add(horizontalChild);
-            mExpandableAdapter.notifyChildItemRangeInserted(mTestDataItemList.size() - 1, childList.size() - 2, 2);
+            mExpandableAdapter.notifyChildRangeInserted(mTestDataItemList.size() - 1, childList.size() - 2, 2);
         }
     };
 
@@ -452,7 +452,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         @Override
         public void onClick(View v) {
             HorizontalParent horizontalParent = mTestDataItemList.get(mTestDataItemList.size() - 1);
-            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            List<HorizontalChild> childList = horizontalParent.getChildList();
             int childSize = childList.size();
             if (childSize < 1) {
                 return;
@@ -460,11 +460,11 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
             childList.remove(childSize - 1);
             if (childSize < 2) {
-                mExpandableAdapter.notifyChildItemRemoved(mTestDataItemList.size() - 1, childSize - 1);
+                mExpandableAdapter.notifyChildRemoved(mTestDataItemList.size() - 1, childSize - 1);
                 return;
             }
             childList.remove(childSize - 2);
-            mExpandableAdapter.notifyChildItemRangeRemoved(mTestDataItemList.size() - 1, childSize - 2, 2);
+            mExpandableAdapter.notifyChildRangeRemoved(mTestDataItemList.size() - 1, childSize - 2, 2);
         }
     };
 
@@ -478,27 +478,27 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
             int parentNumber = mTestDataItemList.size() - 1;
             HorizontalParent horizontalParent = mTestDataItemList.get(parentNumber);
-            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            List<HorizontalChild> childList = horizontalParent.getChildList();
             if (childList.size() == 0) {
                 return;
             }
 
-            int childNumber = horizontalParent.getChildItemList().size() - 1;
+            int childNumber = horizontalParent.getChildList().size() - 1;
             HorizontalChild horizontalChild = new HorizontalChild();
             horizontalChild.setChildText(getString(R.string.modified_child_text, childNumber));
             childList.set(childNumber, horizontalChild);
 
             if (childList.size() == 1) {
-                mExpandableAdapter.notifyChildItemChanged(parentNumber, childNumber);
+                mExpandableAdapter.notifyChildChanged(parentNumber, childNumber);
                 return;
             }
 
-            childNumber = horizontalParent.getChildItemList().size() - 2;
+            childNumber = horizontalParent.getChildList().size() - 2;
             horizontalChild = new HorizontalChild();
             horizontalChild.setChildText(getString(R.string.modified_child_text, childNumber));
             childList.set(childNumber, horizontalChild);
 
-            mExpandableAdapter.notifyChildItemRangeChanged(parentNumber, childNumber, 2);
+            mExpandableAdapter.notifyChildRangeChanged(parentNumber, childNumber, 2);
         }
     };
 
@@ -512,12 +512,12 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
             mTestDataItemList.remove(mTestDataItemList.size() - 1);
             if (mTestDataItemList.size() < 1) {
-                mExpandableAdapter.notifyParentItemRemoved(mTestDataItemList.size());
+                mExpandableAdapter.notifyParentRemoved(mTestDataItemList.size());
                 return;
             }
             mTestDataItemList.remove(mTestDataItemList.size() - 1);
 
-            mExpandableAdapter.notifyParentItemRangeRemoved(mTestDataItemList.size(), 2);
+            mExpandableAdapter.notifyParentRangeRemoved(mTestDataItemList.size(), 2);
         }
     };
 
@@ -534,7 +534,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             HorizontalParent newHorizontalParent = new HorizontalParent();
             newHorizontalParent.setParentText(getString(R.string.modified_parent_text, parentNumber));
             newHorizontalParent.setParentNumber(parentNumber);
-            int childSize = horizontalParent.getChildItemList().size();
+            int childSize = horizontalParent.getChildList().size();
             List<HorizontalChild> childItemList = new ArrayList<>();
             for (int i = 0; i < childSize; i++) {
                 HorizontalChild horizontalChild = new HorizontalChild();
@@ -544,7 +544,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             newHorizontalParent.setChildItemList(childItemList);
             mTestDataItemList.set(parentNumber, newHorizontalParent);
             if (mTestDataItemList.size() < 2) {
-                mExpandableAdapter.notifyParentItemChanged(parentNumber);
+                mExpandableAdapter.notifyParentChanged(parentNumber);
                 return;
             }
 
@@ -554,7 +554,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             newHorizontalParent = new HorizontalParent();
             newHorizontalParent.setParentText(getString(R.string.modified_parent_text, parentNumber));
             newHorizontalParent.setParentNumber(parentNumber);
-            childSize = horizontalParent.getChildItemList().size();
+            childSize = horizontalParent.getChildList().size();
             childItemList = new ArrayList<>();
             for (int i = 0; i < childSize; i++) {
                 HorizontalChild horizontalChild = new HorizontalChild();
@@ -563,7 +563,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             }
             newHorizontalParent.setChildItemList(childItemList);
             mTestDataItemList.set(parentNumber, newHorizontalParent);
-            mExpandableAdapter.notifyParentItemRangeChanged(parentNumber, 2);
+            mExpandableAdapter.notifyParentRangeChanged(parentNumber, 2);
         }
     };
 
@@ -577,7 +577,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
             HorizontalParent horizontalParent = mTestDataItemList.remove(1);
             mTestDataItemList.add(3, horizontalParent);
-            mExpandableAdapter.notifyParentItemMoved(1, 3);
+            mExpandableAdapter.notifyParentMoved(1, 3);
         }
     };
 
@@ -590,13 +590,13 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
             }
 
             HorizontalParent horizontalParent = mTestDataItemList.get(1);
-            if (horizontalParent.getChildItemList().size() < 2) {
+            if (horizontalParent.getChildList().size() < 2) {
                 return;
             }
-            List<HorizontalChild> childList = horizontalParent.getChildItemList();
+            List<HorizontalChild> childList = horizontalParent.getChildList();
             HorizontalChild child = childList.remove(0);
             childList.add(childList.size(), child);
-            mExpandableAdapter.notifyChildItemMoved(1, 0, childList.size() - 1);
+            mExpandableAdapter.notifyChildMoved(1, 0, childList.size() - 1);
 
         }
     };
