@@ -1,6 +1,9 @@
 package com.bignerdranch.expandablerecyclerviewsample.linear.horizontal;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +26,7 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      *
      * @param parentItemList the list of parent items to be displayed in the RecyclerView
      */
-    public HorizontalExpandableAdapter(Context context, List<? extends ParentListItem> parentItemList) {
+    public HorizontalExpandableAdapter(Context context, @NonNull List<? extends ParentListItem> parentItemList) {
         super(parentItemList);
         mInflater = LayoutInflater.from(context);
     }
@@ -35,8 +38,10 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * @param parent for inflating the View
      * @return the user's custom parent ViewHolder that must extend ParentViewHolder
      */
+    @UiThread
+    @NonNull
     @Override
-    public HorizontalParentViewHolder onCreateParentViewHolder(ViewGroup parent, int viewType) {
+    public HorizontalParentViewHolder onCreateParentViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.list_item_parent_horizontal, parent, false);
         return new HorizontalParentViewHolder(view);
     }
@@ -48,8 +53,10 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * @param parent for inflating the View
      * @return the user's custom parent ViewHolder that must extend ParentViewHolder
      */
+    @UiThread
+    @NonNull
     @Override
-    public HorizontalChildViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
+    public HorizontalChildViewHolder onCreateChildViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.list_item_child_horizontal, parent, false);
         return new HorizontalChildViewHolder(view);
     }
@@ -61,8 +68,9 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * @param parentViewHolder the ViewHolder of the parent item created in OnCreateParentViewHolder
      * @param parentPosition the position in the RecyclerView of the item
      */
+    @UiThread
     @Override
-    public void onBindParentViewHolder(HorizontalParentViewHolder parentViewHolder, int parentPosition, ParentListItem parentListItem) {
+    public void onBindParentViewHolder(@NonNull HorizontalParentViewHolder parentViewHolder, int parentPosition, @NonNull ParentListItem parentListItem) {
         HorizontalParent horizontalParent = (HorizontalParent) parentListItem;
         parentViewHolder.bind(horizontalParent.getParentNumber(), horizontalParent.getParentText());
     }
@@ -74,8 +82,9 @@ public class HorizontalExpandableAdapter extends ExpandableRecyclerAdapter<Horiz
      * @param childViewHolder the ViewHolder of the child item created in OnCreateChildViewHolder
      * @param childPosition the position in the RecyclerView of the item
      */
+    @UiThread
     @Override
-    public void onBindChildViewHolder(HorizontalChildViewHolder childViewHolder, int parentPosition, int childPosition, Object childListItem) {
+    public void onBindChildViewHolder(@NonNull HorizontalChildViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull Object childListItem) {
         HorizontalChild horizontalChild = (HorizontalChild) childListItem;
         childViewHolder.bind(horizontalChild.getChildText());
     }

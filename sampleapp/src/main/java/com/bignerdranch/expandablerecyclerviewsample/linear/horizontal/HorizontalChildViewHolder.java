@@ -1,5 +1,6 @@
 package com.bignerdranch.expandablerecyclerviewsample.linear.horizontal;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -24,7 +25,7 @@ public class HorizontalChildViewHolder extends ChildViewHolder {
      *
      * @param itemView the child ViewHolder's view
      */
-    public HorizontalChildViewHolder(View itemView) {
+    public HorizontalChildViewHolder(@NonNull View itemView) {
         super(itemView);
 
         mDataTextView = (TextView) itemView.findViewById(R.id.list_item_horizontal_child_textView);

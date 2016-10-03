@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,17 +32,20 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
     private Button mExpandAllButton;
     private Button mCollapseAllButton;
 
+    @Nullable
     private ArrayList<HorizontalParent> mTestDataItemList;
 
+    @Nullable
     private HorizontalExpandableAdapter mExpandableAdapter;
 
 
+    @NonNull
     public static Intent newIntent(Context context) {
         return new Intent(context, HorizontalLinearRecyclerViewSampleActivity.class);
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_horizontal_linear_recycler_view_sample);
 
@@ -134,7 +139,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
      * pausing the activity.
      */
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mExpandableAdapter.onSaveInstanceState(outState);
         outState.putSerializable(SAVED_TEST_DATA_ITEM_LIST, mTestDataItemList);
@@ -150,18 +155,21 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         mExpandableAdapter.onRestoreInstanceState(savedInstanceState);
     }
 
+    @UiThread
     @Override
     public void onListItemExpanded(int position) {
         String toastMessage = getString(R.string.item_expanded, position);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 
+    @UiThread
     @Override
     public void onListItemCollapsed(int position) {
         String toastMessage = getString(R.string.item_collapsed, position);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 
+    @NonNull
     private View.OnClickListener mExpandParentTwoClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -169,6 +177,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private View.OnClickListener mCollapseParentTwoClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -176,6 +185,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private View.OnClickListener mExpandAllClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -183,6 +193,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private View.OnClickListener mCollapseAllClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -190,6 +201,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mAddToEndClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -223,6 +235,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mAddToSecondClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -250,6 +263,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mRemoveSecondClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -264,6 +278,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mRemoveFromEndClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -273,6 +288,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mAddChildClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -289,6 +305,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mRemoveChildClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -307,6 +324,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mAddMultipleParentsClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -358,6 +376,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mModifyLastParentClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -379,6 +398,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mModifyLastChildClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -393,6 +413,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mExpandRangeClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -400,6 +421,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mCollapseRangeClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -407,6 +429,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mAddTwoChildrenClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -424,6 +447,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mRemoveTwoChildrenClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -444,6 +468,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mModifyTwoChildrenClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -477,6 +502,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mRemoveTwoParentsClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -495,6 +521,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mModifyTwoParentsClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -540,6 +567,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mParentMoveClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -553,6 +581,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
         }
     };
 
+    @NonNull
     private OnClickListener mChildMoveClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -584,6 +613,7 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
      *
      * @return A List of Objects that contains all parent items. Expansion of children are handled in the adapter
      */
+    @NonNull
     private ArrayList<HorizontalParent> setUpTestData(int numItems) {
         ArrayList<HorizontalParent> horizontalParentList = new ArrayList<>();
 

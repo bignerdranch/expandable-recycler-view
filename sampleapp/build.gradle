@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "$BUILD_TOOLS_VERSION"
 
     defaultConfig {
         applicationId "com.bignerdranch.expandablerecyclerviewsample"
-        minSdkVersion 7
-        targetSdkVersion 23
+        minSdkVersion 9
+        targetSdkVersion 24
         versionCode 1
-        versionName "1.0"
+        versionName "3.0"
     }
     buildTypes {
         release {
@@ -27,4 +27,5 @@ dependencies {
     compile project(':expandablerecyclerview')
     compile "com.android.support:recyclerview-v7:$SUPPORT_VERSION"
     compile "com.android.support:appcompat-v7:$SUPPORT_VERSION"
+    compile "com.android.support:support-annotations:$SUPPORT_VERSION"
 }

@@ -3,6 +3,7 @@ package com.bignerdranch.expandablerecyclerviewsample.linear.horizontal;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,7 +39,7 @@ public class HorizontalParentViewHolder extends ParentViewHolder {
      *
      * @param itemView the view of the parent item. Find/modify views using this.
      */
-    public HorizontalParentViewHolder(View itemView) {
+    public HorizontalParentViewHolder(@NonNull View itemView) {
         super(itemView);
 
         mNumberTextView = (TextView) itemView.findViewById(R.id.list_item_parent_horizontal_number_textView);

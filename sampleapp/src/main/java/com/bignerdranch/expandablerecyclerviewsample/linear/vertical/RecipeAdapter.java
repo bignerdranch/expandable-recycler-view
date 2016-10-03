@@ -2,6 +2,7 @@ package com.bignerdranch.expandablerecyclerviewsample.linear.vertical;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +29,10 @@ public class RecipeAdapter extends ExpandableRecyclerAdapter<RecipeViewHolder, I
         mInflator = LayoutInflater.from(context);
     }
 
+    @UiThread
+    @NonNull
     @Override
-    public RecipeViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup, int viewType) {
+    public RecipeViewHolder onCreateParentViewHolder(@NonNull ViewGroup parentViewGroup, int viewType) {
         View recipeView;
         switch (viewType) {
             default:
@@ -43,8 +46,10 @@ public class RecipeAdapter extends ExpandableRecyclerAdapter<RecipeViewHolder, I
         return new RecipeViewHolder(recipeView);
     }
 
+    @UiThread
+    @NonNull
     @Override
-    public IngredientViewHolder onCreateChildViewHolder(ViewGroup childViewGroup, int viewType) {
+    public IngredientViewHolder onCreateChildViewHolder(@NonNull ViewGroup childViewGroup, int viewType) {
         View ingredientView;
         switch (viewType) {
             default:
@@ -58,14 +63,16 @@ public class RecipeAdapter extends ExpandableRecyclerAdapter<RecipeViewHolder, I
         return new IngredientViewHolder(ingredientView);
     }
 
+    @UiThread
     @Override
-    public void onBindParentViewHolder(RecipeViewHolder recipeViewHolder, int parentPosition, ParentListItem parentListItem) {
+    public void onBindParentViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int parentPosition, @NonNull ParentListItem parentListItem) {
         Recipe recipe = (Recipe) parentListItem;
         recipeViewHolder.bind(recipe);
     }
 
+    @UiThread
     @Override
-    public void onBindChildViewHolder(IngredientViewHolder ingredientViewHolder, int parentPosition, int childPosition, Object childListItem) {
+    public void onBindChildViewHolder(@NonNull IngredientViewHolder ingredientViewHolder, int parentPosition, int childPosition, @NonNull Object childListItem) {
         Ingredient ingredient = (Ingredient) childListItem;
         ingredientViewHolder.bind(ingredient);
     }

@@ -1,5 +1,7 @@
 package com.bignerdranch.expandablerecyclerview.model;
 
+import android.support.annotation.NonNull;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -49,6 +51,7 @@ public class ParentWrapperTest {
         expected.add(new Object());
 
         when(mParentListItem.getChildItemList()).thenAnswer(new Answer<Object>() {
+            @NonNull
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
                 return expected;
@@ -65,6 +68,7 @@ public class ParentWrapperTest {
         final List<Object> childItemList = new ArrayList<>();
 
         when(mParentListItem.getChildItemList()).thenAnswer(new Answer<Object>() {
+            @NonNull
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
                 return childItemList;

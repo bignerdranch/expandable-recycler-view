@@ -1,5 +1,8 @@
 package com.bignerdranch.expandablerecyclerview;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
+
 import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
 import com.bignerdranch.expandablerecyclerview.model.ParentWrapper;
 
@@ -21,7 +24,9 @@ public class ExpandableRecyclerAdapterHelper {
      *                       the {@link ExpandableRecyclerAdapter}
      * @return A list of all {@code ParentListItem} objects and their children, expanded
      */
-    public static List<Object> generateParentChildItemList(List<? extends ParentListItem> parentItemList) {
+    @NonNull
+    @UiThread
+    public static List<Object> generateParentChildItemList(@NonNull List<? extends ParentListItem> parentItemList) {
         List<Object> parentWrapperList = new ArrayList<>();
         ParentListItem parentListItem;
         ParentWrapper parentWrapper;
