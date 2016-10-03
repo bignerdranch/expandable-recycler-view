@@ -44,7 +44,7 @@ public class ChildViewHolder<C> extends RecyclerView.ViewHolder {
     public int getParentAdapterPosition() {
         int flatPosition = getAdapterPosition();
         if (mExpandableAdapter == null || flatPosition == RecyclerView.NO_POSITION) {
-            return flatreturn RecyclerView.NO_POSITION;Position;
+            return RecyclerView.NO_POSITION;
         }
 
         return mExpandableAdapter.getNearestParentPosition(flatPosition);

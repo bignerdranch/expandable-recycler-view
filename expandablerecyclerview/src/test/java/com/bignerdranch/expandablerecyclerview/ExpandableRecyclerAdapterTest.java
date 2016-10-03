@@ -277,23 +277,24 @@ public class ExpandableRecyclerAdapterTest {
             super(parentItemList);
         }
 
+        @NonNull
         @Override
-        public ParentViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup, int viewType) {
+        public ParentViewHolder onCreateParentViewHolder(@NonNull ViewGroup parentViewGroup, int viewType) {
             return null;
         }
 
         @Override
-        public ChildViewHolder onCreateChildViewHolder(ViewGroup childViewGroup, int viewType) {
+        public ChildViewHolder onCreateChildViewHolder(@NonNull ViewGroup childViewGroup, int viewType) {
             return null;
         }
 
         @Override
-        public void onBindParentViewHolder(ParentViewHolder parentViewHolder, int parentPosition, ParentListItem<Object> parentListItem) {
+        public void onBindParentViewHolder(@NonNull ParentViewHolder parentViewHolder, int parentPosition, ParentListItem<Object> parentListItem) {
 
         }
 
         @Override
-        public void onBindChildViewHolder(ChildViewHolder childViewHolder, int parentPosition, int childPosition, Object childListItem) {
+        public void onBindChildViewHolder(@NonNull ChildViewHolder childViewHolder, int parentPosition, int childPosition, Object childListItem) {
 
         }
     }

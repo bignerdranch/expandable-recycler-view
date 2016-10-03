@@ -30,9 +30,6 @@ import java.util.List;
  * {@link #notifyChildItemChanged(int, int)}
  * methods and not the notify methods of RecyclerView.Adapter.
  *
- * @author Ryan Brooks
- * @version 1.0
- * @since 5/27/2015
  */
 public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, PVH extends ParentViewHolder, CVH extends ChildViewHolder>
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -324,6 +321,7 @@ public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, 
      *
      * @return The list of parents that this adapter represents
      */
+    @NonNull
     @UiThread
     public List<P> getParentItemList() {
         return mParentItemList;
