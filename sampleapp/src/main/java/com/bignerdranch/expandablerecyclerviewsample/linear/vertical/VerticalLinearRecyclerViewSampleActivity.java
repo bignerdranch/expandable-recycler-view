@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,7 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
 
     private RecipeAdapter mAdapter;
 
+    @NonNull
     public static Intent newIntent(Context context) {
         return new Intent(context, VerticalLinearRecyclerViewSampleActivity.class);
     }
@@ -51,6 +53,7 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mAdapter = new RecipeAdapter(this, recipes);
         mAdapter.setExpandCollapseListener(new ExpandableRecyclerAdapter.ExpandCollapseListener() {
+            @UiThread
             @Override
             public void onListItemExpanded(int parentPosition) {
                 Recipe expandedRecipe = recipes.get(parentPosition);
@@ -62,6 +65,7 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
                         .show();
             }
 
+            @UiThread
             @Override
             public void onListItemCollapsed(int parentPosition) {
                 Recipe collapsedRecipe = recipes.get(parentPosition);

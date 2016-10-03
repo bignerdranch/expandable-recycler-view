@@ -2,6 +2,7 @@ package com.bignerdranch.expandablerecyclerviewsample.linear.vertical;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -15,17 +16,18 @@ public class RecipeViewHolder extends ParentViewHolder {
     private static final float INITIAL_POSITION = 0.0f;
     private static final float ROTATED_POSITION = 180f;
 
+    @NonNull
     private final ImageView mArrowExpandImageView;
     private TextView mRecipeTextView;
 
-    public RecipeViewHolder(View itemView) {
+    public RecipeViewHolder(@NonNull View itemView) {
         super(itemView);
         mRecipeTextView = (TextView) itemView.findViewById(R.id.recipe_textview);
 
         mArrowExpandImageView = (ImageView) itemView.findViewById(R.id.arrow_expand_imageview);
     }
 
-    public void bind(Recipe recipe) {
+    public void bind(@NonNull Recipe recipe) {
         mRecipeTextView.setText(recipe.getName());
     }
 

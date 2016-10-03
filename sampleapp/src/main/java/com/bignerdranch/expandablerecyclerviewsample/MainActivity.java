@@ -1,6 +1,7 @@
 package com.bignerdranch.expandablerecyclerviewsample;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -37,16 +38,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @NonNull
     private View.OnClickListener mVerticalSampleButtonClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(@NonNull View v) {
             startActivity(VerticalLinearRecyclerViewSampleActivity.newIntent(v.getContext()));
         }
     };
 
+    @NonNull
     private View.OnClickListener mHorizontalSampleButtonClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(@NonNull View v) {
             startActivity(HorizontalLinearRecyclerViewSampleActivity.newIntent(v.getContext()));
         }
     };

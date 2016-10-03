@@ -1,13 +1,16 @@
 sudo: false
 language: android
-jdk: oraclejdk7
+jdk: oraclejdk8
+addons:
+  apt:
+    packages:
+    - oracle-java8-installer
 android:
   components:
     - tools
-    - build-tools-23.0.3
-    - android-23
+    - build-tools-24.0.3
+    - android-24
     - extra-android-support
-    - extra-google-m2repository
     - extra-android-m2repository
 branches:
   only:

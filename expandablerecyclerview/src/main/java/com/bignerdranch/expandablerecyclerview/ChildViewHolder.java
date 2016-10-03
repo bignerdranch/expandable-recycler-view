@@ -1,5 +1,7 @@
 package com.bignerdranch.expandablerecyclerview;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -10,7 +12,6 @@ import android.view.View;
  * child list item.
  */
 public class ChildViewHolder<C> extends RecyclerView.ViewHolder {
-
     C mChildListItem;
     ExpandableRecyclerAdapter mExpandableAdapter;
 
@@ -19,19 +20,19 @@ public class ChildViewHolder<C> extends RecyclerView.ViewHolder {
      *
      * @param itemView The {@link View} being hosted in this ViewHolder
      */
-    public ChildViewHolder(View itemView) {
+    public ChildViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
     /**
      * @return the childListItem associated with this view holder
      */
+    @UiThread
     public C getChildListItem() {
         return mChildListItem;
     }
 
     /**
-     *
      * Returns the adapter position of the Parent associated with this ChildViewHolder
      *
      * @return The adapter position of the Parent if it still exists in the adapter.
@@ -39,17 +40,17 @@ public class ChildViewHolder<C> extends RecyclerView.ViewHolder {
      * RecyclerView.Adapter.notifyDataSetChanged() has been called after the last
      * layout pass or the ViewHolder has already been recycled.
      */
+    @UiThread
     public int getParentAdapterPosition() {
         int flatPosition = getAdapterPosition();
-        if (flatPosition == RecyclerView.NO_POSITION) {
-            return flatPosition;
+        if (mExpandableAdapter == null || flatPosition == RecyclerView.NO_POSITION) {
+            return flatreturn RecyclerView.NO_POSITION;Position;
         }
 
         return mExpandableAdapter.getNearestParentPosition(flatPosition);
     }
 
     /**
-     *
      * Returns the adapter position of the Child associated with this ChildViewHolder
      *
      * @return The adapter position of the Child if it still exists in the adapter.
@@ -57,10 +58,11 @@ public class ChildViewHolder<C> extends RecyclerView.ViewHolder {
      * RecyclerView.Adapter.notifyDataSetChanged() has been called after the last
      * layout pass or the ViewHolder has already been recycled.
      */
+    @UiThread
     public int getChildAdapterPosition() {
         int flatPosition = getAdapterPosition();
-        if (flatPosition == RecyclerView.NO_POSITION) {
-            return flatPosition;
+        if (mExpandableAdapter == null || flatPosition == RecyclerView.NO_POSITION) {
+            return RecyclerView.NO_POSITION;
         }
 
         return mExpandableAdapter.getChildPosition(flatPosition);
