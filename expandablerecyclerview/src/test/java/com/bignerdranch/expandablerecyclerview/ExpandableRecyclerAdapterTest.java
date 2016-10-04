@@ -300,6 +300,24 @@ public class ExpandableRecyclerAdapterTest {
         verifyParentItemsMatch(changedParent, true, 10);
     }
 
+    @Test
+    public void notifyParentRangeChanged() {
+        Parent<Object> firstChangedParent = generateParent(false, 3);
+        Parent<Object> secondChangedParent = generateParent(false, 3);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(mBaseParents.get(4), true, 10);
+        verifyParentItemsMatch(mBaseParents.get(5), false, 14);
+
+        mBaseParents.set(4, firstChangedParent);
+        mBaseParents.set(5, secondChangedParent);
+        mExpandableRecyclerAdapter.notifyParentRangeChanged(4, 2);
+
+        verify(mDataObserver).onItemRangeChanged(10, 5, null);
+        verifyParentItemsMatch(firstChangedParent, true, 10);
+        verifyParentItemsMatch(secondChangedParent, false, 14);
+    }
+
     private void verifyParentItemsMatch(Parent<Object> expectedParent, boolean expectedExpansion, int actualParentIndex) {
         assertEquals(expectedParent, getListItem(actualParentIndex));
         assertEquals(expectedExpansion, mExpandableRecyclerAdapter.mFlatItemList.get(actualParentIndex).isExpanded());
