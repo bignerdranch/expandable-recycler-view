@@ -167,7 +167,7 @@ public class ExpandableRecyclerAdapterTest {
     }
 
     @Test
-    public void notifyParentItemInsertedWithInitiallyCollapsedItem() {
+    public void notifyParentInsertedWithInitiallyCollapsedItem() {
         Parent<Object> originalFirstItem = mBaseParents.get(0);
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
         verifyParentItemsMatch(originalFirstItem, true, 0);
@@ -184,7 +184,7 @@ public class ExpandableRecyclerAdapterTest {
     }
 
     @Test
-    public void notifyParentItemInsertedWithInitiallyExpandedItem() {
+    public void notifyParentInsertedWithInitiallyExpandedItem() {
         Parent<Object> originalLastParent = mBaseParents.get(9);
         Parent<Object> insertedItem = generateParent(true, 3);
 
@@ -235,7 +235,7 @@ public class ExpandableRecyclerAdapterTest {
     }
 
     @Test
-    public void notifyParentItemRemovedOnExpandedItem() {
+    public void notifyParentRemovedOnExpandedItem() {
         Parent<Object> removedItem = mBaseParents.get(0);
         Parent<Object> originalSecondItem = mBaseParents.get(1);
 
@@ -252,7 +252,7 @@ public class ExpandableRecyclerAdapterTest {
     }
 
     @Test
-    public void notifyParentItemRemovedOnCollapsedItem() {
+    public void notifyParentRemovedOnCollapsedItem() {
         Parent<Object> removedItem = mBaseParents.get(9);
         Parent<Object> originalSecondToLastItem = mBaseParents.get(8);
 
@@ -266,6 +266,24 @@ public class ExpandableRecyclerAdapterTest {
         verify(mDataObserver).onItemRangeRemoved(24, 1);
         assertEquals(24, mExpandableRecyclerAdapter.getItemCount());
         verifyParentItemsMatch(originalSecondToLastItem, true, 20);
+    }
+
+    @Test
+    public void notifyParentRangeRemoved() {
+        Parent<Object> firstRemovedItem = mBaseParents.get(7);
+        Parent<Object> secondRemovedItem = mBaseParents.get(8);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(firstRemovedItem, false, 19);
+        verifyParentItemsMatch(secondRemovedItem, true, 20);
+
+        mBaseParents.remove(7);
+        mBaseParents.remove(7);
+        mExpandableRecyclerAdapter.notifyParentRangeRemoved(7, 2);
+
+        verify(mDataObserver).onItemRangeRemoved(19, 5);
+        assertEquals(20, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(mBaseParents.get(7), false, 19);
     }
 
     private void verifyParentItemsMatch(Parent<Object> expectedParent, boolean expectedExpansion, int actualParentIndex) {
