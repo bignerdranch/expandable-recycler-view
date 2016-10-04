@@ -12,20 +12,20 @@ import static org.mockito.Mockito.when;
 
 public class ExpandableWrapperTest {
 
-    private ExpandableWrapper<ParentListItem<Object>, Object> mExpandableWrapper;
-    private ParentListItem<Object> mParentListItem;
+    private ExpandableWrapper<Parent<Object>, Object> mExpandableWrapper;
+    private Parent<Object> mParent;
 
     @Before
     public void setup() {
-        mParentListItem = (ParentListItem<Object>) mock(ParentListItem.class);
-        mExpandableWrapper = new ExpandableWrapper<>(mParentListItem);
+        mParent = (Parent<Object>) mock(Parent.class);
+        mExpandableWrapper = new ExpandableWrapper<>(mParent);
     }
 
     @Test
     public void expandableWrapperIsInitiallyExpandedWhenParentListItemIsInitiallyExpanded() {
         boolean expected = true;
 
-        when(mParentListItem.isInitiallyExpanded()).thenReturn(expected);
+        when(mParent.isInitiallyExpanded()).thenReturn(expected);
 
         assertEquals(expected, mExpandableWrapper.isParentInitiallyExpanded());
     }
@@ -34,7 +34,7 @@ public class ExpandableWrapperTest {
     public void expandableWrapperIsNotInitiallyExpandedWhenParentListItemIsNotInitiallyExpanded() {
         boolean expected = false;
 
-        when(mParentListItem.isInitiallyExpanded()).thenReturn(expected);
+        when(mParent.isInitiallyExpanded()).thenReturn(expected);
 
         assertEquals(expected, mExpandableWrapper.isParentInitiallyExpanded());
     }
@@ -46,13 +46,13 @@ public class ExpandableWrapperTest {
         expected.add(new Object());
         expected.add(new Object());
 
-        when(mParentListItem.getChildItemList()).thenReturn(expected);
-        mExpandableWrapper = new ExpandableWrapper<>(mParentListItem);
+        when(mParent.getChildList()).thenReturn(expected);
+        mExpandableWrapper = new ExpandableWrapper<>(mParent);
 
-        List<ExpandableWrapper<ParentListItem<Object>, Object>> wrappedChildList = mExpandableWrapper.getWrappedChildItemList();
+        List<ExpandableWrapper<Parent<Object>, Object>> wrappedChildList = mExpandableWrapper.getWrappedChildList();
         assertEquals(expected.size(), wrappedChildList.size());
         for (int i = 0; i < expected.size(); i++) {
-            assertEquals(expected.get(i), wrappedChildList.get(i).getChildListItem());
+            assertEquals(expected.get(i), wrappedChildList.get(i).getChild());
         }
     }
 
@@ -61,9 +61,9 @@ public class ExpandableWrapperTest {
         boolean expected = true;
 
         final List<Object> childItemList = new ArrayList<>();
-        when(mParentListItem.getChildItemList()).thenReturn(childItemList);
-        mExpandableWrapper = new ExpandableWrapper<>(mParentListItem);
+        when(mParent.getChildList()).thenReturn(childItemList);
+        mExpandableWrapper = new ExpandableWrapper<>(mParent);
 
-        assertEquals(expected, mExpandableWrapper.getWrappedChildItemList().isEmpty());
+        assertEquals(expected, mExpandableWrapper.getWrappedChildList().isEmpty());
     }
 }

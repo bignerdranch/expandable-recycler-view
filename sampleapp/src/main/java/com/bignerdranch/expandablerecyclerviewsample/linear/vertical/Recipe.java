@@ -1,10 +1,10 @@
 package com.bignerdranch.expandablerecyclerviewsample.linear.vertical;
 
-import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.model.Parent;
 
 import java.util.List;
 
-public class Recipe implements ParentListItem<Ingredient> {
+public class Recipe implements Parent<Ingredient> {
 
     private String mName;
     private List<Ingredient> mIngredients;
@@ -19,7 +19,7 @@ public class Recipe implements ParentListItem<Ingredient> {
     }
 
     @Override
-    public List<Ingredient> getChildItemList() {
+    public List<Ingredient> getChildList() {
         return mIngredients;
     }
 

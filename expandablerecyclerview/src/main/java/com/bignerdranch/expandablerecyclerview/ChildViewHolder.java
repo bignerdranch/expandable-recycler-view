@@ -12,7 +12,7 @@ import android.view.View;
  * child list item.
  */
 public class ChildViewHolder<C> extends RecyclerView.ViewHolder {
-    C mChildListItem;
+    C mChild;
     ExpandableRecyclerAdapter mExpandableAdapter;
 
     /**
@@ -28,8 +28,8 @@ public class ChildViewHolder<C> extends RecyclerView.ViewHolder {
      * @return the childListItem associated with this view holder
      */
     @UiThread
-    public C getChildListItem() {
-        return mChildListItem;
+    public C getChild() {
+        return mChild;
     }
 
     /**

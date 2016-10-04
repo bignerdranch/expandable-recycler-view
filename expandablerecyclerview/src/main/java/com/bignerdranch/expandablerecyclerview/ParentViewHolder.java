@@ -6,11 +6,11 @@ import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.model.Parent;
 
 
 /**
- * ViewHolder for a {@link com.bignerdranch.expandablerecyclerview.model.ParentListItem}
+ * ViewHolder for a {@link Parent}
  * Keeps track of expanded state and holds callbacks which can be used to
  * trigger expansion-based events.
  *
@@ -18,34 +18,34 @@ import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
  * @version 1.0
  * @since 5/27/2015
  */
-public class ParentViewHolder<P extends ParentListItem<C>, C> extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class ParentViewHolder<P extends Parent<C>, C> extends RecyclerView.ViewHolder implements View.OnClickListener {
     @Nullable
-    private ParentListItemExpandCollapseListener mParentListItemExpandCollapseListener;
+    private ParentViewHolderExpandCollapseListener mParentViewHolderExpandCollapseListener;
     private boolean mExpanded;
-    P mParentListItem;
+    P mParent;
     ExpandableRecyclerAdapter mExpandableAdapter;
 
     /**
      * Empowers {@link com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter}
      * implementations to be notified of expand/collapse state change events.
      */
-    interface ParentListItemExpandCollapseListener {
+    interface ParentViewHolderExpandCollapseListener {
 
         /**
-         * Called when a list item is expanded.
+         * Called when a parent is expanded.
          *
-         * @param flatParentPosition The index of the item in the list being expanded
+         * @param flatParentPosition The index of the parent in the list being expanded
          */
         @UiThread
-        void onParentListItemExpanded(int flatParentPosition);
+        void onParentExpanded(int flatParentPosition);
 
         /**
-         * Called when a list item is collapsed.
+         * Called when a parent is collapsed.
          *
-         * @param flatParentPosition The index of the item in the list being collapsed
+         * @param flatParentPosition The index of the parent in the list being collapsed
          */
         @UiThread
-        void onParentListItemCollapsed(int flatParentPosition);
+        void onParentCollapsed(int flatParentPosition);
     }
 
     /**
@@ -60,11 +60,11 @@ public class ParentViewHolder<P extends ParentListItem<C>, C> extends RecyclerVi
     }
 
     /**
-     * @return the ParentListItem associated with this ViewHolder
+     * @return the Parent associated with this ViewHolder
      */
     @UiThread
-    public P getParentListItem() {
-        return mParentListItem;
+    public P getParent() {
+        return mParent;
     }
 
     /**
@@ -95,7 +95,7 @@ public class ParentViewHolder<P extends ParentListItem<C>, C> extends RecyclerVi
     }
 
     /**
-     * Returns expanded state for the {@link com.bignerdranch.expandablerecyclerview.model.ParentListItem}
+     * Returns expanded state for the {@link Parent}
      * corresponding to this {@link ParentViewHolder}.
      *
      * @return true if expanded, false if not
@@ -131,14 +131,14 @@ public class ParentViewHolder<P extends ParentListItem<C>, C> extends RecyclerVi
     }
 
     /**
-     * Setter for the {@link ParentListItemExpandCollapseListener} implemented in
+     * Setter for the {@link ParentViewHolderExpandCollapseListener} implemented in
      * {@link com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter}.
      *
-     * @param parentListItemExpandCollapseListener The {@link ParentListItemExpandCollapseListener} to set on the {@link ParentViewHolder}
+     * @param parentViewHolderExpandCollapseListener The {@link ParentViewHolderExpandCollapseListener} to set on the {@link ParentViewHolder}
      */
     @UiThread
-    void setParentListItemExpandCollapseListener(ParentListItemExpandCollapseListener parentListItemExpandCollapseListener) {
-        mParentListItemExpandCollapseListener = parentListItemExpandCollapseListener;
+    void setParentViewHolderExpandCollapseListener(ParentViewHolderExpandCollapseListener parentViewHolderExpandCollapseListener) {
+        mParentViewHolderExpandCollapseListener = parentViewHolderExpandCollapseListener;
     }
 
     /**
@@ -182,8 +182,8 @@ public class ParentViewHolder<P extends ParentListItem<C>, C> extends RecyclerVi
         setExpanded(true);
         onExpansionToggled(false);
 
-        if (mParentListItemExpandCollapseListener != null) {
-            mParentListItemExpandCollapseListener.onParentListItemExpanded(getAdapterPosition());
+        if (mParentViewHolderExpandCollapseListener != null) {
+            mParentViewHolderExpandCollapseListener.onParentExpanded(getAdapterPosition());
         }
     }
 
@@ -195,8 +195,8 @@ public class ParentViewHolder<P extends ParentListItem<C>, C> extends RecyclerVi
         setExpanded(false);
         onExpansionToggled(true);
 
-        if (mParentListItemExpandCollapseListener != null) {
-            mParentListItemExpandCollapseListener.onParentListItemCollapsed(getAdapterPosition());
+        if (mParentViewHolderExpandCollapseListener != null) {
+            mParentViewHolderExpandCollapseListener.onParentCollapsed(getAdapterPosition());
         }
     }
 }

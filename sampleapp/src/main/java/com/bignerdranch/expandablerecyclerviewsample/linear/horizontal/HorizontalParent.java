@@ -1,7 +1,7 @@
 package com.bignerdranch.expandablerecyclerviewsample.linear.horizontal;
 
 
-import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.model.Parent;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * here in order to store away our list of items (which you usually will have in a singleton or
  * database)
  */
-public class HorizontalParent implements ParentListItem<HorizontalChild>, Serializable {
+public class HorizontalParent implements Parent<HorizontalChild>, Serializable {
 
     private List<HorizontalChild> mChildItemList;
     private String mParentText;
@@ -44,7 +44,7 @@ public class HorizontalParent implements ParentListItem<HorizontalChild>, Serial
      * @return list of all children associated with this specific parent list item
      */
     @Override
-    public List<HorizontalChild> getChildItemList() {
+    public List<HorizontalChild> getChildList() {
         return mChildItemList;
     }
 

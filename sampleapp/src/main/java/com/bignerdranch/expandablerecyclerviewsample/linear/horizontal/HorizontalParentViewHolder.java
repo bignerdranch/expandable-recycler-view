@@ -60,7 +60,7 @@ public class HorizontalParentViewHolder extends ParentViewHolder {
         itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Parent at " + getParentAdapterPosition() + " clicked, parent item is \"" + getParentListItem() + "\"");
+                Log.d(TAG, "Parent at " + getParentAdapterPosition() + " clicked, parent item is \"" + getParent() + "\"");
                 Toast.makeText(context, "This sample shows how to make a row only expand upon clicking our custom arrow view", Toast.LENGTH_SHORT).show();
             }
         });
