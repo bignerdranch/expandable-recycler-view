@@ -215,7 +215,23 @@ public class ExpandableRecyclerAdapterTest {
         assertEquals(30, mExpandableRecyclerAdapter.getItemCount());
         verifyParentItemsMatch(firstInsertedItem, true, 10);
         verifyParentItemsMatch(secondInsertedItem, false, 14);
+    }
 
+    @Test
+    public void notifyParentRangeInsertedEndList() {
+        Parent<Object> firstInsertedItem = generateParent(true, 3);
+        Parent<Object> secondInsertedItem = generateParent(false, 2);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+
+        mBaseParents.add(firstInsertedItem);
+        mBaseParents.add(secondInsertedItem);
+        mExpandableRecyclerAdapter.notifyParentRangeInserted(10, 2);
+
+        verify(mDataObserver).onItemRangeInserted(25, 5);
+        assertEquals(30, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(firstInsertedItem, true, 25);
+        verifyParentItemsMatch(secondInsertedItem, false, 29);
     }
 
     @Test
