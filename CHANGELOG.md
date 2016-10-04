@@ -1,5 +1,16 @@
 Version 3.0.0 SNAPSHOT
 ----------------------------
+- Added generic types for the Parent and Child model objects inside of ExpandableRecyclerAdapter
+    - ParentListItem interface now takes a generic object type, which allows for `getChildItemList` to return a typed List instead of `List<?>`
+    - The `ExpandableRecyclerAdapter` takes two more generic object types
+        - A child model object of any type
+        - A parent model object that must extend `ParentListItem` which includes the previous child type
+    - As a result `onBindParentViewHolder` and `onBindChildViewHolder` now give the specific object type specified in the class
+    - Cleaned up a lot of internal logic within `ExpandableRecyclerAdapter` to avoid casting to Object
+    - Removed protected method `getListItem`, with generics it is now more sane to access `mItemList` yourself if you need it in the subclass
+- Changed the name and visibility of `onParentListItemExpanded` and `onParentListItemCollapsed`
+    - Now protected and named `parentListItemExpandedFromViewHolder` and `parentListItemCollapsedFromViewHolder`
+    - Not meant to be called from outside the adapter and viewholder, can be overriden to give some custom behaviour for collapsing/expanding
 - Added support for multiple view types within recyclerview
     - `getParentItemViewType()`, `getChildItemViewType()`, and `isParentViewType()` added with default implementation for single view type
     - Modified signatures of `onCreateParentViewHolder()` and `onCreateChildViewHolder()` to pass view type being created

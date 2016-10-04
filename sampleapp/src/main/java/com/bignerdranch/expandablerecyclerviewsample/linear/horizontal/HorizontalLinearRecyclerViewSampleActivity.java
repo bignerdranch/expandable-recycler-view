@@ -157,15 +157,15 @@ public class HorizontalLinearRecyclerViewSampleActivity extends AppCompatActivit
 
     @UiThread
     @Override
-    public void onListItemExpanded(int position) {
-        String toastMessage = getString(R.string.item_expanded, position);
+    public void onListItemExpanded(int parentPosition) {
+        String toastMessage = getString(R.string.item_expanded, parentPosition);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 
     @UiThread
     @Override
-    public void onListItemCollapsed(int position) {
-        String toastMessage = getString(R.string.item_collapsed, position);
+    public void onListItemCollapsed(int parentPosition) {
+        String toastMessage = getString(R.string.item_collapsed, parentPosition);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 

@@ -55,8 +55,8 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
         mAdapter.setExpandCollapseListener(new ExpandableRecyclerAdapter.ExpandCollapseListener() {
             @UiThread
             @Override
-            public void onListItemExpanded(int position) {
-                Recipe expandedRecipe = recipes.get(position);
+            public void onListItemExpanded(int parentPosition) {
+                Recipe expandedRecipe = recipes.get(parentPosition);
 
                 String toastMsg = getResources().getString(R.string.expanded, expandedRecipe.getName());
                 Toast.makeText(VerticalLinearRecyclerViewSampleActivity.this,
@@ -67,8 +67,8 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
 
             @UiThread
             @Override
-            public void onListItemCollapsed(int position) {
-                Recipe collapsedRecipe = recipes.get(position);
+            public void onListItemCollapsed(int parentPosition) {
+                Recipe collapsedRecipe = recipes.get(parentPosition);
 
                 String toastMsg = getResources().getString(R.string.collapsed, collapsedRecipe.getName());
                 Toast.makeText(VerticalLinearRecyclerViewSampleActivity.this,

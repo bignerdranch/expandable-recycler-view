@@ -8,8 +8,9 @@ import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.bignerdranch.expandablerecyclerview.ParentViewHolder.ParentListItemExpandCollapseListener;
+import com.bignerdranch.expandablerecyclerview.model.ExpandableWrapper;
 import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
-import com.bignerdranch.expandablerecyclerview.model.ParentWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,12 +30,9 @@ import java.util.List;
  * {@link #notifyChildItemChanged(int, int)}
  * methods and not the notify methods of RecyclerView.Adapter.
  *
- * @author Ryan Brooks
- * @version 1.0
- * @since 5/27/2015
  */
-public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CVH extends ChildViewHolder>
-        extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ParentViewHolder.ParentListItemExpandCollapseListener {
+public abstract class ExpandableRecyclerAdapter<P extends ParentListItem<C>, C, PVH extends ParentViewHolder, CVH extends ChildViewHolder>
+        extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String EXPANDED_STATE_MAP = "ExpandableRecyclerAdapter.ExpandedStateMap";
     /**
@@ -49,17 +47,18 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * Start of user-defined view types
      */
     public static final int TYPE_FIRST_USER = 2;
+    private static final int INVALID_FLAT_POSITION = -1;
 
     /**
-     * A {@link List} of all currently expanded {@link ParentListItem} objects
-     * and their children, in order. Changes to this list should be made through the add/remove methods
-     * available in {@link ExpandableRecyclerAdapter}
+     * A {@link List} of all currently expanded parents and their children, in order.
+     * Changes to this list should be made through the add/remove methods
+     * available in {@link ExpandableRecyclerAdapter}.
      */
     @NonNull
-    protected List<Object> mItemList;
+    protected List<ExpandableWrapper<P, C>> mItemList;
 
     @NonNull
-    private List<? extends ParentListItem> mParentItemList;
+    private List<P> mParentItemList;
 
     @Nullable
     private ExpandCollapseListener mExpandCollapseListener;
@@ -78,18 +77,18 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         /**
          * Called when a list item is expanded.
          *
-         * @param position The index of the item in the list being expanded
+         * @param parentPosition The position of the parent in the list being expanded
          */
         @UiThread
-        void onListItemExpanded(int position);
+        void onListItemExpanded(int parentPosition);
 
         /**
          * Called when a list item is collapsed.
          *
-         * @param position The index of the item in the list being collapsed
+         * @param parentPosition The position of the parent in the list being collapsed
          */
         @UiThread
-        void onListItemCollapsed(int position);
+        void onListItemCollapsed(int parentPosition);
     }
 
     /**
@@ -98,14 +97,13 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * Changes to {@link #mParentItemList} should be made through add/remove methods in
      * {@link ExpandableRecyclerAdapter}
      *
-     * @param parentItemList List of all {@link ParentListItem} objects to be
-     *                       displayed in the RecyclerView that this
+     * @param parentItemList List of all parents to be displayed in the RecyclerView that this
      *                       adapter is linked to
      */
-    public ExpandableRecyclerAdapter(@NonNull List<? extends ParentListItem> parentItemList) {
+    public ExpandableRecyclerAdapter(@NonNull List<P> parentItemList) {
         super();
         mParentItemList = parentItemList;
-        mItemList = ExpandableRecyclerAdapterHelper.generateParentChildItemList(parentItemList);
+        mItemList = generateParentChildItemList(parentItemList);
         mAttachedRecyclerViewPool = new ArrayList<>();
     }
 
@@ -127,7 +125,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         if (isParentViewType(viewType)) {
             PVH pvh = onCreateParentViewHolder(viewGroup, viewType);
-            pvh.setParentListItemExpandCollapseListener(this);
+            pvh.setParentListItemExpandCollapseListener(mParentListItemExpandCollapseListener);
             pvh.mExpandableAdapter = this;
             return pvh;
         } else {
@@ -140,35 +138,37 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     /**
      * Implementation of Adapter.onBindViewHolder(RecyclerView.ViewHolder, int)
      * that determines if the list item is a parent or a child and calls through
-     * to the appropriate implementation of either {@link #onBindParentViewHolder(ParentViewHolder, int, ParentListItem)}
-     * or {@link #onBindChildViewHolder(ChildViewHolder, int, int, Object)}.
+     * to the appropriate implementation of either
+     * {@link #onBindParentViewHolder(ParentViewHolder, int, P)} or
+     * {@link #onBindChildViewHolder(ChildViewHolder, int, int, C)}.
      *
-     * @param holder   The RecyclerView.ViewHolder to bind data to
-     * @param position The index in the list at which to bind
-     * @throws IllegalStateException if the item in the list is either null or
-     *                               not of type {@link ParentListItem}
+     * @param holder The RecyclerView.ViewHolder to bind data to
+     * @param flatPosition The index in the merged list of children and parents at which to bind
      */
     @Override
+    @SuppressWarnings("unchecked")
     @UiThread
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Object listItem = getListItem(position);
-        if (listItem instanceof ParentWrapper) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int flatPosition) {
+        if (flatPosition > mItemList.size()) {
+            throw new IllegalStateException("Trying to bind item out of bounds, size " + mItemList.size()
+                    + " flatPosition " + flatPosition + ". Was the data changed without a call to notify...()?");
+        }
+
+        ExpandableWrapper<P, C> listItem = mItemList.get(flatPosition);
+        if (listItem.isParent()) {
             PVH parentViewHolder = (PVH) holder;
 
             if (parentViewHolder.shouldItemViewClickToggleExpansion()) {
                 parentViewHolder.setMainItemClickToExpand();
             }
 
-            ParentWrapper parentWrapper = (ParentWrapper) listItem;
-            parentViewHolder.setExpanded(parentWrapper.isExpanded());
-            parentViewHolder.mParentWrapper = parentWrapper;
-            onBindParentViewHolder(parentViewHolder, getNearestParentPosition(position), parentWrapper.getParentListItem());
-        } else if (listItem == null) {
-            throw new IllegalStateException("Incorrect ViewHolder found");
+            parentViewHolder.setExpanded(listItem.isExpanded());
+            parentViewHolder.mParentListItem = listItem.getParentListItem();
+            onBindParentViewHolder(parentViewHolder, getNearestParentPosition(flatPosition), listItem.getParentListItem());
         } else {
             CVH childViewHolder = (CVH) holder;
-            childViewHolder.mChildListItem = listItem;
-            onBindChildViewHolder(childViewHolder, getNearestParentPosition(position), getChildPosition(position), listItem);
+            childViewHolder.mChildListItem = listItem.getChildListItem();
+            onBindChildViewHolder(childViewHolder, getNearestParentPosition(flatPosition), getChildPosition(flatPosition), listItem.getChildListItem());
         }
     }
 
@@ -176,10 +176,9 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * Callback called from {@link #onCreateViewHolder(ViewGroup, int)} when
      * the list item created is a parent.
      *
-     * @param parentViewGroup The {@link ViewGroup} in the list for which a {@link PVH}
-     *                        is being created
-     * @return A {@code PVH} corresponding to the {@link ParentListItem} with
-     * the {@code ViewGroup} parentViewGroup
+     * @param parentViewGroup The {@link ViewGroup} in the list for which a {@link PVH} is being
+     *                        created
+     * @return A {@code PVH} corresponding to the parent with the {@code ViewGroup} parentViewGroup
      */
     @NonNull
     @UiThread
@@ -205,12 +204,11 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * Bind data to the {@link PVH} here.
      *
      * @param parentViewHolder The {@code PVH} to bind data to
-     * @param parentPosition   The position of the Parent item to bind
-     * @param parentListItem   The {@link ParentListItem} which holds the data to
-     *                         be bound to the {@code PVH}
+     * @param parentPosition The position of the parent to bind
+     * @param parentListItem The parent which holds the data to be bound to the {@code PVH}
      */
     @UiThread
-    public abstract void onBindParentViewHolder(@NonNull PVH parentViewHolder, int parentPosition, @NonNull ParentListItem parentListItem);
+    public abstract void onBindParentViewHolder(@NonNull PVH parentViewHolder, int parentPosition, @NonNull P parentListItem);
 
     /**
      * Callback called from onBindViewHolder(RecyclerView.ViewHolder, int)
@@ -219,16 +217,15 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * Bind data to the {@link CVH} here.
      *
      * @param childViewHolder The {@code CVH} to bind data to
-     * @param parentPosition  The position of the Parent item that contains the child to bind
-     * @param childPosition   The position of the Child item to bind
-     * @param childListItem   The child list item which holds that data to be
-     *                        bound to the {@code CVH}
+     * @param parentPosition The position of the parent that contains the child to bind
+     * @param childPosition The position of the child to bind
+     * @param childListItem The child which holds that data to be bound to the {@code CVH}
      */
     @UiThread
-    public abstract void onBindChildViewHolder(@NonNull CVH childViewHolder, int parentPosition, int childPosition, @NonNull Object childListItem);
+    public abstract void onBindChildViewHolder(@NonNull CVH childViewHolder, int parentPosition, int childPosition, @NonNull C childListItem);
 
     /**
-     * Gets the number of parent and child objects currently expanded.
+     * Gets the number of parents and children currently expanded.
      *
      * @return The size of {@link #mItemList}
      */
@@ -243,20 +240,17 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * {@link #getChildItemViewType(int, int)}. Almost all cases should override those instead
      * of this method.
      *
-     * @param position The index in the list to get the view type of
-     * @return Gets the view type of the item at the given position.
-     * @throws IllegalStateException if the item at the given position in the list is null
+     * @param flatPosition The index in the merged list of children and parents to get the view type of
+     * @return Gets the view type of the item at the given flatPosition.
      */
     @Override
     @UiThread
-    public int getItemViewType(int position) {
-        Object listItem = getListItem(position);
-        if (listItem instanceof ParentWrapper) {
-            return getParentItemViewType(getNearestParentPosition(position));
-        } else if (listItem == null) {
-            throw new IllegalStateException("Null object added");
+    public int getItemViewType(int flatPosition) {
+        ExpandableWrapper<P, C> listItem = mItemList.get(flatPosition);
+        if (listItem.isParent()) {
+            return getParentItemViewType(getNearestParentPosition(flatPosition));
         } else {
-            return getChildItemViewType(getNearestParentPosition(position), getChildPosition(position));
+            return getChildItemViewType(getNearestParentPosition(flatPosition), getChildPosition(flatPosition));
         }
     }
 
@@ -282,11 +276,11 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
 
 
     /**
-     * Return the view type of the child item at {@code parentPosition} contained within the parent
+     * Return the view type of the child item {@code parentPosition} contained within the parent
      * at {@code parentPosition} for the purposes of view recycling.
      * <p>
      * The default implementation of this method returns {@link #TYPE_CHILD}, making the assumption of
-     * a single view type for the child items in this adapter. Unlike ListView adapters, types need not
+     * a single view type for the children in this adapter. Unlike ListView adapters, types need not
      * be contiguous. Consider using id resources to uniquely identify item view types.
      * <p>
      * Start your defined viewtypes at {@link #TYPE_FIRST_USER}
@@ -313,7 +307,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Gets the list of ParentItems that is backing this adapter.
+     * Gets the list of parents that is backing this adapter.
      * Changes can be made to the list and the adapter notified via the
      * {@link #notifyParentItemInserted(int)}
      * {@link #notifyParentItemRemoved(int)}
@@ -324,43 +318,13 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * {@link #notifyChildItemChanged(int, int)}
      * methods.
      *
-     * @return The list of ParentListItems that this adapter represents
+     *
+     * @return The list of parents that this adapter represents
      */
+    @NonNull
     @UiThread
-    public List<? extends ParentListItem> getParentItemList() {
+    public List<P> getParentItemList() {
         return mParentItemList;
-    }
-
-    /**
-     * Implementation of {@link com.bignerdranch.expandablerecyclerview.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemExpanded(int)}.
-     * <p>
-     * Called when a {@link ParentListItem} is triggered to expand.
-     *
-     * @param position The index of the item in the list being expanded
-     */
-    @UiThread
-    @Override
-    public void onParentListItemExpanded(int position) {
-        Object listItem = getListItem(position);
-        if (listItem instanceof ParentWrapper) {
-            expandParentListItem((ParentWrapper) listItem, position, true);
-        }
-    }
-
-    /**
-     * Implementation of {@link com.bignerdranch.expandablerecyclerview.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemCollapsed(int)}.
-     * <p>
-     * Called when a {@link ParentListItem} is triggered to collapse.
-     *
-     * @param position The index of the item in the list being collapsed
-     */
-    @UiThread
-    @Override
-    public void onParentListItemCollapsed(int position) {
-        Object listItem = getListItem(position);
-        if (listItem instanceof ParentWrapper) {
-            collapseParentListItem((ParentWrapper) listItem, position, true);
-        }
     }
 
     /**
@@ -399,59 +363,95 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
         mExpandCollapseListener = expandCollapseListener;
     }
 
+    /**
+     * Called when a ParentViewHolder has triggered an expansion for it's parent
+     *
+     * @param flatParentPosition the position of the parent that is calling to be expanded
+     */
+    @UiThread
+    protected void parentListItemExpandedFromViewHolder(int flatParentPosition) {
+        ExpandableWrapper<P, C> listItem = mItemList.get(flatParentPosition);
+        expandParentListItem(listItem, flatParentPosition, true);
+    }
+
+    /**
+     * Called when a ParentViewHolder has triggered a collapse for it's parent
+     *
+     * @param flatParentPosition the position of the parent that is calling to be collapsed
+     */
+    @UiThread
+    protected void parentListItemCollapsedFromViewHolder(int flatParentPosition) {
+        ExpandableWrapper<P, C> listItem = mItemList.get(flatParentPosition);
+        collapseParentListItem(listItem, flatParentPosition, true);
+    }
+
+    private ParentListItemExpandCollapseListener mParentListItemExpandCollapseListener = new ParentListItemExpandCollapseListener() {
+
+        /**
+         * Implementation of {@link com.bignerdranch.expandablerecyclerview.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemExpanded(int)}.
+         * <p>
+         * Called when a {@link P} is triggered to expand.
+         *
+         * @param flatParentPosition The index of the item in the list being expanded, relative to the flattened list
+         */
+        @Override
+        @UiThread
+        public void onParentListItemExpanded(int flatParentPosition) {
+            parentListItemExpandedFromViewHolder(flatParentPosition);
+        }
+
+        /**
+         * Implementation of {@link com.bignerdranch.expandablerecyclerview.ParentViewHolder.ParentListItemExpandCollapseListener#onParentListItemCollapsed(int)}.
+         * <p>
+         * Called when a {@link P} is triggered to collapse.
+         *
+         * @param flatParentPosition The index of the item in the list being collapsed, relative to the flattened list
+         */
+        @Override
+        @UiThread
+        public void onParentListItemCollapsed(int flatParentPosition) {
+            parentListItemCollapsedFromViewHolder(flatParentPosition);
+        }
+    };
+
     // region Programmatic Expansion/Collapsing
+
+    /**
+     * Expands the parent associated with a specified {@link P} in the list of parents.
+     *
+     * @param parentListItem The {@code P} of the parent to expand
+     */
+    @UiThread
+    public void expandParent(@NonNull P parentListItem) {
+        ExpandableWrapper<P, C> parentWrapper = new ExpandableWrapper<>(parentListItem);
+        int flatParentPosition = mItemList.indexOf(parentWrapper);
+        if (flatParentPosition == INVALID_FLAT_POSITION) {
+            return;
+        }
+
+        expandViews(mItemList.get(flatParentPosition), flatParentPosition);
+    }
 
     /**
      * Expands the parent with the specified index in the list of parents.
      *
-     * @param parentIndex The index of the parent to expand
+     * @param parentPosition The position of the parent to expand
      */
     @UiThread
-    public void expandParent(int parentIndex) {
-        int parentWrapperIndex = getParentWrapperIndex(parentIndex);
-
-        Object listItem = getListItem(parentWrapperIndex);
-        ParentWrapper parentWrapper;
-        if (listItem instanceof ParentWrapper) {
-            parentWrapper = (ParentWrapper) listItem;
-        } else {
-            return;
-        }
-
-        expandViews(parentWrapper, parentWrapperIndex);
-    }
-
-    /**
-     * Expands the parent associated with a specified {@link ParentListItem} in
-     * the list of parents.
-     *
-     * @param parentListItem The {@code ParentListItem} of the parent to expand
-     */
-    @UiThread
-    public void expandParent(@NonNull ParentListItem parentListItem) {
-        ParentWrapper parentWrapper = getParentWrapper(parentListItem);
-        if (parentWrapper != null) {
-            int parentWrapperIndex = mItemList.indexOf(parentWrapper);
-            if (parentWrapperIndex == -1) {
-                return;
-            }
-
-            expandViews(parentWrapper, parentWrapperIndex);
-        } else {
-            throw new IllegalStateException("Can not find parentWrapper");
-        }
+    public void expandParent(int parentPosition) {
+        expandParent(mParentItemList.get(parentPosition));
     }
 
     /**
      * Expands all parents in a range of indices in the list of parents.
      *
-     * @param startParentIndex The index at which to to start expanding parents
-     * @param parentCount      The number of parents to expand
+     * @param startParentPosition The index at which to to start expanding parents
+     * @param parentCount The number of parents to expand
      */
     @UiThread
-    public void expandParentRange(int startParentIndex, int parentCount) {
-        int endParentIndex = startParentIndex + parentCount;
-        for (int i = startParentIndex; i < endParentIndex; i++) {
+    public void expandParentRange(int startParentPosition, int parentCount) {
+        int endParentPosition = startParentPosition + parentCount;
+        for (int i = startParentPosition; i < endParentPosition; i++) {
             expandParent(i);
         }
     }
@@ -461,62 +461,47 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      */
     @UiThread
     public void expandAllParents() {
-        for (ParentListItem parentListItem : mParentItemList) {
+        for (P parentListItem : mParentItemList) {
             expandParent(parentListItem);
         }
     }
 
     /**
-     * Collapses the parent with the specified index in the list of parents.
+     * Collapses the parent associated with a specified {@link P} in the list of parents.
      *
-     * @param parentIndex The index of the parent to collapse
+     * @param parentListItem The {@code P} of the parent to collapse
      */
     @UiThread
-    public void collapseParent(int parentIndex) {
-        int parentWrapperIndex = getParentWrapperIndex(parentIndex);
-
-        Object listItem = getListItem(parentWrapperIndex);
-        ParentWrapper parentWrapper;
-        if (listItem instanceof ParentWrapper) {
-            parentWrapper = (ParentWrapper) listItem;
-        } else {
+    public void collapseParent(@NonNull P parentListItem) {
+        ExpandableWrapper<P, C> parentWrapper = new ExpandableWrapper<>(parentListItem);
+        int flatParentPosition = mItemList.indexOf(parentWrapper);
+        if (flatParentPosition == INVALID_FLAT_POSITION) {
             return;
         }
 
-        collapseViews(parentWrapper, parentWrapperIndex);
+        collapseViews(mItemList.get(flatParentPosition), flatParentPosition);
     }
 
     /**
-     * Collapses the parent associated with a specified {@link ParentListItem} in
-     * the list of parents.
+     * Collapses the parent with the specified index in the list of parents.
      *
-     * @param parentListItem The {@code ParentListItem} of the parent to collapse
+     * @param parentPosition The index of the parent to collapse
      */
     @UiThread
-    public void collapseParent(@NonNull ParentListItem parentListItem) {
-        ParentWrapper parentWrapper = getParentWrapper(parentListItem);
-        if (parentWrapper != null) {
-            int parentWrapperIndex = mItemList.indexOf(parentWrapper);
-            if (parentWrapperIndex == -1) {
-                return;
-            }
-
-            collapseViews(parentWrapper, parentWrapperIndex);
-        } else {
-            throw new IllegalStateException("Can not find parentListItem");
-        }
+    public void collapseParent(int parentPosition) {
+        collapseParent(mParentItemList.get(parentPosition));
     }
 
     /**
      * Collapses all parents in a range of indices in the list of parents.
      *
-     * @param startParentIndex The index at which to to start collapsing parents
-     * @param parentCount      The number of parents to collapse
+     * @param startParentPosition The index at which to to start collapsing parents
+     * @param parentCount The number of parents to collapse
      */
     @UiThread
-    public void collapseParentRange(int startParentIndex, int parentCount) {
-        int endParentIndex = startParentIndex + parentCount;
-        for (int i = startParentIndex; i < endParentIndex; i++) {
+    public void collapseParentRange(int startParentPosition, int parentCount) {
+        int endParentPosition = startParentPosition + parentCount;
+        for (int i = startParentPosition; i < endParentPosition; i++) {
             collapseParent(i);
         }
     }
@@ -526,7 +511,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      */
     @UiThread
     public void collapseAllParents() {
-        for (ParentListItem parentListItem : mParentItemList) {
+        for (P parentListItem : mParentItemList) {
             collapseParent(parentListItem);
         }
     }
@@ -563,6 +548,7 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * @param savedInstanceState The {@code Bundle} from which the expanded
      *                           state map is loaded
      */
+    @SuppressWarnings("unchecked")
     @UiThread
     public void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null
@@ -575,49 +561,30 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
             return;
         }
 
-        List<Object> parentWrapperList = new ArrayList<>();
-        ParentListItem parentListItem;
-        ParentWrapper parentWrapper;
-
+        List<ExpandableWrapper<P, C>> itemList = new ArrayList<>();
         int parentListItemCount = mParentItemList.size();
         for (int i = 0; i < parentListItemCount; i++) {
-            parentListItem = mParentItemList.get(i);
-            parentWrapper = new ParentWrapper(parentListItem);
-            parentWrapperList.add(parentWrapper);
+            ExpandableWrapper<P, C> parentWrapper = new ExpandableWrapper<>(mParentItemList.get(i));
+            itemList.add(parentWrapper);
 
             if (expandedStateMap.containsKey(i)) {
                 boolean expanded = expandedStateMap.get(i);
-                if (expanded) {
-                    parentWrapper.setExpanded(true);
+                parentWrapper.setExpanded(expanded);
 
-                    int childListItemCount = parentWrapper.getChildItemList().size();
+                if (expanded) {
+                    List<ExpandableWrapper<P, C>> wrappedChildItemList = parentWrapper.getWrappedChildItemList();
+                    int childListItemCount = wrappedChildItemList.size();
                     for (int j = 0; j < childListItemCount; j++) {
-                        parentWrapperList.add(parentWrapper.getChildItemList().get(j));
+                        ExpandableWrapper<P, C> childWrapper = wrappedChildItemList.get(j);
+                        itemList.add(childWrapper);
                     }
                 }
             }
         }
 
-        mItemList = parentWrapperList;
+        mItemList = itemList;
 
         notifyDataSetChanged();
-    }
-
-    /**
-     * Gets the list item held at the specified adapter position.
-     *
-     * @param position The index of the list item to return
-     * @return The list item at the specified position
-     */
-    @Nullable
-    @UiThread
-    protected Object getListItem(int position) {
-        boolean indexInRange = position >= 0 && position < mItemList.size();
-        if (indexInRange) {
-            return mItemList.get(position);
-        } else {
-            return null;
-        }
     }
 
     /**
@@ -627,20 +594,21 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * These calls to the ParentViewHolder are made so that animations can be
      * triggered at the ViewHolder level.
      *
-     * @param parentIndex The index of the parent to expand
+     * @param flatParentPosition The index of the parent to expand
      */
+    @SuppressWarnings("unchecked")
     @UiThread
-    private void expandViews(@NonNull ParentWrapper parentWrapper, int parentIndex) {
+    private void expandViews(@NonNull ExpandableWrapper<P, C> parentWrapper, int flatParentPosition) {
         PVH viewHolder;
         for (RecyclerView recyclerView : mAttachedRecyclerViewPool) {
-            viewHolder = (PVH) recyclerView.findViewHolderForAdapterPosition(parentIndex);
+            viewHolder = (PVH) recyclerView.findViewHolderForAdapterPosition(flatParentPosition);
             if (viewHolder != null && !viewHolder.isExpanded()) {
                 viewHolder.setExpanded(true);
                 viewHolder.onExpansionToggled(false);
             }
         }
 
-        expandParentListItem(parentWrapper, parentIndex, false);
+        expandParentListItem(parentWrapper, flatParentPosition, false);
     }
 
     /**
@@ -650,49 +618,50 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * These calls to the ParentViewHolder are made so that animations can be
      * triggered at the ViewHolder level.
      *
-     * @param parentIndex The index of the parent to collapse
+     * @param flatParentPosition The index of the parent to collapse
      */
+    @SuppressWarnings("unchecked")
     @UiThread
-    private void collapseViews(@NonNull ParentWrapper parentWrapper, int parentIndex) {
+    private void collapseViews(@NonNull ExpandableWrapper<P, C> parentWrapper, int flatParentPosition) {
         PVH viewHolder;
         for (RecyclerView recyclerView : mAttachedRecyclerViewPool) {
-            viewHolder = (PVH) recyclerView.findViewHolderForAdapterPosition(parentIndex);
+            viewHolder = (PVH) recyclerView.findViewHolderForAdapterPosition(flatParentPosition);
             if (viewHolder != null && viewHolder.isExpanded()) {
                 viewHolder.setExpanded(false);
                 viewHolder.onExpansionToggled(true);
             }
         }
 
-        collapseParentListItem(parentWrapper, parentIndex, false);
+        collapseParentListItem(parentWrapper, flatParentPosition, false);
     }
 
     /**
-     * Expands a specified parent item. Calls through to the
+     * Expands a specified parent. Calls through to the
      * ExpandCollapseListener and adds children of the specified parent to the
      * total list of items.
      *
-     * @param parentWrapper                     The ParentWrapper of the parent to expand
-     * @param parentIndex                       The index of the parent to expand
+     * @param parentWrapper The ExpandableWrapper of the parent to expand
+     * @param flatParentPosition The index of the parent to expand
      * @param expansionTriggeredByListItemClick true if expansion was triggered
      *                                          by a click event, false otherwise.
      */
     @UiThread
-    private void expandParentListItem(@NonNull ParentWrapper parentWrapper, int parentIndex, boolean expansionTriggeredByListItemClick) {
+    private void expandParentListItem(@NonNull ExpandableWrapper<P, C> parentWrapper, int flatParentPosition, boolean expansionTriggeredByListItemClick) {
         if (!parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(true);
 
-            List<?> childItemList = parentWrapper.getChildItemList();
-            if (childItemList != null) {
-                int childListItemCount = childItemList.size();
+            List<ExpandableWrapper<P, C>> wrappedChildItemList = parentWrapper.getWrappedChildItemList();
+            if (wrappedChildItemList != null) {
+                int childListItemCount = wrappedChildItemList.size();
                 for (int i = 0; i < childListItemCount; i++) {
-                    mItemList.add(parentIndex + i + 1, childItemList.get(i));
+                    mItemList.add(flatParentPosition + i + 1, wrappedChildItemList.get(i));
                 }
 
-                notifyItemRangeInserted(parentIndex + 1, childListItemCount);
+                notifyItemRangeInserted(flatParentPosition + 1, childListItemCount);
             }
 
             if (expansionTriggeredByListItemClick && mExpandCollapseListener != null) {
-                mExpandCollapseListener.onListItemExpanded(getNearestParentPosition(parentIndex));
+                mExpandCollapseListener.onListItemExpanded(getNearestParentPosition(flatParentPosition));
             }
         }
     }
@@ -702,28 +671,28 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * ExpandCollapseListener and adds children of the specified parent to the
      * total list of items.
      *
-     * @param parentWrapper                    The ParentWrapper of the parent to collapse
-     * @param parentIndex                      The index of the parent to collapse
+     * @param parentWrapper The ExpandableWrapper of the parent to collapse
+     * @param flatParentPosition The index of the parent to collapse
      * @param collapseTriggeredByListItemClick true if expansion was triggered
      *                                         by a click event, false otherwise.
      */
     @UiThread
-    private void collapseParentListItem(@NonNull ParentWrapper parentWrapper, int parentIndex, boolean collapseTriggeredByListItemClick) {
+    private void collapseParentListItem(@NonNull ExpandableWrapper<P, C> parentWrapper, int flatParentPosition, boolean collapseTriggeredByListItemClick) {
         if (parentWrapper.isExpanded()) {
             parentWrapper.setExpanded(false);
 
-            List<?> childItemList = parentWrapper.getChildItemList();
-            if (childItemList != null) {
-                int childListItemCount = childItemList.size();
+            List<ExpandableWrapper<P, C>> wrappedChildItemList = parentWrapper.getWrappedChildItemList();
+            if (wrappedChildItemList != null) {
+                int childListItemCount = wrappedChildItemList.size();
                 for (int i = childListItemCount - 1; i >= 0; i--) {
-                    mItemList.remove(parentIndex + i + 1);
+                    mItemList.remove(flatParentPosition + i + 1);
                 }
 
-                notifyItemRangeRemoved(parentIndex + 1, childListItemCount);
+                notifyItemRangeRemoved(flatParentPosition + 1, childListItemCount);
             }
 
             if (collapseTriggeredByListItemClick && mExpandCollapseListener != null) {
-                mExpandCollapseListener.onListItemCollapsed(getNearestParentPosition(parentIndex));
+                mExpandCollapseListener.onListItemCollapsed(getNearestParentPosition(flatParentPosition));
             }
         }
     }
@@ -732,19 +701,19 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * Given the index relative to the entire RecyclerView, returns the nearest
      * ParentPosition without going past the given index.
      * <p>
-     * If it is the index of a parent item, will return the corresponding parent position.
-     * If it is the index of a child item within the RV, will return the position of that childs parent.
+     * If it is the index of a parent, will return the corresponding parent position.
+     * If it is the index of a child within the RV, will return the position of that child's parent.
      */
     @UiThread
-    int getNearestParentPosition(int fullPosition) {
-        if (fullPosition == 0) {
+    int getNearestParentPosition(int flatPosition) {
+        if (flatPosition == 0) {
             return 0;
         }
 
         int parentCount = -1;
-        for (int i = 0; i <= fullPosition; i++) {
-            Object listItem = getListItem(i);
-            if (listItem instanceof ParentWrapper) {
+        for (int i = 0; i <= flatPosition; i++) {
+            ExpandableWrapper<P, C> listItem = mItemList.get(i);
+            if (listItem.isParent()) {
                 parentCount++;
             }
         }
@@ -756,15 +725,15 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * returns the child position within the child list of the parent.
      */
     @UiThread
-    int getChildPosition(int fullPosition) {
-        if (fullPosition == 0) {
+    int getChildPosition(int flatPosition) {
+        if (flatPosition == 0) {
             return 0;
         }
 
         int childCount = 0;
-        for (int i = 0; i < fullPosition; i++) {
-            Object listItem = getListItem(i);
-            if (listItem instanceof ParentWrapper) {
+        for (int i = 0; i < flatPosition; i++) {
+            ExpandableWrapper<P, C> listItem = mItemList.get(i);
+            if (listItem.isParent()) {
                 childCount = 0;
             } else {
                 childCount++;
@@ -778,138 +747,140 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     // region Data Manipulation
 
     /**
-     * Notify any registered observers that the ParentListItem reflected at {@code parentPosition}
-     * has been newly inserted. The ParentListItem previously at {@code parentPosition} is now at
+     * Notify any registered observers that the parent reflected at {@code parentPosition}
+     * has been newly inserted. The parent previously at {@code parentPosition} is now at
      * position {@code parentPosition + 1}.
      * <p>
      * This is a structural change event. Representations of other existing items in the
      * data set are still considered up to date and will not be rebound, though their
      * positions may be altered.
      *
-     * @param parentPosition Position of the newly inserted ParentListItem in the data set, relative
-     *                       to list of ParentListItems only.
+     * @param parentPosition Position of the newly inserted parent in the data set, relative
+     *                       to the list of parents only.
+     *
      * @see #notifyParentItemRangeInserted(int, int)
      */
     @UiThread
     public void notifyParentItemInserted(int parentPosition) {
-        ParentListItem parentListItem = mParentItemList.get(parentPosition);
+        P parentListItem = mParentItemList.get(parentPosition);
 
-        int wrapperIndex;
+        int flatParentPosition;
         if (parentPosition < mParentItemList.size() - 1) {
-            wrapperIndex = getParentWrapperIndex(parentPosition);
+            flatParentPosition = getFlatParentPosition(parentPosition);
         } else {
-            wrapperIndex = mItemList.size();
+            flatParentPosition = mItemList.size();
         }
 
-        int sizeChanged = addParentWrapper(wrapperIndex, parentListItem);
-        notifyItemRangeInserted(wrapperIndex, sizeChanged);
+        int sizeChanged = addParentWrapper(flatParentPosition, parentListItem);
+        notifyItemRangeInserted(flatParentPosition, sizeChanged);
     }
 
     /**
      * Notify any registered observers that the currently reflected {@code itemCount}
-     * ParentListItems starting at {@code parentPositionStart} have been newly inserted.
-     * The ParentListItems previously located at {@code parentPositionStart} and beyond
+     * parents starting at {@code parentPositionStart} have been newly inserted.
+     * The parents previously located at {@code parentPositionStart} and beyond
      * can now be found starting at position {@code parentPositionStart + itemCount}.
      * <p>
      * This is a structural change event. Representations of other existing items in the
      * data set are still considered up to date and will not be rebound, though their positions
      * may be altered.
      *
-     * @param parentPositionStart Position of the first ParentListItem that was inserted, relative
-     *                            to list of ParentListItems only.
-     * @param itemCount           Number of items inserted
+     * @param parentPositionStart Position of the first parent that was inserted, relative
+     *                            to the list of parents only.
+     * @param itemCount Number of items inserted
+     *
      * @see #notifyParentItemInserted(int)
      */
     @UiThread
     public void notifyParentItemRangeInserted(int parentPositionStart, int itemCount) {
-        int initialWrapperIndex;
+        int initialFlatParentPosition;
         if (parentPositionStart < mParentItemList.size() - itemCount) {
-            initialWrapperIndex = getParentWrapperIndex(parentPositionStart);
+            initialFlatParentPosition = getFlatParentPosition(parentPositionStart);
         } else {
-            initialWrapperIndex = mItemList.size();
+            initialFlatParentPosition = mItemList.size();
         }
 
         int sizeChanged = 0;
-        int wrapperIndex = initialWrapperIndex;
+        int flatParentPosition = initialFlatParentPosition;
         int changed;
         int parentPositionEnd = parentPositionStart + itemCount;
         for (int i = parentPositionStart; i < parentPositionEnd; i++) {
-            ParentListItem parentListItem = mParentItemList.get(i);
-            changed = addParentWrapper(wrapperIndex, parentListItem);
-            wrapperIndex += changed;
+            P parentListItem = mParentItemList.get(i);
+            changed = addParentWrapper(flatParentPosition, parentListItem);
+            flatParentPosition += changed;
             sizeChanged += changed;
         }
 
-        notifyItemRangeInserted(initialWrapperIndex, sizeChanged);
+        notifyItemRangeInserted(initialFlatParentPosition, sizeChanged);
     }
 
     @UiThread
-    private int addParentWrapper(int wrapperIndex, ParentListItem parentListItem) {
+    private int addParentWrapper(int flatParentPosition, P parentListItem) {
         int sizeChanged = 1;
-        ParentWrapper parentWrapper = new ParentWrapper(parentListItem);
-        mItemList.add(wrapperIndex, parentWrapper);
-        if (parentWrapper.isInitiallyExpanded()) {
+        ExpandableWrapper<P, C> parentWrapper = new ExpandableWrapper<>(parentListItem);
+        mItemList.add(flatParentPosition, parentWrapper);
+        if (parentWrapper.isParentInitiallyExpanded()) {
             parentWrapper.setExpanded(true);
-            List<?> childItemList = parentWrapper.getChildItemList();
-            mItemList.addAll(wrapperIndex + sizeChanged, childItemList);
-            sizeChanged += childItemList.size();
+            List<ExpandableWrapper<P, C>> wrappedChildItemList = parentWrapper.getWrappedChildItemList();
+            mItemList.addAll(flatParentPosition + sizeChanged, wrappedChildItemList);
+            sizeChanged += wrappedChildItemList.size();
         }
         return sizeChanged;
     }
 
     /**
-     * Notify any registered observers that the ParentListItem previously located at {@code parentPosition}
-     * has been removed from the data set. The ParentListItems previously located at and after
+     * Notify any registered observers that the parents previously located at {@code parentPosition}
+     * has been removed from the data set. The parents previously located at and after
      * {@code parentPosition} may now be found at {@code oldPosition - 1}.
      * <p>
      * This is a structural change event. Representations of other existing items in the
      * data set are still considered up to date and will not be rebound, though their positions
      * may be altered.
      *
-     * @param parentPosition Position of the ParentListItem that has now been removed, relative
-     *                       to list of ParentListItems only.
+     * @param parentPosition Position of the parent that has now been removed, relative
+     *                       to the list of parents only.
      */
     @UiThread
     public void notifyParentItemRemoved(int parentPosition) {
-        int wrapperIndex = getParentWrapperIndex(parentPosition);
-        int sizeChanged = removeParentWrapper(wrapperIndex);
+        int flatParentPosition = getFlatParentPosition(parentPosition);
+        int sizeChanged = removeParentWrapper(flatParentPosition);
 
-        notifyItemRangeRemoved(wrapperIndex, sizeChanged);
+        notifyItemRangeRemoved(flatParentPosition, sizeChanged);
     }
 
     /**
-     * Notify any registered observers that the {@code itemCount} ParentListItems previously located
-     * at {@code parentPositionStart} have been removed from the data set. The ParentListItems
-     * previously located at and after {@code parentPositionStart + itemCount} may now be found at
-     * {@code oldPosition - itemCount}.
+     * Notify any registered observers that the {@code itemCount} parents previously
+     * located at {@code parentPositionStart} have been removed from the data set. The parents
+     * previously located at and after {@code parentPositionStart + itemCount} may now be
+     * found at {@code oldPosition - itemCount}.
      * <p>
      * This is a structural change event. Representations of other existing items in the
      * data set are still considered up to date and will not be rebound, though their positions
      * may be altered.
      *
-     * @param parentPositionStart The previous position of the first ParentListItem that was
-     *                            removed, relative to list of ParentListItems only.
-     * @param itemCount           Number of ParentListItems removed from the data set
+     * @param parentPositionStart The previous position of the first parent that was
+     *                            removed, relative to list of parents only.
+     * @param itemCount Number of parents removed from the data set
      */
     @UiThread
     public void notifyParentItemRangeRemoved(int parentPositionStart, int itemCount) {
         int sizeChanged = 0;
-        int wrapperIndex = getParentWrapperIndex(parentPositionStart);
+        int flatParentPositionStart = getFlatParentPosition(parentPositionStart);
         for (int i = 0; i < itemCount; i++) {
-            sizeChanged += removeParentWrapper(wrapperIndex);
+            sizeChanged += removeParentWrapper(flatParentPositionStart);
         }
 
-        notifyItemRangeRemoved(wrapperIndex, sizeChanged);
+        notifyItemRangeRemoved(flatParentPositionStart, sizeChanged);
     }
 
     @UiThread
-    private int removeParentWrapper(int parentWrapperIndex) {
+    private int removeParentWrapper(int flatParentPosition) {
         int sizeChanged = 1;
-        ParentWrapper parentWrapper = (ParentWrapper) mItemList.remove(parentWrapperIndex);
+        ExpandableWrapper<P, C> parentWrapper = mItemList.remove(flatParentPosition);
         if (parentWrapper.isExpanded()) {
-            int childListSize = parentWrapper.getChildItemList().size();
+            int childListSize = parentWrapper.getWrappedChildItemList().size();
             for (int i = 0; i < childListSize; i++) {
-                mItemList.remove(parentWrapperIndex);
+                mItemList.remove(flatParentPosition);
                 sizeChanged++;
             }
         }
@@ -917,142 +888,141 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Notify any registered observers that the ParentListItem at {@code parentPosition} has changed.
-     * This will also trigger an item changed for children of the ParentList specified.
+     * Notify any registered observers that the parent at {@code parentPosition} has changed.
+     * This will also trigger an item changed for children of the parent list specified.
      * <p>
      * This is an item change event, not a structural change event. It indicates that any
      * reflection of the data at {@code parentPosition} is out of date and should be updated.
-     * The ParentListItem at {@code parentPosition} retains the same identity. This means
+     * The parent at {@code parentPosition} retains the same identity. This means
      * the number of children must stay the same.
      *
      * @param parentPosition Position of the item that has changed
      */
     @UiThread
     public void notifyParentItemChanged(int parentPosition) {
-        ParentListItem parentListItem = mParentItemList.get(parentPosition);
-        int wrapperIndex = getParentWrapperIndex(parentPosition);
-        int sizeChanged = changeParentWrapper(wrapperIndex, parentListItem);
+        P parentListItem = mParentItemList.get(parentPosition);
+        int flatParentPositionStart = getFlatParentPosition(parentPosition);
+        int sizeChanged = changeParentWrapper(flatParentPositionStart, parentListItem);
 
-        notifyItemRangeChanged(wrapperIndex, sizeChanged);
+        notifyItemRangeChanged(flatParentPositionStart, sizeChanged);
     }
 
     /**
-     * Notify any registered observers that the {@code itemCount} ParentListItems starting
+     * Notify any registered observers that the {@code itemCount} parents starting
      * at {@code parentPositionStart} have changed. This will also trigger an item changed
-     * for children of the ParentList specified.
+     * for children of the parent list specified.
      * <p>
      * This is an item change event, not a structural change event. It indicates that any
      * reflection of the data in the given position range is out of date and should be updated.
-     * The ParentListItems in the given range retain the same identity. This means
-     * the number of children must stay the same.
+     * The parents in the given range retain the same identity. This means that the number of
+     * children must stay the same.
      *
      * @param parentPositionStart Position of the item that has changed
-     * @param itemCount           Number of ParentListItems changed in the dataset
+     * @param itemCount Number of parents changed in the data set
      */
     @UiThread
     public void notifyParentItemRangeChanged(int parentPositionStart, int itemCount) {
-        int initialWrapperIndex = getParentWrapperIndex(parentPositionStart);
+        int flatParentPositionStart = getFlatParentPosition(parentPositionStart);
 
-        int wrapperIndex = initialWrapperIndex;
+        int flatParentPosition = flatParentPositionStart;
         int sizeChanged = 0;
         int changed;
-        ParentListItem parentListItem;
+        P parentListItem;
         for (int j = 0; j < itemCount; j++) {
             parentListItem = mParentItemList.get(parentPositionStart);
-            changed = changeParentWrapper(wrapperIndex, parentListItem);
+            changed = changeParentWrapper(flatParentPosition, parentListItem);
             sizeChanged += changed;
-            wrapperIndex += changed;
+            flatParentPosition += changed;
             parentPositionStart++;
         }
-        notifyItemRangeChanged(initialWrapperIndex, sizeChanged);
+        notifyItemRangeChanged(flatParentPositionStart, sizeChanged);
     }
 
     @UiThread
-    private int changeParentWrapper(int wrapperIndex, @NonNull ParentListItem parentListItem) {
-        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(wrapperIndex);
+    private int changeParentWrapper(int flatParentPosition, @NonNull P parentListItem) {
+        ExpandableWrapper<P, C> parentWrapper = mItemList.get(flatParentPosition);
         parentWrapper.setParentListItem(parentListItem);
         int sizeChanged = 1;
         if (parentWrapper.isExpanded()) {
-            List<?> childItems = parentWrapper.getChildItemList();
-            int childListSize = childItems.size();
-            Object child;
+            List<ExpandableWrapper<P, C>> wrappedChildItemList = parentWrapper.getWrappedChildItemList();
+            int childListSize = wrappedChildItemList.size();
             for (int i = 0; i < childListSize; i++) {
-                child = childItems.get(i);
-                mItemList.set(wrapperIndex + i + 1, child);
+                mItemList.set(flatParentPosition + i + 1, wrappedChildItemList.get(i));
                 sizeChanged++;
             }
         }
 
         return sizeChanged;
-
     }
 
     /**
-     * Notify any registered observers that the ParentListItem and it's child list items reflected at
+     * Notify any registered observers that the parent and its children reflected at
      * {@code fromParentPosition} has been moved to {@code toParentPosition}.
      * <p>
      * <p>This is a structural change event. Representations of other existing items in the
      * data set are still considered up to date and will not be rebound, though their
      * positions may be altered.</p>
      *
-     * @param fromParentPosition Previous position of the ParentListItem, relative to list of
-     *                           ParentListItems only.
-     * @param toParentPosition   New position of the ParentListItem, relative to list of
-     *                           ParentListItems only.
+     * @param fromParentPosition Previous position of the parent, relative to the list of
+     *                           parents only.
+     * @param toParentPosition New position of the parent, relative to the list of parents only.
      */
     @UiThread
     public void notifyParentItemMoved(int fromParentPosition, int toParentPosition) {
-        int fromWrapperIndex = getParentWrapperIndex(fromParentPosition);
-        ParentWrapper fromParentWrapper = (ParentWrapper) mItemList.get(fromWrapperIndex);
+        int fromFlatParentPosition = getFlatParentPosition(fromParentPosition);
+        ExpandableWrapper<P, C> fromParentWrapper = mItemList.get(fromFlatParentPosition);
 
         // If the parent is collapsed we can take advantage of notifyItemMoved otherwise
         // we are forced to do a "manual" move by removing and then adding the parent + children
         // (no notifyItemRangeMovedAvailable)
         boolean isCollapsed = !fromParentWrapper.isExpanded();
-        boolean isExpandedNoChildren = !isCollapsed && (fromParentWrapper.getChildItemList().size() == 0);
+        boolean isExpandedNoChildren = !isCollapsed && (fromParentWrapper.getWrappedChildItemList().size() == 0);
         if (isCollapsed || isExpandedNoChildren) {
-            int toWrapperIndex = getParentWrapperIndex(toParentPosition);
-            ParentWrapper toParentWrapper = (ParentWrapper) mItemList.get(toWrapperIndex);
-            mItemList.remove(fromWrapperIndex);
+            int toFlatParentPosition = getFlatParentPosition(toParentPosition);
+            ExpandableWrapper<P, C> toParentWrapper = mItemList.get(toFlatParentPosition);
+            mItemList.remove(fromFlatParentPosition);
             int childOffset = 0;
             if (toParentWrapper.isExpanded()) {
-                childOffset = toParentWrapper.getChildItemList().size();
+                childOffset = toParentWrapper.getWrappedChildItemList().size();
             }
-            mItemList.add(toWrapperIndex + childOffset, fromParentWrapper);
+            mItemList.add(toFlatParentPosition + childOffset, fromParentWrapper);
 
-            notifyItemMoved(fromWrapperIndex, toWrapperIndex + childOffset);
+            notifyItemMoved(fromFlatParentPosition, toFlatParentPosition + childOffset);
         } else {
             // Remove the parent and children
             int sizeChanged = 0;
-            int childListSize = fromParentWrapper.getChildItemList().size();
+            int childListSize = fromParentWrapper.getWrappedChildItemList().size();
             for (int i = 0; i < childListSize + 1; i++) {
-                mItemList.remove(fromWrapperIndex);
+                mItemList.remove(fromFlatParentPosition);
                 sizeChanged++;
             }
-            notifyItemRangeRemoved(fromWrapperIndex, sizeChanged);
+            notifyItemRangeRemoved(fromFlatParentPosition, sizeChanged);
 
 
             // Add the parent and children at new position
-            int toWrapperIndex = getParentWrapperIndex(toParentPosition);
+            int toFlatParentPosition = getFlatParentPosition(toParentPosition);
             int childOffset = 0;
-            if (toWrapperIndex != -1) {
-                ParentWrapper toParentWrapper = (ParentWrapper) mItemList.get(toWrapperIndex);
+            if (toFlatParentPosition != INVALID_FLAT_POSITION) {
+                ExpandableWrapper<P, C> toParentWrapper = mItemList.get(toFlatParentPosition);
                 if (toParentWrapper.isExpanded()) {
-                    childOffset = toParentWrapper.getChildItemList().size();
+                    childOffset = toParentWrapper.getWrappedChildItemList().size();
                 }
             } else {
-                toWrapperIndex = mItemList.size();
+                toFlatParentPosition = mItemList.size();
             }
-            mItemList.add(toWrapperIndex + childOffset, fromParentWrapper);
-            List<?> childItemList = fromParentWrapper.getChildItemList();
+
+            mItemList.add(toFlatParentPosition + childOffset, fromParentWrapper);
+            List<ExpandableWrapper<P, C>> childItemList = fromParentWrapper.getWrappedChildItemList();
             sizeChanged = childItemList.size() + 1;
-            mItemList.addAll(toWrapperIndex + childOffset + 1, childItemList);
-            notifyItemRangeInserted(toWrapperIndex + childOffset, sizeChanged);
+
+            mItemList.addAll(toFlatParentPosition + childOffset + 1, childItemList);
+
+            notifyItemRangeInserted(toFlatParentPosition + childOffset, sizeChanged);
         }
     }
 
     /**
-     * Notify any registered observers that the ParentListItem reflected at {@code parentPosition}
+     * Notify any registered observers that the parent reflected at {@code parentPosition}
      * has a child list item that has been newly inserted at {@code childPosition}.
      * The child list item previously at {@code childPosition} is now at
      * position {@code childPosition + 1}.
@@ -1061,26 +1031,27 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * data set are still considered up to date and will not be rebound, though their
      * positions may be altered.
      *
-     * @param parentPosition Position of the ParentListItem which has been added a child, relative
-     *                       to list of ParentListItems only.
-     * @param childPosition  Position of the child object that has been inserted, relative to children
-     *                       of the ParentListItem specified by {@code parentPosition} only.
+     * @param parentPosition Position of the parent which has been added a child, relative
+     *                       to the list of parents only.
+     * @param childPosition Position of the child that has been inserted, relative to children
+     *                      of the parent specified by {@code parentPosition} only.
+     *
      */
     @UiThread
     public void notifyChildItemInserted(int parentPosition, int childPosition) {
-        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
-        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+        int flatParentPosition = getFlatParentPosition(parentPosition);
+        ExpandableWrapper<P, C> parentWrapper = mItemList.get(flatParentPosition);
 
+        parentWrapper.setParentListItem(mParentItemList.get(parentPosition));
         if (parentWrapper.isExpanded()) {
-            ParentListItem parentListItem = mParentItemList.get(parentPosition);
-            Object child = parentListItem.getChildItemList().get(childPosition);
-            mItemList.add(parentWrapperIndex + childPosition + 1, child);
-            notifyItemInserted(parentWrapperIndex + childPosition + 1);
+            ExpandableWrapper<P, C> child = parentWrapper.getWrappedChildItemList().get(childPosition);
+            mItemList.add(flatParentPosition + childPosition + 1, child);
+            notifyItemInserted(flatParentPosition + childPosition + 1);
         }
     }
 
     /**
-     * Notify any registered observers that the ParentListItem reflected at {@code parentPosition}
+     * Notify any registered observers that the parent reflected at {@code parentPosition}
      * has {@code itemCount} child list items that have been newly inserted at {@code childPositionStart}.
      * The child list item previously at {@code childPositionStart} and beyond are now at
      * position {@code childPositionStart + itemCount}.
@@ -1089,33 +1060,32 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * data set are still considered up to date and will not be rebound, though their
      * positions may be altered.
      *
-     * @param parentPosition     Position of the ParentListItem which has been added a child, relative
-     *                           to list of ParentListItems only.
-     * @param childPositionStart Position of the first child object that has been inserted,
-     *                           relative to children of the ParentListItem specified by
+     * @param parentPosition Position of the parent which has been added a child, relative
+     *                       to the list of parents only.
+     * @param childPositionStart Position of the first child that has been inserted,
+     *                           relative to children of the parent specified by
      *                           {@code parentPosition} only.
      * @param itemCount          number of children inserted
      */
     @UiThread
     public void notifyChildItemRangeInserted(int parentPosition, int childPositionStart, int itemCount) {
-        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
-        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+        int flatParentPosition = getFlatParentPosition(parentPosition);
+        ExpandableWrapper<P, C> parentWrapper = mItemList.get(flatParentPosition);
 
+        parentWrapper.setParentListItem(mParentItemList.get(parentPosition));
         if (parentWrapper.isExpanded()) {
-            ParentListItem parentListItem = mParentItemList.get(parentPosition);
-            List<?> childList = parentListItem.getChildItemList();
-            Object child;
+            List<ExpandableWrapper<P, C>> wrappedChildItemList = parentWrapper.getWrappedChildItemList();
             for (int i = 0; i < itemCount; i++) {
-                child = childList.get(childPositionStart + i);
-                mItemList.add(parentWrapperIndex + childPositionStart + i + 1, child);
+                ExpandableWrapper<P, C> child = wrappedChildItemList.get(childPositionStart + i);
+                mItemList.add(flatParentPosition + childPositionStart + i + 1, child);
             }
-            notifyItemRangeInserted(parentWrapperIndex + childPositionStart + 1, itemCount);
+            notifyItemRangeInserted(flatParentPosition + childPositionStart + 1, itemCount);
         }
     }
 
     /**
-     * Notify any registered observers that the ParentListItem located at {@code parentPosition}
-     * has a child list item that has been removed from the data set, previously located at {@code childPosition}.
+     * Notify any registered observers that the parent located at {@code parentPosition}
+     * has a child that has been removed from the data set, previously located at {@code childPosition}.
      * The child list item previously located at and after {@code childPosition} may
      * now be found at {@code childPosition - 1}.
      * <p>
@@ -1123,156 +1093,184 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
      * data set are still considered up to date and will not be rebound, though their positions
      * may be altered.
      *
-     * @param parentPosition Position of the ParentListItem which has a child removed from, relative
-     *                       to list of ParentListItems only.
-     * @param childPosition  Position of the child object that has been removed, relative to children
-     *                       of the ParentListItem specified by {@code parentPosition} only.
+     * @param parentPosition Position of the parent which has a child removed from, relative
+     *                       to the list of parents only.
+     * @param childPosition Position of the child that has been removed, relative to children
+     *                      of the parent specified by {@code parentPosition} only.
      */
     @UiThread
     public void notifyChildItemRemoved(int parentPosition, int childPosition) {
-        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
-        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+        int flatParentPosition = getFlatParentPosition(parentPosition);
+        ExpandableWrapper<P, C> parentWrapper = mItemList.get(flatParentPosition);
+        parentWrapper.setParentListItem(mParentItemList.get(parentPosition));
 
         if (parentWrapper.isExpanded()) {
-            mItemList.remove(parentWrapperIndex + childPosition + 1);
-            notifyItemRemoved(parentWrapperIndex + childPosition + 1);
+            mItemList.remove(flatParentPosition + childPosition + 1);
+            notifyItemRemoved(flatParentPosition + childPosition + 1);
         }
     }
 
     /**
-     * Notify any registered observers that the ParentListItem located at {@code parentPosition}
-     * has {@code itemCount} child list items that have been removed from the data set, previously
-     * located at {@code childPositionStart} onwards. The child list item previously located at and
+     * Notify any registered observers that the parent located at {@code parentPosition}
+     * has {@code itemCount} children that have been removed from the data set, previously
+     * located at {@code childPositionStart} onwards. The child previously located at and
      * after {@code childPositionStart} may now be found at {@code childPositionStart - itemCount}.
      * <p>
      * This is a structural change event. Representations of other existing items in the
      * data set are still considered up to date and will not be rebound, though their positions
      * may be altered.
      *
-     * @param parentPosition     Position of the ParentListItem which has a child removed from, relative
-     *                           to list of ParentListItems only.
-     * @param childPositionStart Position of the first child object that has been removed, relative
-     *                           to children of the ParentListItem specified by
-     *                           {@code parentPosition} only.
-     * @param itemCount          number of children removed
+     * @param parentPosition Position of the parent which has a child removed from, relative
+     *                       to the list of parents only.
+     * @param childPositionStart Position of the first child that has been removed, relative
+     *                           to children of the parent specified by {@code parentPosition} only.
+     * @param itemCount number of children removed
      */
     @UiThread
     public void notifyChildItemRangeRemoved(int parentPosition, int childPositionStart, int itemCount) {
-        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
-        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+        int flatParentPosition = getFlatParentPosition(parentPosition);
+        ExpandableWrapper<P, C> parentWrapper = mItemList.get(flatParentPosition);
+        parentWrapper.setParentListItem(mParentItemList.get(parentPosition));
 
         if (parentWrapper.isExpanded()) {
             for (int i = 0; i < itemCount; i++) {
-                mItemList.remove(parentWrapperIndex + childPositionStart + 1);
+                mItemList.remove(flatParentPosition + childPositionStart + 1);
             }
-            notifyItemRangeRemoved(parentWrapperIndex + childPositionStart + 1, itemCount);
+            notifyItemRangeRemoved(flatParentPosition + childPositionStart + 1, itemCount);
         }
     }
 
     /**
-     * Notify any registered observers that the ParentListItem at {@code parentPosition} has
+     * Notify any registered observers that the parent at {@code parentPosition} has
      * a child located at {@code childPosition} that has changed.
      * <p>
      * This is an item change event, not a structural change event. It indicates that any
      * reflection of the data at {@code childPosition} is out of date and should be updated.
-     * The ParentListItem at {@code childPosition} retains the same identity.
+     * The parent at {@code childPosition} retains the same identity.
      *
-     * @param parentPosition Position of the ParentListItem who has a child that has changed
-     * @param childPosition  Position of the child that has changed
+     * @param parentPosition Position of the parent which has a child that has changed
+     * @param childPosition Position of the child that has changed
      */
     @UiThread
     public void notifyChildItemChanged(int parentPosition, int childPosition) {
-        ParentListItem parentListItem = mParentItemList.get(parentPosition);
-        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
-        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+        P parentListItem = mParentItemList.get(parentPosition);
+        int flatParentPosition = getFlatParentPosition(parentPosition);
+        ExpandableWrapper<P, C> parentWrapper = mItemList.get(flatParentPosition);
         parentWrapper.setParentListItem(parentListItem);
         if (parentWrapper.isExpanded()) {
-            int listChildPosition = parentWrapperIndex + childPosition + 1;
-            Object child = parentWrapper.getChildItemList().get(childPosition);
-            mItemList.set(listChildPosition, child);
-            notifyItemChanged(listChildPosition);
+            int flatChildPosition = flatParentPosition + childPosition + 1;
+            ExpandableWrapper<P, C> child = parentWrapper.getWrappedChildItemList().get(childPosition);
+            mItemList.set(flatChildPosition, child);
+            notifyItemChanged(flatChildPosition);
         }
     }
 
     /**
-     * Notify any registered observers that the ParentListItem at {@code parentPosition} has
-     * {@code itemCount} child Objects starting at {@code childPositionStart} that have changed.
+     * Notify any registered observers that the parent at {@code parentPosition} has
+     * {@code itemCount} children starting at {@code childPositionStart} that have changed.
      * <p>
      * This is an item change event, not a structural change event. It indicates that any
-     * The ParentListItem at {@code childPositionStart} retains the same identity.
-     * reflection of the set of {@code itemCount} child objects starting at {@code childPositionStart}
+     * The parent at {@code childPositionStart} retains the same identity.
+     * reflection of the set of {@code itemCount} children starting at {@code childPositionStart}
      * are out of date and should be updated.
      *
-     * @param parentPosition     Position of the ParentListItem who has a child that has changed
-     * @param childPositionStart Position of the first child object that has changed
-     * @param itemCount          number of child objects changed
+     * @param parentPosition Position of the parent who has a child that has changed
+     * @param childPositionStart Position of the first child that has changed
+     * @param itemCount number of children changed
      */
     @UiThread
     public void notifyChildItemRangeChanged(int parentPosition, int childPositionStart, int itemCount) {
-        ParentListItem parentListItem = mParentItemList.get(parentPosition);
-        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
-        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+        P parentListItem = mParentItemList.get(parentPosition);
+        int flatParentPosition = getFlatParentPosition(parentPosition);
+        ExpandableWrapper<P, C> parentWrapper = mItemList.get(flatParentPosition);
         parentWrapper.setParentListItem(parentListItem);
         if (parentWrapper.isExpanded()) {
-            int listChildPosition = parentWrapperIndex + childPositionStart + 1;
+            int flatChildPosition = flatParentPosition + childPositionStart + 1;
             for (int i = 0; i < itemCount; i++) {
-                Object child = parentWrapper.getChildItemList().get(childPositionStart + i);
-                mItemList.set(listChildPosition + i, child);
-
+                ExpandableWrapper<P, C> child
+                        = parentWrapper.getWrappedChildItemList().get(childPositionStart + i);
+                mItemList.set(flatChildPosition + i, child);
             }
-            notifyItemRangeChanged(listChildPosition, itemCount);
+            notifyItemRangeChanged(flatChildPosition, itemCount);
         }
     }
 
     /**
-     * Notify any registered observers that the child list item contained within the ParentListItem
+     * Notify any registered observers that the child list item contained within the parent
      * at {@code parentPosition} has moved from {@code fromChildPosition} to {@code toChildPosition}.
      * <p>
      * <p>This is a structural change event. Representations of other existing items in the
      * data set are still considered up to date and will not be rebound, though their
      * positions may be altered.</p>
      *
-     * @param parentPosition    Position of the ParentListItem who has a child that has moved
-     * @param fromChildPosition Previous position of the child list item
-     * @param toChildPosition   New position of the child list item
+     * @param parentPosition Position of the parent which has a child that has moved
+     * @param fromChildPosition Previous position of the child
+     * @param toChildPosition New position of the child
      */
     @UiThread
     public void notifyChildItemMoved(int parentPosition, int fromChildPosition, int toChildPosition) {
-        ParentListItem parentListItem = mParentItemList.get(parentPosition);
-        int parentWrapperIndex = getParentWrapperIndex(parentPosition);
-        ParentWrapper parentWrapper = (ParentWrapper) mItemList.get(parentWrapperIndex);
+        P parentListItem = mParentItemList.get(parentPosition);
+        int flatParentPosition = getFlatParentPosition(parentPosition);
+
+        ExpandableWrapper<P, C> parentWrapper = mItemList.get(flatParentPosition);
         parentWrapper.setParentListItem(parentListItem);
         if (parentWrapper.isExpanded()) {
-            Object fromChild = mItemList.remove(parentWrapperIndex + 1 + fromChildPosition);
-            mItemList.add(parentWrapperIndex + 1 + toChildPosition, fromChild);
-            notifyItemMoved(parentWrapperIndex + 1 + fromChildPosition, parentWrapperIndex + 1 + toChildPosition);
+            ExpandableWrapper<P, C> fromChild = mItemList.remove(flatParentPosition + 1 + fromChildPosition);
+            mItemList.add(flatParentPosition + 1 + toChildPosition, fromChild);
+            notifyItemMoved(flatParentPosition + 1 + fromChildPosition, flatParentPosition + 1 + toChildPosition);
         }
     }
 
-
     // endregion
+
+    /**
+     * Generates a full list of all parents and their children, in order.
+     *
+     * @param parentItemList A list of the parents from
+     *                       the {@link ExpandableRecyclerAdapter}
+     * @return A list of all parents and their children, expanded
+     */
+    private List<ExpandableWrapper<P, C>> generateParentChildItemList(List<P> parentItemList) {
+        List<ExpandableWrapper<P, C>> itemList = new ArrayList<>();
+
+        int parentListItemCount = parentItemList.size();
+        for (int i = 0; i < parentListItemCount; i++) {
+            ExpandableWrapper<P, C> parentWrapper = new ExpandableWrapper<>(parentItemList.get(i));
+            itemList.add(parentWrapper);
+
+            if (parentWrapper.isParentInitiallyExpanded()) {
+                parentWrapper.setExpanded(true);
+
+                List<ExpandableWrapper<P, C>> wrappedChildItemList = parentWrapper.getWrappedChildItemList();
+                int childListItemCount = wrappedChildItemList.size();
+                for (int j = 0; j < childListItemCount; j++) {
+                    ExpandableWrapper<P, C> childWrapper = wrappedChildItemList.get(j);
+                    itemList.add(childWrapper);
+                }
+            }
+        }
+
+        return itemList;
+    }
 
     /**
      * Generates a HashMap used to store expanded state for items in the list
      * on configuration change or whenever onResume is called.
      *
-     * @return A HashMap containing the expanded state of all parent list items
+     * @return A HashMap containing the expanded state of all parents
      */
     @NonNull
     @UiThread
     private HashMap<Integer, Boolean> generateExpandedStateMap() {
-        int listItemCount = mItemList.size();
-        HashMap<Integer, Boolean> parentListItemHashMap = new HashMap<>(listItemCount);
+        HashMap<Integer, Boolean> parentListItemHashMap = new HashMap<>();
         int childCount = 0;
 
-        Object listItem;
-        ParentWrapper parentWrapper;
+        int listItemCount = mItemList.size();
         for (int i = 0; i < listItemCount; i++) {
             if (mItemList.get(i) != null) {
-                listItem = getListItem(i);
-                if (listItem instanceof ParentWrapper) {
-                    parentWrapper = (ParentWrapper) listItem;
-                    parentListItemHashMap.put(i - childCount, parentWrapper.isExpanded());
+                ExpandableWrapper<P, C> listItem = mItemList.get(i);
+                if (listItem.isParent()) {
+                    parentListItemHashMap.put(i - childCount, listItem.isExpanded());
                 } else {
                     childCount++;
                 }
@@ -1283,51 +1281,26 @@ public abstract class ExpandableRecyclerAdapter<PVH extends ParentViewHolder, CV
     }
 
     /**
-     * Gets the index of a ParentWrapper within the helper item list based on
-     * the index of the ParentWrapper.
+     * Gets the index of a ExpandableWrapper within the helper item list based on
+     * the index of the ExpandableWrapper.
      *
-     * @param parentIndex The index of the parent in the list of parent items
-     * @return The index of the parent in the list of all views in the adapter
+     * @param parentPosition The index of the parent in the list of parents
+     * @return The index of the parent in the merged list of children and parents
      */
     @UiThread
-    private int getParentWrapperIndex(int parentIndex) {
+    private int getFlatParentPosition(int parentPosition) {
         int parentCount = 0;
         int listItemCount = mItemList.size();
         for (int i = 0; i < listItemCount; i++) {
-            if (mItemList.get(i) instanceof ParentWrapper) {
+            if (mItemList.get(i).isParent()) {
                 parentCount++;
 
-                if (parentCount > parentIndex) {
+                if (parentCount > parentPosition) {
                     return i;
                 }
             }
         }
 
-        return -1;
-    }
-
-    /**
-     * Gets the ParentWrapper for a specified ParentListItem from the list of
-     * parents.
-     *
-     * @param parentListItem A ParentListItem in the list of parents
-     * @return If the parent exists on the list, returns its ParentWrapper.
-     * Otherwise, returns null.
-     */
-    @UiThread
-    @Nullable
-    private ParentWrapper getParentWrapper(@NonNull ParentListItem parentListItem) {
-        int listItemCount = mItemList.size();
-        for (int i = 0; i < listItemCount; i++) {
-            Object listItem = mItemList.get(i);
-            if (listItem instanceof ParentWrapper) {
-                if (((ParentWrapper) listItem).getParentListItem().equals(parentListItem)) {
-                    return (ParentWrapper) listItem;
-                }
-            }
-        }
-
-        //TODO Consider updates so the return value is @NonNull
-        return null;
+        return INVALID_FLAT_POSITION;
     }
 }

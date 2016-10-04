@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Interface for implementing required methods in a parent list item.
  */
-public interface ParentListItem {
+public interface ParentListItem<C> {
 
     /**
      * Getter for the list of this parent list item's child list items.
@@ -14,7 +14,7 @@ public interface ParentListItem {
      *
      * @return A {@link List} of the children of this {@link ParentListItem}
      */
-    List<?> getChildItemList();
+    List<C> getChildItemList();
 
     /**
      * Getter used to determine if this {@link ParentListItem}'s

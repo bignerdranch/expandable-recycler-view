@@ -4,7 +4,7 @@ import com.bignerdranch.expandablerecyclerview.model.ParentListItem;
 
 import java.util.List;
 
-public class Recipe implements ParentListItem {
+public class Recipe implements ParentListItem<Ingredient> {
 
     private String mName;
     private List<Ingredient> mIngredients;
@@ -19,7 +19,7 @@ public class Recipe implements ParentListItem {
     }
 
     @Override
-    public List<?> getChildItemList() {
+    public List<Ingredient> getChildItemList() {
         return mIngredients;
     }
 

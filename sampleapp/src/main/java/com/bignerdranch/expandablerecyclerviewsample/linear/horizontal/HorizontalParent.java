@@ -15,7 +15,7 @@ import java.util.List;
  * here in order to store away our list of items (which you usually will have in a singleton or
  * database)
  */
-public class HorizontalParent implements ParentListItem, Serializable {
+public class HorizontalParent implements ParentListItem<HorizontalChild>, Serializable {
 
     private List<HorizontalChild> mChildItemList;
     private String mParentText;

@@ -13,7 +13,7 @@ import com.bignerdranch.expandablerecyclerviewsample.R;
 
 import java.util.List;
 
-public class RecipeAdapter extends ExpandableRecyclerAdapter<RecipeViewHolder, IngredientViewHolder> {
+public class RecipeAdapter extends ExpandableRecyclerAdapter<Recipe, Ingredient, RecipeViewHolder, IngredientViewHolder> {
 
     private static final int PARENT_VEGETARIAN = 0;
     private static final int PARENT_NORMAL = 1;
@@ -65,15 +65,13 @@ public class RecipeAdapter extends ExpandableRecyclerAdapter<RecipeViewHolder, I
 
     @UiThread
     @Override
-    public void onBindParentViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int parentPosition, @NonNull ParentListItem parentListItem) {
-        Recipe recipe = (Recipe) parentListItem;
+    public void onBindParentViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int parentPosition, @NonNull Recipe recipe) {
         recipeViewHolder.bind(recipe);
     }
 
     @UiThread
     @Override
-    public void onBindChildViewHolder(@NonNull IngredientViewHolder ingredientViewHolder, int parentPosition, int childPosition, @NonNull Object childListItem) {
-        Ingredient ingredient = (Ingredient) childListItem;
+    public void onBindChildViewHolder(@NonNull IngredientViewHolder ingredientViewHolder, int parentPosition, int childPosition, @NonNull Ingredient ingredient) {
         ingredientViewHolder.bind(ingredient);
     }
 

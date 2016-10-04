@@ -11,8 +11,8 @@ import android.view.View;
  * The user should extend this class and implement as they wish for their
  * child list item.
  */
-public class ChildViewHolder extends RecyclerView.ViewHolder {
-    Object mChildListItem;
+public class ChildViewHolder<C> extends RecyclerView.ViewHolder {
+    C mChildListItem;
     ExpandableRecyclerAdapter mExpandableAdapter;
 
     /**
@@ -28,7 +28,7 @@ public class ChildViewHolder extends RecyclerView.ViewHolder {
      * @return the childListItem associated with this view holder
      */
     @UiThread
-    public Object getChildListItem() {
+    public C getChildListItem() {
         return mChildListItem;
     }
 
@@ -42,12 +42,12 @@ public class ChildViewHolder extends RecyclerView.ViewHolder {
      */
     @UiThread
     public int getParentAdapterPosition() {
-        int adapterPosition = getAdapterPosition();
-        if (mExpandableAdapter == null || adapterPosition == RecyclerView.NO_POSITION) {
-            return adapterPosition;
+        int flatPosition = getAdapterPosition();
+        if (mExpandableAdapter == null || flatPosition == RecyclerView.NO_POSITION) {
+            return RecyclerView.NO_POSITION;
         }
 
-        return mExpandableAdapter.getNearestParentPosition(adapterPosition);
+        return mExpandableAdapter.getNearestParentPosition(flatPosition);
     }
 
     /**
@@ -60,11 +60,11 @@ public class ChildViewHolder extends RecyclerView.ViewHolder {
      */
     @UiThread
     public int getChildAdapterPosition() {
-        int adapterPosition = getAdapterPosition();
-        if (mExpandableAdapter == null || adapterPosition == RecyclerView.NO_POSITION) {
-            return adapterPosition;
+        int flatPosition = getAdapterPosition();
+        if (mExpandableAdapter == null || flatPosition == RecyclerView.NO_POSITION) {
+            return RecyclerView.NO_POSITION;
         }
 
-        return mExpandableAdapter.getChildPosition(adapterPosition);
+        return mExpandableAdapter.getChildPosition(flatPosition);
     }
 }
