@@ -656,22 +656,24 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
      */
     @UiThread
     private void updateExpandedParent(@NonNull ExpandableWrapper<P, C> parentWrapper, int flatParentPosition, boolean expansionTriggeredByListItemClick) {
-        if (!parentWrapper.isExpanded()) {
-            parentWrapper.setExpanded(true);
+        if (parentWrapper.isExpanded()) {
+            return;
+        }
 
-            List<ExpandableWrapper<P, C>> wrappedChildList = parentWrapper.getWrappedChildList();
-            if (wrappedChildList != null) {
-                int childCount = wrappedChildList.size();
-                for (int i = 0; i < childCount; i++) {
-                    mFlatItemList.add(flatParentPosition + i + 1, wrappedChildList.get(i));
-                }
+        parentWrapper.setExpanded(true);
 
-                notifyItemRangeInserted(flatParentPosition + 1, childCount);
+        List<ExpandableWrapper<P, C>> wrappedChildList = parentWrapper.getWrappedChildList();
+        if (wrappedChildList != null) {
+            int childCount = wrappedChildList.size();
+            for (int i = 0; i < childCount; i++) {
+                mFlatItemList.add(flatParentPosition + i + 1, wrappedChildList.get(i));
             }
 
-            if (expansionTriggeredByListItemClick && mExpandCollapseListener != null) {
-                mExpandCollapseListener.onParentExpanded(getNearestParentPosition(flatParentPosition));
-            }
+            notifyItemRangeInserted(flatParentPosition + 1, childCount);
+        }
+
+        if (expansionTriggeredByListItemClick && mExpandCollapseListener != null) {
+            mExpandCollapseListener.onParentExpanded(getNearestParentPosition(flatParentPosition));
         }
     }
 
@@ -687,22 +689,24 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
      */
     @UiThread
     private void updateCollapsedParent(@NonNull ExpandableWrapper<P, C> parentWrapper, int flatParentPosition, boolean collapseTriggeredByListItemClick) {
-        if (parentWrapper.isExpanded()) {
-            parentWrapper.setExpanded(false);
+        if (!parentWrapper.isExpanded()) {
+            return;
+        }
 
-            List<ExpandableWrapper<P, C>> wrappedChildList = parentWrapper.getWrappedChildList();
-            if (wrappedChildList != null) {
-                int childCount = wrappedChildList.size();
-                for (int i = childCount - 1; i >= 0; i--) {
-                    mFlatItemList.remove(flatParentPosition + i + 1);
-                }
+        parentWrapper.setExpanded(false);
 
-                notifyItemRangeRemoved(flatParentPosition + 1, childCount);
+        List<ExpandableWrapper<P, C>> wrappedChildList = parentWrapper.getWrappedChildList();
+        if (wrappedChildList != null) {
+            int childCount = wrappedChildList.size();
+            for (int i = childCount - 1; i >= 0; i--) {
+                mFlatItemList.remove(flatParentPosition + i + 1);
             }
 
-            if (collapseTriggeredByListItemClick && mExpandCollapseListener != null) {
-                mExpandCollapseListener.onParentCollapsed(getNearestParentPosition(flatParentPosition));
-            }
+            notifyItemRangeRemoved(flatParentPosition + 1, childCount);
+        }
+
+        if (collapseTriggeredByListItemClick && mExpandCollapseListener != null) {
+            mExpandCollapseListener.onParentCollapsed(getNearestParentPosition(flatParentPosition));
         }
     }
 
