@@ -1,7 +1,7 @@
 sudo: false
 language: android
 jdk: oraclejdk8
-script: ./gradlew clean build
+script: ./gradlew build lint test
 
 android:
   components:
