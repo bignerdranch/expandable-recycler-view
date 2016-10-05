@@ -24,6 +24,20 @@ Add Sonatype's snapshots to your repositories closure in the root `build.gradle`
  }
  ```
 
+##Contributing
+
+####Issues or Comments
+
+If you have an idea for a feature enhancement or a bug fix, we'd love to know! We handle issue tracking using GitHub's issue system, so please add your issue/comment there.
+
+####Updates and Fixes
+
+We also welcome all pull requests, ideally your work is based off of a request in our GitHub issues. We really love [good commit messages](http://chris.beams.io/posts/git-commit/) and atomic commits.
+
+The `dev-3.0.0` branch is used for any incompatible API changes, since they will cause a 3.0.0 release. If your work breaks or changes any existing API's we ask that you target and branch off of the `dev-3.0.0` branch.
+
+If you have a bug fix or adding functionality without affecting current API, you should target and branch off of `master`. This way, we're flexible to pull in bug fixes and additional features as soon as possible.
+
 ##License
 
       The MIT License
