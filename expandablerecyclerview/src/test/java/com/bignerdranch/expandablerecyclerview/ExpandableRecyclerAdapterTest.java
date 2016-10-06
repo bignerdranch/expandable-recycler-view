@@ -32,15 +32,7 @@ public class ExpandableRecyclerAdapterTest {
         mBaseParents = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            List<Object> childObjects = new ArrayList<>();
-            childObjects.add(new Object());
-            childObjects.add(new Object());
-            childObjects.add(new Object());
-
-            Parent<Object> parent = (Parent<Object>) mock(Parent.class);
-            Mockito.when(parent.getChildList()).thenReturn(childObjects);
-            when(parent.isInitiallyExpanded()).thenReturn(i % 2 == 0); // Every other parent will return true
-
+            Parent<Object> parent = generateParent(i % 2 == 0, 3);
             mBaseParents.add(parent);
         }
 
@@ -175,12 +167,12 @@ public class ExpandableRecyclerAdapterTest {
     }
 
     @Test
-    public void notifyParentItemInsertedWithInitiallyCollapsedItem() {
+    public void notifyParentInsertedWithInitiallyCollapsedItem() {
         Parent<Object> originalFirstItem = mBaseParents.get(0);
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
         verifyParentItemsMatch(originalFirstItem, true, 0);
 
-        Parent<Object> insertedItem = (Parent<Object>) mock(Parent.class);
+        Parent<Object> insertedItem = generateParent(false, 2);
         when(insertedItem.isInitiallyExpanded()).thenReturn(false);
         mBaseParents.add(0, insertedItem);
         mExpandableRecyclerAdapter.notifyParentInserted(0);
@@ -192,15 +184,9 @@ public class ExpandableRecyclerAdapterTest {
     }
 
     @Test
-    public void notifyParentItemInsertedWithInitiallyExpandedItem() {
+    public void notifyParentInsertedWithInitiallyExpandedItem() {
         Parent<Object> originalLastParent = mBaseParents.get(9);
-        List<Object> childObjects = new ArrayList<>();
-        childObjects.add(new Object());
-        childObjects.add(new Object());
-        childObjects.add(new Object());
-        Parent<Object> insertedItem = (Parent<Object>) mock(Parent.class);
-        Mockito.when(insertedItem.getChildList()).thenReturn(childObjects);
-        when(insertedItem.isInitiallyExpanded()).thenReturn(true);
+        Parent<Object> insertedItem = generateParent(true, 3);
 
         assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
         verifyParentItemsMatch(originalLastParent, false, 24);
@@ -215,7 +201,41 @@ public class ExpandableRecyclerAdapterTest {
     }
 
     @Test
-    public void notifyParentItemRemovedOnExpandedItem() {
+    public void notifyParentRangeInsertedMidList() {
+        Parent<Object> firstInsertedItem = generateParent(true, 3);
+        Parent<Object> secondInsertedItem = generateParent(false, 2);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+
+        mBaseParents.add(4, firstInsertedItem);
+        mBaseParents.add(5, secondInsertedItem);
+        mExpandableRecyclerAdapter.notifyParentRangeInserted(4, 2);
+
+        verify(mDataObserver).onItemRangeInserted(10, 5);
+        assertEquals(30, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(firstInsertedItem, true, 10);
+        verifyParentItemsMatch(secondInsertedItem, false, 14);
+    }
+
+    @Test
+    public void notifyParentRangeInsertedEndList() {
+        Parent<Object> firstInsertedItem = generateParent(true, 3);
+        Parent<Object> secondInsertedItem = generateParent(false, 2);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+
+        mBaseParents.add(firstInsertedItem);
+        mBaseParents.add(secondInsertedItem);
+        mExpandableRecyclerAdapter.notifyParentRangeInserted(10, 2);
+
+        verify(mDataObserver).onItemRangeInserted(25, 5);
+        assertEquals(30, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(firstInsertedItem, true, 25);
+        verifyParentItemsMatch(secondInsertedItem, false, 29);
+    }
+
+    @Test
+    public void notifyParentRemovedOnExpandedItem() {
         Parent<Object> removedItem = mBaseParents.get(0);
         Parent<Object> originalSecondItem = mBaseParents.get(1);
 
@@ -232,7 +252,7 @@ public class ExpandableRecyclerAdapterTest {
     }
 
     @Test
-    public void notifyParentItemRemovedOnCollapsedItem() {
+    public void notifyParentRemovedOnCollapsedItem() {
         Parent<Object> removedItem = mBaseParents.get(9);
         Parent<Object> originalSecondToLastItem = mBaseParents.get(8);
 
@@ -248,6 +268,82 @@ public class ExpandableRecyclerAdapterTest {
         verifyParentItemsMatch(originalSecondToLastItem, true, 20);
     }
 
+    @Test
+    public void notifyParentRangeRemoved() {
+        Parent<Object> firstRemovedItem = mBaseParents.get(7);
+        Parent<Object> secondRemovedItem = mBaseParents.get(8);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(firstRemovedItem, false, 19);
+        verifyParentItemsMatch(secondRemovedItem, true, 20);
+
+        mBaseParents.remove(7);
+        mBaseParents.remove(7);
+        mExpandableRecyclerAdapter.notifyParentRangeRemoved(7, 2);
+
+        verify(mDataObserver).onItemRangeRemoved(19, 5);
+        assertEquals(20, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(mBaseParents.get(7), false, 19);
+    }
+
+    @Test
+    public void notifyParentChanged() {
+        Parent<Object> changedParent = generateParent(false, 3);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(mBaseParents.get(4), true, 10);
+
+        mBaseParents.set(4, changedParent);
+        mExpandableRecyclerAdapter.notifyParentChanged(4);
+
+        verify(mDataObserver).onItemRangeChanged(10, 4, null);
+        verifyParentItemsMatch(changedParent, true, 10);
+    }
+
+    @Test
+    public void notifyParentRangeChanged() {
+        Parent<Object> firstChangedParent = generateParent(false, 3);
+        Parent<Object> secondChangedParent = generateParent(false, 3);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(mBaseParents.get(4), true, 10);
+        verifyParentItemsMatch(mBaseParents.get(5), false, 14);
+
+        mBaseParents.set(4, firstChangedParent);
+        mBaseParents.set(5, secondChangedParent);
+        mExpandableRecyclerAdapter.notifyParentRangeChanged(4, 2);
+
+        verify(mDataObserver).onItemRangeChanged(10, 5, null);
+        verifyParentItemsMatch(firstChangedParent, true, 10);
+        verifyParentItemsMatch(secondChangedParent, false, 14);
+    }
+
+    @Test
+    public void notifyParentMovedCollapsedParent() {
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(mBaseParents.get(5), false, 14);
+
+        Parent<Object> movedParent = mBaseParents.remove(5);
+        mBaseParents.add(movedParent);
+        mExpandableRecyclerAdapter.notifyParentMoved(5, 9);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(movedParent, false, 24);
+    }
+
+    @Test
+    public void notifyParentMovedExpandedParent() {
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(mBaseParents.get(6), true, 15);
+
+        Parent<Object> movedParent = mBaseParents.remove(6);
+        mBaseParents.add(8, movedParent);
+        mExpandableRecyclerAdapter.notifyParentMoved(6, 8);
+
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(movedParent, true, 20);
+    }
+
     private void verifyParentItemsMatch(Parent<Object> expectedParent, boolean expectedExpansion, int actualParentIndex) {
         assertEquals(expectedParent, getListItem(actualParentIndex));
         assertEquals(expectedExpansion, mExpandableRecyclerAdapter.mFlatItemList.get(actualParentIndex).isExpanded());
@@ -260,6 +356,18 @@ public class ExpandableRecyclerAdapterTest {
                 actualChildIndex++;
             }
         }
+    }
+
+    private Parent<Object> generateParent(boolean initiallyExpanded, int childCount) {
+        List<Object> childObjects = new ArrayList<>();
+        for (int i = 0; i < childCount; i++) {
+            childObjects.add(new Object());
+        }
+        Parent<Object> parent = (Parent<Object>) mock(Parent.class);
+        Mockito.when(parent.getChildList()).thenReturn(childObjects);
+        when(parent.isInitiallyExpanded()).thenReturn(initiallyExpanded);
+
+        return parent;
     }
 
     protected Object getListItem(int flatPosition) {
