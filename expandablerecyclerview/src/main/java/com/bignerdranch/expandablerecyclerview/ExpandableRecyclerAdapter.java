@@ -15,6 +15,7 @@ import com.bignerdranch.expandablerecyclerview.model.Parent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * RecyclerView.Adapter implementation that
@@ -66,7 +67,7 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
     @NonNull
     private List<RecyclerView> mAttachedRecyclerViewPool;
 
-    private HashMap<P, Boolean> mExpansionStateMap;
+    private Map<P, Boolean> mExpansionStateMap;
 
     /**
      * Allows objects to register themselves as expand/collapse listeners to be
@@ -358,7 +359,7 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
      * @see #notifyChildRemoved(int, int)
      * @see #notifyChildChanged(int, int)
      *
-     * @param preserveExpansionState If true, the adapter will preserve your parent's last expanded
+     * @param preserveExpansionState If true, the adapter will attempt to preserve your parent's last expanded
      *                               state. This depends on object equality for comparisons of
      *                               old parents to parents in the new list.
      *
@@ -816,7 +817,7 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
      * @see #notifyChildRemoved(int, int)
      * @see #notifyChildChanged(int, int)
      *
-     * @param preserveExpansionState If true, the adapter will preserve your parent's last expanded
+     * @param preserveExpansionState If true, the adapter will attempt to preserve your parent's last expanded
      *                               state. This depends on object equality for comparisons of
      *                               old parents to parents in the new list.
      *
@@ -1329,7 +1330,7 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
     }
 
     /**
-     * Generates a full list of all parents and their children, in order. Uses Hashmap to preserve
+     * Generates a full list of all parents and their children, in order. Uses Map to preserve
      * last expanded state.
      *
      * @param parentList A list of the parents from
@@ -1337,7 +1338,7 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
      * @param savedLastExpansionState A map of the last expanded state for a given parent key.
      * @return A list of all parents and their children, expanded accordingly
      */
-    private List<ExpandableWrapper<P, C>> generateFlattenedParentChildList(List<P> parentList, HashMap<P, Boolean> savedLastExpansionState) {
+    private List<ExpandableWrapper<P, C>> generateFlattenedParentChildList(List<P> parentList, Map<P, Boolean> savedLastExpansionState) {
         List<ExpandableWrapper<P, C>> flatItemList = new ArrayList<>();
 
         int parentCount = parentList.size();
