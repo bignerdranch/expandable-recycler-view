@@ -339,6 +339,33 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
         return mParentList;
     }
 
+    /**
+     * Set a new list of parents and notify any registered observers that the data set has changed.
+     * <p>
+     * This setter does not specify what about the data set has changed, forcing
+     * any observers to assume that all existing items and structure may no longer be valid.
+     * LayoutManagers will be forced to fully rebind and relayout all visible views.</p>
+     * <p>
+     * It will always be more efficient to use the more specific change events if you can.
+     * Rely on {@code #setParentList(List, boolean)} as a last resort. There will be no animation
+     * of changes, unlike the more specific change events listed below.
+     *
+     * @see #notifyParentInserted(int)
+     * @see #notifyParentRemoved(int)
+     * @see #notifyParentChanged(int)
+     * @see #notifyParentRangeInserted(int, int)
+     * @see #notifyChildInserted(int, int)
+     * @see #notifyChildRemoved(int, int)
+     * @see #notifyChildChanged(int, int)
+     *
+     * @param preserveExpansionState If true, the adapter will preserve your parent's last expanded
+     *                               state. This depends on object equality for comparisons of
+     *                               old parents to parents in the new list.
+     *
+     *                               If false, only {@link Parent#isInitiallyExpanded()}
+     *                               will be used to determine expanded state.
+     *
+     */
     @UiThread
     public void setParentList(@NonNull List<P> parentList, boolean preserveExpansionState) {
         mParentList = parentList;
@@ -770,6 +797,34 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
 
     // region Data Manipulation
 
+    /**
+     * Notify any registered observers that the data set has changed.
+     * <p>
+     * This event does not specify what about the data set has changed, forcing
+     * any observers to assume that all existing items and structure may no longer be valid.
+     * LayoutManagers will be forced to fully rebind and relayout all visible views.</p>
+     * <p>
+     * It will always be more efficient to use the more specific change events if you can.
+     * Rely on {@code #notifyParentDataSetChanged(boolean)} as a last resort. There will be no animation
+     * of changes, unlike the more specific change events listed below.
+     *
+     * @see #notifyParentInserted(int)
+     * @see #notifyParentRemoved(int)
+     * @see #notifyParentChanged(int)
+     * @see #notifyParentRangeInserted(int, int)
+     * @see #notifyChildInserted(int, int)
+     * @see #notifyChildRemoved(int, int)
+     * @see #notifyChildChanged(int, int)
+     *
+     * @param preserveExpansionState If true, the adapter will preserve your parent's last expanded
+     *                               state. This depends on object equality for comparisons of
+     *                               old parents to parents in the new list.
+     *
+     *                               If false, only {@link Parent#isInitiallyExpanded()}
+     *                               will be used to determine expanded state.
+     *
+     */
+    @UiThread
     public void notifyParentDataSetChanged(boolean preserveExpansionState) {
         if (preserveExpansionState) {
             mFlatItemList = generateFlattenedParentChildList(mParentList, mExpansionStateMap);

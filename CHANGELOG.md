@@ -1,5 +1,6 @@
 Version 3.0.0 SNAPSHOT
 ----------------------------
+- Added implementation of `notifyDataSetChanged()` called `notifyParentDataSetChanged()`
 - Added generic types for the Parent and Child model objects inside of ExpandableRecyclerAdapter
     - ParentListItem interface now takes a generic object type, which allows for `getChildItemList` to return a typed List instead of `List<?>`
     - The `ExpandableRecyclerAdapter` takes two more generic object types
