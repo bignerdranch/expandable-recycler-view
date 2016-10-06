@@ -66,6 +66,8 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
     @NonNull
     private List<RecyclerView> mAttachedRecyclerViewPool;
 
+    private HashMap<P, Boolean> mExpansionStateMap;
+
     /**
      * Allows objects to register themselves as expand/collapse listeners to be
      * notified of change events.
@@ -116,6 +118,7 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
         mParentList = parentList;
         mFlatItemList = generateFlattenedParentChildList(parentList);
         mAttachedRecyclerViewPool = new ArrayList<>();
+        mExpansionStateMap = new HashMap<>(mParentList.size());
     }
 
     /**
@@ -661,6 +664,7 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
         }
 
         parentWrapper.setExpanded(true);
+        mExpansionStateMap.put(parentWrapper.getParent(), true);
 
         List<ExpandableWrapper<P, C>> wrappedChildList = parentWrapper.getWrappedChildList();
         if (wrappedChildList != null) {
@@ -694,6 +698,7 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
         }
 
         parentWrapper.setExpanded(false);
+        mExpansionStateMap.put(parentWrapper.getParent(), false);
 
         List<ExpandableWrapper<P, C>> wrappedChildList = parentWrapper.getWrappedChildList();
         if (wrappedChildList != null) {
@@ -758,6 +763,15 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
     // endregion
 
     // region Data Manipulation
+
+    public void notifyParentDataSetChanged(boolean preserveExpansionState) {
+        if (preserveExpansionState) {
+            mFlatItemList = generateFlattenedParentChildList(mParentList, mExpansionStateMap);
+        } else {
+            mFlatItemList = generateFlattenedParentChildList(mParentList);
+        }
+        notifyDataSetChanged();
+    }
 
     /**
      * Notify any registered observers that the parent reflected at {@code parentPosition}
@@ -1238,7 +1252,7 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
      * Generates a full list of all parents and their children, in order.
      *
      * @param parentList A list of the parents from
-     *                       the {@link ExpandableRecyclerAdapter}
+     *                   the {@link ExpandableRecyclerAdapter}
      * @return A list of all parents and their children, expanded
      */
     private List<ExpandableWrapper<P, C>> generateFlattenedParentChildList(List<P> parentList) {
@@ -1246,22 +1260,54 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
 
         int parentCount = parentList.size();
         for (int i = 0; i < parentCount; i++) {
-            ExpandableWrapper<P, C> parentWrapper = new ExpandableWrapper<>(parentList.get(i));
-            flatItemList.add(parentWrapper);
-
-            if (parentWrapper.isParentInitiallyExpanded()) {
-                parentWrapper.setExpanded(true);
-
-                List<ExpandableWrapper<P, C>> wrappedChildList = parentWrapper.getWrappedChildList();
-                int childCount = wrappedChildList.size();
-                for (int j = 0; j < childCount; j++) {
-                    ExpandableWrapper<P, C> childWrapper = wrappedChildList.get(j);
-                    flatItemList.add(childWrapper);
-                }
-            }
+            P parent = parentList.get(i);
+            generateParentWrapper(flatItemList, parent, parent.isInitiallyExpanded());
         }
 
         return flatItemList;
+    }
+
+    /**
+     * Generates a full list of all parents and their children, in order. Uses Hashmap to preserve
+     * last expanded state.
+     *
+     * @param parentList A list of the parents from
+     *                   the {@link ExpandableRecyclerAdapter}
+     * @param savedLastExpansionState A map of the last expanded state for a given parent key.
+     * @return A list of all parents and their children, expanded accordingly
+     */
+    private List<ExpandableWrapper<P, C>> generateFlattenedParentChildList(List<P> parentList, HashMap<P, Boolean> savedLastExpansionState) {
+        List<ExpandableWrapper<P, C>> flatItemList = new ArrayList<>();
+
+        int parentCount = parentList.size();
+        for (int i = 0; i < parentCount; i++) {
+            P parent = parentList.get(i);
+            Boolean lastExpandedState = savedLastExpansionState.get(parent);
+            boolean shouldExpand = lastExpandedState == null ? parent.isInitiallyExpanded() : lastExpandedState;
+
+            generateParentWrapper(flatItemList, parent, shouldExpand);
+        }
+
+        return flatItemList;
+    }
+
+    private void generateParentWrapper(List<ExpandableWrapper<P, C>> flatItemList, P parent, boolean shouldExpand) {
+        ExpandableWrapper<P, C> parentWrapper = new ExpandableWrapper<>(parent);
+        flatItemList.add(parentWrapper);
+        if (shouldExpand) {
+            generateExpandedChildren(flatItemList, parentWrapper);
+        }
+    }
+
+    private void generateExpandedChildren(List<ExpandableWrapper<P, C>> flatItemList, ExpandableWrapper<P, C> parentWrapper) {
+        parentWrapper.setExpanded(true);
+
+        List<ExpandableWrapper<P, C>> wrappedChildList = parentWrapper.getWrappedChildList();
+        int childCount = wrappedChildList.size();
+        for (int j = 0; j < childCount; j++) {
+            ExpandableWrapper<P, C> childWrapper = wrappedChildList.get(j);
+            flatItemList.add(childWrapper);
+        }
     }
 
     /**

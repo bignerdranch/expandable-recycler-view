@@ -344,6 +344,76 @@ public class ExpandableRecyclerAdapterTest {
         verifyParentItemsMatch(movedParent, true, 20);
     }
 
+    @Test
+    public void notifyParentDataSetChangedWithExpansionPreservationAllCollapsed() {
+        mExpandableRecyclerAdapter.collapseAllParents();
+        Parent<Object> movedParent = mBaseParents.remove(0);
+        mBaseParents.add(movedParent);
+        Parent<Object> newParent = generateParent(true, 1);
+        mBaseParents.add(3, newParent);
+        mExpandableRecyclerAdapter.notifyParentDataSetChanged(true);
+
+        verify(mDataObserver).onChanged();
+        assertEquals(12, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(mBaseParents.get(0), false, 0);
+        verifyParentItemsMatch(newParent, true, 3);
+        verifyParentItemsMatch(mBaseParents.get(9), false, 10);
+        verifyParentItemsMatch(movedParent, false, 11);
+    }
+
+    @Test
+    public void notifyParentDataSetChangedWithoutExpansionPreservationAllCollapsed() {
+        mExpandableRecyclerAdapter.collapseAllParents();
+        Parent<Object> movedParent = mBaseParents.remove(0);
+        mBaseParents.add(movedParent);
+        Parent<Object> newParent = generateParent(true, 1);
+        mBaseParents.add(3, newParent);
+        mExpandableRecyclerAdapter.notifyParentDataSetChanged(false);
+
+        verify(mDataObserver).onChanged();
+        assertEquals(27, mExpandableRecyclerAdapter.getItemCount());
+        verifyParentItemsMatch(mBaseParents.get(0), false, 0);
+        verifyParentItemsMatch(newParent, true, 6);
+        verifyParentItemsMatch(mBaseParents.get(9), false, 22);
+        verifyParentItemsMatch(mBaseParents.get(10), true, 23);
+    }
+
+    @Test
+    public void notifyParentDataSetWithExpansionPreservationChangedNoChanges() {
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+
+        mExpandableRecyclerAdapter.notifyParentDataSetChanged(true);
+
+        verify(mDataObserver).onChanged();
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        int flatIndex = 0;
+        for (Parent<Object> baseParent : mBaseParents) {
+            verifyParentItemsMatch(baseParent, baseParent.isInitiallyExpanded(), flatIndex);
+            flatIndex++;
+            if (baseParent.isInitiallyExpanded()) {
+                flatIndex += baseParent.getChildList().size();
+            }
+        }
+    }
+
+    @Test
+    public void notifyParentDataSetWithoutExpansionPreservationChangedNoChanges() {
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+
+        mExpandableRecyclerAdapter.notifyParentDataSetChanged(false);
+
+        verify(mDataObserver).onChanged();
+        assertEquals(25, mExpandableRecyclerAdapter.getItemCount());
+        int flatIndex = 0;
+        for (Parent<Object> baseParent : mBaseParents) {
+            verifyParentItemsMatch(baseParent, baseParent.isInitiallyExpanded(), flatIndex);
+            flatIndex++;
+            if (baseParent.isInitiallyExpanded()) {
+                flatIndex += baseParent.getChildList().size();
+            }
+        }
+    }
+
     private void verifyParentItemsMatch(Parent<Object> expectedParent, boolean expectedExpansion, int actualParentIndex) {
         assertEquals(expectedParent, getListItem(actualParentIndex));
         assertEquals(expectedExpansion, mExpandableRecyclerAdapter.mFlatItemList.get(actualParentIndex).isExpanded());
