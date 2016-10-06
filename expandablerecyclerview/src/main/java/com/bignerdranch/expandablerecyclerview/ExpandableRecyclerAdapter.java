@@ -339,6 +339,12 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
         return mParentList;
     }
 
+    @UiThread
+    public void setParentList(@NonNull List<P> parentList, boolean preserveExpansionState) {
+        mParentList = parentList;
+        notifyParentDataSetChanged(preserveExpansionState);
+    }
+
     /**
      * Implementation of Adapter#onAttachedToRecyclerView(RecyclerView).
      * <p>
