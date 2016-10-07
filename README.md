@@ -8,13 +8,17 @@ A custom RecyclerView which allows for an expandable view to be attached to each
 
 For more information please see [the website](http://bignerdranch.github.io/expandable-recycler-view/).
 
+##Release Candidate
+
+This is a release candidate for 3.0.0, for the latest stable version please see [v2.1.1](https://github.com/bignerdranch/expandable-recycler-view/tree/v2.1.1)
+
 ##Download
 
-[v3.0.0 AAR](http://repo1.maven.org/maven2/com/bignerdranch/android/expandablerecyclerview/3.0.0/expandablerecyclerview-3.0.0.aar)
+[v3.0.0-RC1 AAR](http://repo1.maven.org/maven2/com/bignerdranch/android/expandablerecyclerview/3.0.0-RC1/expandablerecyclerview-3.0.0-RC1.aar)
 
 **Gradle**
 ```
-compile 'com.bignerdranch.android:expandablerecyclerview:3.0.0'
+compile 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
 ```
 ##Contributing
 
