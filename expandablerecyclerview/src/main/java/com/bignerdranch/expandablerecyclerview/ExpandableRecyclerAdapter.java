@@ -154,8 +154,8 @@ public abstract class ExpandableRecyclerAdapter<P extends Parent<C>, C, PVH exte
      * Implementation of Adapter.onBindViewHolder(RecyclerView.ViewHolder, int)
      * that determines if the list item is a parent or a child and calls through
      * to the appropriate implementation of either
-     * {@link #onBindParentViewHolder(ParentViewHolder, int, P)} or
-     * {@link #onBindChildViewHolder(ChildViewHolder, int, int, C)}.
+     * {@link #onBindParentViewHolder(ParentViewHolder, int, Parent)} or
+     * {@link #onBindChildViewHolder(ChildViewHolder, int, int, Object)}.
      *
      * @param holder The RecyclerView.ViewHolder to bind data to
      * @param flatPosition The index in the merged list of children and parents at which to bind
