@@ -336,10 +336,10 @@ notifyParentDataSetChanged(boolean preserveExpansionState)
         switch (viewType) {
             default:
             case PARENT_NORMAL:
-                recipeView = mInflator.inflate(R.layout.recipe_view, parentViewGroup, false);
+                recipeView = mInflater.inflate(R.layout.recipe_view, parentViewGroup, false);
                 break;
             case PARENT_VEGETARIAN:
-                recipeView = mInflator.inflate(R.layout.vegetarian_recipe_view, parentViewGroup, false);
+                recipeView = mInflater.inflate(R.layout.vegetarian_recipe_view, parentViewGroup, false);
                 break;
         }
         return new RecipeViewHolder(recipeView);
@@ -351,10 +351,10 @@ notifyParentDataSetChanged(boolean preserveExpansionState)
         switch (viewType) {
             default:
             case CHILD_NORMAL:
-                ingredientView = mInflator.inflate(R.layout.ingredient_view, childViewGroup, false);
+                ingredientView = mInflater.inflate(R.layout.ingredient_view, childViewGroup, false);
                 break;
             case CHILD_VEGETARIAN:
-                ingredientView = mInflator.inflate(R.layout.vegetarian_ingredient_view, childViewGroup, false);
+                ingredientView = mInflater.inflate(R.layout.vegetarian_ingredient_view, childViewGroup, false);
                 break;
         }
         return new IngredientViewHolder(ingredientView);
