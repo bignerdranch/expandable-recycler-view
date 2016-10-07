@@ -1,4 +1,4 @@
-package com.ryanbrooks.expandablerecyclerview;
+package com.bignerdranch.expandablerecyclerview;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
