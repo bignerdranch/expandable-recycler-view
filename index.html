@@ -256,9 +256,9 @@ protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
 
                 <h3>Dataset Changes</h3>
 
-                <p>During the life of the RecyclerView items may be added and removed from the list. Please note that the traditional <code>notifyDataSetChanged()</code> of RecyclerView.Adapter does not work as intended.</p>
+                <p>During the life of the RecyclerView items may be added and removed from the list. Please note that the traditional <code>notifyDataSetChanged()</code> of RecyclerView.Adapter does not work as intended. Consider <code>notifyParentDataSetChanged()</code> instead.</p>
 
-                <p>Instead Expandable RecyclerView provides a set of notify methods with the ability to inform the adapter of changes to the list of ParentListItems.</p>
+                <p>Instead Expandable RecyclerView provides a set of notify methods with the ability to inform the adapter of changes to the list of Parents.</p>
 
 <pre><code>// Parent Changes
 notifyParentInserted(int parentPosition)
@@ -278,13 +278,13 @@ notifyChildRangeInserted(int parentPosition, int childPositionStart, int itemCou
 notifyChildRangeRemoved(int parentPosition, int childPositionStart, int itemCount)
 notifyChildRangeChanged(int parentPosition, int childPositionStart, int itemCount)
 
-//Unspecific Change (not recommended, use above specific methods instead)
+// Unspecific Change (not recommended, use above specific methods instead)
 notifyParentDataSetChanged(boolean preserveExpansionState)
 </code></pre>
 
                 <h3>Multiple view types</h3>
 
-                <p>Expandable RecyclerView also supports having multiple view types for your parent and children item views. To do so override the following methods in your ExpandableRecyclerAdapter: </p>
+                <p>Expandable RecyclerView also supports having multiple view types for your parent and child item views. To do so override the following methods in your ExpandableRecyclerAdapter: </p>
 
 <pre><code>public class RecipeAdapter extends ExpandableRecyclerAdapter&lt;Recipe, Ingredient, RecipeViewHolder, IngredientViewHolder&gt; {
     private static final int PARENT_VEGETARIAN = 0;
