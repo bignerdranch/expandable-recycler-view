@@ -4,170 +4,181 @@
         <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="chrome=1">
                 <title>Expandable RecyclerView by Big Nerd Ranch</title>
-                
+
                 <link rel="stylesheet" href="stylesheets/styles.css">
                     <link rel="stylesheet" href="stylesheets/github-light.css">
+         <link rel="stylesheet" href="styles/github.css">
                         <meta name="viewport" content="width=device-width">
                             <!--[if lt IE 9]>
                              <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
                              <![endif]-->
                             </head>
     <body>
+
+
+<script src="highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
         <div class="wrapper">
             <header>
                 <h1>Expandable RecyclerView</h1>
                 <p>A custom RecyclerView which allows for an expandable view to be attached to each ViewHolder</p>
-                
+
                 <p></p>
                 <p class="view">
                     <a href="/expandable-recycler-view/javadocs">JavaDocs</a><br />
                     <a href="https://github.com/bignerdranch/expandable-recycler-view">View the Project on GitHub</a>
                 </p>
-                
-                <p><a href="http://www.methodscount.com/?lib=com.bignerdranch.android%3Aexpandablerecyclerview%3A2.1.1"><img src="https://img.shields.io/badge/Methods and size-core: 108 | deps: 10766 | 13 KB-e91e63.svg"></img></a></p>
-                
+
+                <p><a href="http://www.methodscount.com/?lib=com.bignerdranch.android%3Aexpandablerecyclerview%3A3.0.0-RC1"><img src="https://img.shields.io/badge/Methods and size-core: 108 | deps: 10766 | 13 KB-e91e63.svg"></img></a></p>
+
             </header>
             <section>
-                
+
                 <h2>
                     <a id="overview" class="anchor" href="#overview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h2>
-                
+
                 <p>Expandable RecyclerView can be used with any stock Android RecyclerView to provide expandable items.</p>
-                
+
                 <p><img src="sample.gif"/></p>
-                
+
                 <h3>
                     <a id="basic_setup" class="anchor" href="#basic_setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic Setup</h3>
-                
+
                 <p>First, define a stock RecyclerView in a layout file and inflate it in an Activity/Fragment as normal.</p>
-                
-                <p>Define the parent/child relationship by implementing ParentListItem and overriding getChildItemList().</p>
-                
-                
-<pre><code>public class Recipe implements ParentListItem {
-    
+
+                <p>Define the parent/child relationship by implementing Parent and specifying the your child object type with the generic. You will need to override getChildList(), which will return a List of your child type, and isInitiallyExpanded(), which determines whether the parent will be expanded when initialized.</p>
+
+
+<pre><code>public class Recipe implements Parent&lt;Ingredient&gt; {
+
     // a recipe contains several ingredients
-    private List<Ingredient> mIngredients;
-        
-    public Recipe(List<Ingredient> ingredients) {
+    private List&lt;Ingredient&gt; mIngredients;
+
+    public Recipe(String name, List&lt;Ingredient&gt; ingredients) {
         mIngredients = ingredients;
     }
-            
+
     @Override
-    public List<?> getChildItemList() {
+    public List&lt;Ingredient&gt; getChildList() {
         return mIngredients;
     }
-                
+
     @Override
     public boolean isInitiallyExpanded() {
         return false;
     }
 }</code></pre>
-                
+
               <p>Create two ViewHolders to hold parent and child views by extending ParentViewHolder and ChildViewHolder respectively. Handle the normal ViewHolder behavior by finding any views to be held, and implement a binding method.</p>
-                
-                
+
+
 <pre><code>public class RecipeViewHolder extends ParentViewHolder {
-                    
+
     private TextView mRecipeTextView;
-                    
+
     public RecipeViewHolder(View itemView) {
         super(itemView);
         mRecipeTextView = itemView.findViewById(R.id.recipe_textview);
     }
-                    
+
     public void bind(Recipe recipe) {
         mRecipeTextView.setText(recipe.getName());
     }
 }</code></pre>
 
 <pre><code>public class IngredientViewHolder extends ChildViewHolder {
-    
+
     private TextView mIngredientTextView;
-    
+
     public IngredientViewHolder(View itemView) {
         super(itemView);
         mIngredientTextView = itemView.findViewById(R.id.ingredient_textview);
     }
-    
+
     public void bind(Ingredient ingredient) {
         mIngredientTextView.setText(ingredient.getName());
     }
 }</code></pre>
 
-            <p>Next, create an adapter that extends ExpandableRecyclerAdapter and takes parent and child ViewHolders as generic types. Unlike a normal RecyclerView.Adapter with a single set of onCreate and onBind methods, ExpandableRecyclerAdapter has a set for parent and another set for child ViewHolders</p>
-            
-            <pre><code>public class MyAdapter extends ExpandableRecyclerAdapter&lt;RecipeViewHolder, IngredientViewHolder&gt; {
-                
-    private LayoutInflater mInflator;
-                
-    public MyAdapter(Context context, @NonNull List&lt;? extends ParentListItem&gt; parentItemList) {
+            <p>Next, create an adapter that extends ExpandableRecyclerAdapter and takes 4 generic types:
+              <ul>
+                <li>P - The Parent Object type of your list, must implement the Parent interface</li>
+                <li>C - The Child Object type of your list</li>
+                <li>PVH - Your ViewHolder for Parent items, must extend ParentViewHolder</li>
+                <li>CVH - Your ViewHolder for child items, must extend ChildViewHolder</li>
+              </ul>
+              Unlike a normal RecyclerView.Adapter with a single set of onCreate and onBind methods, ExpandableRecyclerAdapter has a set for ParentViewHolders and another set for ChildViewHolders. Note that you do not need to override getItemCount(), this is handled by the library.</p>
+
+            <pre><code>public class RecipeAdapter extends ExpandableRecyclerAdapter&lt;Recipe, Ingredient, RecipeViewHolder, IngredientViewHolder&gt; {
+
+    private LayoutInflater mInflater;
+
+    public RecipeAdapter(Context context, @NonNull List&lt;Recipe&gt; recipeList) {
         super(parentItemList);
-        mInflator = LayoutInflater.from(context);
+        mInflater = LayoutInflater.from(context);
     }
-                
+
     // onCreate ...
     @Override
-    public RecipeViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup) {
-        View recipeView = mInflator.inflate(R.layout.recipe_view, parentViewGroup, false);
+    public RecipeViewHolder onCreateParentViewHolder(@NonNull ViewGroup parentViewGroup, int viewType) {
+        View recipeView = mInflater.inflate(R.layout.recipe_view, parentViewGroup, false);
         return new RecipeViewHolder(recipeView);
     }
-                
+
     @Override
-    public IngredientViewHolder onCreateChildViewHolder(ViewGroup childViewGroup) {
-        View ingredientView = mInflator.inflate(R.layout.ingredient_view, childViewGroup, false);
+    public IngredientViewHolder onCreateChildViewHolder(@NonNull ViewGroup childViewGroup, int viewType) {
+        View ingredientView = mInflater.inflate(R.layout.ingredient_view, childViewGroup, false);
         return new IngredientViewHolder(ingredientView);
     }
-                
+
     // onBind ...
     @Override
-    public void onBindParentViewHolder(RecipeViewHolder recipeViewHolder, int position, ParentListItem parentListItem) {
-        Recipe recipe = (Recipe) parentListItem;
+    public void onBindParentViewHolder(@NonNull RecipeViewHolder recipeViewHolder, int parentPosition, @NonNull Recipe recipe) {
         recipeViewHolder.bind(recipe);
     }
-                
+
     @Override
-    public void onBindChildViewHolder(IngredientViewHolder ingredientViewHolder, int position, Object childListItem) {
-        Ingredient ingredient = (Ingredient) childListItem;
+    public void onBindChildViewHolder(@NonNull IngredientViewHolder ingredientViewHolder, int parentPosition, int childPosition, @NonNull Ingredient ingredient) {
         ingredientViewHolder.bind(ingredient);
-        }
+    }
 }</code></pre>
-                
-                
+
+
                 <p>Finally, instantiate this adapter while passing in data, and hand it to RecyclerView. Make sure you give RecyclerView a LayoutManager:</p>
-                
-<pre></code>Ingredient beef = new Ingredient("beef");
+
+<pre><code>Ingredient beef = new Ingredient("beef");
 Ingredient cheese = new Ingredient("cheese");
 Ingredient salsa = new Ingredient("salsa");
 Ingredient tortilla = new Ingredient("tortilla");
-                
+
 Recipe taco = new Recipe(Arrays.asList(beef, cheese, salsa, tortilla));
 Recipe quesadilla = new Recipe(Arrays.asList(cheese, tortilla));
 List&lt;Recipe&gt; recipes = Arrays.asList(taco, quesadilla);
-                    
+
 mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-MyAdapter adapter = new MyAdapter(this, recipes);
+RecipeAdapter adapter = new RecipeAdapter(this, recipes);
 mRecyclerView.setAdapter(adapter);
 mRecyclerView.setLayoutManager(new LinearLayoutManager(this));</code></pre>
-                
+
                 <h3>Custom Expand/Collapse Button</h3>
-                
+
                 <p>By default, clicking the entire parent view will trigger expansion or collapsing. However, Expandable RecyclerView allows for one or more sub views to handle expansion/collapsing and ignore touch event on the parent view itself.</p>
-                
+
                 <img src="arrow_sample.gif"/>
-            
-            
+
+
                 <p>The ParentViewHolder implementation should override shouldItemViewClickToggleExpansion() to return false. Then set a click listener on the desired button within the ParentViewHolder implementation and call expandView() to trigger the expansion or collapseView() to trigger a collapse.</p>
-                
+
 <pre><code>public class RecipeViewHolder extends ParentViewHolder {
-                    
+
     private ImageView mArrowExpandImageView;
     private TextView mRecipeTextView;
-                    
+
     public RecipeViewHolder(View itemView) {
         super(itemView);
         mRecipeTextView = itemView.findViewById(R.id.recipe_textview);
-                    
+
         mArrowExpandImageView = (ImageView) itemView.findViewById(R.id.arrow_expand_imageview);
         mArrowExpandImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,119 +191,210 @@ mRecyclerView.setLayoutManager(new LinearLayoutManager(this));</code></pre>
             }
         });
     }
-                    
+
     @Override
     public boolean shouldItemViewClickToggleExpansion() {
         return false;
     }
-                    
+
     ...
-                    
+
 }</code></pre>
             <h3>Listening for Expansion/Collapse Inside Parent ViewHolder</h3>
-            
-            <p>To provide additional functionality <i>inside</i> the Parent ViewHolder when it has been expanded or collapsed, simply implement ParentViewHolder.onExpansionToggled(Boolean expanded). This is the perfect place to trigger additional transition animations, such as the rotating arrow animation in the above example.
-            
+
+            <p>To provide additional functionality <i>inside</i> the ParentViewHolder when it has been expanded or collapsed, simply implement <code>ParentViewHolder.onExpansionToggled(Boolean expanded)</code>. This is the perfect place to trigger additional transition animations, such as the rotating arrow animation in the above example.
+
             <h3>Triggering Expansion/Collapse Programatically</h3>
-            
-            <p>Other components can trigger expansion/collapse programmatically. ExpandableRecyclerAdapter features expandParent(int position) and expandParent(ParentListItem parent) to expand a list item by its adapter position or by its own reference.</p>
-            
-            <p>Similar methods exist for collapsing a list item: collapseParent(int position) and collapseParent(ParentListItem parent).</p>
-            
-            <p>To expand or collapse all items in the list at once, use expandAllParents() and collapseAllParents().</p>
-            
+
+            <p>Other components can trigger expansion/collapse programmatically. ExpandableRecyclerAdapter features <code>expandParent(int position)</code> and <code>expandParent(P parent)</code> to expand a list item by its adapter position or by its own reference.</p>
+
+            <p>Similar methods exist for collapsing a list item: <code>collapseParent(int position)</code> and <code>collapseParent(P parent)</code>.</p>
+
+            <p>To expand or collapse all items in the list at once, use <code>expandAllParents()</code> and <code>collapseAllParents()</code>.</p>
+
             <h3>Listening for Expansion/Collapse Outside of the Adapter</h3>
-            
-            <p>While ParentViewHolder.onExpansionToggled(boolean expanded) is useful for listening for view changes <i>within</i> individual parent views in the RecyclerView, Expandable RecyclerView also allows listeners <i>outside</i> of the Adapter to be notified of expand/collapse events. Simply create a ExpandableRecyclerAdapter.ExpandCollapseListener implementation and passing that implementation to the Adapter.</p>
-            
-<pre><code>MyAdapter adapter = new MyAdapter(this, recipes);
-                
+
+            <p>While <code>ParentViewHolder.onExpansionToggled(boolean expanded)</code> is useful for listening for view changes <i>within</i> individual parent views in the RecyclerView, Expandable RecyclerView also allows listeners <i>outside</i> of the Adapter to be notified of expand/collapse events. Simply create a <code>ExpandableRecyclerAdapter.ExpandCollapseListener</code> implementation and passing that implementation to the Adapter.</p>
+
+<pre><code>RecipeAdapter adapter = new RecipeAdapter(this, recipes);
+
 adapter.setExpandCollapseListener(new ExpandableRecyclerAdapter.ExpandCollapseListener() {
     @Override
-    public void onListItemExpanded(int position) {
+    public void onParentExpanded(int parentPosition) {
         Recipe expandedRecipe = recipes.get(position);
         // ...
     }
-                
+
     @Override
-    public void onListItemCollapsed(int position) {
+    public void onParentCollapsed(int parentPosition) {
         Recipe collapsedRecipe = recipes.get(position);
         // ...
     }
 });
-                
+
 mRecyclerView.setAdapter(adapter);</code></pre>
-            
-            
+
+
                 <h3>Saving and Restoring Collapsed and Expanded States</h3>
-            
+
                 <p>It's possible to save the expanded/collapsed state of the items in the RecyclerView across device configuration changes, low memory, or any time onSavedInstance state would be called.</p>
-                
+
                 <img src="rotation_sample.gif"/>
-                
-                <p>To save expanded/collapsed states call ExpandableRecyclerAdapter.onSaveInstanceState(Bundle savedInstanceState). To restore that state call ExpandableRecyclerAdapter.onRestoreInstanceState(Bundle savedInstanceState).</p>
-                
+
+                <p>To save expanded/collapsed states call <code>ExpandableRecyclerAdapter.onSaveInstanceState(Bundle savedInstanceState)</code>. To restore that state call <code>ExpandableRecyclerAdapter.onRestoreInstanceState(Bundle savedInstanceState)</code>.</p>
+
 <pre><code>protected void onSaveInstanceState(Bundle savedInstanceState) {
     super.onSaveInstanceState(savedInstanceState);
     mAdapter.onSaveInstanceState(savedInstanceState);
 }
-                    
+
 @Override
 protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
     super.onRestoreInstanceState(savedInstanceState);
     mAdapter.onRestoreInstanceState(savedInstanceState);
 }</code></pre>
 
-                <h3></h3>
-                
-                <p>During the life of the RecyclerView items may be added and removed from the list. Please note that the traditional notifyDataSetChanged() of RecyclerView.Adapter does not work as intended.</p>
-                
-                <p>Instead Expandable RecyclerView provides a set of notify methods with the ability to inform the adapter of changes to the list of ParentListItems.</p>
-                
-<pre><code>// Parent Changes
-notifyParentItemInserted(int parentPosition)
-notifyParentItemRemoved(int parentPosition)
-notifyParentItemChanged(int parentPosition)
-notifyParentItemRangeInserted(int parentPositionStart, int itemCount)
-    
-// Child Changes
-notifyChildItemInserted(int parentPosition, int childPosition)
-notifyChildItemRemoved(int parentPosition, int childPosition)
-notifyChildItemChanged(int parentPosition, int childPosition)</code></pre>
+                <h3>Dataset Changes</h3>
 
+                <p>During the life of the RecyclerView items may be added and removed from the list. Please note that the traditional <code>notifyDataSetChanged()</code> of RecyclerView.Adapter does not work as intended. Consider <code>notifyParentDataSetChanged()</code> instead.</p>
+
+                <p>Instead Expandable RecyclerView provides a set of notify methods with the ability to inform the adapter of changes to the list of Parents.</p>
+
+<pre><code>// Parent Changes
+notifyParentInserted(int parentPosition)
+notifyParentRemoved(int parentPosition)
+notifyParentChanged(int parentPosition)
+notifyParentMoved(int fromParentPosition, int toParentPosition)
+notifyParentRangeInserted(int parentPositionStart, int itemCount)
+notifyParentRangeRemoved(int parentPositionStart, int itemCount)
+notifyParentRangeChanged(int parentPositionStart, int itemCount)
+
+// Child Changes
+notifyChildInserted(int parentPosition, int childPosition)
+notifyChildRemoved(int parentPosition, int childPosition)
+notifyChildChanged(int parentPosition, int childPosition)
+notifyChildMoved(int parentPosition, int fromChildPosition, int toChildPosition)
+notifyChildRangeInserted(int parentPosition, int childPositionStart, int itemCount)
+notifyChildRangeRemoved(int parentPosition, int childPositionStart, int itemCount)
+notifyChildRangeChanged(int parentPosition, int childPositionStart, int itemCount)
+
+// Unspecific Change (not recommended, use above specific methods instead)
+notifyParentDataSetChanged(boolean preserveExpansionState)
+</code></pre>
+
+                <h3>Multiple view types</h3>
+
+                <p>Expandable RecyclerView also supports having multiple view types for your parent and child item views. To do so override the following methods in your ExpandableRecyclerAdapter: </p>
+
+<pre><code>public class RecipeAdapter extends ExpandableRecyclerAdapter&lt;Recipe, Ingredient, RecipeViewHolder, IngredientViewHolder&gt; {
+    private static final int PARENT_VEGETARIAN = 0;
+    private static final int PARENT_NORMAL = 1;
+    private static final int CHILD_VEGETARIAN = 2;
+    private static final int CHILD_NORMAL = 3;
+
+    ...
+
+    @Override
+    public int getParentItemViewType(int parentPosition) {
+        if (mRecipeList.get(parentPosition).isVegetarian()) {
+            return PARENT_VEGETARIAN;
+        } else {
+            return PARENT_NORMAL;
+        }
+    }
+
+    @Override
+    public int getChildItemViewType(int parentPosition, int childPosition) {
+        Ingredient ingredient = mRecipeList.get(parentPosition).getIngredient(childPosition);
+        if (ingredient.isVegetarian()) {
+            return CHILD_VEGETARIAN;
+        } else {
+            return CHILD_NORMAL;
+        }
+    }
+
+    @Override
+    public boolean isParentViewType(int viewType) {
+        return viewType == PARENT_VEGETARIAN || viewType == PARENT_NORMAL;
+    }
+
+    ...
+}</code></pre>
+
+                <p>The biggest thing to note is that if you override <code>getParentItemViewType(int)</code> you must override <code>isParentViewType(int)</code> and identify which view types are of a parent row. After giving the view type for a given position you will just need to create the correct view in your creation methods:</p>
+<pre><code>public class RecipeAdapter extends ExpandableRecyclerAdapter&lt;Recipe, Ingredient, RecipeViewHolder, IngredientViewHolder&gt; {
+    private static final int PARENT_VEGETARIAN = 0;
+    private static final int PARENT_NORMAL = 1;
+    private static final int CHILD_VEGETARIAN = 2;
+    private static final int CHILD_NORMAL = 3;
+
+    ...
+
+    @Override
+    public RecipeViewHolder onCreateParentViewHolder(@NonNull ViewGroup parentViewGroup, int viewType) {
+        View recipeView;
+        switch (viewType) {
+            default:
+            case PARENT_NORMAL:
+                recipeView = mInflater.inflate(R.layout.recipe_view, parentViewGroup, false);
+                break;
+            case PARENT_VEGETARIAN:
+                recipeView = mInflater.inflate(R.layout.vegetarian_recipe_view, parentViewGroup, false);
+                break;
+        }
+        return new RecipeViewHolder(recipeView);
+    }
+
+    @Override
+    public IngredientViewHolder onCreateChildViewHolder(@NonNull ViewGroup childViewGroup, int viewType) {
+        View ingredientView;
+        switch (viewType) {
+            default:
+            case CHILD_NORMAL:
+                ingredientView = mInflater.inflate(R.layout.ingredient_view, childViewGroup, false);
+                break;
+            case CHILD_VEGETARIAN:
+                ingredientView = mInflater.inflate(R.layout.vegetarian_ingredient_view, childViewGroup, false);
+                break;
+        }
+        return new IngredientViewHolder(ingredientView);
+    }
+
+    ...
+}</code></pre>
                 <h2><a id="download" class="anchor" href="#download" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Download</h2>
-                
-                <p><a href="http://repo1.maven.org/maven2/com/bignerdranch/android/expandablerecyclerview/2.1.1/expandablerecyclerview-2.1.1.aar">v2.1.1 AAR</a></p>
-                
+
+                <p><a href="http://repo1.maven.org/maven2/com/bignerdranch/android/expandablerecyclerview/3.0.0-RC1/expandablerecyclerview-3.0.0-RC1.aar">v3.0.0-RC1 AAR</a></p>
+
                 <p><strong>Gradle</strong></p>
-                
-<pre><code>compile 'com.bignerdranch.android:expandablerecyclerview:2.1.1'</code></pre>
-                
+
+<pre><code>compile 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'</code></pre>
+
                 <p><strong>Maven</strong></p>
-                
+
 <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;com.bignerdranch.android&lt;/groupId&gt;
     &lt;artifactId&gt;expandablerecyclerview&lt;/artifactId&gt;
-    &lt;version&gt;2.1.1&lt;/version&gt;
+    &lt;version&gt;3.0.0-RC1&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
-                
+
                 <h2>
                     <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
-                
+
 <pre><code>The MIT License (MIT)
-                    
+
 Copyright (c) 2014 Big Nerd Ranch
-                    
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-                    
+
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-                    
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -307,18 +409,18 @@ SOFTWARE.</code></pre>
             </footer>
         </div>
         <script src="javascripts/scale.fix.js"></script>
-        
+
         <!-- Google Analytics tracking script -->
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-             
+
              ga('create', 'UA-36446259-5', 'auto');
              ga('send', 'pageview');
-             
+
             </script>
-        
+                <script>hljs.initHighlightingOnLoad();</script>
     </body>
 </html>
