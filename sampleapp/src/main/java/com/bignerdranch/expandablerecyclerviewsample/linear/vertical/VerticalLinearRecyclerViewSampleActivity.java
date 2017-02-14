@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
@@ -27,6 +29,7 @@ import java.util.List;
 public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
 
     private RecipeAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @NonNull
     public static Intent newIntent(Context context) {
@@ -80,6 +83,14 @@ public class VerticalLinearRecyclerViewSampleActivity extends AppCompatActivity{
 
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.d("Refresh", "refresh happening");
+            }
+        });
     }
 
     @Override
