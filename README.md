@@ -8,11 +8,11 @@ A custom RecyclerView which allows for an expandable view to be attached to each
 
 For more information please see [the website](http://bignerdranch.github.io/expandable-recycler-view/).
 
-##Release Candidate
+## Release Candidate
 
 This is a release candidate for 3.0.0, for the latest stable version please see [v2.1.1](https://github.com/bignerdranch/expandable-recycler-view/tree/v2.1.1)
 
-##Download
+## Download
 
 [v3.0.0-RC1 AAR](http://repo1.maven.org/maven2/com/bignerdranch/android/expandablerecyclerview/3.0.0-RC1/expandablerecyclerview-3.0.0-RC1.aar)
 
@@ -20,13 +20,13 @@ This is a release candidate for 3.0.0, for the latest stable version please see 
 ```
 compile 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
 ```
-##Contributing
+## Contributing
 
-####Issues or Comments
+#### Issues or Comments
 
 If you have an idea for a feature enhancement or a bug fix, we'd love to know! We handle issue tracking using GitHub's issue system, so please add your issue/comment there.
 
-####Updates and Fixes
+#### Updates and Fixes
 
 We also welcome all pull requests, ideally your work is based off of a request in our GitHub issues. We really love [good commit messages](http://chris.beams.io/posts/git-commit/) and atomic commits.
 
@@ -34,7 +34,7 @@ The `dev-4.0.0` branch is used for any incompatible API changes, since they will
 
 If you have a bug fix or adding functionality without affecting current API, you should target and branch off of `master`. This way, we're flexible to pull in bug fixes and additional features as soon as possible.
 
-##License
+## License
 
       The MIT License
       
